@@ -12,3 +12,7 @@ Features
 - Remote File Explorer
 - Desktop Preview
 - Password Protection
+- To Be Continued...
+
+Screenshots
+![Moderat Main](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/main.png?raw=true)

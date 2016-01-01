@@ -36,7 +36,6 @@ def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
 def upload(Sock, _file, splitter='%:::%', end='[ENDOFMESSAGE]'):
     fileSize = os.path.getsize(_file)
     uploadedSize = 0
-    print fileSize
     send(Sock, 'upload '+_file)
     with open(_file, 'rb') as _f:
         while 1:

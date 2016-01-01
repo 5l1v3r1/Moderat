@@ -19,7 +19,7 @@ from PyQt4.QtCore import *
 
 from ui import gui
 
-from libs.modechat import get, send
+from libs.modechat import get, send, upload
 
 import plugins
 
@@ -148,6 +148,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if not self.acceptthreadState:
                 return
             if self.sock:
+
+                # TMP TEST
+                print 'vtvirtav'
+                print upload(self.sock, 'README.md')
+
                 if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'parent':
 
                     data = get(self.sock, 'info', 'pcinfo')

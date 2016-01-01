@@ -16,3 +16,6 @@ Features
 
 Screenshots
 ![Moderat Main](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/main.png?raw=true)
+![Moderat Connections](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/connections.png?raw=true)
+![Moderat Explorer](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/explorer.png?raw=true)
+![Moderat Shell](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/shell.png?raw=true)

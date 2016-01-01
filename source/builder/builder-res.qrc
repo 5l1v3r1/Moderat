@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>assets/refresh.png</file>
+    <file>assets/server-options.png</file>
+    <file>assets/show_password.png</file>
+  </qresource>
+</RCC>

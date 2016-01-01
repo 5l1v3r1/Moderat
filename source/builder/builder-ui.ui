@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>777</width>
+    <height>681</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #0F2D40;
+color: white;
+font: 10pt &quot;MS Shell Dlg 2&quot;;
+border: 1px outset;
+border-color: #0F2D40;</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Build</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QToolBox" name="toolBox">
+     <property name="styleSheet">
+      <string notr="true"> QToolBox::tab {
+  background: #0F2D40;
+  padding-left: 15px;
+  color: #2ecc71;
+  font: 11pt &quot;MS Shell Dlg 2&quot;;
+  border: 1px outset;
+  border-color: #0F2D40;
+ }
+
+ QToolBox::tab:selected {
+   background-color: #194759;
+   padding-top: -2px;
+ }
+
+ QToolBox::panel {
+   background-color: #194759;
+ }
+
+ QToolBox{
+  border: none;
+}</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="tabSpacing">
+      <number>10</number>
+     </property>
+     <widget class="QWidget" name="serverOptions">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>757</width>
+        <height>467</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;
+padding-bottom: 5px;</string>
+      </property>
+      <attribute name="icon">
+       <iconset resource="builder-res.qrc">
+        <normaloff>:/icons/assets/server-options.png</normaloff>:/icons/assets/server-options.png</iconset>
+      </attribute>
+      <attribute name="label">
+       <string>Server Options</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="4" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid;
+color: #27ae60;</string>
+         </property>
+         <property name="title">
+          <string>Working Directory:</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="radioButton_5">
+            <property name="styleSheet">
+             <string notr="true">border: none;
+color: white;</string>
+            </property>
+            <property name="text">
+             <string>Program Files</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="radioButton_3">
+            <property name="styleSheet">
+             <string notr="true">border: none;
+color: white;</string>
+            </property>
+            <property name="text">
+             <string>Current User</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="lineEdit_3">
+            <property name="styleSheet">
+             <string notr="true">background-color: #194759;
+color: white;</string>
+            </property>
+            <property name="text">
+             <string>/Moderat/</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="lineEdit">
+            <property name="styleSheet">
+             <string notr="true">background-color: #194759;
+color: white;</string>
+            </property>
+            <property name="text">
+             <string>/Moderat/</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="generateRandomFolderButton">
+            <property name="maximumSize">
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#generateRandomFolderButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            text-decoration: none;
+			padding: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#generateRandomFolderButton:pressed {
+            background: #0B202E;
+            color: grey;
+            border: 1px outset;
+            border-color: #0B202E;
+            }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="builder-res.qrc">
+              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QPushButton" name="generateRandomFolderButton2">
+            <property name="maximumSize">
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#generateRandomFolderButton2 {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            text-decoration: none;
+			padding: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#generateRandomFolderButton2:pressed {
+            background: #0B202E;
+            color: grey;
+            border: 1px outset;
+            border-color: #0B202E;
+            }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="builder-res.qrc">
+              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QRadioButton" name="radioButton_4">
+            <property name="styleSheet">
+             <string notr="true">border: none;
+color: white;</string>
+            </property>
+            <property name="text">
+             <string>System32</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: grey;
+border: 1px solid;</string>
+         </property>
+         <property name="title">
+          <string>Enable Autostart (VIP)</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0,0,0">
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="radioButton_2">
+            <property name="styleSheet">
+             <string notr="true">border: none;</string>
+            </property>
+            <property name="text">
+             <string>Add Registry Entry (Required Admin Privs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="radioButton">
+            <property name="styleSheet">
+             <string notr="true">border: none;</string>
+            </property>
+            <property name="text">
+             <string>Startup Folder</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>5</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: grey;</string>
+         </property>
+         <property name="text">
+          <string>Enable USB Flash Drive Spreading (VIP)</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="connectionTimeoutLabel">
+         <property name="text">
+          <string>Connection Timeout (seconds):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Server File Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="clientAddressLabel">
+         <property name="text">
+          <string>Connetion Address:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLineEdit" name="clientAdressLine">
+           <property name="styleSheet">
+            <string notr="true">background-color: #194759;</string>
+           </property>
+           <property name="text">
+            <string>192.168.1.2</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="clientPortLabel">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Port:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="clientPortLine">
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: #194759;</string>
+           </property>
+           <property name="text">
+            <string>4434</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_2">
+           <property name="styleSheet">
+            <string notr="true">background-color: #194759;</string>
+           </property>
+           <property name="text">
+            <string>Morderat_server</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="generateRandomNameButton">
+           <property name="maximumSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#generateRandomNameButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            text-decoration: none;
+			padding: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#generateRandomNameButton:pressed {
+            background: #0B202E;
+            color: grey;
+            border: 1px outset;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="builder-res.qrc">
+             <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="serverPasswordLabel">
+         <property name="text">
+          <string>Server Password (default: Moderat123):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLineEdit" name="serverPasswordLine">
+           <property name="styleSheet">
+            <string notr="true">background-color: #194759;</string>
+           </property>
+           <property name="text">
+            <string>Moderat123</string>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="showPasswordButton">
+           <property name="maximumSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#showPasswordButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding: none;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#showPasswordButton:pressed {
+            background: #0B202E;
+            color: grey;
+            border: 1px outset;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="builder-res.qrc">
+             <normaloff>:/icons/assets/show_password.png</normaloff>:/icons/assets/show_password.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="connectionTimeoutLine">
+         <property name="styleSheet">
+          <string notr="true">background-color: #194759;</string>
+         </property>
+         <property name="text">
+          <string>5</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="fakeShow">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>757</width>
+        <height>467</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Fake Show</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="page">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>757</width>
+        <height>467</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Executable's Options</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="executablesVersion">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>757</width>
+        <height>467</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Executable's Version Information</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="sourceEditor">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>757</width>
+        <height>467</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Source Editor + Obfuscating</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="builder-res.qrc"/>
+ </resources>
+ <connections/>
+</ui>

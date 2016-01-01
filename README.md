@@ -11,7 +11,7 @@ Features
 - Execute Shell Commands Remotely
 - Remote File Explorer
 - Desktop Preview
-- Password Protection
+- Server Password Protection
 - To Be Continued...
 
 Screenshots

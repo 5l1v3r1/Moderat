@@ -2,7 +2,6 @@
 
 import sys
 import socket
-import pygeoip
 import os
 import time
 import ast
@@ -13,13 +12,14 @@ import Image
 import string
 import random
 from threading import Thread
+from libs import pygeoip
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui import gui
 
-from communicator.messanger import get, send
+from libs.modechat import get, send
 
 import plugins
 

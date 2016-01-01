@@ -6,7 +6,7 @@ import subprocess
 import ctypes
 import time
 import os
-from communicator.messanger import get
+from libs.modechat import get, send
 
 class mainPopup(QWidget, Ui_Form):
 

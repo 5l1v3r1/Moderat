@@ -5,9 +5,8 @@ import socket
 
 import main_ui
 import console
-import time
 
-from communicator.messanger import get
+from libs.modechat import get
 
 class mainPopup(QWidget, main_ui.Ui_Form):
 

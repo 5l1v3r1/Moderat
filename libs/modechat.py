@@ -30,3 +30,9 @@ def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
         else:
              l = Sock.recv(1024)
     return message[:-len(end)].decode('utf-8')
+
+def upload():
+    pass
+
+def download():
+    pass

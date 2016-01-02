@@ -101,20 +101,23 @@ class mainPopup(QWidget, Ui_Form):
 
             send(self.sock, 'upload '+_file)
 
-            with open(_file, 'rb') as _f:
-                while 1:
-                    self.gui()
-                    if not self.activeProgress:
-                        break
-                    data = _f.readline()
-                    uploadedSize += len(data)
-                    if data:
-                        self.sock.send(data)
-                        self.progressBar.setValue(uploadedSize*100/fileSize)
-                        del data
-                    else:
-                        self.sock.send(end)
-                        break
+            try:
+                with open(_file, 'rb') as _f:
+                    while 1:
+                        self.gui()
+                        if not self.activeProgress:
+                            break
+                        data = _f.readline()
+                        uploadedSize += len(data)
+                        if data:
+                            self.sock.send(data)
+                            self.progressBar.setValue(uploadedSize*100/fileSize)
+                            del data
+                        else:
+                            self.sock.send(end)
+                            break
+            except IOError:
+                print 'Permision denied'
             if self.activeProgress:
                 result = self.sock.recv(1024)
                 if 'downloadDone' in result:

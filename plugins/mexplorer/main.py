@@ -20,6 +20,15 @@ class mainPopup(QWidget, Ui_Form):
         self.icon = args['icon']
         self.path = args['path']
 
+        self.gui = QApplication.processEvents
+
+        # hide progressbar
+        self.progressBar.setVisible(False)
+        self.statusLabel.setVisible(False)
+        self.cancelButton.setVisible(False)
+
+        # progress status
+        self.activeProgress = False
 
         # init icons
         self.fileIcon = os.path.join(self.path, 'assets', 'file.png')
@@ -37,6 +46,8 @@ class mainPopup(QWidget, Ui_Form):
         self.rexplorerTable.doubleClicked.connect(self.ropenFolder)
         self.lexplorerPathEntry.returnPressed.connect(self.lopenPath)
         self.rexplorerPathEntry.returnPressed.connect(self.ropenPath)
+        self.uploadButton.clicked.connect(self.upload)
+        self.cancelButton.clicked.connect(self.cancelProgress)
 
         # Initializing combobox change Event
         self.connect(self.rexplorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.rdriveChange)
@@ -45,6 +56,75 @@ class mainPopup(QWidget, Ui_Form):
 
         self.getRemoteContent()
         self.getLocalContent()
+
+    def tempBlockSignals(self, bool):
+        if bool:
+            self.rexplorerDrivesDrop.blockSignals(True)
+            self.rexplorerPathEntry.blockSignals(True)
+            self.rexplorerTable.blockSignals(True)
+            self.uploadButton.blockSignals(True)
+            self.downloadButton.blockSignals(True)
+            self.rupButton.blockSignals(True)
+            self.rrefreshButton.blockSignals(True)
+        elif not bool:
+            self.rexplorerDrivesDrop.blockSignals(False)
+            self.rexplorerPathEntry.blockSignals(False)
+            self.rexplorerTable.blockSignals(False)
+            self.uploadButton.blockSignals(False)
+            self.downloadButton.blockSignals(False)
+            self.rupButton.blockSignals(False)
+            self.rrefreshButton.blockSignals(False)
+
+    def cancelProgress(self):
+        self.activeProgress = False
+
+    def upload(self):
+        # Get folder name
+        type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
+        _file = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text())
+
+        if 'File' in type:
+
+            # Preparing for upload
+            self.progressBar.setVisible(True)
+            self.statusLabel.setVisible(True)
+            self.cancelButton.setVisible(True)
+            self.tempBlockSignals(True)
+
+            self.activeProgress = True
+
+            self.statusLabel.setText('Uploading: %s' % str(_file))
+
+            end = '[ENDOFMESSAGE]'
+            fileSize = os.path.getsize(_file)
+            uploadedSize = 0
+
+            send(self.sock, 'upload '+_file)
+
+            with open(_file, 'rb') as _f:
+                while 1:
+                    self.gui()
+                    if not self.activeProgress:
+                        break
+                    data = _f.readline()
+                    uploadedSize += len(data)
+                    if data:
+                        self.sock.send(data)
+                        self.progressBar.setValue(uploadedSize*100/fileSize)
+                        del data
+                    else:
+                        self.sock.send(end)
+                        break
+            if self.activeProgress:
+                result = self.sock.recv(1024)
+                if 'downloadDone' in result:
+                    self.getRemoteContent()
+                elif 'downloadError' in result:
+                    return False
+            self.progressBar.setVisible(False)
+            self.statusLabel.setVisible(False)
+            self.cancelButton.setVisible(False)
+            self.tempBlockSignals(False)
 
     def getLocalDrives(self):
         # Turn combo signal on

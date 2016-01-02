@@ -18,7 +18,91 @@
 color: #2ecc71;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="spacing">
+      <number>20</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="fileLabel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(155, 89, 182);</string>
+       </property>
+       <property name="text">
+        <string>File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="dirLabel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Directory</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="hfileLabel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(235, 235, 235);</string>
+       </property>
+       <property name="text">
+        <string>Hidden File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="hdirLabel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(201, 101, 101);</string>
+       </property>
+       <property name="text">
+        <string>Hidden Directory</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" colspan="3">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -672,89 +756,89 @@ border: none;
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <property name="spacing">
-      <number>20</number>
+   <item row="3" column="1">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="styleSheet">
+      <string notr="true">QProgressBar:horizontal {
+border: 1px solid #2ecc71;
+border-radius: 3px;
+background: #081621;
+padding: 1px;
+text-align: top;
+margin-right: 4ex;
+}
+QProgressBar::chunk:horizontal {
+background: #194759;
+margin-right: 1px;
+width: 5px;
+}</string>
      </property>
-     <item>
-      <widget class="QLabel" name="fileLabel">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(155, 89, 182);</string>
-       </property>
-       <property name="text">
-        <string>File</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="dirLabel">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(0, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string>Directory</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="hfileLabel">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(235, 235, 235);</string>
-       </property>
-       <property name="text">
-        <string>Hidden File</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="hdirLabel">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(201, 101, 101);</string>
-       </property>
-       <property name="text">
-        <string>Hidden Directory</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
+     <property name="textDirection">
+      <enum>QProgressBar::TopToBottom</enum>
+     </property>
+     <property name="format">
+      <string>%p%</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#cancelButton {
+            background: #194759;
+			border: 1px solid #2ecc71;
+			color: white;
+            background-color: #194759;
+            }
+
+QPushButton#cancelButton:pressed {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            }</string>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QLabel" name="statusLabel">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Status</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

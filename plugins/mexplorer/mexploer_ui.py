@@ -30,6 +30,32 @@ class Ui_Form(object):
 "color: #2ecc71;"))
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.horizontalLayout_5 = QtGui.QHBoxLayout()
+        self.horizontalLayout_5.setSpacing(20)
+        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
+        self.fileLabel = QtGui.QLabel(Form)
+        self.fileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.fileLabel.setStyleSheet(_fromUtf8("color: rgb(155, 89, 182);"))
+        self.fileLabel.setObjectName(_fromUtf8("fileLabel"))
+        self.horizontalLayout_5.addWidget(self.fileLabel)
+        self.dirLabel = QtGui.QLabel(Form)
+        self.dirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.dirLabel.setStyleSheet(_fromUtf8("color: rgb(0, 255, 255);"))
+        self.dirLabel.setObjectName(_fromUtf8("dirLabel"))
+        self.horizontalLayout_5.addWidget(self.dirLabel)
+        self.hfileLabel = QtGui.QLabel(Form)
+        self.hfileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.hfileLabel.setStyleSheet(_fromUtf8("color: rgb(235, 235, 235);"))
+        self.hfileLabel.setObjectName(_fromUtf8("hfileLabel"))
+        self.horizontalLayout_5.addWidget(self.hfileLabel)
+        self.hdirLabel = QtGui.QLabel(Form)
+        self.hdirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.hdirLabel.setStyleSheet(_fromUtf8("color: rgb(201, 101, 101);"))
+        self.hdirLabel.setObjectName(_fromUtf8("hdirLabel"))
+        self.horizontalLayout_5.addWidget(self.hdirLabel)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem)
+        self.gridLayout.addLayout(self.horizontalLayout_5, 1, 0, 1, 3)
         self.splitter = QtGui.QSplitter(Form)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
@@ -98,8 +124,8 @@ class Ui_Form(object):
         self.lupButton.setIcon(icon1)
         self.lupButton.setObjectName(_fromUtf8("lupButton"))
         self.horizontalLayout.addWidget(self.lupButton)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
         self.uploadButton = QtGui.QPushButton(self.layoutWidget)
         self.uploadButton.setMinimumSize(QtCore.QSize(80, 32))
         self.uploadButton.setMaximumSize(QtCore.QSize(80, 32))
@@ -230,8 +256,8 @@ class Ui_Form(object):
         self.downloadButton.setIcon(icon3)
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.horizontalLayout_2.addWidget(self.downloadButton)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem2)
         self.rexplorerDrivesDrop = QtGui.QComboBox(self.layoutWidget1)
         self.rexplorerDrivesDrop.setMinimumSize(QtCore.QSize(50, 32))
         self.rexplorerDrivesDrop.setMaximumSize(QtCore.QSize(50, 32))
@@ -362,39 +388,64 @@ class Ui_Form(object):
         self.rexplorerTable.verticalHeader().setVisible(False)
         self.rexplorerTable.verticalHeader().setCascadingSectionResizes(False)
         self.verticalLayout.addWidget(self.rexplorerTable)
-        self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setSpacing(20)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.fileLabel = QtGui.QLabel(Form)
-        self.fileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.fileLabel.setStyleSheet(_fromUtf8("color: rgb(155, 89, 182);"))
-        self.fileLabel.setObjectName(_fromUtf8("fileLabel"))
-        self.horizontalLayout_5.addWidget(self.fileLabel)
-        self.dirLabel = QtGui.QLabel(Form)
-        self.dirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.dirLabel.setStyleSheet(_fromUtf8("color: rgb(0, 255, 255);"))
-        self.dirLabel.setObjectName(_fromUtf8("dirLabel"))
-        self.horizontalLayout_5.addWidget(self.dirLabel)
-        self.hfileLabel = QtGui.QLabel(Form)
-        self.hfileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.hfileLabel.setStyleSheet(_fromUtf8("color: rgb(235, 235, 235);"))
-        self.hfileLabel.setObjectName(_fromUtf8("hfileLabel"))
-        self.horizontalLayout_5.addWidget(self.hfileLabel)
-        self.hdirLabel = QtGui.QLabel(Form)
-        self.hdirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.hdirLabel.setStyleSheet(_fromUtf8("color: rgb(201, 101, 101);"))
-        self.hdirLabel.setObjectName(_fromUtf8("hdirLabel"))
-        self.horizontalLayout_5.addWidget(self.hdirLabel)
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem2)
-        self.gridLayout.addLayout(self.horizontalLayout_5, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.splitter, 0, 0, 1, 3)
+        self.progressBar = QtGui.QProgressBar(Form)
+        self.progressBar.setStyleSheet(_fromUtf8("QProgressBar:horizontal {\n"
+"border: 1px solid #2ecc71;\n"
+"border-radius: 3px;\n"
+"background: #081621;\n"
+"padding: 1px;\n"
+"text-align: top;\n"
+"margin-right: 4ex;\n"
+"}\n"
+"QProgressBar::chunk:horizontal {\n"
+"background: #194759;\n"
+"margin-right: 1px;\n"
+"width: 5px;\n"
+"}"))
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setOrientation(QtCore.Qt.Horizontal)
+        self.progressBar.setInvertedAppearance(False)
+        self.progressBar.setTextDirection(QtGui.QProgressBar.TopToBottom)
+        self.progressBar.setObjectName(_fromUtf8("progressBar"))
+        self.gridLayout.addWidget(self.progressBar, 3, 1, 1, 1)
+        self.cancelButton = QtGui.QPushButton(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.cancelButton.sizePolicy().hasHeightForWidth())
+        self.cancelButton.setSizePolicy(sizePolicy)
+        self.cancelButton.setMinimumSize(QtCore.QSize(70, 25))
+        self.cancelButton.setStyleSheet(_fromUtf8("QPushButton#cancelButton {\n"
+"            background: #194759;\n"
+"            border: 1px solid #2ecc71;\n"
+"            color: white;\n"
+"            background-color: #194759;\n"
+"            }\n"
+"\n"
+"QPushButton#cancelButton:pressed {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
+"            }"))
+        self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
+        self.gridLayout.addWidget(self.cancelButton, 3, 2, 1, 1)
+        self.statusLabel = QtGui.QLabel(Form)
+        self.statusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.statusLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
+        self.gridLayout.addWidget(self.statusLabel, 2, 1, 1, 2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
+        self.fileLabel.setText(_translate("Form", "File", None))
+        self.dirLabel.setText(_translate("Form", "Directory", None))
+        self.hfileLabel.setText(_translate("Form", "Hidden File", None))
+        self.hdirLabel.setText(_translate("Form", "Hidden Directory", None))
         self.uploadButton.setText(_translate("Form", "upload", None))
         self.localLabel.setText(_translate("Form", "LOCAL:\\", None))
         self.lexplorerTable.setSortingEnabled(False)
@@ -417,9 +468,8 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Date Modified", None))
         item = self.rexplorerTable.horizontalHeaderItem(3)
         item.setText(_translate("Form", "Size", None))
-        self.fileLabel.setText(_translate("Form", "File", None))
-        self.dirLabel.setText(_translate("Form", "Directory", None))
-        self.hfileLabel.setText(_translate("Form", "Hidden File", None))
-        self.hdirLabel.setText(_translate("Form", "Hidden Directory", None))
+        self.progressBar.setFormat(_translate("Form", "%p%", None))
+        self.cancelButton.setText(_translate("Form", "Cancel", None))
+        self.statusLabel.setText(_translate("Form", "Status", None))
 
 import res_rc

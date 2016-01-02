@@ -1,7 +1,5 @@
 import socket
 import sys
-import os
-
 
 # send socket
 def send(Sock, cmd, mode='example', splitter='%:::%', end='[ENDOFMESSAGE]'):
@@ -31,28 +29,3 @@ def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
         else:
              l = Sock.recv(1024)
     return message[:-len(end)].decode('utf-8')
-
-
-def upload(Sock, _file, splitter='%:::%', end='[ENDOFMESSAGE]'):
-    fileSize = os.path.getsize(_file)
-    uploadedSize = 0
-    send(Sock, 'upload '+_file)
-    with open(_file, 'rb') as _f:
-        while 1:
-            data = _f.readline()
-            uploadedSize += len(data)
-            if data:
-                Sock.send(data)
-            else:
-                Sock.send(end)
-                break
-    result = Sock.recv(1024)
-    print str(fileSize) + ' == ' + str(uploadedSize)
-    if 'downloadDone' in result:
-        return True
-    elif 'downloadError' in result:
-        return False
-
-
-def download():
-    pass

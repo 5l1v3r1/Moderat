@@ -5,6 +5,7 @@ import ast
 import subprocess
 import ctypes
 import time
+import socket
 import os
 from libs.modechat import get, send
 
@@ -47,6 +48,7 @@ class mainPopup(QWidget, Ui_Form):
         self.lexplorerPathEntry.returnPressed.connect(self.lopenPath)
         self.rexplorerPathEntry.returnPressed.connect(self.ropenPath)
         self.uploadButton.clicked.connect(self.upload)
+        self.downloadButton.clicked.connect(self.download)
         self.cancelButton.clicked.connect(self.cancelProgress)
 
         # Initializing combobox change Event
@@ -78,56 +80,113 @@ class mainPopup(QWidget, Ui_Form):
     def cancelProgress(self):
         self.activeProgress = False
 
+    def download(self):
+        # Get file name
+        try:
+            type = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 0).text())
+            _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
+
+            if 'File' in type:
+
+                # Preparing for upload
+                self.progressBar.setVisible(True)
+                self.statusLabel.setVisible(True)
+                self.cancelButton.setVisible(True)
+                self.tempBlockSignals(True)
+
+                self.activeProgress = True
+
+                self.statusLabel.setText('Downloading: %s' % str(_file))
+
+                end = '[ENDOFMESSAGE]'
+                data = ''
+
+                send(self.sock, 'download '+_file)
+                try:
+                    recv = str(self.sock.recv(1024))
+                    if recv.isdigit():
+                        fileSize = int(recv)
+                        self.sock.sendall('ok')
+
+                        l = self.sock.recv(1024)
+                        while l:
+                            self.gui()
+                            data += l
+                            self.progressBar.setValue(len(data)*100/fileSize)
+                            if data.endswith(end):
+                                break
+                            if not self.activeProgress:
+                                raise socket.error
+                            else:
+                                l = self.sock.recv(1024)
+                        with open(_file, 'wb') as _f:
+                            _f.write(data)
+                except socket.error:
+                    print 'socket error'
+                finally:
+                    self.getLocalContent()
+                    self.progressBar.setVisible(False)
+                    self.statusLabel.setVisible(False)
+                    self.cancelButton.setVisible(False)
+                    self.tempBlockSignals(False)
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn.exec_()
+
     def upload(self):
-        # Get folder name
-        type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
-        _file = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text())
+        try:
+            # Get file name
+            type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
+            _file = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text())
 
-        if 'File' in type:
+            if 'File' in type:
 
-            # Preparing for upload
-            self.progressBar.setVisible(True)
-            self.statusLabel.setVisible(True)
-            self.cancelButton.setVisible(True)
-            self.tempBlockSignals(True)
+                # Preparing for upload
+                self.progressBar.setVisible(True)
+                self.statusLabel.setVisible(True)
+                self.cancelButton.setVisible(True)
+                self.tempBlockSignals(True)
 
-            self.activeProgress = True
+                self.activeProgress = True
 
-            self.statusLabel.setText('Uploading: %s' % str(_file))
+                self.statusLabel.setText('Uploading: %s' % str(_file))
 
-            end = '[ENDOFMESSAGE]'
-            fileSize = os.path.getsize(_file)
-            uploadedSize = 0
+                end = '[ENDOFMESSAGE]'
+                fileSize = os.path.getsize(_file)
+                uploadedSize = 0
 
-            send(self.sock, 'upload '+_file)
+                send(self.sock, 'upload '+_file)
 
-            try:
-                with open(_file, 'rb') as _f:
-                    while 1:
-                        self.gui()
-                        if not self.activeProgress:
-                            break
-                        data = _f.readline()
-                        uploadedSize += len(data)
-                        if data:
-                            self.sock.send(data)
-                            self.progressBar.setValue(uploadedSize*100/fileSize)
-                            del data
-                        else:
-                            self.sock.send(end)
-                            break
-            except IOError:
-                print 'Permision denied'
-            if self.activeProgress:
-                result = self.sock.recv(1024)
-                if 'downloadDone' in result:
-                    self.getRemoteContent()
-                elif 'downloadError' in result:
-                    return False
-            self.progressBar.setVisible(False)
-            self.statusLabel.setVisible(False)
-            self.cancelButton.setVisible(False)
-            self.tempBlockSignals(False)
+                try:
+                    with open(_file, 'rb') as _f:
+                        while 1:
+                            self.gui()
+                            if not self.activeProgress:
+                                break
+                            data = _f.readline()
+                            uploadedSize += len(data)
+                            if data:
+                                self.sock.send(data)
+                                self.progressBar.setValue(uploadedSize*100/fileSize)
+                                del data
+                            else:
+                                self.sock.send(end)
+                                break
+                except IOError:
+                    print 'Permision denied'
+                if self.activeProgress:
+                    result = self.sock.recv(1024)
+                    if 'downloadDone' in result:
+                        self.getRemoteContent()
+                    elif 'downloadError' in result:
+                        return False
+                self.progressBar.setVisible(False)
+                self.statusLabel.setVisible(False)
+                self.cancelButton.setVisible(False)
+                self.tempBlockSignals(False)
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn.exec_()
 
     def getLocalDrives(self):
         # Turn combo signal on

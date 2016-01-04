@@ -1,2 +1,2 @@
-PyQt4
-pillow
+PyQt4==4.11.4
+PIL==1.1.7

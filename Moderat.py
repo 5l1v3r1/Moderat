@@ -148,6 +148,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if not self.acceptthreadState:
                 return
             if self.sock:
+
                 if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'parent':
 
                     data = get(self.sock, 'info', 'pcinfo')

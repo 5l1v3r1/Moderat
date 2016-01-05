@@ -1,11 +1,11 @@
 # Moderat
 Fun Made Windows Remote Administration Tool in Python + GUI
 
-Requirements
+# Requirements
 - Windows (x86, x64)
-- Python 2.7
-- PyQt4
-- PIL
+- [Python 2.7]
+- [PyQt4]
+- [PIL]
 
 # Features
 
@@ -35,7 +35,8 @@ Requirements
 
 ### To Be Continued...
 
-Screenshots
+# Screenshots
+
 ![Moderat Connections](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/connections.png?raw=true)
 ![Moderat Explorer](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/explorer.PNG?raw=true)
 ![Moderat Shell](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/shell.PNG?raw=true)

@@ -92,18 +92,29 @@ class mainPopup(QWidget, Ui_Form):
             # File commands
             if 'File' in _type:
                 self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'download.png')), 'Download', self.download)
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.executeFile)
 
             # Folder commands
             elif 'Folder' in _type:
-                pass
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'open.png')), 'Open Folder', self.openFolder)
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.executeFolder)
 
             # Global commands
-            self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'delete.png')), 'Remove', self.rRemove)
+            self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'remove.png')), 'Remove', self.rRemove)
 
             self.erMenu.exec_(self.rexplorerTable.mapToGlobal(point))
 
         except AttributeError:
             pass
+
+    def executeFile(self):
+        pass
+
+    def openFolder(self):
+        pass
+
+    def executeFolder(self):
+        pass
 
     def lRemove(self):
         pass

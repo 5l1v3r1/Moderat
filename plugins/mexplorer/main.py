@@ -142,7 +142,7 @@ class mainPopup(QWidget, Ui_Form):
                 result = self.Exec('del /Q %s' % _file)
             elif 'Folder' in _type:
                 result = self.Exec('rmdir /S /Q %s' % _file)
-            self.getRemoteContent()
+            self.getLocalContent()
         else:
             return
 

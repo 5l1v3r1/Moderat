@@ -7,17 +7,17 @@ Requirements
 - PyQt4
 - PIL
 
-Features
-- Server Password Protection
-- Desktop Preview
-- Execute Shell Commands Remotely
-** Interactive Shell
-- Remote File Explorer
-** File Upload
-** File Download
-** Execute File Remotely
-** Hidden File Attribute
-- To Be Continued...
+### Features
+**Server Password Protection**
+**Desktop Preview**
+**Execute Shell Commands Remotely**
+* Interactive Shell
+**Remote File Explorer**
+* File Upload
+* File Download
+* Execute File Remotely
+* Hidden File Attribute
+**To Be Continued...**
 
 Screenshots
 ![Moderat Connections](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/connections.png?raw=true)

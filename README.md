@@ -11,12 +11,12 @@ Features
 - Server Password Protection
 - Desktop Preview
 - Execute Shell Commands Remotely
-* Interactive Shell
+** Interactive Shell
 - Remote File Explorer
-* File Upload
-* File Download
-* Execute File Remotely
-* Hidden File Attribute
+** File Upload
+** File Download
+** Execute File Remotely
+** Hidden File Attribute
 - To Be Continued...
 
 Screenshots

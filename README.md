@@ -8,10 +8,15 @@ Requirements
 - PIL
 
 Features
-- Execute Shell Commands Remotely
-- Remote File Explorer
-- Desktop Preview
 - Server Password Protection
+- Desktop Preview
+- Execute Shell Commands Remotely
+-- Interactive Shell
+- Remote File Explorer
+-- File Upload
+-- File Download
+-- Execute File Remotely
+-- Hidden File Attribute
 - To Be Continued...
 
 Screenshots

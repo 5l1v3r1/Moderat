@@ -92,14 +92,20 @@ class mainPopup(QWidget, Ui_Form):
             # File commands
             if 'File' in _type:
                 self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'download.png')), 'Download', self.download)
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.executeFile)
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.rexecuteFile)
 
             # Folder commands
             elif 'Folder' in _type:
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'open.png')), 'Open Folder', self.openFolder)
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.executeFolder)
+                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'open.png')), 'Open Folder', self.ropenFolder)
 
             # Global commands
+            self.hiddenMenu = QMenu(self.erMenu)
+            self.hiddenMenu.setTitle('Hidden attribute')
+            self.hiddenMenu.setIcon(QIcon(os.path.join(self.path, 'assets', 'hidden.png')))
+            self.erMenu.addMenu(self.hiddenMenu)
+            self.hiddenMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'hidden.png')), 'Hide', self.rHide)
+            self.hiddenMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'unhide.png')), 'Unhide', self.rUnhide)
+            self.erMenu.addSeparator()
             self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'remove.png')), 'Remove', self.rRemove)
 
             self.erMenu.exec_(self.rexplorerTable.mapToGlobal(point))
@@ -107,17 +113,38 @@ class mainPopup(QWidget, Ui_Form):
         except AttributeError:
             pass
 
-    def executeFile(self):
-        pass
+    def rUnhide(self):
+        _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
+        get(self.sock, 'attrib -h -s {}'.format(_file), 'hide')
+        self.getRemoteContent()
 
-    def openFolder(self):
-        pass
+    def rHide(self):
+        _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
+        get(self.sock, 'attrib +h +s {}'.format(_file), 'unhide')
+        self.getRemoteContent()
 
-    def executeFolder(self):
-        pass
+
+    def rexecuteFile(self):
+        _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
+        data = get(self.sock, 'start /d %CD% {}'.format(_file), 'execute')
+
+    def ropenFolder(self):
+        self.ropenFolder()
 
     def lRemove(self):
-        pass
+        _type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
+        _file = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text())
+        warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to delete?')
+        warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        ans = warn.exec_()
+        if ans == QMessageBox.Yes:
+            if 'File' in _type:
+                result = self.Exec('del /Q %s' % _file)
+            elif 'Folder' in _type:
+                result = self.Exec('rmdir /S /Q %s' % _file)
+            self.getRemoteContent()
+        else:
+            return
 
     def rRemove(self):
         try:

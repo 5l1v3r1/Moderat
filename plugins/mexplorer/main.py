@@ -67,11 +67,11 @@ class mainPopup(QWidget, Ui_Form):
             self.elMenu = QMenu(self)
 
             # File commands
-            if 'File' in _type:
+            if '<FILE>' in _type:
                 self.elMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'upload.png')), 'Upload', self.upload)
 
             # Folder commands
-            elif 'Folder' in _type:
+            elif '<DIR>' in _type:
                 pass
 
             # Global commands
@@ -88,12 +88,12 @@ class mainPopup(QWidget, Ui_Form):
             self.erMenu = QMenu(self)
 
             # File commands
-            if 'File' in _type:
+            if '<FILE>' in _type:
                 self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'download.png')), 'Download', self.download)
                 self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.rexecuteFile)
 
             # Folder commands
-            elif 'Folder' in _type:
+            elif '<DIR>' in _type:
                 self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'open.png')), 'Open Folder', self.ropenFolder)
 
             # Global commands
@@ -136,9 +136,9 @@ class mainPopup(QWidget, Ui_Form):
         warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         ans = warn.exec_()
         if ans == QMessageBox.Yes:
-            if 'File' in _type:
+            if '<FILE>' in _type:
                 result = self.Exec('del /Q %s' % _file)
-            elif 'Folder' in _type:
+            elif '<DIR>' in _type:
                 result = self.Exec('rmdir /S /Q %s' % _file)
             self.getLocalContent()
         else:
@@ -153,9 +153,9 @@ class mainPopup(QWidget, Ui_Form):
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
-                if 'File' in _type:
+                if '<FILE>' in _type:
                     result = get(self.sock, 'del /Q %s' % _file, 'remove')
-                elif 'Folder' in _type:
+                elif '<DIR>' in _type:
                     result = get(self.sock, 'rmdir /S /Q %s' % _file, 'remove')
                 self.getRemoteContent()
             else:
@@ -191,7 +191,7 @@ class mainPopup(QWidget, Ui_Form):
             type = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 0).text())
             _file = str(self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text())
 
-            if 'File' in type:
+            if '<FILE>' in type:
 
                 # Preparing for upload
                 self.progressBar.setVisible(True)
@@ -244,7 +244,7 @@ class mainPopup(QWidget, Ui_Form):
             type = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text())
             _file = str(self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text())
 
-            if 'File' in type:
+            if '<FILE>' in type:
 
                 # Preparing for upload
                 self.progressBar.setVisible(True)
@@ -336,7 +336,7 @@ class mainPopup(QWidget, Ui_Form):
         type = self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 0).text()
         name = self.lexplorerTable.item(self.lexplorerTable.currentItem().row(), 1).text()
 
-        if 'Folder' in type:
+        if '<DIR>' in type:
             # Choose new folder
             try:
                 os.chdir(str(name))
@@ -430,23 +430,24 @@ class mainPopup(QWidget, Ui_Form):
                 folderColor = QColor(0, 255, 255)
 
             # set content type
-            item = QTableWidgetItem('File') if content[i]['type'] else QTableWidgetItem('Folder')
+            item = QTableWidgetItem('<FILE>') if content[i]['type'] else QTableWidgetItem('<DIR>')
             if content[i]['type']:
                 item.setTextColor(fileColor)
-                item.setIcon(QIcon(QPixmap(self.fileIcon)))
-                item.setSizeHint(QSize(100, 30))
+                item.setSizeHint(QSize(50, 30))
             else:
                 item.setTextColor(folderColor)
-                item.setIcon(QIcon(QPixmap(self.folderIcon)))
-                item.setSizeHint(QSize(100, 30))
+                item.setSizeHint(QSize(50, 30))
+            item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.lexplorerTable.setItem(n, 0, item)
 
             # set content name
             item = QTableWidgetItem(content[i]['name'])
             if content[i]['type']:
                 item.setTextColor(fileColor)
+                item.setIcon(QIcon(QPixmap(self.fileIcon)))
             else:
                 item.setTextColor(folderColor)
+                item.setIcon(QIcon(QPixmap(self.folderIcon)))
             self.lexplorerTable.setItem(n, 1, item)
 
             # set content modified date
@@ -525,23 +526,24 @@ class mainPopup(QWidget, Ui_Form):
                 folderColor = QColor(0, 255, 255)
 
             # set content type
-            item = QTableWidgetItem('File') if content[i]['type'] else QTableWidgetItem('Folder')
+            item = QTableWidgetItem('<FILE>') if content[i]['type'] else QTableWidgetItem('<DIR>')
             if content[i]['type']:
                 item.setTextColor(fileColor)
-                item.setIcon(QIcon(QPixmap(self.fileIcon)))
-                item.setSizeHint(QSize(100, 30))
+                item.setSizeHint(QSize(50, 30))
             else:
                 item.setTextColor(folderColor)
-                item.setIcon(QIcon(QPixmap(self.folderIcon)))
-                item.setSizeHint(QSize(100, 30))
+                item.setSizeHint(QSize(50, 30))
+            item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.rexplorerTable.setItem(n, 0, item)
 
             # set content name
             item = QTableWidgetItem(content[i]['name'])
             if content[i]['type']:
                 item.setTextColor(fileColor)
+                item.setIcon(QIcon(QPixmap(self.fileIcon)))
             else:
                 item.setTextColor(folderColor)
+                item.setIcon(QIcon(QPixmap(self.folderIcon)))
             self.rexplorerTable.setItem(n, 1, item)
 
             # set content modified date
@@ -581,7 +583,7 @@ class mainPopup(QWidget, Ui_Form):
         type = self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 0).text()
         name = self.rexplorerTable.item(self.rexplorerTable.currentItem().row(), 1).text()
 
-        if 'Folder' in type:
+        if '<DIR>' in type:
 
             # Choose new folder
             get(self.sock, 'cd %s' % name, 'choosefolder')

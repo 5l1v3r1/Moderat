@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>255</width>
+    <height>41</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>255</width>
+    <height>41</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>255</width>
+    <height>41</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Audio Streaming</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #0F2D40;</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="listenButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#listenButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#listenButton:pressed {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            }</string>
+     </property>
+     <property name="text">
+      <string>Listen</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPushButton" name="recordButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#recordButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#recordButton:pressed {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            }</string>
+     </property>
+     <property name="text">
+      <string>Record</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="stopButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#stopButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#stopButton:pressed {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            }</string>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

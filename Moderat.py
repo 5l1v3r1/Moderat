@@ -149,7 +149,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 return
             if self.sock:
 
-                if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'parent':
+                data = get(self.sock, 'CHECK SOCKET STATUS', 'status')
+
+                if data == 'parent':
 
                     data = get(self.sock, 'info', 'pcinfo')
                     info = ast.literal_eval(data)
@@ -170,23 +172,19 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.socks[socketIndex]['version'] = info['version']
                     self.socks[socketIndex]['activewindowtitle'] = info['activewindowtitle']
 
-                    data = get(self.sock, 'startChildSocket', 'socket')
-                    if bool(data):
-                        while 1:
-                            self.sock, self.address = self.c.accept()
-                            if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'child':
-                                data = get(self.sock, 'pcinfo', 'info')
-                                info = ast.literal_eval(data)
+                    data = get(self.sock, 'startChildSocket %s' % socketIndex, 'streamingMode')
 
-                                self.streaming_socks[self.socks[socketIndex]['socket']] = {}
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['sock'] = self.sock
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['protection'] = info[
-                                    'protection']
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['activewindowtitle'] = info[
-                                    'activewindowtitle']
-                                self.emit(SIGNAL('updateTable()'))
+                elif self.socks.has_key(int(data)):
+                    i = int(data)
 
-                                break
+                    data = get(self.sock, 'pcinfo', 'info')
+                    info = ast.literal_eval(data)
+
+                    self.streaming_socks[i] = {}
+                    self.streaming_socks[i]['sock'] = self.sock
+                    self.streaming_socks[i]['protection'] = info['protection']
+                    self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
+                    self.emit(SIGNAL('updateTable()'))
 
     # Servers Live Update
     def checkServers(self):

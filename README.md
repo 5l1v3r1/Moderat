@@ -1,18 +1,19 @@
-## Moderat
+## ModeRat
 Fun Made Windows Remote Administration Tool in Python + GUI
 
 ## Requirements
 - Windows (x86, x64)
-- [Python 2.7]
-- [PyQt4]
-- [PIL]
+- Python 2.7
+- PyQt4
+- PIL
+- PyAudio
 
 ## Features
 ---
 * Server Password Protection
 * Desktop Preview
 * Active Window Title Preview
-* Live Updates
+* Servers Live Updates
 
 ### Execute Shell Commands Remotely
 * Interactive Shell
@@ -22,6 +23,10 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 * File Download
 * Execute File Remotely
 * Hidden File Attribute
+
+### Remote Microphone
+* Listen Remote Microphone
+* Record to *.wav Sound File
 
 ### To Be Continued...
 

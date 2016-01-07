@@ -24,8 +24,6 @@ from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 
-import plugins
-
 
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -45,7 +43,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.acceptthreadState = False
 
         # plugins bank
-        self.plugins = plugins.__plugins__
         self.pluginsBank = {}
 
         # initial geo ip database
@@ -436,17 +433,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.pluginsBank[tmpid].show()
 
     def signalAudio(self, sock):
-        print 'signalAudio'
         self.current_sock = sock
         self.emit(SIGNAL('executeAudio()'))
 
     def runAudio(self):
-        print 'runAudio'
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
 
     def executeAudio(self):
-        print 'executeAudio'
         args = {}
         args['sock'] = self.current_sock
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
@@ -472,22 +466,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         args['ipAddress'] = self.socks[sockind]['ip_address']
         tmpid = self.id_generator()
         self.pluginsBank[tmpid] = mshell.mainPopup(args=args)
-        self.pluginsBank[tmpid].show()
-
-    # Run Plugin
-    def runPlugin(self, plugin):
-        args = {}
-        exec 'from plugins.%s.main import mainPopup' % plugin
-
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        args['sock'] = self.socks[sockind]['sock']
-        args['socket'] = self.socks[sockind]['socket']
-        args['ipAddress'] = self.socks[sockind]['ip_address']
-        args['icon'] = self.plugins[plugin]['icon']
-        args['path'] = self.plugins[plugin]['path']
-
-        tmpid = self.id_generator()
-        self.pluginsBank[tmpid] = mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 
     def closeEvent(self, event):

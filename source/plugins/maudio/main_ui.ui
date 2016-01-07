@@ -58,6 +58,10 @@ QPushButton#listenButton:pressed {
      <property name="text">
       <string>Listen</string>
      </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/play.png</normaloff>:/icon/assets/play.png</iconset>
+     </property>
     </widget>
    </item>
    <item row="0" column="1">
@@ -88,6 +92,10 @@ QPushButton#recordButton:pressed {
      </property>
      <property name="text">
       <string>Record</string>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/record.png</normaloff>:/icon/assets/record.png</iconset>
      </property>
     </widget>
    </item>
@@ -120,10 +128,16 @@ QPushButton#stopButton:pressed {
      <property name="text">
       <string>Stop</string>
      </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/stop.png</normaloff>:/icon/assets/stop.png</iconset>
+     </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -256,7 +256,6 @@ class childSocket(threading.Thread):
                 elif data.startswith('getDefaultInputDeviceName'):
                     stdoutput = getDefaultInputDevice()
                 elif data.startswith('startAudio'):
-                    print int(data.split(' ')[-1])
                     try:
                         audioThread = audioStreaming(self.socket, int(data.split(' ')[-1]))
                         audioThread.start()

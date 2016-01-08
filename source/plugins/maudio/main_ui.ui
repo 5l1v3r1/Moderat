@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>383</height>
+    <height>124</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -139,6 +139,13 @@ QPushButton#stopButton:pressed {
      </item>
     </layout>
    </item>
+   <item row="2" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="1">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
@@ -151,16 +158,6 @@ QPushButton#stopButton:pressed {
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QLabel" name="previewLabel">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
    </item>
    <item row="0" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -221,6 +218,60 @@ QPushButton#stopButton:pressed {
          <string>44100</string>
         </property>
        </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="volumeLabel">
+       <property name="text">
+        <string>Volume:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="volumeProgress">
+       <property name="styleSheet">
+        <string notr="true">QProgressBar:horizontal {
+border: 1px solid #0F2D40;
+border-radius: 3px;
+background: #0F2D40;
+padding: 1px;
+text-align: top;
+margin-right: 4ex;
+}
+QProgressBar::chunk:horizontal {
+background: #2ecc71;
+margin-right: 1px;
+width: 5px;
+}</string>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+       <property name="value">
+        <number>50</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="invertedAppearance">
+        <bool>false</bool>
+       </property>
+       <property name="textDirection">
+        <enum>QProgressBar::TopToBottom</enum>
+       </property>
+       <property name="format">
+        <string>Volume</string>
+       </property>
       </widget>
      </item>
     </layout>

@@ -4,8 +4,7 @@ from PyQt4.QtCore import *
 import pyaudio
 import socket
 import threading
-import time
-import os
+from array import array
 
 from main_ui import Ui_Form
 
@@ -25,6 +24,12 @@ class mainPopup(QWidget, Ui_Form):
 
         self.recordButton.setDisabled(True)
         self.stopButton.setDisabled(True)
+
+        # Create a QTimer
+        self.timer = QTimer()
+        self.timer.setSingleShot(False)
+        self.timer.timeout.connect(self.setVolume)
+        self.timer.start(10)
 
         self.defaultInputDeviceNameLabel.setText(get(self.sock, 'getDefaultInputDeviceName', 'getname'))
 
@@ -70,6 +75,16 @@ class mainPopup(QWidget, Ui_Form):
             self.recordButton.setDisabled(True)
             self.stopButton.setDisabled(True)
 
+    def setVolume(self):
+        try:
+            print 'setting volume'
+            self.volume = self.audio.volume
+            print 'value %s' % str(self.volume)
+            self.volumeProgress.setValue(int(self.volume))
+        except AttributeError:
+            print 'error attr'
+            pass
+
     def closeEvent(self, event):
         self.stopListen()
 
@@ -80,6 +95,7 @@ class listenAudio(threading.Thread):
         self.sock = sock
         self.active = True
         self.rate = rate
+        self.volume = 0
 
         # Pyaudio Initialization
         self.chunk = 1024
@@ -91,8 +107,10 @@ class listenAudio(threading.Thread):
         while self.active:
             try:
                 chunk = self.sock.recv(1024)
+                sound_data = array('h', chunk)
+                self.volume = max(sound_data)
                 self.stream.write(chunk)
-            except socket.error:
+            except (socket.error, ValueError):
                 break
         self.stream.close()
         self.p.terminate()

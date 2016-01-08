@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(599, 383)
+        Form.resize(599, 124)
         Form.setMinimumSize(QtCore.QSize(255, 41))
         Form.setMaximumSize(QtCore.QSize(800, 600))
         Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
@@ -104,13 +104,13 @@ class Ui_Form(object):
         self.stopButton.setObjectName(_fromUtf8("stopButton"))
         self.horizontalLayout_2.addWidget(self.stopButton)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
+        self.line = QtGui.QFrame(Form)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.gridLayout.addWidget(self.line, 2, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 1, 1, 1)
-        self.previewLabel = QtGui.QLabel(Form)
-        self.previewLabel.setText(_fromUtf8(""))
-        self.previewLabel.setScaledContents(True)
-        self.previewLabel.setObjectName(_fromUtf8("previewLabel"))
-        self.gridLayout.addWidget(self.previewLabel, 2, 0, 1, 2)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.defaultInputDeviceLavel = QtGui.QLabel(Form)
@@ -134,6 +134,35 @@ class Ui_Form(object):
         self.rateDrop.addItem(_fromUtf8(""))
         self.horizontalLayout.addWidget(self.rateDrop)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 2)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.volumeLabel = QtGui.QLabel(Form)
+        self.volumeLabel.setObjectName(_fromUtf8("volumeLabel"))
+        self.horizontalLayout_3.addWidget(self.volumeLabel)
+        self.volumeProgress = QtGui.QProgressBar(Form)
+        self.volumeProgress.setStyleSheet(_fromUtf8("QProgressBar:horizontal {\n"
+"border: 1px solid #0F2D40;\n"
+"border-radius: 3px;\n"
+"background: #0F2D40;\n"
+"padding: 1px;\n"
+"text-align: top;\n"
+"margin-right: 4ex;\n"
+"}\n"
+"QProgressBar::chunk:horizontal {\n"
+"background: #2ecc71;\n"
+"margin-right: 1px;\n"
+"width: 5px;\n"
+"}"))
+        self.volumeProgress.setMaximum(10000)
+        self.volumeProgress.setProperty("value", 50)
+        self.volumeProgress.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignHCenter)
+        self.volumeProgress.setTextVisible(False)
+        self.volumeProgress.setOrientation(QtCore.Qt.Horizontal)
+        self.volumeProgress.setInvertedAppearance(False)
+        self.volumeProgress.setTextDirection(QtGui.QProgressBar.TopToBottom)
+        self.volumeProgress.setObjectName(_fromUtf8("volumeProgress"))
+        self.horizontalLayout_3.addWidget(self.volumeProgress)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 3, 0, 1, 2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -148,5 +177,7 @@ class Ui_Form(object):
         self.rateDrop.setItemText(0, _translate("Form", "5120", None))
         self.rateDrop.setItemText(1, _translate("Form", "10240", None))
         self.rateDrop.setItemText(2, _translate("Form", "44100", None))
+        self.volumeLabel.setText(_translate("Form", "Volume:", None))
+        self.volumeProgress.setFormat(_translate("Form", "Volume", None))
 
 import res_rc

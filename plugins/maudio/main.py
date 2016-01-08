@@ -25,12 +25,6 @@ class mainPopup(QWidget, Ui_Form):
         self.recordButton.setDisabled(True)
         self.stopButton.setDisabled(True)
 
-        # Create a QTimer
-        self.timer = QTimer()
-        self.timer.setSingleShot(False)
-        self.timer.timeout.connect(self.setVolume)
-        self.timer.start(10)
-
         self.defaultInputDeviceNameLabel.setText(get(self.sock, 'getDefaultInputDeviceName', 'getname'))
 
         self.listenButton.clicked.connect(self.startListen)
@@ -42,6 +36,8 @@ class mainPopup(QWidget, Ui_Form):
             self.audio.active = False
         except AttributeError:
             pass
+
+        self.stopVolume()
 
         # Flush Buffer
         self.listenButton.setDisabled(True)
@@ -67,6 +63,7 @@ class mainPopup(QWidget, Ui_Form):
         if data == 'audioStarted':
             self.audio = listenAudio(self.sock, int(self.rate))
             self.audio.start()
+            self.startVolume()
             self.listenButton.setDisabled(True)
             self.recordButton.setDisabled(False)
             self.stopButton.setDisabled(False)
@@ -75,14 +72,21 @@ class mainPopup(QWidget, Ui_Form):
             self.recordButton.setDisabled(True)
             self.stopButton.setDisabled(True)
 
+    def startVolume(self):
+        # Create a QTimer
+        self.timer = QTimer()
+        self.timer.setSingleShot(False)
+        self.timer.timeout.connect(self.setVolume)
+        self.timer.start(10)
+
+    def stopVolume(self):
+        self.timer.stop()
+
     def setVolume(self):
         try:
-            print 'setting volume'
             self.volume = self.audio.volume
-            print 'value %s' % str(self.volume)
             self.volumeProgress.setValue(int(self.volume))
         except AttributeError:
-            print 'error attr'
             pass
 
     def closeEvent(self, event):

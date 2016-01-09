@@ -399,7 +399,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.previewLabel.setPixmap(QPixmap(os.path.join(self.assets, 'monitor.png')).scaled(QSize(280, 175)))
 
     def serversMenu(self, point):
-
         try:
             server_index = self.serversTable.currentRow()
             self.eMenu = QMenu(self)

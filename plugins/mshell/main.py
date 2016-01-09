@@ -25,8 +25,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         self.connect(self.console, SIGNAL("returnPressed"), self.runCommand)
 
-        print 'here'
-
     # run shell command
     def runCommand(self):
         try:

@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1026, 695)
+        MainWindow.resize(1026, 540)
         MainWindow.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
 "color: #2ecc71;\n"
 "font: 10pt \"MS Shell Dlg 2\";"))
@@ -135,8 +135,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.startListenButton = QtGui.QPushButton(self.clientButtonsGroup)
-        self.startListenButton.setMinimumSize(QtCore.QSize(70, 32))
-        self.startListenButton.setMaximumSize(QtCore.QSize(70, 32))
+        self.startListenButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.startListenButton.setMaximumSize(QtCore.QSize(32, 32))
         self.startListenButton.setStyleSheet(_fromUtf8("QPushButton#startListenButton {\n"
 "            background: #194759;\n"
 "            border: 1px outset;\n"
@@ -152,16 +152,17 @@ class Ui_MainWindow(object):
 "            border: 1px outset;\n"
 "            border-color: #0B202E;\n"
 "            }"))
+        self.startListenButton.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.startListenButton.setIcon(icon)
-        self.startListenButton.setIconSize(QtCore.QSize(22, 22))
+        self.startListenButton.setIconSize(QtCore.QSize(18, 18))
         self.startListenButton.setCheckable(True)
         self.startListenButton.setObjectName(_fromUtf8("startListenButton"))
         self.horizontalLayout.addWidget(self.startListenButton)
         self.stopListenButton = QtGui.QPushButton(self.clientButtonsGroup)
-        self.stopListenButton.setMinimumSize(QtCore.QSize(70, 32))
-        self.stopListenButton.setMaximumSize(QtCore.QSize(70, 32))
+        self.stopListenButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.stopListenButton.setMaximumSize(QtCore.QSize(32, 32))
         self.stopListenButton.setStyleSheet(_fromUtf8("QPushButton#stopListenButton {\n"
 "            background: #194759;\n"
 "            border: 1px outset;\n"
@@ -177,19 +178,239 @@ class Ui_MainWindow(object):
 "            border: 1px outset;\n"
 "            border-color: #0B202E;\n"
 "            }"))
+        self.stopListenButton.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopListenButton.setIcon(icon1)
-        self.stopListenButton.setIconSize(QtCore.QSize(20, 20))
+        self.stopListenButton.setIconSize(QtCore.QSize(18, 18))
         self.stopListenButton.setCheckable(True)
         self.stopListenButton.setChecked(True)
         self.stopListenButton.setObjectName(_fromUtf8("stopListenButton"))
         self.horizontalLayout.addWidget(self.stopListenButton)
+        self.line = QtGui.QFrame(self.clientButtonsGroup)
+        self.line.setMinimumSize(QtCore.QSize(20, 0))
+        self.line.setStyleSheet(_fromUtf8("border: none;"))
+        self.line.setFrameShape(QtGui.QFrame.VLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.horizontalLayout.addWidget(self.line)
+        self.unlockServerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.unlockServerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.unlockServerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.unlockServerButton.setStyleSheet(_fromUtf8("QPushButton#unlockServerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#unlockServerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#unlockServerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.unlockServerButton.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unlock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.unlockServerButton.setIcon(icon2)
+        self.unlockServerButton.setObjectName(_fromUtf8("unlockServerButton"))
+        self.horizontalLayout.addWidget(self.unlockServerButton)
+        self.lockServerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.lockServerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.lockServerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.lockServerButton.setStyleSheet(_fromUtf8("QPushButton#lockServerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#lockServerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#lockServerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.lockServerButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/lock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.lockServerButton.setIcon(icon3)
+        self.lockServerButton.setIconSize(QtCore.QSize(18, 18))
+        self.lockServerButton.setObjectName(_fromUtf8("lockServerButton"))
+        self.horizontalLayout.addWidget(self.lockServerButton)
+        self.quitServerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.quitServerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.quitServerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.quitServerButton.setStyleSheet(_fromUtf8("QPushButton#quitServerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#quitServerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#quitServerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.quitServerButton.setText(_fromUtf8(""))
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.quitServerButton.setIcon(icon4)
+        self.quitServerButton.setIconSize(QtCore.QSize(18, 18))
+        self.quitServerButton.setObjectName(_fromUtf8("quitServerButton"))
+        self.horizontalLayout.addWidget(self.quitServerButton)
+        self.line_2 = QtGui.QFrame(self.clientButtonsGroup)
+        self.line_2.setMinimumSize(QtCore.QSize(20, 0))
+        self.line_2.setStyleSheet(_fromUtf8("border: none;"))
+        self.line_2.setFrameShape(QtGui.QFrame.VLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName(_fromUtf8("line_2"))
+        self.horizontalLayout.addWidget(self.line_2)
+        self.remoteShellButton = QtGui.QPushButton(self.clientButtonsGroup)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.remoteShellButton.sizePolicy().hasHeightForWidth())
+        self.remoteShellButton.setSizePolicy(sizePolicy)
+        self.remoteShellButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteShellButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteShellButton.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+        self.remoteShellButton.setAcceptDrops(False)
+        self.remoteShellButton.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.remoteShellButton.setAutoFillBackground(False)
+        self.remoteShellButton.setStyleSheet(_fromUtf8("QPushButton#remoteShellButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteShellButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteShellButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteShellButton.setText(_fromUtf8(""))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteShellButton.setIcon(icon5)
+        self.remoteShellButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteShellButton.setAutoRepeat(False)
+        self.remoteShellButton.setAutoExclusive(False)
+        self.remoteShellButton.setAutoDefault(False)
+        self.remoteShellButton.setDefault(False)
+        self.remoteShellButton.setFlat(False)
+        self.remoteShellButton.setObjectName(_fromUtf8("remoteShellButton"))
+        self.horizontalLayout.addWidget(self.remoteShellButton)
+        self.remoteExplorerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.remoteExplorerButton.sizePolicy().hasHeightForWidth())
+        self.remoteExplorerButton.setSizePolicy(sizePolicy)
+        self.remoteExplorerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteExplorerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteExplorerButton.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.remoteExplorerButton.setStyleSheet(_fromUtf8("QPushButton#remoteExplorerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteExplorerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteExplorerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteExplorerButton.setText(_fromUtf8(""))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteExplorerButton.setIcon(icon6)
+        self.remoteExplorerButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteExplorerButton.setObjectName(_fromUtf8("remoteExplorerButton"))
+        self.horizontalLayout.addWidget(self.remoteExplorerButton)
+        self.remoteAudioButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.remoteAudioButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteAudioButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteAudioButton.setStyleSheet(_fromUtf8("QPushButton#remoteAudioButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteAudioButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteAudioButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteAudioButton.setText(_fromUtf8(""))
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteAudioButton.setIcon(icon7)
+        self.remoteAudioButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteAudioButton.setObjectName(_fromUtf8("remoteAudioButton"))
+        self.horizontalLayout.addWidget(self.remoteAudioButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.clientSettingsButton = QtGui.QPushButton(self.clientButtonsGroup)
-        self.clientSettingsButton.setMinimumSize(QtCore.QSize(120, 32))
-        self.clientSettingsButton.setMaximumSize(QtCore.QSize(120, 32))
+        self.clientSettingsButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.clientSettingsButton.setMaximumSize(QtCore.QSize(32, 32))
         self.clientSettingsButton.setStyleSheet(_fromUtf8("QPushButton#clientSettingsButton {\n"
 "            background: #194759;\n"
 "            border: 1px outset;\n"
@@ -205,9 +426,10 @@ class Ui_MainWindow(object):
 "            border: 1px outset;\n"
 "            border-color: #0B202E;\n"
 "            }"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon2)
+        self.clientSettingsButton.setText(_fromUtf8(""))
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon8)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
@@ -314,109 +536,6 @@ class Ui_MainWindow(object):
         self.panelGroup.setObjectName(_fromUtf8("panelGroup"))
         self.gridLayout_6 = QtGui.QGridLayout(self.panelGroup)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
-        self.remoteShellButton = QtGui.QPushButton(self.panelGroup)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.remoteShellButton.sizePolicy().hasHeightForWidth())
-        self.remoteShellButton.setSizePolicy(sizePolicy)
-        self.remoteShellButton.setMinimumSize(QtCore.QSize(0, 24))
-        self.remoteShellButton.setMaximumSize(QtCore.QSize(150, 24))
-        self.remoteShellButton.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        self.remoteShellButton.setAcceptDrops(False)
-        self.remoteShellButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.remoteShellButton.setAutoFillBackground(False)
-        self.remoteShellButton.setStyleSheet(_fromUtf8("QPushButton#remoteShellButton {\n"
-"            border-bottom: none;\n"
-"            background-color: #0F2D40;\n"
-"            border-radius: 1px;\n"
-"            padding-left: 5px;\n"
-"            text-align: left;\n"
-"            }\n"
-"\n"
-"QPushButton#remoteShellButton:pressed {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            border-color: #0B202E;\n"
-"            }\n"
-"\n"
-"QPushButton#remoteShellButton:disabled {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            color: grey;\n"
-"            border-color: #0B202E;\n"
-"            }"))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteShellButton.setIcon(icon3)
-        self.remoteShellButton.setIconSize(QtCore.QSize(18, 18))
-        self.remoteShellButton.setAutoRepeat(False)
-        self.remoteShellButton.setAutoExclusive(False)
-        self.remoteShellButton.setAutoDefault(False)
-        self.remoteShellButton.setDefault(False)
-        self.remoteShellButton.setFlat(False)
-        self.remoteShellButton.setObjectName(_fromUtf8("remoteShellButton"))
-        self.gridLayout_6.addWidget(self.remoteShellButton, 4, 0, 1, 2)
-        self.remoteExplorerButton = QtGui.QPushButton(self.panelGroup)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.remoteExplorerButton.sizePolicy().hasHeightForWidth())
-        self.remoteExplorerButton.setSizePolicy(sizePolicy)
-        self.remoteExplorerButton.setMinimumSize(QtCore.QSize(150, 24))
-        self.remoteExplorerButton.setMaximumSize(QtCore.QSize(150, 16777215))
-        self.remoteExplorerButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.remoteExplorerButton.setStyleSheet(_fromUtf8("QPushButton#remoteExplorerButton {\n"
-"            border-bottom: none;\n"
-"            background-color: #0F2D40;\n"
-"            border-radius: 1px;\n"
-"            padding-left: 5px;\n"
-"            text-align: left;\n"
-"            }\n"
-"\n"
-"QPushButton#remoteExplorerButton:pressed {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            border-color: #0B202E;\n"
-"            }\n"
-"\n"
-"QPushButton#remoteExplorerButton:disabled {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            color: grey;\n"
-"            border-color: #0B202E;\n"
-"            }"))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteExplorerButton.setIcon(icon4)
-        self.remoteExplorerButton.setIconSize(QtCore.QSize(18, 18))
-        self.remoteExplorerButton.setObjectName(_fromUtf8("remoteExplorerButton"))
-        self.gridLayout_6.addWidget(self.remoteExplorerButton, 4, 2, 1, 1)
-        self.unlockServerButton = QtGui.QPushButton(self.panelGroup)
-        self.unlockServerButton.setMinimumSize(QtCore.QSize(0, 24))
-        self.unlockServerButton.setStyleSheet(_fromUtf8("QPushButton#unlockServerButton {\n"
-"            border-bottom: none;\n"
-"            background-color: #0F2D40;\n"
-"            border-radius: 1px;\n"
-"            }\n"
-"\n"
-"QPushButton#unlockServerButton:pressed {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            border-color: #0B202E;\n"
-"            }\n"
-"\n"
-"QPushButton#unlockServerButton:disabled {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            color: grey;\n"
-"            border-color: #0B202E;\n"
-"            }"))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unlock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.unlockServerButton.setIcon(icon5)
-        self.unlockServerButton.setObjectName(_fromUtf8("unlockServerButton"))
-        self.gridLayout_6.addWidget(self.unlockServerButton, 3, 0, 1, 4)
         self.updatePreviewButton = QtGui.QPushButton(self.panelGroup)
         self.updatePreviewButton.setStyleSheet(_fromUtf8("QPushButton#updatePreviewButton {\n"
 "            border-bottom: none;\n"
@@ -436,39 +555,12 @@ class Ui_MainWindow(object):
 "            color: grey;\n"
 "            border-color: #0B202E;\n"
 "            }"))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon6)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon9)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.gridLayout_6.addWidget(self.updatePreviewButton, 1, 0, 1, 4)
-        self.quitServerButton = QtGui.QPushButton(self.panelGroup)
-        self.quitServerButton.setMinimumSize(QtCore.QSize(0, 22))
-        self.quitServerButton.setStyleSheet(_fromUtf8("QPushButton#quitServerButton {\n"
-"            border-bottom: none;\n"
-"            background-color: #0F2D40;\n"
-"            border-radius: 1px;\n"
-"            padding-left: 5px;\n"
-"            text-align: left;\n"
-"            color: #e74c3c;\n"
-"            }\n"
-"\n"
-"QPushButton#quitServerButton:pressed {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            border-color: #0B202E;\n"
-"            }\n"
-"\n"
-"QPushButton#quitServerButton:disabled {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            color: grey;\n"
-"            border-color: #0B202E;\n"
-"            }"))
-        self.quitServerButton.setIcon(icon1)
-        self.quitServerButton.setIconSize(QtCore.QSize(18, 18))
-        self.quitServerButton.setObjectName(_fromUtf8("quitServerButton"))
-        self.gridLayout_6.addWidget(self.quitServerButton, 5, 2, 1, 2)
         self.previewLabel = QtGui.QLabel(self.panelGroup)
         self.previewLabel.setMinimumSize(QtCore.QSize(300, 200))
         self.previewLabel.setMaximumSize(QtCore.QSize(300, 200))
@@ -480,41 +572,12 @@ class Ui_MainWindow(object):
         self.previewLabel.setText(_fromUtf8(""))
         self.previewLabel.setObjectName(_fromUtf8("previewLabel"))
         self.gridLayout_6.addWidget(self.previewLabel, 0, 0, 1, 3)
-        self.lockServerButton = QtGui.QPushButton(self.panelGroup)
-        self.lockServerButton.setMinimumSize(QtCore.QSize(0, 22))
-        self.lockServerButton.setStyleSheet(_fromUtf8("QPushButton#lockServerButton {\n"
-"            border-bottom: none;\n"
-"            background-color: #0F2D40;\n"
-"            border-radius: 1px;\n"
-"            padding-left: 5px;\n"
-"            text-align: left;\n"
-"            color: #e74c3c;\n"
-"            }\n"
-"\n"
-"QPushButton#lockServerButton:pressed {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            border-color: #0B202E;\n"
-"            }\n"
-"\n"
-"QPushButton#lockServerButton:disabled {\n"
-"            background: #0B202E;\n"
-"            border: 1px outset;\n"
-"            color: grey;\n"
-"            border-color: #0B202E;\n"
-"            }"))
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/lock_2.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.lockServerButton.setIcon(icon7)
-        self.lockServerButton.setIconSize(QtCore.QSize(18, 18))
-        self.lockServerButton.setObjectName(_fromUtf8("lockServerButton"))
-        self.gridLayout_6.addWidget(self.lockServerButton, 5, 0, 1, 2)
         spacerItem1 = QtGui.QSpacerItem(10, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_6.addItem(spacerItem1, 2, 2, 1, 1)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon8, _fromUtf8(""))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon10, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
         self.statusGroup = QtGui.QGroupBox(self.centralwidget)
         self.statusGroup.setMaximumSize(QtCore.QSize(16777215, 32))
@@ -621,9 +684,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Client", None))
-        self.startListenButton.setText(_translate("MainWindow", "Start", None))
-        self.stopListenButton.setText(_translate("MainWindow", "Stop", None))
-        self.clientSettingsButton.setText(_translate("MainWindow", "Client Settings", None))
         self.serversTable.setSortingEnabled(False)
         item = self.serversTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Ip Address", None))
@@ -639,12 +699,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Version", None))
         item = self.serversTable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Active Window Title", None))
-        self.remoteShellButton.setText(_translate("MainWindow", "Remote Shell", None))
-        self.remoteExplorerButton.setText(_translate("MainWindow", "Remote Explorer", None))
-        self.unlockServerButton.setText(_translate("MainWindow", "Unlock Server", None))
         self.updatePreviewButton.setText(_translate("MainWindow", "Update Preview", None))
-        self.quitServerButton.setText(_translate("MainWindow", "Quit Server", None))
-        self.lockServerButton.setText(_translate("MainWindow", "Lock Server", None))
         self.MainTabWidget.setTabText(self.MainTabWidget.indexOf(self.serversTab), _translate("MainWindow", "Servers", None))
         self.clientStatusLabel.setText(_translate("MainWindow", "Client Status: ", None))
         self.statusLabel.setText(_translate("MainWindow", "Not Listening", None))

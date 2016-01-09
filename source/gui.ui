@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1026</width>
-    <height>695</height>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,13 +132,13 @@ background-color: #0F2D40;</string>
           <widget class="QPushButton" name="startListenButton">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -160,16 +160,16 @@ QPushButton#startListenButton:checked {
             }</string>
            </property>
            <property name="text">
-            <string>Start</string>
+            <string/>
            </property>
            <property name="icon">
             <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/start.png</normaloff>:/icons/assets/start.png</iconset>
+             <normaloff>:/icons/assets/connect.png</normaloff>:/icons/assets/connect.png</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>22</width>
-             <height>22</height>
+             <width>18</width>
+             <height>18</height>
             </size>
            </property>
            <property name="checkable">
@@ -181,13 +181,13 @@ QPushButton#startListenButton:checked {
           <widget class="QPushButton" name="stopListenButton">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -209,16 +209,16 @@ QPushButton#stopListenButton:checked {
             }</string>
            </property>
            <property name="text">
-            <string>Stop</string>
+            <string/>
            </property>
            <property name="icon">
             <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
+             <normaloff>:/icons/assets/disconnect.png</normaloff>:/icons/assets/disconnect.png</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>18</width>
+             <height>18</height>
             </size>
            </property>
            <property name="checkable">
@@ -226,6 +226,386 @@ QPushButton#stopListenButton:checked {
            </property>
            <property name="checked">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="unlockServerButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#unlockServerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#unlockServerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#unlockServerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/unlock.png</normaloff>:/icons/assets/unlock.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="lockServerButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#lockServerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#lockServerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#lockServerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/lock.png</normaloff>:/icons/assets/lock.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="quitServerButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#quitServerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#quitServerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#quitServerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line_2">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="remoteShellButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::DefaultContextMenu</enum>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteShellButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#remoteShellButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteShellButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="autoRepeat">
+            <bool>false</bool>
+           </property>
+           <property name="autoExclusive">
+            <bool>false</bool>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="default">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="remoteExplorerButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteExplorerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#remoteExplorerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteExplorerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="remoteAudioButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteAudioButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#remoteAudioButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteAudioButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -246,13 +626,13 @@ QPushButton#stopListenButton:checked {
           <widget class="QPushButton" name="clientSettingsButton">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>120</width>
+             <width>32</width>
              <height>32</height>
             </size>
            </property>
@@ -274,7 +654,7 @@ QPushButton#clientSettingsButton:pressed {
             }</string>
            </property>
            <property name="text">
-            <string>Client Settings</string>
+            <string/>
            </property>
            <property name="icon">
             <iconset resource="res.qrc">
@@ -474,187 +854,6 @@ border-color: #0F2D40;</string>
            <bool>false</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
-           <item row="4" column="0" colspan="2">
-            <widget class="QPushButton" name="remoteShellButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::DefaultContextMenu</enum>
-             </property>
-             <property name="acceptDrops">
-              <bool>false</bool>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#remoteShellButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-			padding-left: 5px;
-			text-align: left;
-            }
-
-QPushButton#remoteShellButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteShellButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-             </property>
-             <property name="text">
-              <string>Remote Shell</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
-             </property>
-             <property name="autoRepeat">
-              <bool>false</bool>
-             </property>
-             <property name="autoExclusive">
-              <bool>false</bool>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QPushButton" name="remoteExplorerButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#remoteExplorerButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-			padding-left: 5px;
-			text-align: left;
-            }
-
-QPushButton#remoteExplorerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteExplorerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-             </property>
-             <property name="text">
-              <string>Remote Explorer</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="4">
-            <widget class="QPushButton" name="unlockServerButton">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#unlockServerButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-            }
-
-QPushButton#unlockServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#unlockServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-             </property>
-             <property name="text">
-              <string>Unlock Server</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/unlock.png</normaloff>:/icons/assets/unlock.png</iconset>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0" colspan="4">
             <widget class="QPushButton" name="updatePreviewButton">
              <property name="styleSheet">
@@ -692,52 +891,6 @@ QPushButton#updatePreviewButton:disabled {
              </property>
             </widget>
            </item>
-           <item row="5" column="2" colspan="2">
-            <widget class="QPushButton" name="quitServerButton">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>22</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#quitServerButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-			padding-left: 5px;
-			text-align: left;
-			color: #e74c3c;
-            }
-
-QPushButton#quitServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#quitServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-             </property>
-             <property name="text">
-              <string>Quit Server</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0" colspan="3">
             <widget class="QLabel" name="previewLabel">
              <property name="minimumSize">
@@ -761,52 +914,6 @@ border: none;</string>
              </property>
              <property name="text">
               <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="2">
-            <widget class="QPushButton" name="lockServerButton">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>22</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#lockServerButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-			padding-left: 5px;
-			text-align: left;
-			color: #e74c3c;
-            }
-
-QPushButton#lockServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#lockServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-             </property>
-             <property name="text">
-              <string>Lock Server</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/lock_2.png</normaloff>:/icons/assets/lock_2.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
              </property>
             </widget>
            </item>

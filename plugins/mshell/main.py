@@ -17,15 +17,15 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.sock = args['sock']
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
-        self.icon = args['icon']
 
         self.setWindowTitle('Connected to - %s - Socket #%s' % (self.ipAddress, self.socket))
-        self.setWindowIcon(QIcon(self.icon))
 
         self.console = console.Console()
         self.gridLayout.addWidget(self.console)
 
         self.connect(self.console, SIGNAL("returnPressed"), self.runCommand)
+
+        print 'here'
 
     # run shell command
     def runCommand(self):

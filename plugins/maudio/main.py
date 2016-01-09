@@ -34,10 +34,11 @@ class mainPopup(QWidget, Ui_Form):
         send(self.sock, 'stopAudio', 'stopaudio')
         try:
             self.audio.active = False
+
+            self.stopVolume()
+
         except AttributeError:
             pass
-
-        self.stopVolume()
 
         # Flush Buffer
         self.listenButton.setDisabled(True)
@@ -52,16 +53,15 @@ class mainPopup(QWidget, Ui_Form):
         except socket.timeout:
             pass
 
-
         self.listenButton.setDisabled(False)
         self.recordButton.setDisabled(True)
         self.stopButton.setDisabled(True)
 
     def startListen(self):
-        self.rate = self.rateDrop.currentText()
+        rate = self.rateDrop.currentText()
         data = get(self.sock, 'startAudio %s' % self.rate, 'startaudio')
         if data == 'audioStarted':
-            self.audio = listenAudio(self.sock, int(self.rate))
+            self.audio = ListenAudio(self.sock, int(self.rate))
             self.audio.start()
             self.startVolume()
             self.listenButton.setDisabled(True)
@@ -92,9 +92,10 @@ class mainPopup(QWidget, Ui_Form):
     def closeEvent(self, event):
         self.stopListen()
 
-class listenAudio(threading.Thread):
+
+class ListenAudio(threading.Thread):
     def __init__(self, sock, rate):
-        super(listenAudio, self).__init__()
+        super(ListenAudio, self).__init__()
 
         self.sock = sock
         self.active = True
@@ -105,7 +106,7 @@ class listenAudio(threading.Thread):
         self.chunk = 1024
         self.p = pyaudio.PyAudio()
 
-        self.stream = self.p.open(format = pyaudio.paInt16, channels = 1, rate = self.rate, output = True)
+        self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=self.rate, output=True)
 
     def run(self):
         while self.active:

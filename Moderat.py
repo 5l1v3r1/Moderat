@@ -479,12 +479,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
 
 # Run Application
-def main():
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     form = MainDialog()
     form.show()
     sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()

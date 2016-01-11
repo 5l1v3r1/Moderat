@@ -59,9 +59,9 @@ class mainPopup(QWidget, Ui_Form):
 
     def startListen(self):
         rate = self.rateDrop.currentText()
-        data = get(self.sock, 'startAudio %s' % self.rate, 'startaudio')
+        data = get(self.sock, 'startAudio %s' % rate, 'startaudio')
         if data == 'audioStarted':
-            self.audio = ListenAudio(self.sock, int(self.rate))
+            self.audio = ListenAudio(self.sock, int(rate))
             self.audio.start()
             self.startVolume()
             self.listenButton.setDisabled(True)

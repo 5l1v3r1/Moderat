@@ -417,7 +417,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
-            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'lock_2.png')), 'Lock Server',
+            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
                                        self.lock_server)
             self.optionsMenu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
                                        self.lock_server)

@@ -330,7 +330,7 @@ class DesktopStreaming(threading.Thread):
                 'width': width,
                 'height': height,
                 'screenshotbits': screen_bits()
-            })
+            }) + '[ENDOFMESSAGE]'
             try:
                 self.sock.sendall(data)
             except socket.error:

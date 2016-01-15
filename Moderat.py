@@ -282,7 +282,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 width = screen_info['width']
                 height = screen_info['height']
                 screenbits = screen_info['screenshot']
-                path_to_preview = os.path.join(self.tmp, '__preview.png')
+                path_to_preview = os.path.join(temp_folder, '__preview.png')
                 raw = zlib.decompress(screenbits)
                 size = (int(width), int(height))
                 im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
@@ -459,7 +459,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             args = {
                 'sock': self.current_sock,
                 'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address']
+                'ipAddress': self.socks[server]['ip_address'],
+                'tempPath': temp_folder
             }
             plugin_id = id_generator()
             if plugin in plugins:

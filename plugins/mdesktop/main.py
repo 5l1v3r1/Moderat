@@ -6,12 +6,17 @@ import socket
 import Image
 import zlib
 import os
+import string
+import random
+from datetime import datetime
 from ast import literal_eval
 
 from main_ui import Ui_Form
 
-from libs.modechat import get, send
+from libs.modechat import get
 
+def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
@@ -25,26 +30,60 @@ class mainPopup(QWidget, Ui_Form):
 
         self.setWindowTitle('Desktop Streaming from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
-        # update gui
-        self.gui = QApplication.processEvents
+        self.startStreamingButton.clicked.connect(self.start_desktop)
 
-        self.startStreamingButton.clicked.connect(self.set_screenshot)
+    def start_desktop(self):
+        self.desktop = DesktopStreaming(self.sock)
+        self.desktop.start()
+        # Create a QTimer
+        self.timer = QTimer()
+        self.timer.setSingleShot(False)
+        self.timer.timeout.connect(self.set_screenshot)
+        self.timer.start(0.1)
 
     def set_screenshot(self):
-        while 1:
-            self.gui()
+        try:
+            self.screenshotLabel.setPixmap(QPixmap(self.desktop.path_to_preview).scaled(
+                QSize(self.screenshotLabel.width(), self.screenshotLabel.height())))
+        except AttributeError:
+            pass
+
+    def stop_desktop(self):
+        try:
+            self.desktop.active = False
+        except AttributeError:
+            pass
+        self.timer.stop()
+
+    def closeEvent(self, event):
+        try:
+            self.desktop.active = False
+        except AttributeError:
+            pass
+        self.stop_desktop()
+
+class DesktopStreaming(threading.Thread):
+    def __init__(self, sock):
+        super(DesktopStreaming, self).__init__()
+
+        self.sock = sock
+        self.active = True
+
+        self.path_to_preview = ''
+
+    def run(self):
+        while self.active:
             try:
+                now = datetime.now()
+                path_to_preview = os.path.join('tmp', '%s-%s_%s-%s-%s_%s' %
+                                                    (now.day, now.month, now.hour, now.minute, now.second, id_generator()))
                 data = get(self.sock, 'getScreenshot', 'screenshotget')
                 result = literal_eval(data)
-                path_to_preview = os.path.join(self.tmp, 'temp__preview.png')
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
                                       zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1).save(
                     path_to_preview, 'PNG')
-                self.screenshotLabel.setPixmap(QPixmap(path_to_preview).scaled(
-                    QSize(self.screenshotLabel.width(), self.screenshotLabel.height())))
-            except (socket.error, ValueError):
+                self.path_to_preview = path_to_preview
+            except ValueError:
+                pass
+            except socket.error:
                 break
-                # send(self.sock, 'stopDesktop')
-
-    def closeEvent(self, event):
-        pass

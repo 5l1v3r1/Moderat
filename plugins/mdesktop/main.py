@@ -86,7 +86,7 @@ class DesktopStreaming(threading.Thread):
         while self.active:
             try:
                 now = datetime.now()
-                path_to_preview = os.path.join('tmp', '%s-%s_%s-%s-%s_%s' %
+                path_to_preview = os.path.join('tmp', '%s-%s_%s-%s-%s_%s.png' %
                                                     (now.day, now.month, now.hour, now.minute, now.second, id_generator()))
                 data = get(self.sock, 'getScreenshot', 'screenshotget')
                 result = literal_eval(data)

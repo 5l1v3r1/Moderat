@@ -27,10 +27,13 @@ class mainPopup(QWidget, Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
         self.tmp = args['tempPath']
+        self.always_top()
 
         self.setWindowTitle('Desktop Streaming from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
         self.startStreamingButton.clicked.connect(self.start_desktop)
+        self.stopStreamingButton.clicked.connect(self.stop_desktop)
+        self.alwaysTopButton.clicked.connect(self.always_top)
 
     def start_desktop(self):
         self.desktop = DesktopStreaming(self.sock)
@@ -54,6 +57,14 @@ class mainPopup(QWidget, Ui_Form):
         except AttributeError:
             pass
         self.timer.stop()
+
+    def always_top(self):
+        if self.alwaysTopButton.isChecked():
+            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+            self.show()
+        else:
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.show()
 
     def closeEvent(self, event):
         try:
@@ -82,6 +93,10 @@ class DesktopStreaming(threading.Thread):
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
                                       zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1).save(
                     path_to_preview, 'PNG')
+                try:
+                    os.remove(self.path_to_preview)
+                except:
+                    pass
                 self.path_to_preview = path_to_preview
             except ValueError:
                 pass

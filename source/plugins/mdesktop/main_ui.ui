@@ -18,6 +18,19 @@
 color: #2ecc71;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0">
     <widget class="QPushButton" name="startStreamingButton">
      <property name="minimumSize">
@@ -37,11 +50,12 @@ color: #2ecc71;</string>
             background-color: #225E75
             }
 
-QPushButton#startStreamingButton:pressed {
+QPushButton#startStreamingButton:checked {
             background: #194759;
             border: 1px outset;
+			color: grey;
             border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color:#1B4C5E;
             }</string>
      </property>
      <property name="text">
@@ -51,23 +65,103 @@ QPushButton#startStreamingButton:pressed {
       <iconset resource="res.qrc">
        <normaloff>:/icon/assets/start.png</normaloff>:/icon/assets/start.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>18</width>
+       <height>18</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QPushButton" name="stopStreamingButton">
+     <property name="minimumSize">
       <size>
-       <width>40</width>
-       <height>20</height>
+       <width>0</width>
+       <height>24</height>
       </size>
      </property>
-    </spacer>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#stopStreamingButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#stopStreamingButton:checked {
+            background: #194759;
+			color: grey;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/stop.png</normaloff>:/icon/assets/stop.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="0" column="3">
+    <widget class="QPushButton" name="alwaysTopButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#alwaysTopButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#alwaysTopButton:checked {
+            background: #194759;
+			color: grey;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string>Always on top</string>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/always_top.png</normaloff>:/icon/assets/always_top.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4">
     <widget class="QLabel" name="screenshotLabel">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(18, 35, 44);</string>
+     </property>
      <property name="text">
       <string/>
      </property>

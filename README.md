@@ -22,7 +22,7 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 * Execute File Remotely
 * Hidden File Attribute
 * Listen Remote Microphone
-* Record to *.wav Sound File
+* Remote Desktop Streaming
 
 ---
 

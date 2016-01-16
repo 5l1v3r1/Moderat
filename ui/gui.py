@@ -133,6 +133,7 @@ class Ui_MainWindow(object):
         self.gridLayout = QtGui.QGridLayout(self.clientButtonsGroup)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setSpacing(2)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.startListenButton = QtGui.QPushButton(self.clientButtonsGroup)
         self.startListenButton.setMinimumSize(QtCore.QSize(32, 32))
@@ -406,6 +407,37 @@ class Ui_MainWindow(object):
         self.remoteAudioButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteAudioButton.setObjectName(_fromUtf8("remoteAudioButton"))
         self.horizontalLayout.addWidget(self.remoteAudioButton)
+        self.remoteDesktopButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.remoteDesktopButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteDesktopButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteDesktopButton.setStyleSheet(_fromUtf8("QPushButton#remoteDesktopButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteDesktopButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteDesktopButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteDesktopButton.setText(_fromUtf8(""))
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mdesktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteDesktopButton.setIcon(icon8)
+        self.remoteDesktopButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteDesktopButton.setObjectName(_fromUtf8("remoteDesktopButton"))
+        self.horizontalLayout.addWidget(self.remoteDesktopButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.clientSettingsButton = QtGui.QPushButton(self.clientButtonsGroup)
@@ -427,9 +459,9 @@ class Ui_MainWindow(object):
 "            border-color: #0B202E;\n"
 "            }"))
         self.clientSettingsButton.setText(_fromUtf8(""))
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon8)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon9)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
@@ -555,9 +587,9 @@ class Ui_MainWindow(object):
 "            color: grey;\n"
 "            border-color: #0B202E;\n"
 "            }"))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon9)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon10)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.gridLayout_6.addWidget(self.updatePreviewButton, 1, 0, 1, 4)
@@ -575,9 +607,9 @@ class Ui_MainWindow(object):
         spacerItem1 = QtGui.QSpacerItem(10, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_6.addItem(spacerItem1, 2, 2, 1, 1)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon10, _fromUtf8(""))
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon11, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
         self.statusGroup = QtGui.QGroupBox(self.centralwidget)
         self.statusGroup.setMaximumSize(QtCore.QSize(16777215, 32))

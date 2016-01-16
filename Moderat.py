@@ -85,6 +85,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteAudioButton.setDisabled(True)
         self.remoteDesktopButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
+        self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
         self.unlockServerButton.setDisabled(True)
         self.updatePreviewButton.setDisabled(True)

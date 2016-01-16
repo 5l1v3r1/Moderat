@@ -46,7 +46,7 @@ class mainPopup(QWidget, Ui_Form):
 
     def set_screenshot(self):
         try:
-            self.screenshotLabel.setPixmap(QPixmap(self.desktop.path_to_preview).scaled(
+            self.screenshotLabel.setPixmap(QPixmap.fromImage(self.desktop.screen_bits).scaled(
                 QSize(self.screenshotLabel.width(), self.screenshotLabel.height())))
         except AttributeError:
             pass
@@ -80,24 +80,19 @@ class DesktopStreaming(threading.Thread):
         self.sock = sock
         self.active = True
 
-        self.path_to_preview = ''
-
     def run(self):
         while self.active:
             try:
-                now = datetime.now()
-                path_to_preview = os.path.join('tmp', '%s-%s_%s-%s-%s_%s.png' %
-                                                    (now.day, now.month, now.hour, now.minute, now.second, id_generator()))
                 data = get(self.sock, 'getScreenshot', 'screenshotget')
                 result = literal_eval(data)
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
-                                      zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1).save(
-                    path_to_preview, 'PNG')
-                try:
-                    os.remove(self.path_to_preview)
-                except:
-                    pass
-                self.path_to_preview = path_to_preview
+                                      zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1)
+                data = im.convert('RGBA').tostring("raw", "RGBA")
+                self.screen_bits = QImage(data, im.size[0], im.size[1], QImage.Format_ARGB32_Premultiplied)
+                #try:
+                    #os.remove(self.path_to_preview)
+                #except:
+                    #pass
             except ValueError:
                 pass
             except socket.error:

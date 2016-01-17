@@ -421,7 +421,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell', self.run_shell)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
                                  self.run_explorer)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Microphone', self.run_audio)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming', self.run_audio)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
 
             self.eMenu.addSeparator()

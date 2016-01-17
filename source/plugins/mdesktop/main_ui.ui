@@ -72,7 +72,7 @@ QPushButton#startStreamingButton:checked {
       </size>
      </property>
      <property name="checkable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -111,10 +111,10 @@ QPushButton#stopStreamingButton:checked {
        <normaloff>:/icon/assets/stop.png</normaloff>:/icon/assets/stop.png</iconset>
      </property>
      <property name="checkable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -160,10 +160,17 @@ QPushButton#alwaysTopButton:checked {
    <item row="1" column="0" colspan="4">
     <widget class="QLabel" name="screenshotLabel">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(18, 35, 44);</string>
+      <string notr="true">background-color:#194759;
+color: grey;</string>
      </property>
      <property name="text">
-      <string/>
+      <string>Press Start</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>

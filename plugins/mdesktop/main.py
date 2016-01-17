@@ -57,7 +57,10 @@ class mainPopup(QWidget, Ui_Form):
             self.desktop.active = False
         except AttributeError:
             pass
-        self.timer.stop()
+        try:
+            self.timer.stop()
+        except AttributeError:
+            pass
 
     def set_screenshot(self):
         try:
@@ -96,6 +99,7 @@ class DesktopStreaming(threading.Thread):
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
                                       zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1)
                 self.screen_bits = im.convert('RGBA')
+                del im
             except ValueError:
                 pass
             except socket.error:

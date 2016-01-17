@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>370</height>
+    <width>400</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,7 +131,7 @@ QPushButton#stopStreamingButton:checked {
             background: #194759;
             border: 1px outset;
             border-color: #0F2D40;
-			padding-right: 5px;
+			padding-right: 3px;
 			color: white;
             text-decoration: none;
             background-color: #225E75
@@ -146,7 +146,7 @@ QPushButton#alwaysTopButton:checked {
             }</string>
      </property>
      <property name="text">
-      <string>Always on top</string>
+      <string/>
      </property>
      <property name="icon">
       <iconset resource="res.qrc">

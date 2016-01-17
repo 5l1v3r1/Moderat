@@ -55,7 +55,7 @@ class Ui_Form(object):
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.startStreamingButton.setIcon(icon)
         self.startStreamingButton.setIconSize(QtCore.QSize(18, 18))
-        self.startStreamingButton.setCheckable(True)
+        self.startStreamingButton.setCheckable(False)
         self.startStreamingButton.setObjectName(_fromUtf8("startStreamingButton"))
         self.gridLayout.addWidget(self.startStreamingButton, 0, 0, 1, 1)
         self.stopStreamingButton = QtGui.QPushButton(Form)
@@ -80,8 +80,8 @@ class Ui_Form(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopStreamingButton.setIcon(icon1)
-        self.stopStreamingButton.setCheckable(True)
-        self.stopStreamingButton.setChecked(True)
+        self.stopStreamingButton.setCheckable(False)
+        self.stopStreamingButton.setChecked(False)
         self.stopStreamingButton.setObjectName(_fromUtf8("stopStreamingButton"))
         self.gridLayout.addWidget(self.stopStreamingButton, 0, 1, 1, 1)
         self.alwaysTopButton = QtGui.QPushButton(Form)
@@ -110,8 +110,10 @@ class Ui_Form(object):
         self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
         self.gridLayout.addWidget(self.alwaysTopButton, 0, 3, 1, 1)
         self.screenshotLabel = QtGui.QLabel(Form)
-        self.screenshotLabel.setStyleSheet(_fromUtf8("background-color: rgb(18, 35, 44);"))
-        self.screenshotLabel.setText(_fromUtf8(""))
+        self.screenshotLabel.setStyleSheet(_fromUtf8("background-color:#194759;\n"
+"color: grey;"))
+        self.screenshotLabel.setScaledContents(True)
+        self.screenshotLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.screenshotLabel.setObjectName(_fromUtf8("screenshotLabel"))
         self.gridLayout.addWidget(self.screenshotLabel, 1, 0, 1, 4)
 
@@ -123,5 +125,6 @@ class Ui_Form(object):
         self.startStreamingButton.setText(_translate("Form", "Start", None))
         self.stopStreamingButton.setText(_translate("Form", "Stop", None))
         self.alwaysTopButton.setText(_translate("Form", "Always on top", None))
+        self.screenshotLabel.setText(_translate("Form", "Press Start", None))
 
 import res_rc

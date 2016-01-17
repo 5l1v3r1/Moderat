@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1026, 540)
+        MainWindow.resize(1100, 502)
         MainWindow.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
 "color: #2ecc71;\n"
 "font: 10pt \"MS Shell Dlg 2\";"))
@@ -467,6 +467,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.clientSettingsButton)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.gridLayout_5.addWidget(self.clientButtonsGroup, 0, 0, 1, 1)
+        self.creditLabel = QtGui.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.creditLabel.setFont(font)
+        self.creditLabel.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
+        self.gridLayout_5.addWidget(self.creditLabel, 2, 0, 1, 1)
         self.MainTabWidget = QtGui.QTabWidget(self.centralwidget)
         self.MainTabWidget.setStyleSheet(_fromUtf8(" QTabBar::tab {\n"
 "  background-color: #194759;\n"
@@ -604,72 +618,50 @@ class Ui_MainWindow(object):
         self.previewLabel.setText(_fromUtf8(""))
         self.previewLabel.setObjectName(_fromUtf8("previewLabel"))
         self.gridLayout_6.addWidget(self.previewLabel, 0, 0, 1, 3)
+        self.serversOnlineStatus = QtGui.QLabel(self.panelGroup)
+        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
+        self.gridLayout_6.addWidget(self.serversOnlineStatus, 4, 0, 1, 1)
+        self.clientStatusLabel = QtGui.QLabel(self.panelGroup)
+        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
+        self.gridLayout_6.addWidget(self.clientStatusLabel, 2, 0, 1, 1)
+        self.onlineStatus = QtGui.QLabel(self.panelGroup)
+        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
+        self.gridLayout_6.addWidget(self.onlineStatus, 4, 2, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(10, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_6.addItem(spacerItem1, 2, 2, 1, 1)
+        self.gridLayout_6.addItem(spacerItem1, 5, 0, 1, 4)
+        self.portTextLabel = QtGui.QLabel(self.panelGroup)
+        self.portTextLabel.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.portTextLabel.setObjectName(_fromUtf8("portTextLabel"))
+        self.gridLayout_6.addWidget(self.portTextLabel, 3, 0, 1, 1)
+        self.statusLabel = QtGui.QLabel(self.panelGroup)
+        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"color: #e74c3c;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
+        self.gridLayout_6.addWidget(self.statusLabel, 2, 2, 1, 1)
+        self.portLabel = QtGui.QLabel(self.panelGroup)
+        self.portLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.portLabel.setObjectName(_fromUtf8("portLabel"))
+        self.gridLayout_6.addWidget(self.portLabel, 3, 2, 1, 1)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
         icon11 = QtGui.QIcon()
         icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.MainTabWidget.addTab(self.serversTab, icon11, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
-        self.statusGroup = QtGui.QGroupBox(self.centralwidget)
-        self.statusGroup.setMaximumSize(QtCore.QSize(16777215, 32))
-        self.statusGroup.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
-"border-color: #0F2D40;\n"
-"background-color: #0F2D40;\n"
-"padding: 0px;"))
-        self.statusGroup.setTitle(_fromUtf8(""))
-        self.statusGroup.setObjectName(_fromUtf8("statusGroup"))
-        self.gridLayout_4 = QtGui.QGridLayout(self.statusGroup)
-        self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_4.addItem(spacerItem2, 0, 2, 1, 1)
-        self.clientStatusLabel = QtGui.QLabel(self.statusGroup)
-        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
-        self.gridLayout_4.addWidget(self.clientStatusLabel, 0, 3, 1, 1)
-        self.statusLabel = QtGui.QLabel(self.statusGroup)
-        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"color: #e74c3c;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
-        self.gridLayout_4.addWidget(self.statusLabel, 0, 4, 1, 1)
-        self.serversOnlineStatus = QtGui.QLabel(self.statusGroup)
-        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
-        self.gridLayout_4.addWidget(self.serversOnlineStatus, 0, 5, 1, 1)
-        self.onlineStatus = QtGui.QLabel(self.statusGroup)
-        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
-        self.gridLayout_4.addWidget(self.onlineStatus, 0, 6, 1, 1)
-        self.versionLabel = QtGui.QLabel(self.statusGroup)
-        self.versionLabel.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.versionLabel.setObjectName(_fromUtf8("versionLabel"))
-        self.gridLayout_4.addWidget(self.versionLabel, 0, 1, 1, 1)
-        self.gridLayout_5.addWidget(self.statusGroup, 2, 0, 1, 1)
-        self.creditLabel = QtGui.QLabel(self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.creditLabel.setFont(font)
-        self.creditLabel.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
-        self.gridLayout_5.addWidget(self.creditLabel, 3, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1026, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1100, 24))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #0C2230;\n"
 "            color: rgb(255,255,255);\n"
@@ -716,6 +708,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Client", None))
+        self.creditLabel.setText(_translate("MainWindow", "© Uri Patton", None))
         self.serversTable.setSortingEnabled(False)
         item = self.serversTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Ip Address", None))
@@ -732,13 +725,13 @@ class Ui_MainWindow(object):
         item = self.serversTable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Active Window Title", None))
         self.updatePreviewButton.setText(_translate("MainWindow", "Update Preview", None))
-        self.MainTabWidget.setTabText(self.MainTabWidget.indexOf(self.serversTab), _translate("MainWindow", "Servers", None))
-        self.clientStatusLabel.setText(_translate("MainWindow", "Client Status: ", None))
-        self.statusLabel.setText(_translate("MainWindow", "Not Listening", None))
         self.serversOnlineStatus.setText(_translate("MainWindow", "Servers Online: ", None))
+        self.clientStatusLabel.setText(_translate("MainWindow", "Client Status: ", None))
         self.onlineStatus.setText(_translate("MainWindow", "0", None))
-        self.versionLabel.setText(_translate("MainWindow", "Client Version 2.0", None))
-        self.creditLabel.setText(_translate("MainWindow", "© Uri Patton", None))
+        self.portTextLabel.setText(_translate("MainWindow", "Port:", None))
+        self.statusLabel.setText(_translate("MainWindow", "Not Listening", None))
+        self.portLabel.setText(_translate("MainWindow", "4434", None))
+        self.MainTabWidget.setTabText(self.MainTabWidget.indexOf(self.serversTab), _translate("MainWindow", "Servers", None))
         self.menuClient.setTitle(_translate("MainWindow", "Client", None))
         self.actionStartListen_for_connections.setText(_translate("MainWindow", "Start Listening", None))
         self.actionStopListen_for_connections.setText(_translate("MainWindow", "Stop Listening", None))

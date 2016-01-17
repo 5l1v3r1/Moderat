@@ -33,7 +33,7 @@ class Ui_Form(object):
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.startStreamingButton = QtGui.QPushButton(Form)
-        self.startStreamingButton.setMinimumSize(QtCore.QSize(0, 24))
+        self.startStreamingButton.setMinimumSize(QtCore.QSize(53, 24))
         self.startStreamingButton.setStyleSheet(_fromUtf8("QPushButton#startStreamingButton {\n"
 "            background: #194759;\n"
 "            border: 1px outset;\n"
@@ -59,7 +59,7 @@ class Ui_Form(object):
         self.startStreamingButton.setObjectName(_fromUtf8("startStreamingButton"))
         self.gridLayout.addWidget(self.startStreamingButton, 0, 0, 1, 1)
         self.stopStreamingButton = QtGui.QPushButton(Form)
-        self.stopStreamingButton.setMinimumSize(QtCore.QSize(0, 24))
+        self.stopStreamingButton.setMinimumSize(QtCore.QSize(53, 24))
         self.stopStreamingButton.setStyleSheet(_fromUtf8("QPushButton#stopStreamingButton {\n"
 "            background: #194759;\n"
 "            border: 1px outset;\n"

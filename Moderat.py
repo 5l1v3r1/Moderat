@@ -102,7 +102,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 150)
         self.serversTable.setColumnWidth(self.index_of_socket, 60)
         self.serversTable.setColumnWidth(self.index_of_lock, 90)
-        self.serversTable.setColumnWidth(self.index_of_os, 200)
+        self.serversTable.setColumnWidth(self.index_of_os, 100)
         self.serversTable.setColumnWidth(self.index_of_user, 100)
         self.serversTable.setColumnWidth(self.index_of_version, 60)
         # servers table double click trigger

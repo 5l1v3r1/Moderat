@@ -29,6 +29,7 @@ class mainPopup(QWidget, Ui_Form):
 
         self.listenButton.clicked.connect(self.startListen)
         self.stopButton.clicked.connect(self.stopListen)
+        self.alwaysTopButton.clicked.connect(self.always_top)
 
     def stopListen(self):
         send(self.sock, 'stopAudio', 'stopaudio')
@@ -88,6 +89,14 @@ class mainPopup(QWidget, Ui_Form):
             self.volumeProgress.setValue(int(self.volume))
         except AttributeError:
             pass
+
+    def always_top(self):
+        if self.alwaysTopButton.isChecked():
+            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+            self.show()
+        else:
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.show()
 
     def closeEvent(self, event):
         self.stopListen()

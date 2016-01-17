@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>assets/always_top.png</file>
     <file>assets/play.png</file>
     <file>assets/record.png</file>
     <file>assets/stop.png</file>

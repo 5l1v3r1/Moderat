@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
+    <width>400</width>
     <height>124</height>
    </rect>
   </property>
@@ -159,7 +159,7 @@ QPushButton#stopButton:pressed {
      </property>
     </spacer>
    </item>
-   <item row="0" column="0" colspan="2">
+   <item row="3" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="defaultInputDeviceLavel">
@@ -222,7 +222,7 @@ QPushButton#stopButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="5" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="volumeLabel">
@@ -275,6 +275,58 @@ width: 5px;
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="alwaysTopButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#alwaysTopButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+			padding-right: 3px;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#alwaysTopButton:checked {
+            background: #194759;
+			color: grey;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icon/assets/always_top.png</normaloff>:/icon/assets/always_top.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

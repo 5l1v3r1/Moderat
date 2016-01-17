@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(491, 370)
+        Form.resize(400, 330)
         Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
 "color: #2ecc71;"))
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -90,7 +90,7 @@ class Ui_Form(object):
 "            background: #194759;\n"
 "            border: 1px outset;\n"
 "            border-color: #0F2D40;\n"
-"            padding-right: 5px;\n"
+"            padding-right: 3px;\n"
 "            color: white;\n"
 "            text-decoration: none;\n"
 "            background-color: #225E75\n"
@@ -103,6 +103,7 @@ class Ui_Form(object):
 "            border-color: #0F2D40;\n"
 "            background-color:#1B4C5E;\n"
 "            }"))
+        self.alwaysTopButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.alwaysTopButton.setIcon(icon2)
@@ -124,7 +125,6 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.startStreamingButton.setText(_translate("Form", "Start", None))
         self.stopStreamingButton.setText(_translate("Form", "Stop", None))
-        self.alwaysTopButton.setText(_translate("Form", "Always on top", None))
         self.screenshotLabel.setText(_translate("Form", "Press Start", None))
 
 import res_rc

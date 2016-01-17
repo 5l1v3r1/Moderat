@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(599, 124)
+        Form.resize(400, 124)
         Form.setMinimumSize(QtCore.QSize(255, 41))
         Form.setMaximumSize(QtCore.QSize(800, 600))
         Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
@@ -133,7 +133,7 @@ class Ui_Form(object):
         self.rateDrop.addItem(_fromUtf8(""))
         self.rateDrop.addItem(_fromUtf8(""))
         self.horizontalLayout.addWidget(self.rateDrop)
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 2)
+        self.gridLayout.addLayout(self.horizontalLayout, 3, 0, 1, 3)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.volumeLabel = QtGui.QLabel(Form)
@@ -162,7 +162,35 @@ class Ui_Form(object):
         self.volumeProgress.setTextDirection(QtGui.QProgressBar.TopToBottom)
         self.volumeProgress.setObjectName(_fromUtf8("volumeProgress"))
         self.horizontalLayout_3.addWidget(self.volumeProgress)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 3, 0, 1, 2)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 5, 0, 1, 3)
+        self.alwaysTopButton = QtGui.QPushButton(Form)
+        self.alwaysTopButton.setMinimumSize(QtCore.QSize(0, 24))
+        self.alwaysTopButton.setStyleSheet(_fromUtf8("QPushButton#alwaysTopButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            padding-right: 3px;\n"
+"            text-decoration: none;\n"
+"            background-color: #225E75\n"
+"            }\n"
+"\n"
+"QPushButton#alwaysTopButton:checked {\n"
+"            background: #194759;\n"
+"            color: grey;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            background-color:#1B4C5E;\n"
+"            }"))
+        self.alwaysTopButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.alwaysTopButton.setIcon(icon3)
+        self.alwaysTopButton.setCheckable(True)
+        self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
+        self.gridLayout.addWidget(self.alwaysTopButton, 1, 2, 1, 1)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem2, 4, 0, 1, 3)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

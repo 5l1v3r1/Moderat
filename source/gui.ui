@@ -665,6 +665,58 @@ QPushButton#remoteDesktopButton:disabled {
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="remoteKeyloggerButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteKeyloggerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#remoteKeyloggerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteKeyloggerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>

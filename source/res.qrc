@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/mkeylogger.png</file>
     <file>../assets/mdesktop.png</file>
     <file>../assets/update.png</file>
     <file>../assets/maudio.png</file>

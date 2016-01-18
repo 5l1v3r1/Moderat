@@ -83,6 +83,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
         self.remoteDesktopButton.setDisabled(True)
+        self.remoteKeyloggerButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -124,6 +125,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.clicked.connect(self.run_explorer)
         self.remoteAudioButton.clicked.connect(self.run_audio)
         self.remoteDesktopButton.clicked.connect(self.run_desktop)
+        self.remoteKeyloggerButton.clicked.connect(self.run_keylogger)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -376,6 +378,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
                 self.remoteDesktopButton.setDisabled(True)
+                self.remoteKeyloggerButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
@@ -384,6 +387,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
                 self.remoteDesktopButton.setDisabled(False)
+                self.remoteKeyloggerButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
@@ -395,6 +399,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
             self.remoteDesktopButton.setDisabled(True)
+            self.remoteKeyloggerButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
@@ -418,7 +423,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                  self.run_explorer)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming', self.run_audio)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Keylogger', self.run_keylogger)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger', self.run_keylogger)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)

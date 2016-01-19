@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1100, 502)
+        MainWindow.resize(896, 503)
         MainWindow.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
 "color: #2ecc71;\n"
 "font: 10pt \"MS Shell Dlg 2\";"))
@@ -438,6 +438,37 @@ class Ui_MainWindow(object):
         self.remoteDesktopButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteDesktopButton.setObjectName(_fromUtf8("remoteDesktopButton"))
         self.horizontalLayout.addWidget(self.remoteDesktopButton)
+        self.remoteKeyloggerButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.remoteKeyloggerButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteKeyloggerButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteKeyloggerButton.setStyleSheet(_fromUtf8("QPushButton#remoteKeyloggerButton {\n"
+"            background: #194759;\n"
+"            border: 1px outset;\n"
+"            border-color: #0F2D40;\n"
+"            color: white;\n"
+"            text-decoration: none;\n"
+"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);\n"
+"            }\n"
+"\n"
+"QPushButton#remoteKeyloggerButton:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteKeyloggerButton:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteKeyloggerButton.setText(_fromUtf8(""))
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteKeyloggerButton.setIcon(icon9)
+        self.remoteKeyloggerButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteKeyloggerButton.setObjectName(_fromUtf8("remoteKeyloggerButton"))
+        self.horizontalLayout.addWidget(self.remoteKeyloggerButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.clientSettingsButton = QtGui.QPushButton(self.clientButtonsGroup)
@@ -459,9 +490,9 @@ class Ui_MainWindow(object):
 "            border-color: #0B202E;\n"
 "            }"))
         self.clientSettingsButton.setText(_fromUtf8(""))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon9)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon10)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
@@ -490,7 +521,6 @@ class Ui_MainWindow(object):
 "  width: 70%;\n"
 "  border: 1px ridge;\n"
 "  border-color: #0F2D40;\n"
-"  border-bottom: none;\n"
 " }\n"
 "\n"
 " QTabBar::tab:selected {\n"
@@ -508,6 +538,7 @@ class Ui_MainWindow(object):
 "    border-color: #0F2D40;\n"
 "    background-color: #194759;\n"
 "    background-position: center;\n"
+"border: none;\n"
 "      }"))
         self.MainTabWidget.setObjectName(_fromUtf8("MainTabWidget"))
         self.serversTab = QtGui.QWidget()
@@ -519,8 +550,9 @@ class Ui_MainWindow(object):
 "    background-color: #194759;\n"
 "    padding: 2px;\n"
 "    color: white;\n"
-"    font: 9pt \"MS Shell Dlg 2\";\n"
+"    font: 75 8pt \"MS Shell Dlg 2\";\n"
 "    border: 1px ridge;\n"
+"    border-right: none;\n"
 "}\n"
 "\n"
 "QTableWidget#serversTable {\n"
@@ -580,13 +612,16 @@ class Ui_MainWindow(object):
         self.panelGroup.setTitle(_fromUtf8(""))
         self.panelGroup.setFlat(False)
         self.panelGroup.setObjectName(_fromUtf8("panelGroup"))
-        self.gridLayout_6 = QtGui.QGridLayout(self.panelGroup)
-        self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
+        self.gridLayout_3 = QtGui.QGridLayout(self.panelGroup)
+        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.updatePreviewButton = QtGui.QPushButton(self.panelGroup)
         self.updatePreviewButton.setStyleSheet(_fromUtf8("QPushButton#updatePreviewButton {\n"
 "            border-bottom: none;\n"
 "            background-color: #0F2D40;\n"
 "            border-radius: 1px;\n"
+"            color: white;\n"
 "            }\n"
 "\n"
 "QPushButton#updatePreviewButton:pressed {\n"
@@ -601,67 +636,101 @@ class Ui_MainWindow(object):
 "            color: grey;\n"
 "            border-color: #0B202E;\n"
 "            }"))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon10)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon11)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
-        self.gridLayout_6.addWidget(self.updatePreviewButton, 1, 0, 1, 4)
+        self.horizontalLayout_2.addWidget(self.updatePreviewButton)
+        self.remoteDesktopButton2 = QtGui.QPushButton(self.panelGroup)
+        self.remoteDesktopButton2.setMinimumSize(QtCore.QSize(20, 0))
+        self.remoteDesktopButton2.setMaximumSize(QtCore.QSize(20, 20))
+        self.remoteDesktopButton2.setStyleSheet(_fromUtf8("QPushButton#remoteDesktopButton2 {\n"
+"            border-bottom: none;\n"
+"            background-color: #0F2D40;\n"
+"            border-radius: 1px;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteDesktopButton2:pressed {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            border-color: #0B202E;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteDesktopButton2:disabled {\n"
+"            background: #0B202E;\n"
+"            border: 1px outset;\n"
+"            color: grey;\n"
+"            border-color: #0B202E;\n"
+"            }"))
+        self.remoteDesktopButton2.setText(_fromUtf8(""))
+        self.remoteDesktopButton2.setIcon(icon8)
+        self.remoteDesktopButton2.setIconSize(QtCore.QSize(14, 14))
+        self.remoteDesktopButton2.setObjectName(_fromUtf8("remoteDesktopButton2"))
+        self.horizontalLayout_2.addWidget(self.remoteDesktopButton2)
+        self.gridLayout_3.addLayout(self.horizontalLayout_2, 1, 0, 1, 2)
         self.previewLabel = QtGui.QLabel(self.panelGroup)
         self.previewLabel.setMinimumSize(QtCore.QSize(300, 200))
         self.previewLabel.setMaximumSize(QtCore.QSize(300, 200))
-        self.previewLabel.setStyleSheet(_fromUtf8("background-image: url(:/icons/assets/monitor.png);\n"
-"background-repeat: none;\n"
-"padding-left: 10px;\n"
-"padding-top: 10px;\n"
-"border: none;"))
-        self.previewLabel.setText(_fromUtf8(""))
+        self.previewLabel.setStyleSheet(_fromUtf8("color: grey;\n"
+"border: 1px ridge;\n"
+"border-color: #0B202E;\n"
+"font: 7pt \"MS Shell Dlg 2\";"))
+        self.previewLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.previewLabel.setObjectName(_fromUtf8("previewLabel"))
-        self.gridLayout_6.addWidget(self.previewLabel, 0, 0, 1, 3)
-        self.serversOnlineStatus = QtGui.QLabel(self.panelGroup)
-        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
+        self.gridLayout_3.addWidget(self.previewLabel, 0, 0, 1, 2)
+        self.statusLabel = QtGui.QLabel(self.panelGroup)
+        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"color: #e74c3c;\n"
 "font: 8pt \"MS Shell Dlg 2\";"))
-        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
-        self.gridLayout_6.addWidget(self.serversOnlineStatus, 4, 0, 1, 1)
-        self.clientStatusLabel = QtGui.QLabel(self.panelGroup)
-        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none; \n"
-"color: white;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
-        self.gridLayout_6.addWidget(self.clientStatusLabel, 2, 0, 1, 1)
-        self.onlineStatus = QtGui.QLabel(self.panelGroup)
-        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
-        self.gridLayout_6.addWidget(self.onlineStatus, 4, 2, 1, 1)
-        spacerItem1 = QtGui.QSpacerItem(10, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_6.addItem(spacerItem1, 5, 0, 1, 4)
+        self.statusLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
+        self.gridLayout_3.addWidget(self.statusLabel, 3, 1, 1, 1)
         self.portTextLabel = QtGui.QLabel(self.panelGroup)
         self.portTextLabel.setStyleSheet(_fromUtf8("border: none; \n"
 "color: white;\n"
 "font: 8pt \"MS Shell Dlg 2\";"))
         self.portTextLabel.setObjectName(_fromUtf8("portTextLabel"))
-        self.gridLayout_6.addWidget(self.portTextLabel, 3, 0, 1, 1)
-        self.statusLabel = QtGui.QLabel(self.panelGroup)
-        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"color: #e74c3c;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
-        self.gridLayout_6.addWidget(self.statusLabel, 2, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.portTextLabel, 4, 0, 1, 1)
         self.portLabel = QtGui.QLabel(self.panelGroup)
         self.portLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "font: 8pt \"MS Shell Dlg 2\";"))
+        self.portLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.portLabel.setObjectName(_fromUtf8("portLabel"))
-        self.gridLayout_6.addWidget(self.portLabel, 3, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.portLabel, 4, 1, 1, 1)
+        self.serversOnlineStatus = QtGui.QLabel(self.panelGroup)
+        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
+        self.gridLayout_3.addWidget(self.serversOnlineStatus, 5, 0, 1, 1)
+        self.onlineStatus = QtGui.QLabel(self.panelGroup)
+        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.onlineStatus.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
+        self.gridLayout_3.addWidget(self.onlineStatus, 5, 1, 1, 1)
+        self.clientStatusLabel = QtGui.QLabel(self.panelGroup)
+        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none; \n"
+"color: white;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
+        self.gridLayout_3.addWidget(self.clientStatusLabel, 3, 0, 1, 1)
+        spacerItem1 = QtGui.QSpacerItem(10, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_3.addItem(spacerItem1, 6, 0, 1, 2)
+        self.line_3 = QtGui.QFrame(self.panelGroup)
+        self.line_3.setFrameShape(QtGui.QFrame.HLine)
+        self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_3.setObjectName(_fromUtf8("line_3"))
+        self.gridLayout_3.addWidget(self.line_3, 2, 0, 1, 2)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon11, _fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon12, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1100, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 896, 24))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #0C2230;\n"
 "            color: rgb(255,255,255);\n"
@@ -725,12 +794,13 @@ class Ui_MainWindow(object):
         item = self.serversTable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Active Window Title", None))
         self.updatePreviewButton.setText(_translate("MainWindow", "Update Preview", None))
-        self.serversOnlineStatus.setText(_translate("MainWindow", "Servers Online: ", None))
-        self.clientStatusLabel.setText(_translate("MainWindow", "Client Status: ", None))
-        self.onlineStatus.setText(_translate("MainWindow", "0", None))
-        self.portTextLabel.setText(_translate("MainWindow", "Port:", None))
+        self.previewLabel.setText(_translate("MainWindow", "Select Server And Press Update Preview", None))
         self.statusLabel.setText(_translate("MainWindow", "Not Listening", None))
-        self.portLabel.setText(_translate("MainWindow", "4434", None))
+        self.portTextLabel.setText(_translate("MainWindow", "Port:", None))
+        self.portLabel.setText(_translate("MainWindow", "N/A", None))
+        self.serversOnlineStatus.setText(_translate("MainWindow", "Servers Online: ", None))
+        self.onlineStatus.setText(_translate("MainWindow", "0", None))
+        self.clientStatusLabel.setText(_translate("MainWindow", "Client Status: ", None))
         self.MainTabWidget.setTabText(self.MainTabWidget.indexOf(self.serversTab), _translate("MainWindow", "Servers", None))
         self.menuClient.setTitle(_translate("MainWindow", "Client", None))
         self.actionStartListen_for_connections.setText(_translate("MainWindow", "Start Listening", None))

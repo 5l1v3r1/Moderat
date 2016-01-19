@@ -27,7 +27,6 @@ class mainPopup(QWidget, Ui_Form):
         self.sock = args['sock']
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
-        self.tmp = args['tempPath']
         self.always_top()
 
         self.setWindowTitle('Desktop Streaming from - %s - Socket #%s' % (self.ipAddress, self.socket))

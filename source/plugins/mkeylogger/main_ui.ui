@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>330</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #0F2D40;
+color: #2ecc71;</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="alwaysTopButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#alwaysTopButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 3px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#alwaysTopButton:checked {
+            background: #194759;
+			color: grey;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icons/assets/always_top.png</normaloff>:/icons/assets/always_top.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPushButton" name="stopKeyloggingButton">
+     <property name="minimumSize">
+      <size>
+       <width>53</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#stopKeyloggingButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#stopKeyloggingButton:checked {
+            background: #194759;
+			color: grey;
+            border: 1px outset;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="startKeyloggingButton">
+     <property name="minimumSize">
+      <size>
+       <width>53</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#startKeyloggingButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			padding-right: 5px;
+			color: white;
+            text-decoration: none;
+            background-color: #225E75
+            }
+
+QPushButton#startKeyloggingButton:checked {
+            background: #194759;
+            border: 1px outset;
+			color: grey;
+            border-color: #0F2D40;
+            background-color:#1B4C5E;
+            }</string>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+     <property name="icon">
+      <iconset resource="res.qrc">
+       <normaloff>:/icons/assets/play.png</normaloff>:/icons/assets/play.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>18</width>
+       <height>18</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QTextEdit" name="keystokesText">
+     <property name="styleSheet">
+      <string notr="true">background-position: center;
+border: 1px outset;
+border-color: #0F2D40;
+border-radius: 2px;
+background-color: #081621;</string>
+     </property>
+     <property name="documentTitle">
+      <string/>
+     </property>
+     <property name="undoRedoEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+</ui>

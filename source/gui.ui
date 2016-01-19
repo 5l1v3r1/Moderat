@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>502</height>
+    <width>896</width>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -665,6 +665,58 @@ QPushButton#remoteDesktopButton:disabled {
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="remoteKeyloggerButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteKeyloggerButton {
+            background: #194759;
+            border: 1px outset;
+            border-color: #0F2D40;
+			color: white;
+            text-decoration: none;
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+            }
+
+QPushButton#remoteKeyloggerButton:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteKeyloggerButton:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -763,7 +815,6 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
   width: 70%;
   border: 1px ridge;
   border-color: #0F2D40;
-  border-bottom: none;
  }
 
  QTabBar::tab:selected {
@@ -781,6 +832,7 @@ QTabWidget::pane {
     border-color: #0F2D40;
 	background-color: #194759;
 	background-position: center;
+border: none;
       }</string>
       </property>
       <property name="currentIndex">
@@ -802,8 +854,9 @@ QTabWidget::pane {
 	background-color: #194759;
     padding: 2px;
     color: white;
-	font: 9pt &quot;MS Shell Dlg 2&quot;;
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
 	border: 1px ridge;
+	border-right: none;
 }
 
 QTableWidget#serversTable {
@@ -932,14 +985,17 @@ border-color: #0F2D40;</string>
           <property name="flat">
            <bool>false</bool>
           </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="1" column="0" colspan="4">
-            <widget class="QPushButton" name="updatePreviewButton">
-             <property name="styleSheet">
-              <string notr="true">QPushButton#updatePreviewButton {
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="0" colspan="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="updatePreviewButton">
+               <property name="styleSheet">
+                <string notr="true">QPushButton#updatePreviewButton {
             border-bottom: none;
 			background-color: #0F2D40;
 			border-radius: 1px;
+			color: white;
             }
 
 QPushButton#updatePreviewButton:pressed {
@@ -954,23 +1010,74 @@ QPushButton#updatePreviewButton:disabled {
 			color: grey;
             border-color: #0B202E;
             }</string>
-             </property>
-             <property name="text">
-              <string>Update Preview</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>14</width>
-               <height>14</height>
-              </size>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>Update Preview</string>
+               </property>
+               <property name="icon">
+                <iconset resource="res.qrc">
+                 <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>14</width>
+                 <height>14</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="remoteDesktopButton2">
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton#remoteDesktopButton2 {
+            border-bottom: none;
+			background-color: #0F2D40;
+			border-radius: 1px;
+            }
+
+QPushButton#remoteDesktopButton2:pressed {
+            background: #0B202E;
+            border: 1px outset;
+            border-color: #0B202E;
+            }
+
+QPushButton#remoteDesktopButton2:disabled {
+            background: #0B202E;
+            border: 1px outset;
+			color: grey;
+            border-color: #0B202E;
+            }</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="res.qrc">
+                 <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>14</width>
+                 <height>14</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item row="0" column="0" colspan="3">
+           <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="previewLabel">
              <property name="minimumSize">
               <size>
@@ -985,18 +1092,61 @@ QPushButton#updatePreviewButton:disabled {
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-image: url(:/icons/assets/monitor.png);
-background-repeat: none;
-padding-left: 10px;
-padding-top: 10px;
-border: none;</string>
+              <string notr="true">color: grey;
+border: 1px ridge;
+border-color: #0B202E;
+font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
              <property name="text">
-              <string/>
+              <string>Select Server And Press Update Preview</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="statusLabel">
+             <property name="styleSheet">
+              <string notr="true">border: none;
+color: #e74c3c;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="text">
+              <string>Not Listening</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
            <item row="4" column="0">
+            <widget class="QLabel" name="portTextLabel">
+             <property name="styleSheet">
+              <string notr="true">border: none; 
+color: white;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="text">
+              <string>Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="portLabel">
+             <property name="styleSheet">
+              <string notr="true">border: none;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="text">
+              <string>N/A</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
             <widget class="QLabel" name="serversOnlineStatus">
              <property name="styleSheet">
               <string notr="true">border: none; 
@@ -1008,7 +1158,21 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="5" column="1">
+            <widget class="QLabel" name="onlineStatus">
+             <property name="styleSheet">
+              <string notr="true">border: none;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
             <widget class="QLabel" name="clientStatusLabel">
              <property name="styleSheet">
               <string notr="true">border: none; 
@@ -1020,18 +1184,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="2">
-            <widget class="QLabel" name="onlineStatus">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>0</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="4">
+           <item row="6" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1044,38 +1197,10 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
             </spacer>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="portTextLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none; 
-color: white;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Port:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="statusLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-color: #e74c3c;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Not Listening</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLabel" name="portLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>4434</string>
+           <item row="2" column="0" colspan="2">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
@@ -1093,7 +1218,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1100</width>
+     <width>896</width>
      <height>24</height>
     </rect>
    </property>

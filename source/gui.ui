@@ -866,7 +866,7 @@ QTableWidget#serversTable {
     outline: 0;
     border-color: #0F2D40;
     border-radius: 2px;
-    font: 9pt &quot;MS Shell Dlg 2&quot;;
+    font: 8pt &quot;MS Shell Dlg 2&quot;;
 	background-color: #081621;
 }
 

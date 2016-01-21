@@ -562,7 +562,7 @@ class Ui_MainWindow(object):
 "    outline: 0;\n"
 "    border-color: #0F2D40;\n"
 "    border-radius: 2px;\n"
-"    font: 9pt \"MS Shell Dlg 2\";\n"
+"    font: 8pt \"MS Shell Dlg 2\";\n"
 "    background-color: #081621;\n"
 "}\n"
 "\n"

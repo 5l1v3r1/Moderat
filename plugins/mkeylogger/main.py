@@ -17,7 +17,7 @@ class mainPopup(QWidget, Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
         self.assets = args['assets']
-        self.smileys = os.path.join(self.assets, 'smile')
+        self.smilies = os.path.join(self.assets, 'smiley')
 
         self.setWindowTitle('Keystokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
@@ -41,22 +41,20 @@ class mainPopup(QWidget, Ui_Form):
             self.stopKeyloggingButton.setDisabled(False)
             self.startKeyloggingButton.setDisabled(True)
 
-    def convert_smileys(self):
+    def convert_smilies(self):
 
-        def smile(smile_):
-            return '<img src="%s" alt="%s">' % (os.path.join(self.smileys, smile_+'.png'), smile_)
+        def smiley(smiley_):
+            return '<img src="%s" alt="%s">' % (os.path.join(self.smilies, smiley_+'.png'), smiley_)
 
         data = self.keystokesText.toHtml()
-        data.replace(':)', smile('i)'))
-        data.replace(':D', smile('iD'))
-        data.replace(':P', smile('iP'))
-        data.replace(';)', smile('j)'))
-        data.replace('>:(', smile('.i('))
-        data.replace(':(', smile('i('))
-        data.replace('o.O', smile('o.O'))
-        data.replace(':O', smile('iO'))
-        data.replace('>:)', smile('.i)'))
-        data.replace(':*', smile('kiss'))
+        data.replace('o.O', smiley('Nerd'))
+        data.replace(':)', smiley('smile'))
+        data.replace(':D', smiley('Big-Grin'))
+        data.replace(':P', smiley('Tongue'))
+        data.replace(';)', smiley('Winking'))
+        data.replace(':(', smiley('Sad'))
+        data.replace(':O', smiley('Ligthbulb'))
+        data.replace(':*', smiley('Kiss'))
         self.keystokesText.setHtml(data)
         self.keystokesText.moveCursor(QTextCursor.End)
 
@@ -66,11 +64,11 @@ class mainPopup(QWidget, Ui_Form):
             result = literal_eval(data)
             for k in result:
                 if k != self.last_title:
-                    self.keystokesText.append('<br><p align="center" style="background-color: #283239; color: #E04C2A;">%s</p><br>' % k)
+                    self.keystokesText.append('<br><p align="center" style="background-color: #0F2D40; color: #2ecc71;">%s</p><br>' % k)
                 self.keystokesText.moveCursor(QTextCursor.End)
                 self.keystokesText.insertHtml(result[k])
                 self.last_title = k
-            self.convert_smileys()
+            self.convert_smilies()
         except AttributeError:
             pass
 

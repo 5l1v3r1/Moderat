@@ -250,7 +250,7 @@ def ls():
     }
     try:
         for n, i in enumerate(os.listdir(u'.')):
-            string[str(n)] = {
+            string[n] = {
                 'name': i,
                 'type': os.path.isfile(i),
                 'size': os.path.getsize(i),

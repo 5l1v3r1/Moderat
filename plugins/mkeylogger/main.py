@@ -21,7 +21,7 @@ class mainPopup(QWidget, Ui_Form):
 
         self.setWindowTitle('Keystokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
-        self.stopKeyloggingButton.setVisible(False)
+        self.stopKeyloggingButton.setDisabled(True)
 
         self.startKeyloggingButton.clicked.connect(self.start_logging)
         self.stopKeyloggingButton.clicked.connect(self.stop_logging)
@@ -38,8 +38,8 @@ class mainPopup(QWidget, Ui_Form):
             self.timer.timeout.connect(self.set_logs)
             self.timer.start(10)
 
-            self.stopKeyloggingButton.setVisible(True)
-            self.startKeyloggingButton.setVisible(False)
+            self.stopKeyloggingButton.setDisabled(False)
+            self.startKeyloggingButton.setDisabled(True)
 
     def convert_smileys(self):
 
@@ -76,8 +76,8 @@ class mainPopup(QWidget, Ui_Form):
 
     def stop_logging(self):
         data = get(self.sock, 'stopKeylogger', 'keyloggerstop')
-        self.stopKeyloggingButton.setVisible(False)
-        self.startKeyloggingButton.setVisible(True)
+        self.stopKeyloggingButton.setDisabled(True)
+        self.startKeyloggingButton.setDisabled(False)
         try:
             self.timer.stop()
         except AttributeError:

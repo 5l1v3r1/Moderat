@@ -115,7 +115,9 @@ class Ui_Form(object):
 "border: 1px outset;\n"
 "border-color: #0F2D40;\n"
 "border-radius: 2px;\n"
-"background-color: #081621;"))
+"color: rgb(178, 197, 214);\n"
+"background-color: #081621;\n"
+"font: 75 9pt \"MS Shell Dlg 2\";"))
         self.keystokesText.setDocumentTitle(_fromUtf8(""))
         self.keystokesText.setUndoRedoEnabled(False)
         self.keystokesText.setReadOnly(True)
@@ -129,5 +131,10 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.stopKeyloggingButton.setText(_translate("Form", "Stop", None))
         self.startKeyloggingButton.setText(_translate("Form", "Start", None))
+        self.keystokesText.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:9pt; font-weight:72; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
 
 import res_rc

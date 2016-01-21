@@ -90,7 +90,7 @@ shiftcodes = {
 }
 keycodes = {
     160: '', 161: '', 32: '&nbsp;',
-    9: '<font color=blue>[TAB]</font>', 8: '<font color=red>[DEL]</font>', 162: '', 163: '', 144: '',
+    9: '<font color=#288DA1>{tab}</font>', 8: '<font color=#D32B4E>{del}</font>', 162: '', 163: '', 144: '',
     35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '', 13: '<br>'
 }
 updateCode = {

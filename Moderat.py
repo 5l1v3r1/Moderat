@@ -475,7 +475,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             args = {
                 'sock': self.current_sock,
                 'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address']
+                'ipAddress': self.socks[server]['ip_address'],
+                'assets': assets,
             }
             plugin_id = id_generator()
             if plugin in plugins:

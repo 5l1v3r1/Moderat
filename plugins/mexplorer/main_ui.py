@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mexploer_ui.ui'
+# Form implementation generated from reading ui file 'main_ui.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -26,6 +26,9 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(766, 479)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(icon)
         Form.setStyleSheet(_fromUtf8("QWidget {background-color: #0F2D40;\n"
 "color: #2ecc71;}\n"
 "\n"
@@ -180,9 +183,9 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         self.lrefreshButton.setText(_fromUtf8(""))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.lrefreshButton.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.lrefreshButton.setIcon(icon1)
         self.lrefreshButton.setObjectName(_fromUtf8("lrefreshButton"))
         self.horizontalLayout.addWidget(self.lrefreshButton)
         self.lupButton = QtGui.QPushButton(self.layoutWidget)
@@ -203,9 +206,9 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         self.lupButton.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.lupButton.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.lupButton.setIcon(icon2)
         self.lupButton.setObjectName(_fromUtf8("lupButton"))
         self.horizontalLayout.addWidget(self.lupButton)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -230,9 +233,9 @@ class Ui_Form(object):
 "            border-color: #0F2D40;\n"
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.uploadButton.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.uploadButton.setIcon(icon3)
         self.uploadButton.setObjectName(_fromUtf8("uploadButton"))
         self.horizontalLayout.addWidget(self.uploadButton)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
@@ -335,9 +338,9 @@ class Ui_Form(object):
 "            border-color: #0F2D40;\n"
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.downloadButton.setIcon(icon3)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.downloadButton.setIcon(icon4)
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.horizontalLayout_2.addWidget(self.downloadButton)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -373,7 +376,7 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         self.rrefreshButton.setText(_fromUtf8(""))
-        self.rrefreshButton.setIcon(icon)
+        self.rrefreshButton.setIcon(icon1)
         self.rrefreshButton.setObjectName(_fromUtf8("rrefreshButton"))
         self.horizontalLayout_2.addWidget(self.rrefreshButton)
         self.rupButton = QtGui.QPushButton(self.layoutWidget1)
@@ -394,7 +397,7 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         self.rupButton.setText(_fromUtf8(""))
-        self.rupButton.setIcon(icon1)
+        self.rupButton.setIcon(icon2)
         self.rupButton.setObjectName(_fromUtf8("rupButton"))
         self.horizontalLayout_2.addWidget(self.rupButton)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -555,5 +558,3 @@ class Ui_Form(object):
         self.progressBar.setFormat(_translate("Form", "%p%", None))
         self.cancelButton.setText(_translate("Form", "Cancel", None))
         self.statusLabel.setText(_translate("Form", "Status", None))
-
-import res_rc

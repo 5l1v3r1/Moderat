@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
 "            }"))
         self.quitServerButton.setText(_fromUtf8(""))
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/terminate.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.quitServerButton.setIcon(icon4)
         self.quitServerButton.setIconSize(QtCore.QSize(18, 18))
         self.quitServerButton.setObjectName(_fromUtf8("quitServerButton"))

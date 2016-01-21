@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Audio Streaming</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../res.qrc">
+    <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: #0F2D40;
 color: #2ecc71;</string>
@@ -62,8 +66,8 @@ QPushButton#listenButton:pressed {
         <string>Listen</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
-         <normaloff>:/icon/assets/play.png</normaloff>:/icon/assets/play.png</iconset>
+        <iconset resource="../../res.qrc">
+         <normaloff>:/icons/assets/play.png</normaloff>:/icons/assets/play.png</iconset>
        </property>
       </widget>
      </item>
@@ -97,8 +101,8 @@ QPushButton#recordButton:pressed {
         <string>Record</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
-         <normaloff>:/icon/assets/record.png</normaloff>:/icon/assets/record.png</iconset>
+        <iconset resource="../../res.qrc">
+         <normaloff>:/icons/assets/record.png</normaloff>:/icons/assets/record.png</iconset>
        </property>
       </widget>
      </item>
@@ -132,8 +136,8 @@ QPushButton#stopButton:pressed {
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
-         <normaloff>:/icon/assets/stop.png</normaloff>:/icon/assets/stop.png</iconset>
+        <iconset resource="../../res.qrc">
+         <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
        </property>
       </widget>
      </item>
@@ -307,8 +311,8 @@ QPushButton#alwaysTopButton:checked {
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="res.qrc">
-       <normaloff>:/icon/assets/always_top.png</normaloff>:/icon/assets/always_top.png</iconset>
+      <iconset resource="../../res.qrc">
+       <normaloff>:/icons/assets/always_top.png</normaloff>:/icons/assets/always_top.png</iconset>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -331,7 +335,7 @@ QPushButton#alwaysTopButton:checked {
   </layout>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../res.qrc"/>
  </resources>
  <connections/>
 </ui>

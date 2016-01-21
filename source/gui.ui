@@ -388,7 +388,7 @@ QPushButton#quitServerButton:disabled {
            </property>
            <property name="icon">
             <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
+             <normaloff>:/icons/assets/terminate.png</normaloff>:/icons/assets/terminate.png</iconset>
            </property>
            <property name="iconSize">
             <size>

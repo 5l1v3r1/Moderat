@@ -52,7 +52,7 @@ class Ui_Form(object):
 "            background-color:#1B4C5E;\n"
 "            }"))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.startStreamingButton.setIcon(icon)
         self.startStreamingButton.setIconSize(QtCore.QSize(18, 18))
         self.startStreamingButton.setCheckable(False)
@@ -78,7 +78,7 @@ class Ui_Form(object):
 "            background-color:#1B4C5E;\n"
 "            }"))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopStreamingButton.setIcon(icon1)
         self.stopStreamingButton.setCheckable(False)
         self.stopStreamingButton.setChecked(False)
@@ -105,7 +105,7 @@ class Ui_Form(object):
 "            }"))
         self.alwaysTopButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.alwaysTopButton.setIcon(icon2)
         self.alwaysTopButton.setCheckable(True)
         self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
@@ -126,5 +126,3 @@ class Ui_Form(object):
         self.startStreamingButton.setText(_translate("Form", "Start", None))
         self.stopStreamingButton.setText(_translate("Form", "Stop", None))
         self.screenshotLabel.setText(_translate("Form", "Press Start", None))
-
-import res_rc

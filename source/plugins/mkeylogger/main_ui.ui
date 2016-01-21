@@ -13,6 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../res.qrc">
+    <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: #0F2D40;
 color: #2ecc71;</string>
@@ -62,7 +69,7 @@ QPushButton#alwaysTopButton:checked {
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="res.qrc">
+      <iconset resource="../../res.qrc">
        <normaloff>:/icons/assets/always_top.png</normaloff>:/icons/assets/always_top.png</iconset>
      </property>
      <property name="checkable">
@@ -101,7 +108,7 @@ QPushButton#stopKeyloggingButton:checked {
       <string>Stop</string>
      </property>
      <property name="icon">
-      <iconset resource="res.qrc">
+      <iconset resource="../../res.qrc">
        <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
      </property>
      <property name="checkable">
@@ -143,7 +150,7 @@ QPushButton#startKeyloggingButton:checked {
       <string>Start</string>
      </property>
      <property name="icon">
-      <iconset resource="res.qrc">
+      <iconset resource="../../res.qrc">
        <normaloff>:/icons/assets/play.png</normaloff>:/icons/assets/play.png</iconset>
      </property>
      <property name="iconSize">
@@ -189,7 +196,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../res.qrc"/>
  </resources>
  <connections/>
 </ui>

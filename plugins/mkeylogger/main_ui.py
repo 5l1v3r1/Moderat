@@ -26,6 +26,10 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(400, 330)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(icon)
+        Form.setWindowOpacity(1.0)
         Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
 "color: #2ecc71;"))
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -52,9 +56,9 @@ class Ui_Form(object):
 "            background-color:#1B4C5E;\n"
 "            }"))
         self.alwaysTopButton.setText(_fromUtf8(""))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.alwaysTopButton.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.alwaysTopButton.setIcon(icon1)
         self.alwaysTopButton.setCheckable(True)
         self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
         self.gridLayout.addWidget(self.alwaysTopButton, 0, 3, 1, 1)
@@ -77,9 +81,9 @@ class Ui_Form(object):
 "            border-color: #0F2D40;\n"
 "            background-color:#1B4C5E;\n"
 "            }"))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.stopKeyloggingButton.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.stopKeyloggingButton.setIcon(icon2)
         self.stopKeyloggingButton.setCheckable(False)
         self.stopKeyloggingButton.setChecked(False)
         self.stopKeyloggingButton.setObjectName(_fromUtf8("stopKeyloggingButton"))
@@ -103,9 +107,9 @@ class Ui_Form(object):
 "            border-color: #0F2D40;\n"
 "            background-color:#1B4C5E;\n"
 "            }"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.startKeyloggingButton.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.startKeyloggingButton.setIcon(icon3)
         self.startKeyloggingButton.setIconSize(QtCore.QSize(18, 18))
         self.startKeyloggingButton.setCheckable(False)
         self.startKeyloggingButton.setObjectName(_fromUtf8("startKeyloggingButton"))
@@ -137,4 +141,3 @@ class Ui_Form(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:9pt; font-weight:72; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
 
-import res_rc

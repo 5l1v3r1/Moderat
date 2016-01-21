@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="icons">
-    <file>assets/download.png</file>
-    <file>assets/refresh.png</file>
-    <file>assets/up.png</file>
-    <file>assets/upload.png</file>
-  </qresource>
-</RCC>

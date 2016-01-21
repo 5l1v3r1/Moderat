@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../res.qrc">
+    <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QWidget {background-color: #0F2D40;
 color: #2ecc71;}
@@ -260,7 +264,7 @@ QPushButton#lrefreshButton:pressed {
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
            </property>
           </widget>
@@ -299,7 +303,7 @@ QPushButton#lupButton:pressed {
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/up.png</normaloff>:/icons/assets/up.png</iconset>
            </property>
           </widget>
@@ -356,7 +360,7 @@ QPushButton#uploadButton:pressed {
             <string>upload</string>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/upload.png</normaloff>:/icons/assets/upload.png</iconset>
            </property>
           </widget>
@@ -556,7 +560,7 @@ QPushButton#downloadButton:pressed {
             <string>download</string>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
            </property>
           </widget>
@@ -639,7 +643,7 @@ QPushButton#rrefreshButton:pressed {
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
            </property>
           </widget>
@@ -678,7 +682,7 @@ QPushButton#rupButton:pressed {
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="res.qrc">
+            <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/up.png</normaloff>:/icons/assets/up.png</iconset>
            </property>
           </widget>
@@ -927,7 +931,7 @@ QPushButton#cancelButton:pressed {
   </layout>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../res.qrc"/>
  </resources>
  <connections/>
 </ui>

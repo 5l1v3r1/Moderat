@@ -1,6 +1,6 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from mexploer_ui import Ui_Form
+from main_ui import Ui_Form
 import ast
 import subprocess
 import ctypes

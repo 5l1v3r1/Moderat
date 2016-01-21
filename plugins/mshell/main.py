@@ -8,6 +8,7 @@ import console
 
 from libs.modechat import get
 
+
 class mainPopup(QWidget, main_ui.Ui_Form):
 
     def __init__(self, args):

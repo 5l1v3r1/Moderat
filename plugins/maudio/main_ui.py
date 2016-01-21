@@ -53,7 +53,7 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.listenButton.setIcon(icon)
         self.listenButton.setObjectName(_fromUtf8("listenButton"))
         self.horizontalLayout_2.addWidget(self.listenButton)
@@ -76,7 +76,7 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/record.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/record.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.recordButton.setIcon(icon1)
         self.recordButton.setObjectName(_fromUtf8("recordButton"))
         self.horizontalLayout_2.addWidget(self.recordButton)
@@ -99,7 +99,7 @@ class Ui_Form(object):
 "            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
 "            }"))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopButton.setIcon(icon2)
         self.stopButton.setObjectName(_fromUtf8("stopButton"))
         self.horizontalLayout_2.addWidget(self.stopButton)
@@ -184,7 +184,7 @@ class Ui_Form(object):
 "            }"))
         self.alwaysTopButton.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icon/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.alwaysTopButton.setIcon(icon3)
         self.alwaysTopButton.setCheckable(True)
         self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
@@ -207,5 +207,3 @@ class Ui_Form(object):
         self.rateDrop.setItemText(2, _translate("Form", "44100", None))
         self.volumeLabel.setText(_translate("Form", "Volume:", None))
         self.volumeProgress.setFormat(_translate("Form", "Volume", None))
-
-import res_rc

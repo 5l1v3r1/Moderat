@@ -1,7 +1,0 @@
-<RCC>
-  <qresource prefix="icons">
-    <file>assets/always_top.png</file>
-    <file>assets/play.png</file>
-    <file>assets/stop.png</file>
-  </qresource>
-</RCC>

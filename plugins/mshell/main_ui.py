@@ -29,7 +29,8 @@ class Ui_Form(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
-        Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;"))
+        Form.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
+"color: #bdc3c7;"))
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
 
@@ -38,3 +39,4 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Mirakuru - Remote Shell", None))
+

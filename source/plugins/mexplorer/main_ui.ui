@@ -18,24 +18,25 @@
     <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {background-color: #0F2D40;
-color: #2ecc71;}
+   <string notr="true">QWidget {
+background-color: #2c3e50;
+color: #bdc3c7;
+}
 
- QScrollBar:vertical {
+QScrollBar:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #194759;
      width: 10px;
      margin: 22px 0 22px 0;
  }
  QScrollBar::handle:vertical {
-     background: #2ecc71;
+     background: #95a5a6;
      min-height: 20px;
  }
  QScrollBar::add-line:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #32CC99;
+     background: #95a5a6;
      height: 16px;
      subcontrol-position: bottom;
      subcontrol-origin: margin;
@@ -44,15 +45,12 @@ color: #2ecc71;}
  QScrollBar::sub-line:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #32CC99;
+     background: #95a5a6;
      height: 16px;
      subcontrol-position: top;
      subcontrol-origin: margin;
  }
  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-     border: 1px outset;
-     border-color: #0F2D40;
-     border-radius: 2px;
      width: 3px;
      height: 3px;
      background: white;
@@ -65,20 +63,19 @@ color: #2ecc71;}
  QScrollBar:horizontal {
 border: 1px outset;
      border-color: #0F2D40;
-     background: #194759;
      height: 10px;
      margin: 0px 40px 0 0px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #2ecc71;
+    background: #95a5a6;
     min-width: 20px;
 }
 
 QScrollBar::add-line:horizontal {
     border: 1px outset;
     border-color: #0F2D40;
-    background: #32CC99;
+    background: #95a5a6;
     width: 16px;
     subcontrol-position: right;
     subcontrol-origin: margin;
@@ -87,7 +84,7 @@ QScrollBar::add-line:horizontal {
 QScrollBar::sub-line:horizontal {
     border: 1px outset;
     border-color: #0F2D40;
-    background: #32CC99;
+    background: #95a5a6;
     width: 16px;
     subcontrol-position: top right;
     subcontrol-origin: margin;
@@ -98,7 +95,7 @@ QScrollBar::sub-line:horizontal {
 QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     width: 3px;
     height: 3px;
-    background: pink;
+    background: white;
 }
 
 QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
@@ -106,6 +103,71 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#cancelButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#cancelButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="styleSheet">
+      <string notr="true">QProgressBar:horizontal {
+border: 1px ridge;
+border-color: #2c3e50;
+background-color: #34495e;
+padding: 1px;
+text-align: top;
+margin-right: 4ex;
+}
+QProgressBar::chunk:horizontal {
+background: #1abc9c;
+margin-right: 1px;
+width: 5px;
+}</string>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
+     <property name="textDirection">
+      <enum>QProgressBar::TopToBottom</enum>
+     </property>
+     <property name="format">
+      <string>%p%</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <property name="spacing">
@@ -221,12 +283,10 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
            </property>
            <property name="styleSheet">
             <string notr="true">border: 1px ridge;
-border-color: #0F2D40;
-border-radius: none;
+border-color: #2c3e50;
 height: 15px;
 font-size: 12px;
-background-color: #081621;
-padding-left: 5px;</string>
+background-color: #34495e;</string>
            </property>
           </widget>
          </item>
@@ -246,18 +306,14 @@ padding-left: 5px;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#lrefreshButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#lrefreshButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -266,6 +322,12 @@ QPushButton#lrefreshButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -285,18 +347,14 @@ QPushButton#lrefreshButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#lupButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#lupButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -305,6 +363,12 @@ QPushButton#lupButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/up.png</normaloff>:/icons/assets/up.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -340,20 +404,14 @@ QPushButton#lupButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#uploadButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
+			border: 1px ridge;
+            border-color: #2c3e50;
 			padding-right: 5px;
-			color: white;
-            text-decoration: none;
-            background-color: #225E75
+            background-color: #34495e;
             }
 
 QPushButton#uploadButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -362,6 +420,12 @@ QPushButton#uploadButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/upload.png</normaloff>:/icons/assets/upload.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -386,12 +450,10 @@ QPushButton#uploadButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">border: 1px ridge;
-border-color: #0F2D40;
-border-radius: none;
+border-color: #2c3e50;
 height: 15px;
 font-size: 12px;
-background-color: #081621;
-padding-left: 5px;</string>
+background-color: #34495e;</string>
            </property>
            <property name="text">
             <string/>
@@ -407,24 +469,28 @@ padding-left: 5px;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QHeaderView::section {
-	background-color: #194759;
-	color: white;
+	background-color: #34495e;
     padding: 2px;
+    color: #bdc3c7;
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+	border: 1px ridge;
+	border-right: none;
+	border-color: #2c3e50;
 }
 
 QTableWidget#lexplorerTable {
 	background-position: center;
-    border: 1px outset;
-    border-color: #0F2D40;
-    border-radius: 2px;
-    background-color: #081621;
+    border: 1px ridge;
+    padding: 5px;
+	color: #ecf0f1;
+    border-color: #2c3e50;
+    font: 8pt &quot;MS Shell Dlg 2&quot;;
+	background-color: #34495e;
 }
 
 QTableWidget#lexplorerTable:item:selected {
-background-color: #194759;
-height: 50px;
-color: #2ecc71;
-border: none;
+background-color: #2c3e50;
+color: #ecf0f1;
 }</string>
          </property>
          <property name="frameShape">
@@ -540,20 +606,14 @@ border: none;
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#downloadButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-			padding-left: 5px;
-            text-decoration: none;
-            background-color: #225E75;
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#downloadButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -562,6 +622,12 @@ QPushButton#downloadButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -600,12 +666,10 @@ QPushButton#downloadButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">border: 1px ridge;
-border-color: #0F2D40;
-border-radius: none;
+border-color: #2c3e50;
 height: 15px;
 font-size: 12px;
-background-color: #081621;
-padding-left: 5px;</string>
+background-color: #34495e;</string>
            </property>
           </widget>
          </item>
@@ -625,18 +689,14 @@ padding-left: 5px;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#rrefreshButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#rrefreshButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -645,6 +705,12 @@ QPushButton#rrefreshButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -664,18 +730,14 @@ QPushButton#rrefreshButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#rupButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#rupButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -684,6 +746,12 @@ QPushButton#rupButton:pressed {
            <property name="icon">
             <iconset resource="../../res.qrc">
              <normaloff>:/icons/assets/up.png</normaloff>:/icons/assets/up.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -708,12 +776,10 @@ QPushButton#rupButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">border: 1px ridge;
-border-color: #0F2D40;
-border-radius: none;
+border-color: #2c3e50;
 height: 15px;
 font-size: 12px;
-background-color: #081621;
-padding-left: 5px;</string>
+background-color: #34495e;</string>
            </property>
            <property name="text">
             <string/>
@@ -729,24 +795,28 @@ padding-left: 5px;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QHeaderView::section {
-	background-color: #194759;
-	color: white;
+	background-color: #34495e;
     padding: 2px;
+    color: #bdc3c7;
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+	border: 1px ridge;
+	border-right: none;
+	border-color: #2c3e50;
 }
 
 QTableWidget#rexplorerTable {
 	background-position: center;
-    border: 1px outset;
-    border-color: #0F2D40;
-    border-radius: 2px;
-    background-color: #081621;
+    border: 1px ridge;
+    padding: 5px;
+	color: #ecf0f1;
+    border-color: #2c3e50;
+    font: 8pt &quot;MS Shell Dlg 2&quot;;
+	background-color: #34495e;
 }
 
 QTableWidget#rexplorerTable:item:selected {
-background-color: #194759;
-height: 50px;
-color: #2ecc71;
-border: none;
+background-color: #2c3e50;
+color: #ecf0f1;
 }</string>
          </property>
          <property name="frameShape">
@@ -842,90 +912,6 @@ border: none;
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QProgressBar" name="progressBar">
-     <property name="styleSheet">
-      <string notr="true">QProgressBar:horizontal {
-border: 1px solid #2ecc71;
-border-radius: 3px;
-background: #081621;
-padding: 1px;
-text-align: top;
-margin-right: 4ex;
-}
-QProgressBar::chunk:horizontal {
-background: #194759;
-margin-right: 1px;
-width: 5px;
-}</string>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-     <property name="textDirection">
-      <enum>QProgressBar::TopToBottom</enum>
-     </property>
-     <property name="format">
-      <string>%p%</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QPushButton" name="cancelButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>70</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton#cancelButton {
-            background: #194759;
-			border: 1px solid #2ecc71;
-			color: white;
-            background-color: #194759;
-            }
-
-QPushButton#cancelButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
-            }</string>
-     </property>
-     <property name="text">
-      <string>Cancel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QLabel" name="statusLabel">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Status</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
     </widget>
    </item>
   </layout>

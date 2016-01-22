@@ -314,10 +314,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 lock_status = 'LOCKED' if self.streaming_socks[obj]['protection'] == 'False' else 'UNLOCKED'
                 item = QTableWidgetItem(lock_status)
                 if lock_status == 'LOCKED':
-                    item.setTextColor(QColor('#e74c3c'))
+                    item.setTextColor(QColor('#e67e22'))
                     item.setIcon(QIcon(os.path.join(assets, 'lock.png')))
                 else:
-                    item.setTextColor(QColor('lime'))
+                    item.setTextColor(QColor('#2ecc71'))
                     item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
                 self.serversTable.setItem(index, self.index_of_lock, item)
 
@@ -338,7 +338,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 # add active windows title
                 item = QTableWidgetItem(self.streaming_socks[obj]['activewindowtitle'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                item.setTextColor(QColor('#f39c12'))
+                item.setTextColor(QColor('#1abc9c'))
                 self.serversTable.setItem(index, self.index_of_activeWindowTitle, item)
         except RuntimeError:
             pass

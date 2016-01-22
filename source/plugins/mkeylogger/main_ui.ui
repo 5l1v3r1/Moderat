@@ -25,7 +25,20 @@
 color: #bdc3c7;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" colspan="8">
+   <item row="0" column="5">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" colspan="7">
     <widget class="QTextEdit" name="keystokesText">
      <property name="styleSheet">
       <string notr="true">background-position: center;
@@ -55,19 +68,6 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="0" column="6">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="7">
     <widget class="QPushButton" name="alwaysTopButton">
      <property name="minimumSize">
       <size>
@@ -237,6 +237,13 @@ QPushButton#saveButton:pressed {
      </property>
     </widget>
    </item>
+   <item row="0" column="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="4">
     <widget class="QPushButton" name="smileyButton">
      <property name="toolTip">
@@ -269,52 +276,6 @@ QPushButton#smileyButton:checked {
       </size>
      </property>
      <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QPushButton" name="bottomButton">
-     <property name="toolTip">
-      <string>Alway Bottom</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton#bottomButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-            }
-
-QPushButton#bottomButton:checked {
-			border-color: #27ae60;
-            background-color: #2c3e50;
-            }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../res.qrc">
-       <normaloff>:/icons/assets/bottom.png</normaloff>:/icons/assets/bottom.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>18</width>
-       <height>18</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
       <bool>true</bool>
      </property>
     </widget>

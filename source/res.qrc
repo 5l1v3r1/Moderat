@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/rename.png</file>
+    <file>../assets/execute.png</file>
     <file>../assets/bottom.png</file>
     <file>../assets/save.png</file>
     <file>../assets/smiley.png</file>

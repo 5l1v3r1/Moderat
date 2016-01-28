@@ -61,7 +61,8 @@ class mainPopup(QWidget, Ui_Form):
 
     def save(self):
         file_name = QFileDialog.getSaveFileName(self, "Save To File", "", filter="html (*.html)")
-        open(file_name, 'w').write(self.keystokesText.toHtml())
+        if file_name:
+            open(file_name, 'w').write(self.keystokesText.toHtml())
 
     def set_logs(self):
         try:

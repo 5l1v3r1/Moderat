@@ -417,28 +417,29 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server_options_menu = QMenu('Server Options', self)
         server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
-        if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-            server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+        if self.serversTable.selectedItems():
+            if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
-        else:
-            server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
-                                  lambda: self.run_plugin('shellMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
-                                  lambda: self.run_plugin('explorerMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
-                                  lambda: self.run_plugin('audioMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming',
-                                  lambda: self.run_plugin('desktopMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
-                                  lambda: self.run_plugin('keyloggerMode'))
+            else:
+                server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
+                                      lambda: self.run_plugin('shellMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
+                                      lambda: self.run_plugin('explorerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
+                                      lambda: self.run_plugin('audioMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming',
+                                      lambda: self.run_plugin('desktopMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
+                                      lambda: self.run_plugin('keyloggerMode'))
 
-            server_menu.addSeparator()
-            server_menu.addMenu(server_options_menu)
-            server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
-                                          self.lock_server)
-            server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
-                                          self.lock_server)
-        server_menu.exec_(self.serversTable.mapToGlobal(point))
+                server_menu.addSeparator()
+                server_menu.addMenu(server_options_menu)
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
+                                              self.lock_server)
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
+                                              self.lock_server)
+            server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
     def current_server(self):

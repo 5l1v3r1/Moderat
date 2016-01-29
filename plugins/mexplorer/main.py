@@ -412,6 +412,7 @@ class mainPopup(QWidget, Ui_Form):
             self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)
             self.explorerTable.resizeColumnsToContents()
 
+            # set folders & files count
             self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
 
             self.check_selected_item()

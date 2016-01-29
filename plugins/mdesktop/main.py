@@ -64,7 +64,7 @@ class mainPopup(QWidget, Ui_Form):
     def set_screenshot(self):
         try:
             self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.desktop.screen_bits)).scaled(
-                self.screenshotLabel.size(), Qt.KeepAspectRatio))
+                800, 600, Qt.KeepAspectRatio))
         except AttributeError:
             pass
 
@@ -98,6 +98,8 @@ class DesktopStreaming(threading.Thread):
                 im = Image.frombuffer('RGB', (int(result['width']), int(result['height'])),
                                       zlib.decompress(result['screenshotbits']), 'raw', 'BGRX', 0, 1)
                 self.screen_bits = im.convert('RGBA')
+                self.width = int(result['width'])
+                self.height = int(result['height'])
                 del im
             except ValueError:
                 pass

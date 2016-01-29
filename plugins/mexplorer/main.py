@@ -141,60 +141,58 @@ class mainPopup(QWidget, Ui_Form):
 
     def download(self):
         # Get file name
-        try:
-            type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
-            _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+        _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
+        _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+        print _type
+        print _file
 
-            if '<FILE>' in type:
+        if '<FILE>' in _type:
 
-                # Preparing for upload
-                self.progressBar.setVisible(True)
-                self.cancelButton.setVisible(True)
-                self.tempBlockSignals(True)
+            # Preparing for upload
+            self.progressBar.setVisible(True)
+            self.cancelButton.setVisible(True)
+            self.tempBlockSignals(True)
 
-                self.activeProgress = True
+            self.activeProgress = True
 
-                end = '[ENDOFMESSAGE]'
-                data = ''
+            end = '[ENDOFMESSAGE]'
+            data = ''
 
-                send(self.sock, 'download '+_file)
-                try:
-                    recv = str(self.sock.recv(1024))
-                    if recv.isdigit():
-                        fileSize = int(recv)
-                        self.sock.sendall('ok')
+            send(self.sock, 'download '+_file)
+            try:
+                recv = str(self.sock.recv(1024))
+                if recv.isdigit():
+                    fileSize = int(recv)
+                    self.sock.sendall('ok')
 
-                        l = self.sock.recv(1024)
-                        while l:
-                            self.gui()
-                            data += l
-                            self.progressBar.setValue(len(data)*100/fileSize)
-                            if data.endswith(end):
-                                break
-                            if not self.activeProgress:
-                                raise socket.error
-                            else:
-                                l = self.sock.recv(1024)
-                        with open(_file, 'wb') as _f:
-                            _f.write(data)
-                except socket.error:
-                    print 'socket error'
-                finally:
-                    self.getLocalContent()
-                    self.progressBar.setVisible(False)
-                    self.cancelButton.setVisible(False)
-                    self.tempBlockSignals(False)
-        except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
-            warn.exec_()
+                    l = self.sock.recv(1024)
+                    while l:
+                        self.gui()
+                        data += l
+                        self.progressBar.setValue(len(data)*100/fileSize)
+                        if data.endswith(end):
+                            break
+                        if not self.activeProgress:
+                            raise socket.error
+                        else:
+                            l = self.sock.recv(1024)
+                    with open(_file, 'wb') as _f:
+                        _f.write(data)
+            except socket.error:
+                print 'socket error'
+            finally:
+                self.progressBar.setVisible(False)
+                self.cancelButton.setVisible(False)
+                self.tempBlockSignals(False)
+        #except AttributeError:
+            #warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            #warn.exec_()
 
     def upload(self):
         try:
             # Get file name
-            print 'get file name'
-            return
-
-            if '<FILE>' in type:
+            file_name = str(QFileDialog.getOpenFileName(self, 'Choose File', ''))
+            if file_name:
 
                 # Preparing for upload
                 self.progressBar.setVisible(True)
@@ -204,13 +202,13 @@ class mainPopup(QWidget, Ui_Form):
                 self.activeProgress = True
 
                 end = '[ENDOFMESSAGE]'
-                fileSize = os.path.getsize(_file)
+                fileSize = os.path.getsize(file_name)
                 uploadedSize = 0
 
-                send(self.sock, 'upload '+_file)
+                send(self.sock, 'upload '+file_name)
 
                 try:
-                    with open(_file, 'rb') as _f:
+                    with open(file_name, 'rb') as _f:
                         while 1:
                             self.gui()
                             if not self.activeProgress:
@@ -295,7 +293,7 @@ class mainPopup(QWidget, Ui_Form):
                 fileColor = QColor(235, 235, 235)
                 folderColor = QColor(201, 101, 101)
             else:
-                fileColor = QColor(155, 89, 182)
+                fileColor = QColor('#9b59b6')
                 folderColor = QColor(0, 255, 255)
 
             # set content type

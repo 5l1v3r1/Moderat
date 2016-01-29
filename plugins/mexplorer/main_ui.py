@@ -112,176 +112,8 @@ class Ui_Form(object):
 "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
 "    background: none;\n"
 "}"))
-        self.gridLayout = QtGui.QGridLayout(Form)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.explorerTable = QtGui.QTableWidget(Form)
-        self.explorerTable.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.explorerTable.setAcceptDrops(True)
-        self.explorerTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
-"    background-color: #34495e;\n"
-"    padding: 2px;\n"
-"    color: #bdc3c7;\n"
-"    font: 75 8pt \"MS Shell Dlg 2\";\n"
-"    border: 1px ridge;\n"
-"    border-right: none;\n"
-"    border-color: #2c3e50;\n"
-"}\n"
-"\n"
-"QTableWidget#explorerTable {\n"
-"    background-position: center;\n"
-"    border: 1px ridge;\n"
-"    padding: 5px;\n"
-"    color: #ecf0f1;\n"
-"    border-color: #2c3e50;\n"
-"    font: 8pt \"MS Shell Dlg 2\";\n"
-"    background-color: #34495e;\n"
-"}\n"
-"\n"
-"QTableWidget#explorerTable:item:selected {\n"
-"background-color: #2c3e50;\n"
-"color: #bdc3c7;\n"
-"}"))
-        self.explorerTable.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.explorerTable.setFrameShadow(QtGui.QFrame.Plain)
-        self.explorerTable.setLineWidth(1)
-        self.explorerTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.explorerTable.setProperty("showDropIndicator", False)
-        self.explorerTable.setDragDropOverwriteMode(False)
-        self.explorerTable.setAlternatingRowColors(False)
-        self.explorerTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.explorerTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.explorerTable.setTextElideMode(QtCore.Qt.ElideMiddle)
-        self.explorerTable.setShowGrid(False)
-        self.explorerTable.setGridStyle(QtCore.Qt.DotLine)
-        self.explorerTable.setWordWrap(False)
-        self.explorerTable.setCornerButtonEnabled(True)
-        self.explorerTable.setObjectName(_fromUtf8("explorerTable"))
-        self.explorerTable.setColumnCount(4)
-        self.explorerTable.setRowCount(0)
-        item = QtGui.QTableWidgetItem()
-        self.explorerTable.setHorizontalHeaderItem(0, item)
-        item = QtGui.QTableWidgetItem()
-        self.explorerTable.setHorizontalHeaderItem(1, item)
-        item = QtGui.QTableWidgetItem()
-        self.explorerTable.setHorizontalHeaderItem(2, item)
-        item = QtGui.QTableWidgetItem()
-        self.explorerTable.setHorizontalHeaderItem(3, item)
-        self.explorerTable.horizontalHeader().setVisible(True)
-        self.explorerTable.horizontalHeader().setCascadingSectionResizes(True)
-        self.explorerTable.horizontalHeader().setDefaultSectionSize(50)
-        self.explorerTable.horizontalHeader().setHighlightSections(True)
-        self.explorerTable.horizontalHeader().setSortIndicatorShown(False)
-        self.explorerTable.horizontalHeader().setStretchLastSection(True)
-        self.explorerTable.verticalHeader().setVisible(False)
-        self.explorerTable.verticalHeader().setCascadingSectionResizes(False)
-        self.gridLayout.addWidget(self.explorerTable, 2, 1, 1, 2)
-        self.cancelButton = QtGui.QPushButton(Form)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.cancelButton.sizePolicy().hasHeightForWidth())
-        self.cancelButton.setSizePolicy(sizePolicy)
-        self.cancelButton.setMinimumSize(QtCore.QSize(70, 25))
-        self.cancelButton.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.cancelButton.setStyleSheet(_fromUtf8("QPushButton#cancelButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#cancelButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
-        self.gridLayout.addWidget(self.cancelButton, 4, 2, 1, 1)
-        self.groupBox = QtGui.QGroupBox(Form)
-        self.groupBox.setMaximumSize(QtCore.QSize(150, 16777215))
-        self.groupBox.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
-"border-color: #2c3e50;\n"
-"padding-top: 20px;"))
-        self.groupBox.setAlignment(QtCore.Qt.AlignCenter)
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
-        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.envDesktopButton = QtGui.QPushButton(self.groupBox)
-        self.envDesktopButton.setStyleSheet(_fromUtf8("QPushButton#envDesktopButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#envDesktopButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.envDesktopButton.setObjectName(_fromUtf8("envDesktopButton"))
-        self.gridLayout_2.addWidget(self.envDesktopButton, 0, 0, 1, 1)
-        self.envDownloadsButton = QtGui.QPushButton(self.groupBox)
-        self.envDownloadsButton.setStyleSheet(_fromUtf8("QPushButton#envDownloadsButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#envDownloadsButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.envDownloadsButton.setObjectName(_fromUtf8("envDownloadsButton"))
-        self.gridLayout_2.addWidget(self.envDownloadsButton, 1, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem, 5, 0, 1, 1)
-        self.envStartupButton = QtGui.QPushButton(self.groupBox)
-        self.envStartupButton.setStyleSheet(_fromUtf8("QPushButton#envStartupButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#envStartupButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.envStartupButton.setObjectName(_fromUtf8("envStartupButton"))
-        self.gridLayout_2.addWidget(self.envStartupButton, 3, 0, 1, 1)
-        self.envDocumentsButton = QtGui.QPushButton(self.groupBox)
-        self.envDocumentsButton.setStyleSheet(_fromUtf8("QPushButton#envDocumentsButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#envDocumentsButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.envDocumentsButton.setObjectName(_fromUtf8("envDocumentsButton"))
-        self.gridLayout_2.addWidget(self.envDocumentsButton, 2, 0, 1, 1)
-        self.encServerButton = QtGui.QPushButton(self.groupBox)
-        self.encServerButton.setStyleSheet(_fromUtf8("QPushButton#encServerButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#encServerButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.encServerButton.setObjectName(_fromUtf8("encServerButton"))
-        self.gridLayout_2.addWidget(self.encServerButton, 4, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox, 2, 0, 1, 1)
-        self.explorerPathEntry = QtGui.QLineEdit(Form)
-        self.explorerPathEntry.setMinimumSize(QtCore.QSize(0, 28))
-        self.explorerPathEntry.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
-"border-color: #2c3e50;\n"
-"height: 15px;\n"
-"font-size: 12px;\n"
-"background-color: #34495e;"))
-        self.explorerPathEntry.setText(_fromUtf8(""))
-        self.explorerPathEntry.setObjectName(_fromUtf8("explorerPathEntry"))
-        self.gridLayout.addWidget(self.explorerPathEntry, 1, 0, 1, 3)
+        self.verticalLayout = QtGui.QVBoxLayout(Form)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.explorerDrivesDrop = QtGui.QComboBox(Form)
@@ -496,9 +328,123 @@ class Ui_Form(object):
         self.unhideButton.setIconSize(QtCore.QSize(18, 18))
         self.unhideButton.setObjectName(_fromUtf8("unhideButton"))
         self.horizontalLayout_2.addWidget(self.unhideButton)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.explorerPathEntry = QtGui.QLineEdit(Form)
+        self.explorerPathEntry.setMinimumSize(QtCore.QSize(0, 28))
+        self.explorerPathEntry.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"height: 15px;\n"
+"font-size: 12px;\n"
+"background-color: #34495e;"))
+        self.explorerPathEntry.setText(_fromUtf8(""))
+        self.explorerPathEntry.setObjectName(_fromUtf8("explorerPathEntry"))
+        self.verticalLayout.addWidget(self.explorerPathEntry)
+        self.explorerTable = QtGui.QTableWidget(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.explorerTable.sizePolicy().hasHeightForWidth())
+        self.explorerTable.setSizePolicy(sizePolicy)
+        self.explorerTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.explorerTable.setAcceptDrops(True)
+        self.explorerTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
+"    background-color: #34495e;\n"
+"    padding: 2px;\n"
+"    color: #bdc3c7;\n"
+"    font: 75 8pt \"MS Shell Dlg 2\";\n"
+"    border: 1px ridge;\n"
+"    border-right: none;\n"
+"    border-color: #2c3e50;\n"
+"}\n"
+"\n"
+"QTableWidget#explorerTable {\n"
+"    background-position: center;\n"
+"    border: 1px ridge;\n"
+"    padding: 5px;\n"
+"    color: #ecf0f1;\n"
+"    border-color: #2c3e50;\n"
+"    font: 8pt \"MS Shell Dlg 2\";\n"
+"    background-color: #34495e;\n"
+"}\n"
+"\n"
+"QTableWidget#explorerTable:item:selected {\n"
+"background-color: #2c3e50;\n"
+"color: #f1c40f;\n"
+"}"))
+        self.explorerTable.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.explorerTable.setFrameShadow(QtGui.QFrame.Plain)
+        self.explorerTable.setLineWidth(1)
+        self.explorerTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.explorerTable.setProperty("showDropIndicator", False)
+        self.explorerTable.setDragDropOverwriteMode(False)
+        self.explorerTable.setAlternatingRowColors(False)
+        self.explorerTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.explorerTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.explorerTable.setTextElideMode(QtCore.Qt.ElideMiddle)
+        self.explorerTable.setShowGrid(False)
+        self.explorerTable.setGridStyle(QtCore.Qt.DotLine)
+        self.explorerTable.setWordWrap(False)
+        self.explorerTable.setCornerButtonEnabled(True)
+        self.explorerTable.setObjectName(_fromUtf8("explorerTable"))
+        self.explorerTable.setColumnCount(4)
+        self.explorerTable.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.explorerTable.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.explorerTable.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.explorerTable.setHorizontalHeaderItem(2, item)
+        item = QtGui.QTableWidgetItem()
+        self.explorerTable.setHorizontalHeaderItem(3, item)
+        self.explorerTable.horizontalHeader().setVisible(True)
+        self.explorerTable.horizontalHeader().setCascadingSectionResizes(True)
+        self.explorerTable.horizontalHeader().setDefaultSectionSize(50)
+        self.explorerTable.horizontalHeader().setHighlightSections(True)
+        self.explorerTable.horizontalHeader().setSortIndicatorShown(False)
+        self.explorerTable.horizontalHeader().setStretchLastSection(True)
+        self.explorerTable.verticalHeader().setVisible(False)
+        self.explorerTable.verticalHeader().setCascadingSectionResizes(False)
+        self.verticalLayout.addWidget(self.explorerTable)
+        self.horizontalLayout_5 = QtGui.QHBoxLayout()
+        self.horizontalLayout_5.setSpacing(10)
+        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
+        self.fileLabel = QtGui.QLabel(Form)
+        self.fileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.fileLabel.setStyleSheet(_fromUtf8("color: #ecf0f1;"))
+        self.fileLabel.setObjectName(_fromUtf8("fileLabel"))
+        self.horizontalLayout_5.addWidget(self.fileLabel)
+        self.dirLabel = QtGui.QLabel(Form)
+        self.dirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.dirLabel.setStyleSheet(_fromUtf8("color: #e67e22;"))
+        self.dirLabel.setObjectName(_fromUtf8("dirLabel"))
+        self.horizontalLayout_5.addWidget(self.dirLabel)
+        self.hfileLabel = QtGui.QLabel(Form)
+        self.hfileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.hfileLabel.setStyleSheet(_fromUtf8("color: #9b59b6;"))
+        self.hfileLabel.setObjectName(_fromUtf8("hfileLabel"))
+        self.horizontalLayout_5.addWidget(self.hfileLabel)
+        self.hdirLabel = QtGui.QLabel(Form)
+        self.hdirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
+        self.hdirLabel.setStyleSheet(_fromUtf8("color: #3498db;"))
+        self.hdirLabel.setObjectName(_fromUtf8("hdirLabel"))
+        self.horizontalLayout_5.addWidget(self.hdirLabel)
+        self.selectedLabel = QtGui.QLabel(Form)
+        self.selectedLabel.setStyleSheet(_fromUtf8("color: #f1c40f;"))
+        self.selectedLabel.setObjectName(_fromUtf8("selectedLabel"))
+        self.horizontalLayout_5.addWidget(self.selectedLabel)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 3)
+        self.horizontalLayout_5.addItem(spacerItem1)
+        self.dirfilesLabel = QtGui.QLabel(Form)
+        self.dirfilesLabel.setObjectName(_fromUtf8("dirfilesLabel"))
+        self.horizontalLayout_5.addWidget(self.dirfilesLabel)
+        self.dirfilesCountLabel = QtGui.QLabel(Form)
+        self.dirfilesCountLabel.setObjectName(_fromUtf8("dirfilesCountLabel"))
+        self.horizontalLayout_5.addWidget(self.dirfilesCountLabel)
+        self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.progressBar = QtGui.QProgressBar(Form)
         self.progressBar.setStyleSheet(_fromUtf8("QProgressBar:horizontal {\n"
 "border: 1px ridge;\n"
@@ -517,39 +463,28 @@ class Ui_Form(object):
         self.progressBar.setInvertedAppearance(False)
         self.progressBar.setTextDirection(QtGui.QProgressBar.TopToBottom)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
-        self.gridLayout.addWidget(self.progressBar, 4, 0, 1, 2)
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setSpacing(10)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.fileLabel = QtGui.QLabel(Form)
-        self.fileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.fileLabel.setStyleSheet(_fromUtf8("color: rgb(155, 89, 182);"))
-        self.fileLabel.setObjectName(_fromUtf8("fileLabel"))
-        self.horizontalLayout_5.addWidget(self.fileLabel)
-        self.dirLabel = QtGui.QLabel(Form)
-        self.dirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.dirLabel.setStyleSheet(_fromUtf8("color: rgb(0, 255, 255);"))
-        self.dirLabel.setObjectName(_fromUtf8("dirLabel"))
-        self.horizontalLayout_5.addWidget(self.dirLabel)
-        self.hfileLabel = QtGui.QLabel(Form)
-        self.hfileLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.hfileLabel.setStyleSheet(_fromUtf8("color: rgb(235, 235, 235);"))
-        self.hfileLabel.setObjectName(_fromUtf8("hfileLabel"))
-        self.horizontalLayout_5.addWidget(self.hfileLabel)
-        self.hdirLabel = QtGui.QLabel(Form)
-        self.hdirLabel.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.hdirLabel.setStyleSheet(_fromUtf8("color: rgb(201, 101, 101);"))
-        self.hdirLabel.setObjectName(_fromUtf8("hdirLabel"))
-        self.horizontalLayout_5.addWidget(self.hdirLabel)
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem2)
-        self.dirfilesLabel = QtGui.QLabel(Form)
-        self.dirfilesLabel.setObjectName(_fromUtf8("dirfilesLabel"))
-        self.horizontalLayout_5.addWidget(self.dirfilesLabel)
-        self.dirfilesCountLabel = QtGui.QLabel(Form)
-        self.dirfilesCountLabel.setObjectName(_fromUtf8("dirfilesCountLabel"))
-        self.horizontalLayout_5.addWidget(self.dirfilesCountLabel)
-        self.gridLayout.addLayout(self.horizontalLayout_5, 3, 0, 1, 3)
+        self.horizontalLayout.addWidget(self.progressBar)
+        self.cancelButton = QtGui.QPushButton(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.cancelButton.sizePolicy().hasHeightForWidth())
+        self.cancelButton.setSizePolicy(sizePolicy)
+        self.cancelButton.setMinimumSize(QtCore.QSize(70, 25))
+        self.cancelButton.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.cancelButton.setStyleSheet(_fromUtf8("QPushButton#cancelButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#cancelButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
+        self.horizontalLayout.addWidget(self.cancelButton)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -565,18 +500,13 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Date Modified", None))
         item = self.explorerTable.horizontalHeaderItem(3)
         item.setText(_translate("Form", "Size", None))
-        self.cancelButton.setText(_translate("Form", "Cancel", None))
-        self.groupBox.setTitle(_translate("Form", "Quick access", None))
-        self.envDesktopButton.setText(_translate("Form", "Desktop", None))
-        self.envDownloadsButton.setText(_translate("Form", "Downloads", None))
-        self.envStartupButton.setText(_translate("Form", "Startup", None))
-        self.envDocumentsButton.setText(_translate("Form", "Documents", None))
-        self.encServerButton.setText(_translate("Form", "Server", None))
-        self.progressBar.setFormat(_translate("Form", "%p%", None))
         self.fileLabel.setText(_translate("Form", "File", None))
         self.dirLabel.setText(_translate("Form", "Directory", None))
         self.hfileLabel.setText(_translate("Form", "Hidden File", None))
         self.hdirLabel.setText(_translate("Form", "Hidden Directory", None))
+        self.selectedLabel.setText(_translate("Form", "Selected", None))
         self.dirfilesLabel.setText(_translate("Form", "Directories / Files:", None))
         self.dirfilesCountLabel.setText(_translate("Form", "0", None))
+        self.progressBar.setFormat(_translate("Form", "%p%", None))
+        self.cancelButton.setText(_translate("Form", "Cancel", None))
 

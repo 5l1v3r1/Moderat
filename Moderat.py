@@ -351,7 +351,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
                 server = self.current_server()
                 if server:
-                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ')
+                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ', QLineEdit.Password)
                     if ok:
                         _hash = hashlib.md5()
                         _hash.update(str(text))

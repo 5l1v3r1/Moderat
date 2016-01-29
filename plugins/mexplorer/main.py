@@ -29,6 +29,9 @@ class mainPopup(QWidget, Ui_Form):
         # progress status
         self.activeProgress = False
 
+        # disable action buttons
+        self.disable_buttons(True, True)
+
         # init icons
         self.fileIcon = os.path.join(self.assets, 'file.png')
         self.folderIcon = os.path.join(self.assets, 'folder.png')
@@ -38,10 +41,13 @@ class mainPopup(QWidget, Ui_Form):
         # signals
         self.upButton.clicked.connect(self.parent_folder)
         self.explorerTable.doubleClicked.connect(self.open_folder)
+        self.explorerTable.clicked.connect(self.check_selected_item)
         self.explorerPathEntry.returnPressed.connect(self.open_path)
         self.uploadButton.clicked.connect(self.upload)
         self.downloadButton.clicked.connect(self.download)
         self.cancelButton.clicked.connect(self.cancelProgress)
+        self.openFolderButton.clicked.connect(self.open_folder)
+        self.renameButton.clicked.connect(self.rename)
 
         # Initializing combobox change Event
         self.connect(self.explorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.drive_change)
@@ -51,8 +57,29 @@ class mainPopup(QWidget, Ui_Form):
 
         self.get_content()
 
+    def rename(self):
+        target = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
+        text, ok = QInputDialog.getText(self, "Rename",
+                                        "Rename to:",
+                                        QLineEdit.Normal,
+                                        target)
+        if ok:
+            get(self.sock, 'rename %s %s' % (target, text), 'renameMode')
+            self.get_content()
+
+
+    def check_selected_item(self):
+        try:
+            _type = self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text()
+            if '<FILE>' in _type:
+                self.disable_buttons(False, True)
+            else:
+                self.disable_buttons(False, False)
+        except AttributeError:
+            self.disable_buttons(True, True, True)
+
     def right_click_menu(self, point):
-        #try:
+        try:
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
             self.emenu = QMenu(self)
 
@@ -66,6 +93,7 @@ class mainPopup(QWidget, Ui_Form):
                 self.emenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), 'Open Folder', self.open_folder)
 
             # Global commands
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'rename.png')), 'Rename', self.rename)
             self.hidden_menu = QMenu(self.emenu)
             self.hidden_menu.setTitle('Hidden attribute')
             self.hidden_menu.setIcon(QIcon(os.path.join(self.assets, 'hidden.png')))
@@ -77,8 +105,8 @@ class mainPopup(QWidget, Ui_Form):
 
             self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
-        #except AttributeError:
-            #pass
+        except AttributeError:
+            pass
 
     def unhide(self):
         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
@@ -114,8 +142,8 @@ class mainPopup(QWidget, Ui_Form):
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
             warn.exec_()
 
-    def tempBlockSignals(self, bool):
-        if bool:
+    def temporary_block_signals(self, state):
+        if state:
             self.explorerDrivesDrop.blockSignals(True)
             self.explorerPathEntry.blockSignals(True)
             self.explorerTable.blockSignals(True)
@@ -123,7 +151,7 @@ class mainPopup(QWidget, Ui_Form):
             self.downloadButton.blockSignals(True)
             self.upButton.blockSignals(True)
             self.refreshButton.blockSignals(True)
-        elif not bool:
+        elif not state:
             self.explorerDrivesDrop.blockSignals(False)
             self.explorerPathEntry.blockSignals(False)
             self.explorerTable.blockSignals(False)
@@ -132,57 +160,74 @@ class mainPopup(QWidget, Ui_Form):
             self.upButton.blockSignals(False)
             self.refreshButton.blockSignals(False)
 
+    def disable_buttons(self, state, _file, download=False):
+        self.downloadButton.setDisabled(state)
+        self.executeButton.setDisabled(state)
+        self.renameButton.setDisabled(state)
+        self.deleteButton.setDisabled(state)
+        self.hideButton.setDisabled(state)
+        self.unhideButton.setDisabled(state)
+        if _file:
+            self.openFolderButton.setDisabled(True)
+            self.downloadButton.setDisabled(False)
+        else:
+            self.downloadButton.setDisabled(True)
+            self.openFolderButton.setDisabled(False)
+        if download:
+            self.downloadButton.setDisabled(True)
+
     def cancelProgress(self):
         self.activeProgress = False
 
     def download(self):
         # Get file name
-        _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
-        _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-        print _type
-        print _file
+        try:
+            _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
+            _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+            print _type
+            print _file
 
-        if '<FILE>' in _type:
+            if '<FILE>' in _type:
 
-            # Preparing for upload
-            self.progressBar.setVisible(True)
-            self.cancelButton.setVisible(True)
-            self.tempBlockSignals(True)
+                # Preparing for upload
+                self.progressBar.setVisible(True)
+                self.cancelButton.setVisible(True)
+                self.temporary_block_signals(True)
 
-            self.activeProgress = True
+                self.activeProgress = True
 
-            end = '[ENDOFMESSAGE]'
-            data = ''
+                end = '[ENDOFMESSAGE]'
+                data = ''
 
-            send(self.sock, 'download ' + _file)
-            try:
-                recv = str(self.sock.recv(1024))
-                if recv.isdigit():
-                    fileSize = int(recv)
-                    self.sock.sendall('ok')
+                send(self.sock, 'download ' + _file)
+                try:
+                    recv = str(self.sock.recv(1024))
+                    if recv.isdigit():
+                        fileSize = int(recv)
+                        self.sock.sendall('ok')
 
-                    l = self.sock.recv(1024)
-                    while l:
-                        self.gui()
-                        data += l
-                        self.progressBar.setValue(len(data) * 100 / fileSize)
-                        if data.endswith(end):
-                            break
-                        if not self.activeProgress:
-                            raise socket.error
-                        else:
-                            l = self.sock.recv(1024)
-                    with open(_file, 'wb') as _f:
-                        _f.write(data)
-            except socket.error:
-                print 'socket error'
-            finally:
-                self.progressBar.setVisible(False)
-                self.cancelButton.setVisible(False)
-                self.tempBlockSignals(False)
-                # except AttributeError:
-                # warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
-                # warn.exec_()
+                        l = self.sock.recv(1024)
+                        while l:
+                            self.gui()
+                            data += l
+                            self.progressBar.setValue(len(data) * 100 / fileSize)
+                            if data.endswith(end):
+                                break
+                            if not self.activeProgress:
+                                raise socket.error
+                            else:
+                                l = self.sock.recv(1024)
+                        with open(_file, 'wb') as _f:
+                            _f.write(data)
+                except socket.error:
+                    print 'socket error'
+                finally:
+                    self.progressBar.setVisible(False)
+                    self.cancelButton.setVisible(False)
+                    self.temporary_block_signals(False)
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn.exec_()
 
     def upload(self):
         try:
@@ -193,7 +238,7 @@ class mainPopup(QWidget, Ui_Form):
                 # Preparing for upload
                 self.progressBar.setVisible(True)
                 self.cancelButton.setVisible(True)
-                self.tempBlockSignals(True)
+                self.temporary_block_signals(True)
 
                 self.activeProgress = True
 
@@ -228,7 +273,7 @@ class mainPopup(QWidget, Ui_Form):
                         return False
                 self.progressBar.setVisible(False)
                 self.cancelButton.setVisible(False)
-                self.tempBlockSignals(False)
+                self.temporary_block_signals(False)
         except AttributeError:
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
             warn.exec_()
@@ -322,6 +367,8 @@ class mainPopup(QWidget, Ui_Form):
             # update table
             self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)
             self.explorerTable.resizeColumnsToContents()
+
+            self.check_selected_item()
 
         except (SyntaxError, ValueError):
             pass

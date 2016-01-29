@@ -116,6 +116,7 @@ class Ui_Form(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.explorerTable = QtGui.QTableWidget(Form)
         self.explorerTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.explorerTable.setAcceptDrops(True)
         self.explorerTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
 "    padding: 2px;\n"
@@ -138,7 +139,7 @@ class Ui_Form(object):
 "\n"
 "QTableWidget#explorerTable:item:selected {\n"
 "background-color: #2c3e50;\n"
-"color: #ecf0f1;\n"
+"color: #bdc3c7;\n"
 "}"))
         self.explorerTable.setFrameShape(QtGui.QFrame.StyledPanel)
         self.explorerTable.setFrameShadow(QtGui.QFrame.Plain)
@@ -578,3 +579,4 @@ class Ui_Form(object):
         self.hdirLabel.setText(_translate("Form", "Hidden Directory", None))
         self.dirfilesLabel.setText(_translate("Form", "Directories / Files:", None))
         self.dirfilesCountLabel.setText(_translate("Form", "0", None))
+

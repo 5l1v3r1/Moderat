@@ -9,7 +9,6 @@ import socket
 import os
 from libs.modechat import get, send
 
-
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
         QWidget.__init__(self)
@@ -21,6 +20,8 @@ class mainPopup(QWidget, Ui_Form):
         self.assets = args['assets']
 
         self.gui = QApplication.processEvents
+
+        self.gridLayout.addWidget(self.explorerTable, 2, 1, 1, 2)
 
         # hide progressbar
         self.progressBar.setVisible(False)
@@ -48,6 +49,11 @@ class mainPopup(QWidget, Ui_Form):
         self.cancelButton.clicked.connect(self.cancelProgress)
         self.openFolderButton.clicked.connect(self.open_folder)
         self.renameButton.clicked.connect(self.rename)
+        self.hideButton.clicked.connect(self.hide)
+        self.unhideButton.clicked.connect(self.unhide)
+        self.refreshButton.clicked.connect(self.refresh)
+        self.deleteButton.clicked.connect(self.remove)
+        self.executeButton.clicked.connect(self.execute_remotely)
 
         # Initializing combobox change Event
         self.connect(self.explorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.drive_change)
@@ -56,6 +62,35 @@ class mainPopup(QWidget, Ui_Form):
         self.connect(self.explorerTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.right_click_menu)
 
         self.get_content()
+
+        self.setAcceptDrops(True)
+
+    def refresh(self):
+        self.get_content()
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        self.explorerTable.setVisible(False)
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+        self.explorerTable.setVisible(True)
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+            for url in event.mimeData().urls():
+                self.upload(url.toLocalFile())
+        else:
+            event.ignore()
 
     def rename(self):
         target = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
@@ -135,7 +170,7 @@ class mainPopup(QWidget, Ui_Form):
                     result = get(self.sock, 'del /Q %s' % _file, 'remove')
                 elif '<DIR>' in _type:
                     result = get(self.sock, 'rmdir /S /Q %s' % _file, 'remove')
-                self.getRemoteContent()
+                self.get_content()
             else:
                 return
         except AttributeError:
@@ -229,10 +264,14 @@ class mainPopup(QWidget, Ui_Form):
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
             warn.exec_()
 
-    def upload(self):
-        try:
+    def upload(self, dropped_file=''):
+        #try:
             # Get file name
-            file_name = str(QFileDialog.getOpenFileName(self, 'Choose File', ''))
+            if dropped_file:
+                file_name = dropped_file
+            else:
+                file_name = str(QFileDialog.getOpenFileName(self, 'Choose File', ''))
+
             if file_name:
 
                 # Preparing for upload
@@ -246,7 +285,9 @@ class mainPopup(QWidget, Ui_Form):
                 fileSize = os.path.getsize(file_name)
                 uploadedSize = 0
 
-                send(self.sock, 'upload ' + file_name)
+                name_of_file = str(file_name).split('\\')[-1].split('/')[-1]
+
+                send(self.sock, 'upload ' + str(name_of_file))
 
                 try:
                     with open(file_name, 'rb') as _f:
@@ -268,15 +309,15 @@ class mainPopup(QWidget, Ui_Form):
                 if self.activeProgress:
                     result = self.sock.recv(1024)
                     if 'downloadDone' in result:
-                        self.getRemoteContent()
+                        self.get_content()
                     elif 'downloadError' in result:
                         return False
                 self.progressBar.setVisible(False)
                 self.cancelButton.setVisible(False)
                 self.temporary_block_signals(False)
-        except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
-            warn.exec_()
+        #except AttributeError:
+            #warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            #warn.exec_()
 
     def get_content(self):
 
@@ -319,12 +360,12 @@ class mainPopup(QWidget, Ui_Form):
             self.explorerTable.setRowCount(len(content) - 1)
 
             # add content to table
-            for n, i in enumerate(content):
+            for index in content:
 
-                if i == 'path':
+                if index == 'path':
                     continue
 
-                if content[int(i)]['hidden']:
+                if content[index]['hidden']:
                     file_color = QColor(235, 235, 235)
                     folder_color = QColor(201, 101, 101)
                 else:
@@ -332,37 +373,37 @@ class mainPopup(QWidget, Ui_Form):
                     folder_color = QColor(0, 255, 255)
 
                 # set content type
-                item = QTableWidgetItem('<FILE>') if content[i]['type'] else QTableWidgetItem('<DIR>')
-                if content[i]['type']:
+                item = QTableWidgetItem('<FILE>') if content[index]['type'] else QTableWidgetItem('<DIR>')
+                if content[index]['type']:
                     item.setTextColor(file_color)
                     item.setSizeHint(QSize(50, 30))
                 else:
                     item.setTextColor(folder_color)
                     item.setSizeHint(QSize(50, 30))
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.explorerTable.setItem(n, 0, item)
+                self.explorerTable.setItem(index, 0, item)
 
                 # set content name
-                item = QTableWidgetItem(content[i]['name'])
-                if content[i]['type']:
+                item = QTableWidgetItem(content[index]['name'])
+                if content[index]['type']:
                     item.setTextColor(file_color)
                     item.setIcon(QIcon(QPixmap(self.fileIcon)))
                 else:
                     item.setTextColor(folder_color)
                     item.setIcon(QIcon(QPixmap(self.folderIcon)))
-                self.explorerTable.setItem(n, 1, item)
+                self.explorerTable.setItem(index, 1, item)
 
                 # set content modified date
-                item = QTableWidgetItem(content[i]['modified'])
+                item = QTableWidgetItem(content[index]['modified'])
                 item.setTextAlignment(Qt.AlignCenter)
                 item.setSizeHint(QSize(220, 30))
-                self.explorerTable.setItem(n, 2, item)
+                self.explorerTable.setItem(index, 2, item)
 
                 # set file size
-                item = QTableWidgetItem(sizeof_fmt(content[i]['size'])) if content[i]['type'] else QTableWidgetItem('')
+                item = QTableWidgetItem(sizeof_fmt(content[index]['size'])) if content[index]['type'] else QTableWidgetItem('')
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(file_color)
-                self.explorerTable.setItem(n, 3, item)
+                self.explorerTable.setItem(index, 3, item)
 
             # update table
             self.explorerTable.horizontalHeaderItem(3).setTextAlignment(Qt.AlignCenter)

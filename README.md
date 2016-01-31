@@ -21,6 +21,7 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 * Listen Remote Microphone
 * Remote Desktop Streaming
 * Live Keylogger
+* Processes Manager
 
 ---
 

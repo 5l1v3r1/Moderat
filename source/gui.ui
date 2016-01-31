@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>896</width>
-    <height>503</height>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,12 +106,35 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_5">
+    <item row="3" column="0">
+     <widget class="QLabel" name="creditLabel">
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>© Uri Patton</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QGroupBox" name="clientButtonsGroup">
       <property name="styleSheet">
        <string notr="true">border: 1px ridge;
 border-color: #34495e;
-background-color: #2c3e50;</string>
+background-color: #2c3e50;
+border: none;</string>
       </property>
       <property name="title">
        <string/>
@@ -123,7 +146,7 @@ background-color: #2c3e50;</string>
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="spacing">
-          <number>2</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QPushButton" name="startListenButton">
@@ -254,6 +277,7 @@ QPushButton#stopListenButton:checked {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-right: none
             }
 
 QPushButton#unlockServerButton:pressed {
@@ -289,6 +313,7 @@ QPushButton#unlockServerButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-right: none
             }
 
 QPushButton#lockServerButton:pressed {
@@ -330,6 +355,7 @@ QPushButton#lockServerButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-left: none;
             }
 
 QPushButton#quitServerButton:pressed {
@@ -405,6 +431,7 @@ QPushButton#quitServerButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-right: none;
             }
 
 QPushButton#remoteShellButton:pressed {
@@ -470,6 +497,8 @@ QPushButton#remoteShellButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-left: none;
+			border-right: none;
             }
 
 QPushButton#remoteExplorerButton:pressed {
@@ -511,6 +540,8 @@ QPushButton#remoteExplorerButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-left: none;
+			border-right: none
             }
 
 QPushButton#remoteAudioButton:pressed {
@@ -552,6 +583,8 @@ QPushButton#remoteAudioButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-left: none;
+			border-right: none
             }
 
 QPushButton#remoteDesktopButton:pressed {
@@ -593,6 +626,8 @@ QPushButton#remoteDesktopButton:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
+			border-left: none;
+			border-right: none
             }
 
 QPushButton#remoteKeyloggerButton:pressed {
@@ -605,6 +640,48 @@ QPushButton#remoteKeyloggerButton:pressed {
            <property name="icon">
             <iconset resource="res.qrc">
              <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="remoteProcessesButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteProcessesButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
+            }
+
+QPushButton#remoteProcessesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -674,28 +751,6 @@ QPushButton#clientSettingsButton:pressed {
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="creditLabel">
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>8</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>© Uri Patton</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
      <widget class="QTabWidget" name="MainTabWidget">
       <property name="styleSheet">
        <string notr="true"> QTabBar::tab {
@@ -1083,6 +1138,13 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
      </widget>
     </item>
    </layout>

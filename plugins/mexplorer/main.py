@@ -31,7 +31,7 @@ class mainPopup(QWidget, Ui_Form):
         # disable action buttons
         self.disable_buttons(True, True)
 
-        self.setWindowTitle('Remote File Explorer on - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle('File Explorer - %s - Socket #%s' % (self.ipAddress, self.socket))
 
         # signals
         self.upButton.clicked.connect(self.parent_folder)

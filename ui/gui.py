@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(896, 503)
+        MainWindow.resize(896, 509)
         MainWindow.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
 "color: #bdc3c7;"))
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -117,17 +117,30 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout_5 = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
+        self.creditLabel = QtGui.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.creditLabel.setFont(font)
+        self.creditLabel.setStyleSheet(_fromUtf8("font: 8pt \"MS Shell Dlg 2\";"))
+        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
+        self.gridLayout_5.addWidget(self.creditLabel, 3, 0, 1, 1)
         self.clientButtonsGroup = QtGui.QGroupBox(self.centralwidget)
         self.clientButtonsGroup.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
 "border-color: #34495e;\n"
-"background-color: #2c3e50;"))
+"background-color: #2c3e50;\n"
+"border: none;"))
         self.clientButtonsGroup.setTitle(_fromUtf8(""))
         self.clientButtonsGroup.setCheckable(False)
         self.clientButtonsGroup.setObjectName(_fromUtf8("clientButtonsGroup"))
         self.gridLayout = QtGui.QGridLayout(self.clientButtonsGroup)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setSpacing(2)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.startListenButton = QtGui.QPushButton(self.clientButtonsGroup)
         self.startListenButton.setMinimumSize(QtCore.QSize(32, 32))
@@ -189,6 +202,7 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#unlockServerButton:pressed {\n"
@@ -208,6 +222,7 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#lockServerButton:pressed {\n"
@@ -228,6 +243,7 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-left: none;\n"
 "            }\n"
 "\n"
 "QPushButton#quitServerButton:pressed {\n"
@@ -264,6 +280,7 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-right: none;\n"
 "            }\n"
 "\n"
 "QPushButton#remoteShellButton:pressed {\n"
@@ -295,6 +312,8 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-left: none;\n"
+"            border-right: none;\n"
 "            }\n"
 "\n"
 "QPushButton#remoteExplorerButton:pressed {\n"
@@ -315,6 +334,8 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-left: none;\n"
+"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#remoteAudioButton:pressed {\n"
@@ -335,6 +356,8 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-left: none;\n"
+"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#remoteDesktopButton:pressed {\n"
@@ -355,6 +378,8 @@ class Ui_MainWindow(object):
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
+"            border-left: none;\n"
+"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#remoteKeyloggerButton:pressed {\n"
@@ -367,6 +392,27 @@ class Ui_MainWindow(object):
         self.remoteKeyloggerButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteKeyloggerButton.setObjectName(_fromUtf8("remoteKeyloggerButton"))
         self.horizontalLayout.addWidget(self.remoteKeyloggerButton)
+        self.remoteProcessesButton = QtGui.QPushButton(self.clientButtonsGroup)
+        self.remoteProcessesButton.setMinimumSize(QtCore.QSize(32, 32))
+        self.remoteProcessesButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.remoteProcessesButton.setStyleSheet(_fromUtf8("QPushButton#remoteProcessesButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-left: none;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteProcessesButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.remoteProcessesButton.setText(_fromUtf8(""))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteProcessesButton.setIcon(icon10)
+        self.remoteProcessesButton.setIconSize(QtCore.QSize(18, 18))
+        self.remoteProcessesButton.setObjectName(_fromUtf8("remoteProcessesButton"))
+        self.horizontalLayout.addWidget(self.remoteProcessesButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.clientSettingsButton = QtGui.QPushButton(self.clientButtonsGroup)
@@ -383,26 +429,14 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.clientSettingsButton.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon10)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon11)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.gridLayout_5.addWidget(self.clientButtonsGroup, 0, 0, 1, 1)
-        self.creditLabel = QtGui.QLabel(self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.creditLabel.setFont(font)
-        self.creditLabel.setStyleSheet(_fromUtf8("font: 8pt \"MS Shell Dlg 2\";"))
-        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
-        self.gridLayout_5.addWidget(self.creditLabel, 2, 0, 1, 1)
         self.MainTabWidget = QtGui.QTabWidget(self.centralwidget)
         self.MainTabWidget.setStyleSheet(_fromUtf8(" QTabBar::tab {\n"
 "  padding: 10px;\n"
@@ -519,9 +553,9 @@ class Ui_MainWindow(object):
 "QPushButton#updatePreviewButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon11)
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon12)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.horizontalLayout_2.addWidget(self.updatePreviewButton)
@@ -594,10 +628,15 @@ class Ui_MainWindow(object):
         self.line_3.setObjectName(_fromUtf8("line_3"))
         self.gridLayout_3.addWidget(self.line_3, 2, 0, 1, 2)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon12, _fromUtf8(""))
-        self.gridLayout_5.addWidget(self.MainTabWidget, 1, 0, 1, 1)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon13, _fromUtf8(""))
+        self.gridLayout_5.addWidget(self.MainTabWidget, 2, 0, 1, 1)
+        self.line_4 = QtGui.QFrame(self.centralwidget)
+        self.line_4.setFrameShape(QtGui.QFrame.HLine)
+        self.line_4.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_4.setObjectName(_fromUtf8("line_4"))
+        self.gridLayout_5.addWidget(self.line_4, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 896, 23))

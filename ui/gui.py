@@ -348,28 +348,6 @@ class Ui_MainWindow(object):
         self.remoteAudioButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteAudioButton.setObjectName(_fromUtf8("remoteAudioButton"))
         self.horizontalLayout.addWidget(self.remoteAudioButton)
-        self.remoteDesktopButton = QtGui.QPushButton(self.clientButtonsGroup)
-        self.remoteDesktopButton.setMinimumSize(QtCore.QSize(32, 32))
-        self.remoteDesktopButton.setMaximumSize(QtCore.QSize(32, 32))
-        self.remoteDesktopButton.setStyleSheet(_fromUtf8("QPushButton#remoteDesktopButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            border-left: none;\n"
-"            border-right: none\n"
-"            }\n"
-"\n"
-"QPushButton#remoteDesktopButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.remoteDesktopButton.setText(_fromUtf8(""))
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mdesktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteDesktopButton.setIcon(icon8)
-        self.remoteDesktopButton.setIconSize(QtCore.QSize(18, 18))
-        self.remoteDesktopButton.setObjectName(_fromUtf8("remoteDesktopButton"))
-        self.horizontalLayout.addWidget(self.remoteDesktopButton)
         self.remoteKeyloggerButton = QtGui.QPushButton(self.clientButtonsGroup)
         self.remoteKeyloggerButton.setMinimumSize(QtCore.QSize(32, 32))
         self.remoteKeyloggerButton.setMaximumSize(QtCore.QSize(32, 32))
@@ -386,9 +364,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.remoteKeyloggerButton.setText(_fromUtf8(""))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteKeyloggerButton.setIcon(icon9)
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteKeyloggerButton.setIcon(icon8)
         self.remoteKeyloggerButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteKeyloggerButton.setObjectName(_fromUtf8("remoteKeyloggerButton"))
         self.horizontalLayout.addWidget(self.remoteKeyloggerButton)
@@ -407,9 +385,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.remoteProcessesButton.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteProcessesButton.setIcon(icon10)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteProcessesButton.setIcon(icon9)
         self.remoteProcessesButton.setIconSize(QtCore.QSize(18, 18))
         self.remoteProcessesButton.setObjectName(_fromUtf8("remoteProcessesButton"))
         self.horizontalLayout.addWidget(self.remoteProcessesButton)
@@ -429,9 +407,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.clientSettingsButton.setText(_fromUtf8(""))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientSettingsButton.setIcon(icon11)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientSettingsButton.setIcon(icon10)
         self.clientSettingsButton.setIconSize(QtCore.QSize(20, 20))
         self.clientSettingsButton.setObjectName(_fromUtf8("clientSettingsButton"))
         self.horizontalLayout.addWidget(self.clientSettingsButton)
@@ -553,30 +531,12 @@ class Ui_MainWindow(object):
 "QPushButton#updatePreviewButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon12)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon11)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.horizontalLayout_2.addWidget(self.updatePreviewButton)
-        self.remoteDesktopButton2 = QtGui.QPushButton(self.panelGroup)
-        self.remoteDesktopButton2.setMinimumSize(QtCore.QSize(20, 0))
-        self.remoteDesktopButton2.setMaximumSize(QtCore.QSize(20, 20))
-        self.remoteDesktopButton2.setStyleSheet(_fromUtf8("QPushButton#remoteDesktopButton2 {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#remoteDesktopButton2:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.remoteDesktopButton2.setText(_fromUtf8(""))
-        self.remoteDesktopButton2.setIcon(icon8)
-        self.remoteDesktopButton2.setIconSize(QtCore.QSize(14, 14))
-        self.remoteDesktopButton2.setObjectName(_fromUtf8("remoteDesktopButton2"))
-        self.horizontalLayout_2.addWidget(self.remoteDesktopButton2)
         self.gridLayout_3.addLayout(self.horizontalLayout_2, 1, 0, 1, 2)
         self.previewLabel = QtGui.QLabel(self.panelGroup)
         self.previewLabel.setMinimumSize(QtCore.QSize(300, 200))
@@ -628,9 +588,9 @@ class Ui_MainWindow(object):
         self.line_3.setObjectName(_fromUtf8("line_3"))
         self.gridLayout_3.addWidget(self.line_3, 2, 0, 1, 2)
         self.gridLayout_2.addWidget(self.panelGroup, 0, 1, 2, 1)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.serversTab, icon13, _fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/server.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.serversTab, icon12, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 2, 0, 1, 1)
         self.line_4 = QtGui.QFrame(self.centralwidget)
         self.line_4.setFrameShape(QtGui.QFrame.HLine)

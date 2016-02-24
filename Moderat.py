@@ -65,10 +65,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings = Config()
 
         # set settings
-        self.IPADDRESS = self.settings.ip_address
-        self.PORT = self.settings.port
-        self.MAXCONNECTIONS = self.settings.max_connections
-        self.TIMEOUT = self.settings.timeout
+        try:
+            self.IPADDRESS = self.settings.ip_address
+            self.PORT = self.settings.port
+            self.MAXCONNECTIONS = self.settings.max_connections
+            self.TIMEOUT = self.settings.timeout
+        except AttributeError:
+            self.settings = Config()
+            self.IPADDRESS = self.settings.ip_address
+            self.PORT = self.settings.port
+            self.MAXCONNECTIONS = self.settings.max_connections
+            self.TIMEOUT = self.settings.timeout
 
         # update gui
         self.gui = QApplication.processEvents

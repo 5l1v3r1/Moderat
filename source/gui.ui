@@ -7,21 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>896</width>
-    <height>503</height>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Moderat Client</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #0F2D40;
-color: #2ecc71;
-font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+   <string notr="true">background-color: #2c3e50;
+color: #bdc3c7;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">QWidget#centralwidget {
-background-color: #0F2D40;
+background-color: #2c3e50;
 color: #2ecc71;
 border-radius: 3px;
 font: 10pt &quot;MS Shell Dlg 2&quot;;
@@ -30,18 +29,17 @@ font: 10pt &quot;MS Shell Dlg 2&quot;;
 QScrollBar:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #194759;
      width: 10px;
      margin: 22px 0 22px 0;
  }
  QScrollBar::handle:vertical {
-     background: #2ecc71;
+     background: #95a5a6;
      min-height: 20px;
  }
  QScrollBar::add-line:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #32CC99;
+     background: #95a5a6;
      height: 16px;
      subcontrol-position: bottom;
      subcontrol-origin: margin;
@@ -50,15 +48,12 @@ QScrollBar:vertical {
  QScrollBar::sub-line:vertical {
      border: 1px outset;
      border-color: #0F2D40;
-     background: #32CC99;
+     background: #95a5a6;
      height: 16px;
      subcontrol-position: top;
      subcontrol-origin: margin;
  }
  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-     border: 1px outset;
-     border-color: #0F2D40;
-     border-radius: 2px;
      width: 3px;
      height: 3px;
      background: white;
@@ -71,20 +66,19 @@ QScrollBar:vertical {
  QScrollBar:horizontal {
 border: 1px outset;
      border-color: #0F2D40;
-     background: #194759;
      height: 10px;
      margin: 0px 40px 0 0px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #2ecc71;
+    background: #95a5a6;
     min-width: 20px;
 }
 
 QScrollBar::add-line:horizontal {
     border: 1px outset;
     border-color: #0F2D40;
-    background: #32CC99;
+    background: #95a5a6;
     width: 16px;
     subcontrol-position: right;
     subcontrol-origin: margin;
@@ -93,7 +87,7 @@ QScrollBar::add-line:horizontal {
 QScrollBar::sub-line:horizontal {
     border: 1px outset;
     border-color: #0F2D40;
-    background: #32CC99;
+    background: #95a5a6;
     width: 16px;
     subcontrol-position: top right;
     subcontrol-origin: margin;
@@ -104,7 +98,7 @@ QScrollBar::sub-line:horizontal {
 QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     width: 3px;
     height: 3px;
-    background: pink;
+    background: white;
 }
 
 QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
@@ -112,12 +106,35 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_5">
+    <item row="3" column="0">
+     <widget class="QLabel" name="creditLabel">
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>© Uri Patton</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QGroupBox" name="clientButtonsGroup">
       <property name="styleSheet">
        <string notr="true">border: 1px ridge;
-border-color: #0F2D40;
-background-color: #0F2D40;</string>
+border-color: #34495e;
+background-color: #2c3e50;
+border: none;</string>
       </property>
       <property name="title">
        <string/>
@@ -129,7 +146,7 @@ background-color: #0F2D40;</string>
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="spacing">
-          <number>2</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QPushButton" name="startListenButton">
@@ -147,19 +164,15 @@ background-color: #0F2D40;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#startListenButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#startListenButton:checked {
-            background: #0B202E;
-            color: grey;
-            border: 1px outset;
-            border-color: #0B202E;
+			border-color: #27ae60;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -196,19 +209,15 @@ QPushButton#startListenButton:checked {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#stopListenButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#stopListenButton:checked {
-            background: #0B202E;
-            color: grey;
-            border: 1px outset;
-            border-color: #0B202E;
+			border-color: #27ae60;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -264,25 +273,15 @@ QPushButton#stopListenButton:checked {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#unlockServerButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-right: none
             }
 
 QPushButton#unlockServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#unlockServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -310,25 +309,15 @@ QPushButton#unlockServerButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#lockServerButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-right: none
             }
 
 QPushButton#lockServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#lockServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -362,25 +351,15 @@ QPushButton#lockServerButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#quitServerButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
             }
 
 QPushButton#quitServerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#quitServerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -448,25 +427,15 @@ QPushButton#quitServerButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#remoteShellButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-right: none;
             }
 
 QPushButton#remoteShellButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteShellButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -524,25 +493,16 @@ QPushButton#remoteShellButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#remoteExplorerButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
+			border-right: none;
             }
 
 QPushButton#remoteExplorerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteExplorerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -576,25 +536,16 @@ QPushButton#remoteExplorerButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#remoteAudioButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
+			border-right: none
             }
 
 QPushButton#remoteAudioButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteAudioButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -603,58 +554,6 @@ QPushButton#remoteAudioButton:disabled {
            <property name="icon">
             <iconset resource="res.qrc">
              <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="remoteDesktopButton">
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteDesktopButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
-            }
-
-QPushButton#remoteDesktopButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteDesktopButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -680,25 +579,16 @@ QPushButton#remoteDesktopButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#remoteKeyloggerButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
+			border-right: none
             }
 
 QPushButton#remoteKeyloggerButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteKeyloggerButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -707,6 +597,48 @@ QPushButton#remoteKeyloggerButton:disabled {
            <property name="icon">
             <iconset resource="res.qrc">
              <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="remoteProcessesButton">
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#remoteProcessesButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
+            }
+
+QPushButton#remoteProcessesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -745,19 +677,14 @@ QPushButton#remoteKeyloggerButton:disabled {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#clientSettingsButton {
-            background: #194759;
-            border: 1px outset;
-			color: white;
-            border-color: #0F2D40;
-            text-decoration: none;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #194759, stop:1 #225E75);
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#clientSettingsButton:pressed {
-            background: #0B202E;
-            color: grey;
-            border: 1px outset;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
            </property>
            <property name="text">
@@ -781,48 +708,23 @@ QPushButton#clientSettingsButton:pressed {
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="creditLabel">
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>8</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: none; 
-color: white;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>© Uri Patton</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
      <widget class="QTabWidget" name="MainTabWidget">
       <property name="styleSheet">
        <string notr="true"> QTabBar::tab {
-  background-color: #194759;
   padding: 10px;
-  color: white;
   padding-left: 15px;
+  margin-left: 9px;
   width: 70%;
   border: 1px ridge;
-  border-color: #0F2D40;
+  border-color: #2c3e50;
  }
 
  QTabBar::tab:selected {
-   background: #0F2D40;;
+   background: #34495e;
  }
 
  QTabBar::pane {
-   background-color: #194759;
+   background-color: #2c3e50;
  }
 
 QTabWidget::pane {
@@ -849,30 +751,36 @@ border: none;
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0" rowspan="2">
          <widget class="QTableWidget" name="serversTable">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="styleSheet">
            <string notr="true">QHeaderView::section {
-	background-color: #194759;
+	background-color: #34495e;
     padding: 2px;
-    color: white;
+    color: #bdc3c7;
 	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
 	border: 1px ridge;
 	border-right: none;
+	border-color: #2c3e50;
 }
 
 QTableWidget#serversTable {
 	background-position: center;
     border: 1px ridge;
     padding: 5px;
-    outline: 0;
-    border-color: #0F2D40;
-    border-radius: 2px;
+	color: #ecf0f1;
+    border-color: #2c3e50;
     font: 8pt &quot;MS Shell Dlg 2&quot;;
-	background-color: #081621;
+	background-color: #34495e;
 }
 
 QTableWidget#serversTable:item:selected {
-background-color: #194759;
-color: white;
+background-color: #2c3e50;
+color: #ecf0f1;
 }</string>
           </property>
           <property name="frameShadow">
@@ -975,9 +883,9 @@ color: white;
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #081621;
-border: 1px outset;
-border-color: #0F2D40;</string>
+           <string notr="true">background-color: #2c3e50;
+border: 1px ridge;
+border-color: #2c3e50;</string>
           </property>
           <property name="title">
            <string/>
@@ -992,23 +900,14 @@ border-color: #0F2D40;</string>
               <widget class="QPushButton" name="updatePreviewButton">
                <property name="styleSheet">
                 <string notr="true">QPushButton#updatePreviewButton {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-			color: white;
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#updatePreviewButton:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#updatePreviewButton:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
+            background-color: #2c3e50;
             }</string>
                </property>
                <property name="text">
@@ -1017,55 +916,6 @@ QPushButton#updatePreviewButton:disabled {
                <property name="icon">
                 <iconset resource="res.qrc">
                  <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>14</width>
-                 <height>14</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="remoteDesktopButton2">
-               <property name="minimumSize">
-                <size>
-                 <width>20</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>20</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#remoteDesktopButton2 {
-            border-bottom: none;
-			background-color: #0F2D40;
-			border-radius: 1px;
-            }
-
-QPushButton#remoteDesktopButton2:pressed {
-            background: #0B202E;
-            border: 1px outset;
-            border-color: #0B202E;
-            }
-
-QPushButton#remoteDesktopButton2:disabled {
-            background: #0B202E;
-            border: 1px outset;
-			color: grey;
-            border-color: #0B202E;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="res.qrc">
-                 <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -1095,6 +945,7 @@ QPushButton#remoteDesktopButton2:disabled {
               <string notr="true">color: grey;
 border: 1px ridge;
 border-color: #0B202E;
+background-color: #34495e;
 font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
              <property name="text">
@@ -1123,9 +974,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
            <item row="4" column="0">
             <widget class="QLabel" name="portTextLabel">
              <property name="styleSheet">
-              <string notr="true">border: none; 
-color: white;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+              <string notr="true">border: none;</string>
              </property>
              <property name="text">
               <string>Port:</string>
@@ -1149,9 +998,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
            <item row="5" column="0">
             <widget class="QLabel" name="serversOnlineStatus">
              <property name="styleSheet">
-              <string notr="true">border: none; 
-color: white;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+              <string notr="true">border: none;</string>
              </property>
              <property name="text">
               <string>Servers Online: </string>
@@ -1175,9 +1022,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
            <item row="3" column="0">
             <widget class="QLabel" name="clientStatusLabel">
              <property name="styleSheet">
-              <string notr="true">border: none; 
-color: white;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+              <string notr="true">border: none;</string>
              </property>
              <property name="text">
               <string>Client Status: </string>
@@ -1211,6 +1056,13 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
       </widget>
      </widget>
     </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1219,33 +1071,32 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
      <x>0</x>
      <y>0</y>
      <width>896</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QMenuBar {
-            background-color: #0C2230;
-            color: rgb(255,255,255);
-            border: 1px solid #000;
+            background-color: #34495e;
+            border: 1px ridge #000;
         }
 
         QMenuBar::item {
-            background-color: #0C2230;
-            color: rgb(255,255,255);
+            background-color: #34495e;
+			color: #ecf0f1;
         }
 
         QMenuBar::item::selected {
-            background-color: #0F2D40;
+            background-color: #2c3e50;
         }
 
         QMenu {
-            background-color: #0C2230;
-            color: rgb(255,255,255);
-            border: 1px solid #000;           
+            background-color: #34495e;
+            border: 1px ridge #000;           
         }
 
         QMenu::item::selected {
-            background-color: #0F2D40;
+            background-color: #2c3e50;
+			color: #ecf0f1;
         }</string>
    </property>
    <widget class="QMenu" name="menuClient">

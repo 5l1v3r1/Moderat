@@ -30,12 +30,15 @@
     <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #0F2D40;
-color: #2ecc71;</string>
+   <string notr="true">background-color: #2c3e50;
+color: #bdc3c7;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QPushButton" name="listenButton">
        <property name="minimumSize">
@@ -46,28 +49,29 @@ color: #2ecc71;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#listenButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			padding-right: 5px;
-			color: white;
-            text-decoration: none;
-            background-color: #225E75
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-right: none;
             }
 
 QPushButton#listenButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
        </property>
        <property name="text">
-        <string>Listen</string>
+        <string/>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
-         <normaloff>:/icons/assets/play.png</normaloff>:/icons/assets/play.png</iconset>
+         <normaloff>:/icons/assets/start.png</normaloff>:/icons/assets/start.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -81,28 +85,30 @@ QPushButton#listenButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#recordButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			padding-right: 5px;
-			color: white;
-            text-decoration: none;
-            background-color: #225E75
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-right: none;
+			border-left: none;
             }
 
 QPushButton#recordButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
        </property>
        <property name="text">
-        <string>Record</string>
+        <string/>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
          <normaloff>:/icons/assets/record.png</normaloff>:/icons/assets/record.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -116,28 +122,29 @@ QPushButton#recordButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#stopButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			padding-right: 5px;
-			color: white;
-            text-decoration: none;
-            background-color: #225E75
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-left: none;
             }
 
 QPushButton#stopButton:pressed {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);
+            background-color: #2c3e50;
             }</string>
        </property>
        <property name="text">
-        <string>Stop</string>
+        <string/>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
          <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -204,9 +211,6 @@ QPushButton#stopButton:pressed {
      </item>
      <item>
       <widget class="QComboBox" name="rateDrop">
-       <property name="styleSheet">
-        <string notr="true">color: white;</string>
-       </property>
        <item>
         <property name="text">
          <string>5120</string>
@@ -247,7 +251,7 @@ text-align: top;
 margin-right: 4ex;
 }
 QProgressBar::chunk:horizontal {
-background: #2ecc71;
+background: #bdc3c7;
 margin-right: 1px;
 width: 5px;
 }</string>
@@ -290,21 +294,15 @@ width: 5px;
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton#alwaysTopButton {
-            background: #194759;
-            border: 1px outset;
-            border-color: #0F2D40;
-			color: white;
-			padding-right: 3px;
-            text-decoration: none;
-            background-color: #225E75
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
             }
 
 QPushButton#alwaysTopButton:checked {
-            background: #194759;
-			color: grey;
-            border: 1px outset;
-            border-color: #0F2D40;
-            background-color:#1B4C5E;
+			border-color: #27ae60;
+            background-color: #2c3e50;
             }</string>
      </property>
      <property name="text">

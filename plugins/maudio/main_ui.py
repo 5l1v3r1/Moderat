@@ -28,79 +28,75 @@ class Ui_Form(object):
         Form.resize(400, 124)
         Form.setMinimumSize(QtCore.QSize(255, 41))
         Form.setMaximumSize(QtCore.QSize(800, 600))
-        Form.setStyleSheet(_fromUtf8("background-color: #0F2D40;\n"
-"color: #2ecc71;"))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(icon)
+        Form.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
+"color: #bdc3c7;"))
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.listenButton = QtGui.QPushButton(Form)
         self.listenButton.setMinimumSize(QtCore.QSize(0, 24))
         self.listenButton.setStyleSheet(_fromUtf8("QPushButton#listenButton {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            padding-right: 5px;\n"
-"            color: white;\n"
-"            text-decoration: none;\n"
-"            background-color: #225E75\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-right: none;\n"
 "            }\n"
 "\n"
 "QPushButton#listenButton:pressed {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
+"            background-color: #2c3e50;\n"
 "            }"))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.listenButton.setIcon(icon)
+        self.listenButton.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.listenButton.setIcon(icon1)
+        self.listenButton.setIconSize(QtCore.QSize(18, 18))
         self.listenButton.setObjectName(_fromUtf8("listenButton"))
         self.horizontalLayout_2.addWidget(self.listenButton)
         self.recordButton = QtGui.QPushButton(Form)
         self.recordButton.setMinimumSize(QtCore.QSize(0, 24))
         self.recordButton.setStyleSheet(_fromUtf8("QPushButton#recordButton {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            padding-right: 5px;\n"
-"            color: white;\n"
-"            text-decoration: none;\n"
-"            background-color: #225E75\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-right: none;\n"
+"            border-left: none;\n"
 "            }\n"
 "\n"
 "QPushButton#recordButton:pressed {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
+"            background-color: #2c3e50;\n"
 "            }"))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/record.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.recordButton.setIcon(icon1)
+        self.recordButton.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/record.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.recordButton.setIcon(icon2)
+        self.recordButton.setIconSize(QtCore.QSize(18, 18))
         self.recordButton.setObjectName(_fromUtf8("recordButton"))
         self.horizontalLayout_2.addWidget(self.recordButton)
         self.stopButton = QtGui.QPushButton(Form)
         self.stopButton.setMinimumSize(QtCore.QSize(0, 24))
         self.stopButton.setStyleSheet(_fromUtf8("QPushButton#stopButton {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            padding-right: 5px;\n"
-"            color: white;\n"
-"            text-decoration: none;\n"
-"            background-color: #225E75\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-left: none;\n"
 "            }\n"
 "\n"
 "QPushButton#stopButton:pressed {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 #112F3B, stop:1 #1B4C5E);\n"
+"            background-color: #2c3e50;\n"
 "            }"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.stopButton.setIcon(icon2)
+        self.stopButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.stopButton.setIcon(icon3)
+        self.stopButton.setIconSize(QtCore.QSize(18, 18))
         self.stopButton.setObjectName(_fromUtf8("stopButton"))
         self.horizontalLayout_2.addWidget(self.stopButton)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
@@ -127,7 +123,6 @@ class Ui_Form(object):
         self.rateLabel.setObjectName(_fromUtf8("rateLabel"))
         self.horizontalLayout.addWidget(self.rateLabel)
         self.rateDrop = QtGui.QComboBox(Form)
-        self.rateDrop.setStyleSheet(_fromUtf8("color: white;"))
         self.rateDrop.setObjectName(_fromUtf8("rateDrop"))
         self.rateDrop.addItem(_fromUtf8(""))
         self.rateDrop.addItem(_fromUtf8(""))
@@ -149,7 +144,7 @@ class Ui_Form(object):
 "margin-right: 4ex;\n"
 "}\n"
 "QProgressBar::chunk:horizontal {\n"
-"background: #2ecc71;\n"
+"background: #bdc3c7;\n"
 "margin-right: 1px;\n"
 "width: 5px;\n"
 "}"))
@@ -166,26 +161,20 @@ class Ui_Form(object):
         self.alwaysTopButton = QtGui.QPushButton(Form)
         self.alwaysTopButton.setMinimumSize(QtCore.QSize(0, 24))
         self.alwaysTopButton.setStyleSheet(_fromUtf8("QPushButton#alwaysTopButton {\n"
-"            background: #194759;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            color: white;\n"
-"            padding-right: 3px;\n"
-"            text-decoration: none;\n"
-"            background-color: #225E75\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
 "            }\n"
 "\n"
 "QPushButton#alwaysTopButton:checked {\n"
-"            background: #194759;\n"
-"            color: grey;\n"
-"            border: 1px outset;\n"
-"            border-color: #0F2D40;\n"
-"            background-color:#1B4C5E;\n"
+"            border-color: #27ae60;\n"
+"            background-color: #2c3e50;\n"
 "            }"))
         self.alwaysTopButton.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.alwaysTopButton.setIcon(icon3)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/always_top.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.alwaysTopButton.setIcon(icon4)
         self.alwaysTopButton.setCheckable(True)
         self.alwaysTopButton.setObjectName(_fromUtf8("alwaysTopButton"))
         self.gridLayout.addWidget(self.alwaysTopButton, 1, 2, 1, 1)
@@ -197,9 +186,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Audio Streaming", None))
-        self.listenButton.setText(_translate("Form", "Listen", None))
-        self.recordButton.setText(_translate("Form", "Record", None))
-        self.stopButton.setText(_translate("Form", "Stop", None))
         self.defaultInputDeviceLavel.setText(_translate("Form", "Default Input Device:", None))
         self.rateLabel.setText(_translate("Form", "Rate:", None))
         self.rateDrop.setItemText(0, _translate("Form", "5120", None))

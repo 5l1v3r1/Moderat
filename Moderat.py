@@ -161,7 +161,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.listenthread = Thread(target=self.accept_connections)
             self.listenthread.setDaemon(True)
             self.listenthread.start()
-            self.statusLabel.setText('Listening')
+            self.statusLabel.setText('Online')
             self.statusLabel.setStyleSheet('color: lime; border: none; font: 8pt "MS Shell Dlg 2";')
             self.startListenButton.setChecked(True)
             self.stopListenButton.setChecked(False)
@@ -175,7 +175,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.serversTable.clearContents()
             self.startListenButton.setChecked(False)
             self.stopListenButton.setChecked(True)
-            self.statusLabel.setText('Not Listening')
+            self.statusLabel.setText('Offline')
             self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
             self.onlineStatus.setText('0')
             try:

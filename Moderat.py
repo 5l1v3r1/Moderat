@@ -541,18 +541,7 @@ class MovieSplashScreen(QSplashScreen):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    movie = QMovie("assets\\splash.gif")
-    splash = MovieSplashScreen(movie)
-    splash.show()
-
-    start = time.time()
-
-    while movie.state() == QMovie.Running and time.time() < start + 5:
-        app.processEvents()
-
     form = MainDialog()
     form.show()
-    splash.finish(form)
-
 
     sys.exit(app.exec_())

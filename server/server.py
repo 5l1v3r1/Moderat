@@ -134,7 +134,7 @@ def get_fptr(fn):
 
 def send(sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
     msg = (_data + end).encode('utf-8')
-    size = sys.getsizeof(msg)
+    size = len(msg)
     msg = mode + splitter + msg
     sock.sendall(str(size) + '%:::%' + msg)
 

@@ -20,7 +20,7 @@ def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
                 if data.count(splitter) == 2:
                     size_of_package, server_mode, message = data.split(splitter)
                     try:
-                        if int(size_of_package) != sys.getsizeof(message) or mode != server_mode:
+                        if int(size_of_package) != len(message) or mode != server_mode:
                             return ''
                     except ValueError:
                         return ''

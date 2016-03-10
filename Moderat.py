@@ -425,7 +425,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
 
-
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
         server_menu = QMenu(self)
@@ -506,35 +505,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def closeEvent(self, event):
         sys.exit(1)
-
-
-class MovieSplashScreen(QSplashScreen):
-
-    def __init__(self, movie, parent = None):
-
-        movie.jumpToFrame(0)
-        pixmap = QPixmap(movie.frameRect().size())
-
-        QSplashScreen.__init__(self, pixmap)
-        self.movie = movie
-        self.movie.frameChanged.connect(self.repaint)
-
-    def showEvent(self, event):
-        self.movie.start()
-
-    def hideEvent(self, event):
-        self.movie.stop()
-
-    def paintEvent(self, event):
-
-        painter = QPainter(self)
-        pixmap = self.movie.currentPixmap()
-        self.setMask(pixmap.mask())
-        painter.drawPixmap(0, 0, pixmap)
-
-    def sizeHint(self):
-
-        return self.movie.scaledSize()
 
 
 # Run Application

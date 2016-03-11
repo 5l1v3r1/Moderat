@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/android.png</file>
     <file>../assets/rename.png</file>
     <file>../assets/mprocesses.png</file>
     <file>../assets/execute.png</file>

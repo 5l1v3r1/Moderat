@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>896</width>
-    <height>509</height>
+    <width>994</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,28 +106,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="3" column="0">
-     <widget class="QLabel" name="creditLabel">
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>8</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>© Uri Patton</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QGroupBox" name="clientButtonsGroup">
       <property name="styleSheet">
@@ -394,261 +372,6 @@ QPushButton#quitServerButton:pressed {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="remoteShellButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="contextMenuPolicy">
-            <enum>Qt::DefaultContextMenu</enum>
-           </property>
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteShellButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-			border-right: none;
-            }
-
-QPushButton#remoteShellButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="autoRepeat">
-            <bool>false</bool>
-           </property>
-           <property name="autoExclusive">
-            <bool>false</bool>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-           <property name="default">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="remoteExplorerButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteExplorerButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-			border-left: none;
-			border-right: none;
-            }
-
-QPushButton#remoteExplorerButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="remoteAudioButton">
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteAudioButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-			border-left: none;
-			border-right: none
-            }
-
-QPushButton#remoteAudioButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="remoteKeyloggerButton">
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteKeyloggerButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-			border-left: none;
-			border-right: none
-            }
-
-QPushButton#remoteKeyloggerButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="remoteProcessesButton">
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#remoteProcessesButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-			border-left: none;
-            }
-
-QPushButton#remoteProcessesButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="res.qrc">
-             <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -707,6 +430,150 @@ QPushButton#clientSettingsButton:pressed {
       </layout>
      </widget>
     </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="creditLabel">
+          <property name="font">
+           <font>
+            <family>MS Shell Dlg 2</family>
+            <pointsize>8</pointsize>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>© Uri Patton</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="clientStatusLabel">
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="text">
+           <string>Status: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="statusLabel">
+          <property name="styleSheet">
+           <string notr="true">border: none;
+color: #e74c3c;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Offline</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="portTextLabel">
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="text">
+           <string>Port:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="portLabel">
+          <property name="styleSheet">
+           <string notr="true">border: none;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>N/A</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="serversOnlineStatus">
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="text">
+           <string>Servers Online: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="onlineStatus">
+          <property name="styleSheet">
+           <string notr="true">border: none;
+font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
     <item row="2" column="0">
      <widget class="QTabWidget" name="MainTabWidget">
       <property name="styleSheet">
@@ -714,7 +581,7 @@ QPushButton#clientSettingsButton:pressed {
   padding: 10px;
   padding-left: 15px;
   margin-left: 9px;
-  width: 70%;
+  width: 110%;
   border: 1px ridge;
   border-color: #2c3e50;
  }
@@ -734,31 +601,325 @@ QTabWidget::pane {
     border-color: #0F2D40;
 	background-color: #194759;
 	background-position: center;
-border: none;
+    border: none;
       }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="serversTab">
+      <widget class="QWidget" name="windowsTab">
        <attribute name="icon">
         <iconset resource="res.qrc">
-         <normaloff>:/icons/assets/server.png</normaloff>:/icons/assets/server.png</iconset>
+         <normaloff>:/icons/assets/windows.png</normaloff>:/icons/assets/windows.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Servers</string>
+        <string>Windows Servers</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0" rowspan="2">
-         <widget class="QTableWidget" name="serversTable">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QHeaderView::section {
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>26</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="remoteShellButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::DefaultContextMenu</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#remoteShellButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-bottom: none;
+			border-right: none;
+            }
+
+QPushButton#remoteShellButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>25</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="autoRepeat">
+               <bool>false</bool>
+              </property>
+              <property name="autoExclusive">
+               <bool>false</bool>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remoteExplorerButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#remoteExplorerButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-top: none;
+			border-bottom: none;
+			border-right: none;
+            }
+
+QPushButton#remoteExplorerButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>25</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remoteProcessesButton">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#remoteProcessesButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-top: none;
+			border-bottom: none;
+			border-right: none;
+            }
+
+QPushButton#remoteProcessesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>25</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remoteAudioButton">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#remoteAudioButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-top: none;
+			border-bottom: none;
+			border-right: none;
+            }
+
+QPushButton#remoteAudioButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>25</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remoteKeyloggerButton">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#remoteKeyloggerButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+			border-top: none;
+			border-right: none;
+            }
+
+QPushButton#remoteKeyloggerButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>25</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="serversTable">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QHeaderView::section {
 	background-color: #34495e;
     padding: 2px;
     color: #bdc3c7;
@@ -779,6 +940,226 @@ QTableWidget#serversTable {
 }
 
 QTableWidget#serversTable:item:selected {
+background-color: #2c3e50;
+color: #ecf0f1;
+}</string>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="dragDropOverwriteMode">
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="textElideMode">
+             <enum>Qt::ElideMiddle</enum>
+            </property>
+            <property name="showGrid">
+             <bool>false</bool>
+            </property>
+            <property name="gridStyle">
+             <enum>Qt::NoPen</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>false</bool>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+            <property name="cornerButtonEnabled">
+             <bool>false</bool>
+            </property>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>100</number>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Ip Address</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Socket</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Protection</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>OS</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>User</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Version</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Active Window Title</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>26</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="previewLabel">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>150</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>250</width>
+                <height>150</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: grey;
+border: 1px ridge;
+border-color: #2c3e50;
+border-left: none;
+border-bottom: none;
+background-color: #34495e;
+font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Select Server And Press Update Preview</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="updatePreviewButton">
+              <property name="styleSheet">
+               <string notr="true">QPushButton#updatePreviewButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			border-top: none;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#updatePreviewButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+              </property>
+              <property name="text">
+               <string>Update Preview</string>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+       <zorder></zorder>
+      </widget>
+      <widget class="QWidget" name="androidsTab">
+       <attribute name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/icons/assets/android.png</normaloff>:/icons/assets/android.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Android Servers</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="androidsTable">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QHeaderView::section {
+	background-color: #34495e;
+    padding: 2px;
+    color: #bdc3c7;
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+	border: 1px ridge;
+	border-right: none;
+	border-color: #2c3e50;
+}
+
+QTableWidget#androidsTable {
+	background-position: center;
+    border: 1px ridge;
+    padding: 5px;
+	color: #ecf0f1;
+    border-color: #2c3e50;
+    font: 8pt &quot;MS Shell Dlg 2&quot;;
+	background-color: #34495e;
+}
+
+QTableWidget#androidsTable:item:selected {
 background-color: #2c3e50;
 color: #ecf0f1;
 }</string>
@@ -868,199 +1249,8 @@ color: #ecf0f1;
           </column>
          </widget>
         </item>
-        <item row="0" column="1" rowspan="2">
-         <widget class="QGroupBox" name="panelGroup">
-          <property name="minimumSize">
-           <size>
-            <width>320</width>
-            <height>320</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>320</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: #2c3e50;
-border: 1px ridge;
-border-color: #2c3e50;</string>
-          </property>
-          <property name="title">
-           <string/>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="1" column="0" colspan="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QPushButton" name="updatePreviewButton">
-               <property name="styleSheet">
-                <string notr="true">QPushButton#updatePreviewButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-            }
-
-QPushButton#updatePreviewButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string>Update Preview</string>
-               </property>
-               <property name="icon">
-                <iconset resource="res.qrc">
-                 <normaloff>:/icons/assets/refresh.png</normaloff>:/icons/assets/refresh.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>14</width>
-                 <height>14</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="previewLabel">
-             <property name="minimumSize">
-              <size>
-               <width>300</width>
-               <height>200</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>200</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">color: grey;
-border: 1px ridge;
-border-color: #0B202E;
-background-color: #34495e;
-font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Select Server And Press Update Preview</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="statusLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-color: #e74c3c;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Not Listening</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="portTextLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;</string>
-             </property>
-             <property name="text">
-              <string>Port:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLabel" name="portLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>N/A</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="serversOnlineStatus">
-             <property name="styleSheet">
-              <string notr="true">border: none;</string>
-             </property>
-             <property name="text">
-              <string>Servers Online: </string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLabel" name="onlineStatus">
-             <property name="styleSheet">
-              <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-             </property>
-             <property name="text">
-              <string>0</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="clientStatusLabel">
-             <property name="styleSheet">
-              <string notr="true">border: none;</string>
-             </property>
-             <property name="text">
-              <string>Client Status: </string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="2">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>10</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="Line" name="line_4">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
      </widget>
     </item>
    </layout>
@@ -1070,7 +1260,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>896</width>
+     <width>994</width>
      <height>23</height>
     </rect>
    </property>

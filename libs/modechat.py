@@ -1,5 +1,4 @@
 import socket
-import sys
 
 # send socket
 def send(Sock, cmd, mode='example', splitter='%:::%', end='[ENDOFMESSAGE]'):

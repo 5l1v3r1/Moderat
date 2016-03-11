@@ -28,5 +28,4 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 
 ## Screenshots
 
-![Moderat Connections](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/main.png?raw=true)
-![Moderat Plugins](https://github.com/Swordf1sh/Moderat/blob/master/screenshots/plugins.png?raw=true)
+![Moderat Connections](http://s017.radikal.ru/i412/1603/cf/4c92ad61e371.png)

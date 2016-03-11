@@ -16,7 +16,7 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 * Active Window Title Preview
 * Servers Live Updates
 * Execute Shell Commands Remotely
-* Local & Remote File Explorer
+* Remote File Explorer
 * File Download & Upload
 * Listen Remote Microphone
 * Live Keylogger

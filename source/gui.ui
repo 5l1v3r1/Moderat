@@ -1130,7 +1130,7 @@ QPushButton#updatePreviewButton:pressed {
         <string>Android Servers</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QTableWidget" name="androidsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
@@ -1212,41 +1212,19 @@ color: #ecf0f1;
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
-          <column>
-           <property name="text">
-            <string>Ip Address</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Socket</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Protection</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>OS</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>User</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Version</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Active Window Title</string>
-           </property>
-          </column>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="styleSheet">
+           <string notr="true">font: 36pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Soon, If I Can Do It :)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
        </layout>

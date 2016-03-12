@@ -87,6 +87,6 @@ class Settings(QWidget, Ui_Form):
         with open(self.config_file, 'wb') as config_file:
             config.write(config_file)
 
-        msg = QMessageBox(QMessageBox.Information, 'Info', 'You must restart ModeRat Client for the changes to take effect')
+        msg = QMessageBox(QMessageBox.Information, 'Info', 'You must restart connection for the changes to take effect')
         msg.exec_()
 

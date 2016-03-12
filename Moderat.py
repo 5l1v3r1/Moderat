@@ -65,17 +65,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings = Config()
 
         # set settings
-        try:
-            self.IPADDRESS = self.settings.ip_address
-            self.PORT = self.settings.port
-            self.MAXCONNECTIONS = self.settings.max_connections
-            self.TIMEOUT = self.settings.timeout
-        except AttributeError:
-            self.settings = Config()
-            self.IPADDRESS = self.settings.ip_address
-            self.PORT = self.settings.port
-            self.MAXCONNECTIONS = self.settings.max_connections
-            self.TIMEOUT = self.settings.timeout
+        self.update_settings()
 
         # update gui
         self.gui = QApplication.processEvents
@@ -159,6 +149,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # Start Listen for Servers
     def listen_start(self):
+        # update settings
+        self.update_settings()
+        self.portLabel.setText(str(self.PORT))
+
         # Initializing variables
         if not self.acceptthreadState:
             self.socks = {}
@@ -508,6 +502,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
+
+    def update_settings(self):
+        self.settings = Config()
+        self.IPADDRESS = self.settings.ip_address
+        self.PORT = self.settings.port
+        self.MAXCONNECTIONS = self.settings.max_connections
+        self.TIMEOUT = self.settings.timeout
 
     def run_settings(self):
         self.settings_form = Settings()

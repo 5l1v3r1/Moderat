@@ -19,7 +19,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui import gui
-from settings import Config
+from settings import Config, Settings
 
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
@@ -129,6 +129,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Triggers
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
+        self.clientSettingsButton.clicked.connect(self.run_settings)
         self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
@@ -145,6 +146,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # menu triggers
         self.actionStartListen_for_connections.triggered.connect(self.listen_start)
         self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+        self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -506,6 +508,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
+
+    def run_settings(self):
+        self.settings_form = Settings()
+        self.settings_form.show()
 
     def closeEvent(self, event):
         sys.exit(1)

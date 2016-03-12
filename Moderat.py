@@ -8,25 +8,25 @@ import ast
 import zlib
 import threading
 import hashlib
-import Image
-import ImageQt
 import string
 import random
 from threading import Thread
-from libs import pygeoip
 
+import Image
+import ImageQt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from libs import pygeoip
 from ui import gui
-from settings import Config, Settings
-
+from libs.settings import Config, Settings
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
+
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')

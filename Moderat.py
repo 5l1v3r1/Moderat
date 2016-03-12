@@ -142,6 +142,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
         self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
 
+        # menu triggers
+        self.actionStartListen_for_connections.triggered.connect(self.listen_start)
+        self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
         self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)

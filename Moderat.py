@@ -26,6 +26,7 @@ from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
+from plugins.mscript import main as mscript
 
 
 # initial geo ip database
@@ -88,6 +89,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteAudioButton.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
         self.remoteProcessesButton.setDisabled(True)
+        self.remoteScriptingButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -131,6 +133,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
         self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
+        self.remoteScriptingButton.clicked.connect(lambda: self.run_plugin('scriptingMode'))
         self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
 
         # menu triggers
@@ -145,6 +148,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
         self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
+        self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_plugin(plugin='scripting'))
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
     # Start Listen for Servers
@@ -396,6 +400,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
+                self.remoteScriptingButton.setDisabled(True)
                 self.remoteProcessesButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
@@ -405,6 +410,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
+                self.remoteScriptingButton.setDisabled(False)
                 self.remoteProcessesButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
@@ -417,6 +423,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
+            self.remoteScriptingButton.setDisabled(True)
             self.remoteProcessesButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
@@ -470,7 +477,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
             'keyloggerMode': 'executeKeylogger()',
-            'processesMode': 'executeProcesses()'
+            'scriptingMode': 'executeScripting()',
+            'processesMode': 'executeProcesses()',
         }
         if signal in signals:
             self.current_sock = sock
@@ -482,7 +490,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorer': mexplorer,
             'audio': maudio,
             'keylogger': mkeylogger,
-            'processes': mprocesses
+            'scripting': mscript,
+            'processes': mprocesses,
         }
 
         server = self.current_server()

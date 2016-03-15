@@ -489,6 +489,29 @@ class Ui_MainWindow(object):
         self.remoteAudioButton.setIconSize(QtCore.QSize(25, 25))
         self.remoteAudioButton.setObjectName(_fromUtf8("remoteAudioButton"))
         self.verticalLayout.addWidget(self.remoteAudioButton)
+        self.remoteScriptingButton = QtGui.QPushButton(self.windowsTab)
+        self.remoteScriptingButton.setMinimumSize(QtCore.QSize(36, 36))
+        self.remoteScriptingButton.setMaximumSize(QtCore.QSize(36, 36))
+        self.remoteScriptingButton.setStyleSheet(_fromUtf8("QPushButton#remoteScriptingButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-right: none;\n"
+"            }\n"
+"\n"
+"QPushButton#remoteScriptingButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.remoteScriptingButton.setText(_fromUtf8(""))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/script.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteScriptingButton.setIcon(icon10)
+        self.remoteScriptingButton.setIconSize(QtCore.QSize(25, 25))
+        self.remoteScriptingButton.setObjectName(_fromUtf8("remoteScriptingButton"))
+        self.verticalLayout.addWidget(self.remoteScriptingButton)
         self.remoteKeyloggerButton = QtGui.QPushButton(self.windowsTab)
         self.remoteKeyloggerButton.setMinimumSize(QtCore.QSize(36, 36))
         self.remoteKeyloggerButton.setMaximumSize(QtCore.QSize(36, 36))
@@ -505,9 +528,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.remoteKeyloggerButton.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.remoteKeyloggerButton.setIcon(icon10)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.remoteKeyloggerButton.setIcon(icon11)
         self.remoteKeyloggerButton.setIconSize(QtCore.QSize(25, 25))
         self.remoteKeyloggerButton.setObjectName(_fromUtf8("remoteKeyloggerButton"))
         self.verticalLayout.addWidget(self.remoteKeyloggerButton)
@@ -603,9 +626,9 @@ class Ui_MainWindow(object):
 "QPushButton#updatePreviewButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updatePreviewButton.setIcon(icon11)
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updatePreviewButton.setIcon(icon12)
         self.updatePreviewButton.setIconSize(QtCore.QSize(14, 14))
         self.updatePreviewButton.setObjectName(_fromUtf8("updatePreviewButton"))
         self.verticalLayout_2.addWidget(self.updatePreviewButton)
@@ -613,9 +636,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addItem(spacerItem4)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.gridLayout_2.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/windows.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.windowsTab, icon12, _fromUtf8(""))
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/windows.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.windowsTab, icon13, _fromUtf8(""))
         self.androidsTab = QtGui.QWidget()
         self.androidsTab.setObjectName(_fromUtf8("androidsTab"))
         self.gridLayout_4 = QtGui.QGridLayout(self.androidsTab)
@@ -671,9 +694,9 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_4.addWidget(self.label, 0, 0, 1, 1)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/android.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.MainTabWidget.addTab(self.androidsTab, icon13, _fromUtf8(""))
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/android.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainTabWidget.addTab(self.androidsTab, icon14, _fromUtf8(""))
         self.gridLayout_5.addWidget(self.MainTabWidget, 2, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

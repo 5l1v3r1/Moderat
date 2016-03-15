@@ -283,17 +283,6 @@ QPushButton#clearButton:pressed {
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QTextEdit" name="idleText">
-             <property name="styleSheet">
-              <string notr="true">background-color: #34495e;
-    padding: 2px;
-    color: #bdc3c7;
-	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
-	border: 1px ridge;
-	border-right: none;
-	border-color: #2c3e50;</string>
-             </property>
-            </widget>
            </widget>
           </item>
          </layout>

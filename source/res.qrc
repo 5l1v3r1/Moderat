@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/python.png</file>
+    <file>../assets/script.png</file>
     <file>../assets/android.png</file>
     <file>../assets/rename.png</file>
     <file>../assets/mprocesses.png</file>

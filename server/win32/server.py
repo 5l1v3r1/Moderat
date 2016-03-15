@@ -212,12 +212,12 @@ def screen_bits():
 
 
 def execute(source):
-    data = ''
+    mprint = ''
     try:
         exec source
-        if data == '':
-            return 'No output<br>example: data = "SOME TEXT OR VARIABLE"'
-        return str(data)
+        if mprint == '':
+            return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
+        return str(mprint)
     except Exception as e:
         return str(e)
 

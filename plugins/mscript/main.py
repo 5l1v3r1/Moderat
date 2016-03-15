@@ -26,3 +26,11 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.horizontalLayout_2.addWidget(self.idle)
 
         self.outputText.setVisible(False)
+
+        self.runButton.clicked.connect(self.run_script)
+
+    def run_script(self):
+        script = self.idle.getTextEdit()
+        output = get(self.sock, 'runscript %s' % script, 'getoutput')
+        self.outputText.setVisible(True)
+        self.outputText.setHtml(output)

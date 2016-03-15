@@ -49,7 +49,7 @@ class MyHighlighter(QSyntaxHighlighter):
         # output
         brush = QBrush(Qt.magenta, Qt.SolidPattern)
         specialConstant.setForeground(brush)
-        keywords = QStringList(["data", ])
+        keywords = QStringList(["mprint", ])
         for word in keywords:
             pattern = QRegExp("\\b" + word + "\\b")
             rule = HighlightingRule(pattern, specialConstant)

@@ -217,7 +217,7 @@ class Ui_Form(object):
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.scriptTab.addTab(self.pythonTab, icon3, _fromUtf8(""))
         self.outputText = QtGui.QTextEdit(self.splitter_2)
-        self.outputText.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
+        self.outputText.setStyleSheet(_fromUtf8("background-color: #131E25;\n"
 "    padding: 2px;\n"
 "    color: #bdc3c7;\n"
 "    font: 75 8pt \"MS Shell Dlg 2\";\n"

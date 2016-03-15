@@ -4,6 +4,8 @@ import py_syntax
 
 
 class LineTextWidget(QFrame):
+
+
  
     class NumberBar(QWidget):
  
@@ -80,6 +82,13 @@ class LineTextWidget(QFrame):
         QFrame.__init__(self, *args)
  
         self.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
+
+        self.setStyleSheet('''
+ padding: 2px;
+color: #bdc3c7;
+font: 75 8pt "MS Shell Dlg 2";
+border: 1px ridge;
+border-color: #2c3e50;''')
 
         self.edit = QTextEdit()
         self.edit.setLineWrapMode(QTextEdit.NoWrap)

@@ -20,6 +20,7 @@ Fun Made Windows Remote Administration Tool in Python + GUI
 * File Download & Upload
 * Listen Remote Microphone
 * Live Keylogger
+* Remote Scripting (Python 2.7)
 * Processes Manager
 
 ---

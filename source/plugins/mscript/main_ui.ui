@@ -292,7 +292,7 @@ QPushButton#clearButton:pressed {
      </widget>
      <widget class="QTextEdit" name="outputText">
       <property name="styleSheet">
-       <string notr="true">background-color: #34495e;
+       <string notr="true">background-color: #131E25;
     padding: 2px;
     color: #bdc3c7;
 	font: 75 8pt &quot;MS Shell Dlg 2&quot;;

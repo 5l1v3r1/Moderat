@@ -49,6 +49,7 @@ Live Keylogger:
 Remote Scripting:
 
  * Execute Python 2.7 Scripts Remotely
+ * Python Idle
  * Output With HTML Support
  * Insert Script From Python Files
 

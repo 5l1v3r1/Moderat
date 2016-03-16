@@ -12,7 +12,7 @@ Fun Made Windows Remote Administration Tool in Python
 * PyAudio
 
 
- ### Features list
+ ##### Features list
 
 Main Features:
 
@@ -56,6 +56,6 @@ Process Manager:
  * Kill Process
 
 
-## Screenshots
+ ##### Screenshots
 
 ![Moderat Connections](http://s017.radikal.ru/i412/1603/cf/4c92ad61e371.png)

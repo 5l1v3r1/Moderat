@@ -14,8 +14,8 @@
    <string>Form</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/assets/processes.png</normaloff>:/icons/assets/processes.png</iconset>
+   <iconset resource="../../res.qrc">
+    <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>

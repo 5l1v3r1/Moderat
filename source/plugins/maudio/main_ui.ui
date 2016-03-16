@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>124</height>
+    <width>411</width>
+    <height>227</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -34,7 +34,7 @@
 color: #bdc3c7;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+   <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
       <number>0</number>
@@ -150,14 +150,7 @@ QPushButton#stopButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
+   <item row="0" column="1">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -170,7 +163,40 @@ QPushButton#stopButton:pressed {
      </property>
     </spacer>
    </item>
-   <item row="3" column="0" colspan="3">
+   <item row="0" column="2">
+    <widget class="QPushButton" name="alwaysTopButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#alwaysTopButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#alwaysTopButton:checked {
+			border-color: #27ae60;
+            background-color: #2c3e50;
+            }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../res.qrc">
+       <normaloff>:/icons/assets/always_top.png</normaloff>:/icons/assets/always_top.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="defaultInputDeviceLavel">
@@ -211,6 +237,9 @@ QPushButton#stopButton:pressed {
      </item>
      <item>
       <widget class="QComboBox" name="rateDrop">
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
        <item>
         <property name="text">
          <string>5120</string>
@@ -230,93 +259,6 @@ QPushButton#stopButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="volumeLabel">
-       <property name="text">
-        <string>Volume:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QProgressBar" name="volumeProgress">
-       <property name="styleSheet">
-        <string notr="true">QProgressBar:horizontal {
-border: 1px solid #0F2D40;
-border-radius: 3px;
-background: #0F2D40;
-padding: 1px;
-text-align: top;
-margin-right: 4ex;
-}
-QProgressBar::chunk:horizontal {
-background: #bdc3c7;
-margin-right: 1px;
-width: 5px;
-}</string>
-       </property>
-       <property name="maximum">
-        <number>10000</number>
-       </property>
-       <property name="value">
-        <number>50</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-       </property>
-       <property name="textVisible">
-        <bool>false</bool>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="invertedAppearance">
-        <bool>false</bool>
-       </property>
-       <property name="textDirection">
-        <enum>QProgressBar::TopToBottom</enum>
-       </property>
-       <property name="format">
-        <string>Volume</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="alwaysTopButton">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton#alwaysTopButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-            }
-
-QPushButton#alwaysTopButton:checked {
-			border-color: #27ae60;
-            background-color: #2c3e50;
-            }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../res.qrc">
-       <normaloff>:/icons/assets/always_top.png</normaloff>:/icons/assets/always_top.png</iconset>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0" colspan="3">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -329,6 +271,164 @@ QPushButton#alwaysTopButton:checked {
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="6" column="0" colspan="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Automatic Recording Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="detectRecordLabel">
+            <property name="text">
+             <string>Detect Sound 
+ and Record:</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QProgressBar" name="volumeProgress">
+            <property name="styleSheet">
+             <string notr="true">QProgressBar:horizontal {
+border: 1px solid #0F2D40;
+border-radius: 0px;
+background: #0F2D40;
+padding: 1px;
+text-align: top;
+}
+QProgressBar::chunk:horizontal {
+background: #bdc3c7;
+margin-right: 1px;
+width: 5px;
+}</string>
+            </property>
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+            <property name="value">
+             <number>1000</number>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+            </property>
+            <property name="textVisible">
+             <bool>false</bool>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="textDirection">
+             <enum>QProgressBar::TopToBottom</enum>
+            </property>
+            <property name="format">
+             <string>Volume</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="volumeSlider">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: #0F2D40;
+height: 10px;
+border-radius: 0px;
+}
+
+QSlider::sub-page:horizontal {
+background: #bdc3c7;
+border: 1px solid #777;
+height: 10px;
+border-radius: 0px;
+}
+
+QSlider::add-page:horizontal {
+background: #0F2D40;
+height: 10px;
+}
+
+QSlider::handle:horizontal {
+background: #34495e;
+width: 13px;
+margin-top: -2px;
+margin-bottom: -2px;
+border: 1px ridge;
+border-color: #34495e;
+}
+
+QSlider::handle:horizontal:hover {
+background: #7f8c8d;
+}</string>
+            </property>
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+            <property name="value">
+             <number>1000</number>
+            </property>
+            <property name="sliderPosition">
+             <number>1000</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="invertedControls">
+             <bool>false</bool>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::NoTicks</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="3">
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string>Not Recording</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

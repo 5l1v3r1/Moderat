@@ -27,7 +27,7 @@ class Ui_Form(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(400, 326)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/processes.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         Form.setWindowOpacity(1.0)
         Form.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
@@ -168,3 +168,4 @@ class Ui_Form(object):
         self.getProcessesButton.setToolTip(_translate("Form", "Save", None))
         self.terminateProcessButton.setToolTip(_translate("Form", "Smilies Detection", None))
         self.alwaysTopButton.setToolTip(_translate("Form", "Always Top", None))
+

@@ -183,6 +183,52 @@ class Ui_Form(object):
         self.runButton.setIconSize(QtCore.QSize(25, 25))
         self.runButton.setObjectName(_fromUtf8("runButton"))
         self.verticalLayout.addWidget(self.runButton)
+        self.fromFileButton = QtGui.QPushButton(self.pythonTab)
+        self.fromFileButton.setMinimumSize(QtCore.QSize(36, 36))
+        self.fromFileButton.setMaximumSize(QtCore.QSize(36, 36))
+        self.fromFileButton.setStyleSheet(_fromUtf8("QPushButton#fromFileButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-right: none;\n"
+"            }\n"
+"\n"
+"QPushButton#fromFileButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.fromFileButton.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.fromFileButton.setIcon(icon2)
+        self.fromFileButton.setIconSize(QtCore.QSize(25, 25))
+        self.fromFileButton.setObjectName(_fromUtf8("fromFileButton"))
+        self.verticalLayout.addWidget(self.fromFileButton)
+        self.closeOutputButton = QtGui.QPushButton(self.pythonTab)
+        self.closeOutputButton.setMinimumSize(QtCore.QSize(36, 36))
+        self.closeOutputButton.setMaximumSize(QtCore.QSize(36, 36))
+        self.closeOutputButton.setStyleSheet(_fromUtf8("QPushButton#closeOutputButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-right: none;\n"
+"            }\n"
+"\n"
+"QPushButton#closeOutputButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.closeOutputButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/bottom.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.closeOutputButton.setIcon(icon3)
+        self.closeOutputButton.setIconSize(QtCore.QSize(25, 25))
+        self.closeOutputButton.setObjectName(_fromUtf8("closeOutputButton"))
+        self.verticalLayout.addWidget(self.closeOutputButton)
         self.clearButton = QtGui.QPushButton(self.pythonTab)
         self.clearButton.setMinimumSize(QtCore.QSize(36, 36))
         self.clearButton.setMaximumSize(QtCore.QSize(36, 36))
@@ -199,9 +245,9 @@ class Ui_Form(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.clearButton.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clearButton.setIcon(icon2)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clearButton.setIcon(icon4)
         self.clearButton.setIconSize(QtCore.QSize(25, 25))
         self.clearButton.setObjectName(_fromUtf8("clearButton"))
         self.verticalLayout.addWidget(self.clearButton)
@@ -213,9 +259,9 @@ class Ui_Form(object):
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.horizontalLayout_2.addWidget(self.splitter)
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.scriptTab.addTab(self.pythonTab, icon3, _fromUtf8(""))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.scriptTab.addTab(self.pythonTab, icon5, _fromUtf8(""))
         self.outputText = QtGui.QTextEdit(self.splitter_2)
         self.outputText.setStyleSheet(_fromUtf8("background-color: #131E25;\n"
 "    padding: 2px;\n"
@@ -235,3 +281,4 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Remote Scripting", None))
         self.scriptTab.setTabText(self.scriptTab.indexOf(self.pythonTab), _translate("Form", "Python", None))
+        

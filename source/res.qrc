@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/save_as.png</file>
     <file>../assets/python.png</file>
     <file>../assets/script.png</file>
     <file>../assets/android.png</file>
@@ -8,7 +9,6 @@
     <file>../assets/execute.png</file>
     <file>../assets/bottom.png</file>
     <file>../assets/save.png</file>
-    <file>../assets/smiley.png</file>
     <file>../assets/always_top.png</file>
     <file>../assets/connect.png</file>
     <file>../assets/disconnect.png</file>

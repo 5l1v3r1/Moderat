@@ -213,8 +213,6 @@ class mainPopup(QWidget, Ui_Form):
         try:
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
             _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-            print _type
-            print _file
 
             if '<FILE>' in _type:
 
@@ -249,7 +247,7 @@ class mainPopup(QWidget, Ui_Form):
                         with open(_file, 'wb') as _f:
                             _f.write(data)
                 except socket.error:
-                    print 'socket error'
+                    pass
                 finally:
                     self.progressBar.setVisible(False)
                     self.cancelButton.setVisible(False)
@@ -299,7 +297,7 @@ class mainPopup(QWidget, Ui_Form):
                                 self.sock.send(end)
                                 break
                 except IOError:
-                    print 'Permision denied'
+                    pass
                 if self.activeProgress:
                     result = self.sock.recv(1024)
                     if 'downloadDone' in result:

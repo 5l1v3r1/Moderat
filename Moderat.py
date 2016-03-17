@@ -529,6 +529,21 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         sys.exit(1)
 
 
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if not os.path.exists('error.log'):
+        open('error.log', 'w').close()
+    if form:
+        log_value = '''
+        Exception Type: %s
+        Exception Value: %s
+        Exception Address: %s
+        \n
+        ''' % (exc_type, exc_value, exc_traceback)
+        with open('error.log', 'a') as log_file:
+            log_file.write(log_value)
+
+sys.excepthook = handle_exception
+
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)

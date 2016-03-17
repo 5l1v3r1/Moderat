@@ -20,6 +20,7 @@ Main Features:
  * Desktop Preview
  * Active Window Title Preview
  * Servers Live Update
+ * Catch Errors and Save In Log File
 
 Remote Shell:
  *  Execute Shell Command Remotely

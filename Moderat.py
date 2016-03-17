@@ -531,8 +531,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         sys.exit(1)
 
 def handle_exception(exc_type, exc_value, exc_traceback):
-    if not os.path.exists('error.log'):
-        open('error.log', 'w').close()
     if form:
         now = datetime.datetime.now()
         filename = exc_traceback.tb_frame
@@ -559,6 +557,7 @@ DATE: %s/%s/%s %s:%s:%s
         with open('error.log', 'a') as log_file:
             log_file.write(log_value)
 
+open('error.log', 'w').close()
 sys.excepthook = handle_exception
 
 # Run Application

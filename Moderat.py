@@ -543,7 +543,7 @@ DATE: %s/%s/%s %s:%s:%s
     ####################################
     # Exception Type: %s
     # Exception Value: %s
-    # Exception Address: %s
+    # Exception Object: %s
     ####################################
         ''' % (now.year,
                now.month,

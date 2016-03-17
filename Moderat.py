@@ -10,6 +10,8 @@ import threading
 import hashlib
 import string
 import random
+import datetime
+import linecache
 from threading import Thread
 
 import Image
@@ -528,17 +530,32 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def closeEvent(self, event):
         sys.exit(1)
 
-
 def handle_exception(exc_type, exc_value, exc_traceback):
     if not os.path.exists('error.log'):
         open('error.log', 'w').close()
     if form:
+        now = datetime.datetime.now()
+        filename = exc_traceback.tb_frame
         log_value = '''
-        Exception Type: %s
-        Exception Value: %s
-        Exception Address: %s
-        \n
-        ''' % (exc_type, exc_value, exc_traceback)
+DATE: %s/%s/%s %s:%s:%s
+    FILE: %s
+    LINE: %s
+    ####################################
+    # Exception Type: %s
+    # Exception Value: %s
+    # Exception Address: %s
+    ####################################
+        ''' % (now.year,
+               now.month,
+               now.day,
+               now.hour,
+               now.minute,
+               now.second,
+               filename.f_code.co_filename,
+               exc_traceback.tb_lineno,
+               exc_type,
+               exc_value,
+               exc_traceback)
         with open('error.log', 'a') as log_file:
             log_file.write(log_value)
 
@@ -547,8 +564,8 @@ sys.excepthook = handle_exception
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-
     form = MainDialog()
+
     form.show()
 
     sys.exit(app.exec_())

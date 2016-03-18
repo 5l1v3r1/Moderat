@@ -441,7 +441,10 @@ class ChildSocket(threading.Thread):
                     except:
                         stdoutput = 'downloadError'
                 elif data.startswith('getDefaultInputDeviceName'):
-                    stdoutput = get_default_input_device()
+                    try:
+                        stdoutput = get_default_input_device()
+                    except IOError:
+                        stdoutput = 'NoDevice'
                 elif data.startswith('startAudio'):
                     try:
                         audio_thread = AudioStreaming(self.socket, int(data.split(' ')[-1]))

@@ -46,7 +46,7 @@ class Console(QTextEdit):
             return
         self.moveCursor(QTextCursor.End)
         self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        for i in range(len(self.prompt)):
+        for i in range(len(self.prompt)+1):
             self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
         self.textCursor().removeSelectedText()
         self.textCursor().insertText(command)

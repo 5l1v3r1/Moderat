@@ -1063,7 +1063,7 @@ color: #ecf0f1;
             </column>
             <column>
              <property name="text">
-              <string>Version</string>
+              <string>Mic</string>
              </property>
             </column>
             <column>

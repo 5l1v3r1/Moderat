@@ -770,7 +770,7 @@ class Ui_MainWindow(object):
         item = self.serversTable.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "User", None))
         item = self.serversTable.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Version", None))
+        item.setText(_translate("MainWindow", "Mic", None))
         item = self.serversTable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Active Window Title", None))
         self.previewLabel.setText(_translate("MainWindow", "Select Server And Press Update Preview", None))

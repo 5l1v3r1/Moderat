@@ -123,7 +123,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
         self.clientSettingsButton.clicked.connect(self.run_settings)
-        self.serversTable.clicked.connect(self.update_preview)
+        #self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)

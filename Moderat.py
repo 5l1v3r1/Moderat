@@ -283,11 +283,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                         info = ast.literal_eval(data)
                         self.streaming_socks[i]['protection'] = info['protection']
                         self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
-                    except socket.error:
+                    except (socket.error, SyntaxError):
                         del self.socks[i]
                         del self.streaming_socks[i]
                         break
-                    except (zlib.error, SyntaxError):
+                    except zlib.error:
                         pass
             except (RuntimeError, ValueError):
                 pass

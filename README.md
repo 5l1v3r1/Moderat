@@ -16,7 +16,7 @@ Fun Made Windows Remote Administration Tool in Python
 ###### Features list
 
 Server Features:
- * No Installed Python Required On Victims Windows
+ * No Installed Python Required On Target Machine
  * Silent Installation
  * Auto Run
  * Fake Message
@@ -45,7 +45,7 @@ Client Features:
 
 Remote Shell:
  *  Interactive Console
- *  Previous Commands With <UP> & <DOWN> Keys
+ *  Previous Commands With UP&DOWN Keys
 
 File Manager:
  * Drag & Drop File Upload

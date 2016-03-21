@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/web_camera.png</file>
     <file>../assets/save_as.png</file>
     <file>../assets/python.png</file>
     <file>../assets/script.png</file>

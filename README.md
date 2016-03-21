@@ -15,23 +15,40 @@ Fun Made Windows Remote Administration Tool in Python
 
 ###### Features list
 
-Main Features:
- * Server Password Protection
+Server Features:
+ * No Installed Python Required On Victims Windows
+ * Silent Installation
+ * Auto Run
+ * Fake Message
+ * Password Protection
+ * Usb Flash Drive Spreading
+ * Multi Threading
+ * Output Executables Size 3.4~3.5 MB 
+ * Execute Cmd Commands
+ * File Explorer
+ * Audio Spy
+ * Live Keylogger With Active Window Titles
+ * Execute Python Scripts
+ * Desktop Grabber
+ * Web Camera Grabber
+ * Processes List
+ * Upload
+ * Download
+ * Hide
+
+Client Features:
  * Desktop Preview
+ * Web Camera Preview
  * Active Window Title Preview
  * Servers Live Update
  * Catch Errors and Save In Log File
 
 Remote Shell:
- *  Execute Shell Command Remotely
  *  Interactive Console
  *  Previous Commands With <UP> & <DOWN> Keys
 
 File Manager:
- * File Upload & Download (Drag & Drop)
- * Make New Files, Folders
- * Execute File Remotely
- * Rename, Delete, Hide, Unhide Content
+ * Drag & Drop File Upload
 
 Remote Microphone:
  * Listen Remote Microphone
@@ -43,16 +60,16 @@ Live Keylogger:
  * Automatic Save Keystrokes (*.html)
 
 Remote Scripting:
- * Execute Python 2.7 Scripts Remotely
  * Python Idle
  * Output With HTML Support
  * Insert Script From Python Files
 
 Process Manager:
- * View Remote Running Processes
  * Kill Process
+ 
+
 
 
 ###### Screenshots
 
-![Moderat Connections](http://s017.radikal.ru/i412/1603/cf/4c92ad61e371.png)
+![Moderat Connections](http://s014.radikal.ru/i328/1603/0b/b0c376ab81ad.png)

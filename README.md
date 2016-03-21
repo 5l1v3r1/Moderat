@@ -37,27 +37,28 @@ Server Features:
  * Hide
 
 Client Features:
+ * User Friendly Gui
  * Identify Ip Address Country
  * Desktop Preview
  * Web Camera Preview
  * Active Window Title Preview
- * Servers Live Update
+ * Servers Status Live Update
  * Catch Errors and Save In Log File
 
 Remote Shell:
  *  Interactive Console
- *  Previous Commands With UP&DOWN Keys
+ *  Commands History
 
 File Manager:
+ * Basic Commands
  * Drag & Drop File Upload
 
 Remote Microphone:
- * Listen Remote Microphone
+ * Remote Microphone Streaming
  * Automatic Sound Detector & Recorder (*.wav)
 
 Live Keylogger:
- * Live Keyboard Activity Viewer
- * Active Window Title Preview
+ * Live Keyboard Activity Viewer With Active Window Title
  * Automatic Save Keystrokes (*.html)
 
 Remote Scripting:

@@ -37,6 +37,7 @@ Server Features:
  * Hide
 
 Client Features:
+ * Identify Ip Address Country
  * Desktop Preview
  * Web Camera Preview
  * Active Window Title Preview

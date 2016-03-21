@@ -147,7 +147,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Custom signal for update server table
-        self.connect(self, SIGNAL('updateTable()'), self.updateServersTable)
+        self.connect(self, SIGNAL('updateTable()'), self.update_servers_table)
         self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)
         self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
@@ -331,7 +331,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 pass
 
     # Update Servers Table from self.socks
-    def updateServersTable(self):
+    def update_servers_table(self):
         self.serversTable.setRowCount(len(self.streaming_socks))
         try:
             for index, obj in enumerate(self.streaming_socks):

@@ -23,7 +23,7 @@ Server Features:
  * Password Protection
  * Usb Flash Drive Spreading
  * Multi Threading
- * Output Executables Size 3.4~3.5 MB 
+ * Server Size 3.4~3.5 MB 
  * Execute Cmd Commands
  * File Explorer
  * Audio Spy

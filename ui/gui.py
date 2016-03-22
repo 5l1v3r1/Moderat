@@ -692,19 +692,19 @@ class Ui_MainWindow(object):
         self.previewLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.previewLabel.setObjectName(_fromUtf8("previewLabel"))
         self.verticalLayout_2.addWidget(self.previewLabel)
-        self.screenNameButton = QtGui.QLabel(self.windowsTab)
-        self.screenNameButton.setMinimumSize(QtCore.QSize(250, 0))
-        self.screenNameButton.setMaximumSize(QtCore.QSize(250, 16777215))
-        self.screenNameButton.setStyleSheet(_fromUtf8("font: 7pt \"MS Shell Dlg 2\";\n"
+        self.deviceNameLabel = QtGui.QLabel(self.windowsTab)
+        self.deviceNameLabel.setMinimumSize(QtCore.QSize(250, 0))
+        self.deviceNameLabel.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.deviceNameLabel.setStyleSheet(_fromUtf8("font: 7pt \"MS Shell Dlg 2\";\n"
 "background-color: #34495e;\n"
 "border: 1px ridge;\n"
 "border-color: #2c3e50;\n"
 "border-top: none;\n"
 "border-left: none;"))
-        self.screenNameButton.setText(_fromUtf8(""))
-        self.screenNameButton.setAlignment(QtCore.Qt.AlignCenter)
-        self.screenNameButton.setObjectName(_fromUtf8("screenNameButton"))
-        self.verticalLayout_2.addWidget(self.screenNameButton)
+        self.deviceNameLabel.setText(_fromUtf8(""))
+        self.deviceNameLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.deviceNameLabel.setObjectName(_fromUtf8("deviceNameLabel"))
+        self.verticalLayout_2.addWidget(self.deviceNameLabel)
         spacerItem5 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem5)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)

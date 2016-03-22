@@ -1278,7 +1278,7 @@ font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="screenNameButton">
+             <widget class="QLabel" name="deviceNameLabel">
               <property name="minimumSize">
                <size>
                 <width>250</width>

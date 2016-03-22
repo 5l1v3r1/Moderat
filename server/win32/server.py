@@ -31,6 +31,7 @@ __user__ = os.path.expanduser('~').split('\\')[-1]
 try:
     cam = vidcap.new_Dev(0, 0)
     web_camera = str(cam.getdisplayname())
+    del cam
 except:
     web_camera = 'NoDevice'
 
@@ -365,6 +366,7 @@ def get_screenshot():
 
 
 def webcam_shot():
+    cam = vidcap.new_Dev(0, 0)
     buff, width, height = cam.getbuffer()
     return str({
         'webcambits': zlib.compress(buff),

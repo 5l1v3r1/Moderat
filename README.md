@@ -41,6 +41,7 @@ Client Features:
  * Identify Ip Address Country
  * Desktop Preview
  * Web Camera Preview
+ * Save Preview
  * Active Window Title Preview
  * Servers Status Live Update
  * Catch Errors and Save In Log File

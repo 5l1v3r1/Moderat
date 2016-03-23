@@ -115,6 +115,7 @@ class Ui_Form(object):
         self.verticalLayout = QtGui.QVBoxLayout(Form)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.explorerDrivesDrop = QtGui.QComboBox(Form)
         self.explorerDrivesDrop.setMinimumSize(QtCore.QSize(50, 0))
@@ -127,12 +128,19 @@ class Ui_Form(object):
 "background-color: #34495e;"))
         self.explorerDrivesDrop.setObjectName(_fromUtf8("explorerDrivesDrop"))
         self.horizontalLayout_2.addWidget(self.explorerDrivesDrop)
+        self.line_4 = QtGui.QFrame(Form)
+        self.line_4.setStyleSheet(_fromUtf8(""))
+        self.line_4.setFrameShape(QtGui.QFrame.VLine)
+        self.line_4.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_4.setObjectName(_fromUtf8("line_4"))
+        self.horizontalLayout_2.addWidget(self.line_4)
         self.refreshButton = QtGui.QPushButton(Form)
-        self.refreshButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.refreshButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.refreshButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.refreshButton.setMaximumSize(QtCore.QSize(28, 28))
         self.refreshButton.setStyleSheet(_fromUtf8("QPushButton#refreshButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -148,11 +156,12 @@ class Ui_Form(object):
         self.refreshButton.setObjectName(_fromUtf8("refreshButton"))
         self.horizontalLayout_2.addWidget(self.refreshButton)
         self.upButton = QtGui.QPushButton(Form)
-        self.upButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.upButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.upButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.upButton.setMaximumSize(QtCore.QSize(28, 28))
         self.upButton.setStyleSheet(_fromUtf8("QPushButton#upButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -173,11 +182,12 @@ class Ui_Form(object):
         self.line.setObjectName(_fromUtf8("line"))
         self.horizontalLayout_2.addWidget(self.line)
         self.downloadButton = QtGui.QPushButton(Form)
-        self.downloadButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.downloadButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.downloadButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.downloadButton.setMaximumSize(QtCore.QSize(28, 28))
         self.downloadButton.setStyleSheet(_fromUtf8("QPushButton#downloadButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -193,9 +203,12 @@ class Ui_Form(object):
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.horizontalLayout_2.addWidget(self.downloadButton)
         self.uploadButton = QtGui.QPushButton(Form)
+        self.uploadButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.uploadButton.setMaximumSize(QtCore.QSize(28, 28))
         self.uploadButton.setStyleSheet(_fromUtf8("QPushButton#uploadButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -216,9 +229,12 @@ class Ui_Form(object):
         self.line_2.setObjectName(_fromUtf8("line_2"))
         self.horizontalLayout_2.addWidget(self.line_2)
         self.executeButton = QtGui.QPushButton(Form)
+        self.executeButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.executeButton.setMaximumSize(QtCore.QSize(28, 28))
         self.executeButton.setStyleSheet(_fromUtf8("QPushButton#executeButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -234,9 +250,13 @@ class Ui_Form(object):
         self.executeButton.setObjectName(_fromUtf8("executeButton"))
         self.horizontalLayout_2.addWidget(self.executeButton)
         self.openFolderButton = QtGui.QPushButton(Form)
+        self.openFolderButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.openFolderButton.setMaximumSize(QtCore.QSize(28, 28))
         self.openFolderButton.setStyleSheet(_fromUtf8("QPushButton#openFolderButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -252,9 +272,13 @@ class Ui_Form(object):
         self.openFolderButton.setObjectName(_fromUtf8("openFolderButton"))
         self.horizontalLayout_2.addWidget(self.openFolderButton)
         self.renameButton = QtGui.QPushButton(Form)
+        self.renameButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.renameButton.setMaximumSize(QtCore.QSize(28, 28))
         self.renameButton.setStyleSheet(_fromUtf8("QPushButton#renameButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -270,9 +294,12 @@ class Ui_Form(object):
         self.renameButton.setObjectName(_fromUtf8("renameButton"))
         self.horizontalLayout_2.addWidget(self.renameButton)
         self.deleteButton = QtGui.QPushButton(Form)
+        self.deleteButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.deleteButton.setMaximumSize(QtCore.QSize(28, 28))
         self.deleteButton.setStyleSheet(_fromUtf8("QPushButton#deleteButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -293,9 +320,12 @@ class Ui_Form(object):
         self.line_3.setObjectName(_fromUtf8("line_3"))
         self.horizontalLayout_2.addWidget(self.line_3)
         self.hideButton = QtGui.QPushButton(Form)
+        self.hideButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.hideButton.setMaximumSize(QtCore.QSize(28, 28))
         self.hideButton.setStyleSheet(_fromUtf8("QPushButton#hideButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-right: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -311,9 +341,12 @@ class Ui_Form(object):
         self.hideButton.setObjectName(_fromUtf8("hideButton"))
         self.horizontalLayout_2.addWidget(self.hideButton)
         self.unhideButton = QtGui.QPushButton(Form)
+        self.unhideButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.unhideButton.setMaximumSize(QtCore.QSize(28, 28))
         self.unhideButton.setStyleSheet(_fromUtf8("QPushButton#unhideButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-left: none;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
@@ -509,4 +542,3 @@ class Ui_Form(object):
         self.dirfilesCountLabel.setText(_translate("Form", "0", None))
         self.progressBar.setFormat(_translate("Form", "%p%", None))
         self.cancelButton.setText(_translate("Form", "Cancel", None))
-

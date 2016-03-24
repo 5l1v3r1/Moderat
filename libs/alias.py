@@ -12,8 +12,6 @@ class Alias:
 
     def set_alias(self, ip, os, alias):
 
-        print 'aq'
-
         self.alias.read(self.alias_db)
         if not self.alias.has_section(ip):
             self.alias.add_section(ip)
@@ -21,8 +19,6 @@ class Alias:
 
         with open(self.alias_db, 'w') as alias_db:
             self.alias.write(alias_db)
-
-        print 'done'
 
     def get_alias(self, ip, os):
         self.alias.read(self.alias_db)

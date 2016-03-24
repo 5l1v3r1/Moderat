@@ -596,7 +596,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if server:
             text, ok = QInputDialog.getText(self, 'Set Alias', 'Enter Name: ')
             if ok:
-                print 'aq'
                 self.alias.set_alias(self.socks[server]['ip_address'], self.socks[server]['os'], text)
 
     def run_plugin(self, mode):

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Moderat Server</string>
+   <string>Moderat Monitoring Server</string>
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
@@ -286,7 +286,7 @@ QTabWidget::pane {
          <normaloff>:/icons/assets/windows.png</normaloff>:/icons/assets/windows.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Windows Servers</string>
+        <string>Windows Clients</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
@@ -519,9 +519,15 @@ color: #ecf0f1;
     <addaction name="actionLock_Server"/>
     <addaction name="actionStop_Server"/>
    </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+   </widget>
    <addaction name="serverMenu"/>
    <addaction name="menuServer"/>
    <addaction name="menuAction"/>
+   <addaction name="menuAbout"/>
   </widget>
   <action name="actionStartListen_for_connections">
    <property name="checkable">

@@ -20,6 +20,7 @@ from PyQt4.QtCore import *
 
 from libs import pygeoip
 from ui import gui
+from libs.alias import Alias
 from libs.settings import Config, Settings
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
@@ -80,6 +81,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # current preview bits
         self.current_bits = None
 
+        # initial alias
+        self.alias = Alias()
+
         # listen status
         self.acceptthreadState = False
 
@@ -103,13 +107,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # indexes for servers table
         self.index_of_ipAddress = 0
-        self.index_of_socket = 1
-        self.index_of_lock = 2
-        self.index_of_os = 3
-        self.index_of_user = 4
-        self.index_of_microphone = 5
-        self.index_of_webcamera = 6
-        self.index_of_activeWindowTitle = 7
+        self.index_of_alias = 1
+        self.index_of_socket = 2
+        self.index_of_lock = 3
+        self.index_of_os = 4
+        self.index_of_user = 5
+        self.index_of_microphone = 6
+        self.index_of_webcamera = 7
+        self.index_of_activeWindowTitle = 8
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.serversTable.setColumnWidth(self.index_of_socket, 50)
@@ -129,7 +134,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.startListenButton.clicked.connect(self.listen_start)
         self.stopListenButton.clicked.connect(self.listen_stop)
         self.clientSettingsButton.clicked.connect(self.run_settings)
-        self.serversTable.clicked.connect(self.update_preview)
 
         # Panel Triggers
         self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
@@ -358,6 +362,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setIcon(QIcon(get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
+                # add alias if aviable
+                alias = self.alias.get_alias(self.socks[obj]['ip_address'], self.socks[obj]['os'])
+                item = QTableWidgetItem(alias)
+                self.serversTable.setItem(index, self.index_of_alias, item)
+
                 # add socket number
                 item = QTableWidgetItem(str(self.socks[obj]['socket']))
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
@@ -438,11 +447,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if server:
             send(self.socks[server]['sock'], 'lock')
 
-    def update_preview(self):
-        server = self.current_server()
-        if server:
-            self.webcamNameButton.setText(self.socks[server]['webcamdevice'])
-
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
@@ -513,6 +517,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
         if self.serversTable.selectedItems():
+
+            server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Set Alias', self.add_alias)
+
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
                 server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
 
@@ -538,6 +545,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                               self.lock_server)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
                                               self.lock_server)
+
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
@@ -582,6 +590,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if plugin in plugins:
                 self.pluginsBank[plugin_id] = plugins[plugin].mainPopup(args)
                 self.pluginsBank[plugin_id].show()
+
+    def add_alias(self):
+        server = self.current_server()
+        if server:
+            text, ok = QInputDialog.getText(self, 'Set Alias', 'Enter Name: ')
+            if ok:
+                print 'aq'
+                self.alias.set_alias(self.socks[server]['ip_address'], self.socks[server]['os'], text)
 
     def run_plugin(self, mode):
         server = self.current_server()

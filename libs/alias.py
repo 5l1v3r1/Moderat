@@ -1,6 +1,7 @@
 import ConfigParser
 import os
 
+
 class Alias:
 
     alias_db = 'alias.ini'

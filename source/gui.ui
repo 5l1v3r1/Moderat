@@ -498,7 +498,7 @@ color: #ecf0f1;
      <bool>true</bool>
     </property>
     <property name="title">
-     <string comment="asd">Action</string>
+     <string comment="asd">Plugins</string>
     </property>
     <addaction name="actionRemote_Shell"/>
     <addaction name="actionRemote_Explorer"/>
@@ -525,6 +525,7 @@ color: #ecf0f1;
     <addaction name="actionStop_Server"/>
     <addaction name="separator"/>
     <addaction name="actionSet_Alias"/>
+    <addaction name="actionRun_As_Admin"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -690,6 +691,15 @@ color: #ecf0f1;
    </property>
    <property name="text">
     <string>Set Alias</string>
+   </property>
+  </action>
+  <action name="actionRun_As_Admin">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/assets/run_as_admin.png</normaloff>:/icons/assets/run_as_admin.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run As Admin</string>
    </property>
   </action>
  </widget>

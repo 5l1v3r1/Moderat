@@ -388,17 +388,22 @@ color: #ecf0f1;
           </column>
           <column>
            <property name="text">
-            <string>Protection</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
             <string>OS</string>
            </property>
           </column>
           <column>
            <property name="text">
             <string>User</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Privs</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Lock</string>
            </property>
           </column>
           <column>

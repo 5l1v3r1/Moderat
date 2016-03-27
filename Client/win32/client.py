@@ -686,7 +686,6 @@ def from_autostart():
                     send(s, 'iamactive', mode)
                     while active:
                         mode, data = receive(s)
-                        print data
                         if data == "lock":
                             active = False
                             break

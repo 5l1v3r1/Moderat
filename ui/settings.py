@@ -119,4 +119,3 @@ class Ui_Form(object):
         self.portLabel.setText(_translate("Form", "Port:", None))
         self.maxConnectionsLabel.setText(_translate("Form", "Maximum Connections:", None))
 
-import res_rc

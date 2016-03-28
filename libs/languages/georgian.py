@@ -3,23 +3,23 @@
 words = {
 
     # CLIENTS TABLE HEADER
-    'header_ip_address':            u'მისამართი',
-    'header_alias':                 u'სახელი',
-    'header_socket':                u'სოკეტი',
-    'header_os':                    u'სისტემა',
-    'header_user':                  u'მომხმარებელი',
-    'header_privs':                 u'უფლებები',
-    'header_lock':                  u'ბლოკი',
-    'header_mic':                   u'მიკროფონი',
-    'header_cam':                   u'კამერა',
-    'header_active_window_title':   u'აქტიური ფანჯრის სათაური',
+    'HEADER_IP_ADDRESS':            u'მისამართი',
+    'HEADER_ALIAS':                 u'სახელი',
+    'HEADER_SOCKET':                u'სოკეტი',
+    'HEADER_OS':                    u'სისტემა',
+    'HEADER_USER':                  u'მომხმარებელი',
+    'HEADER_PRIVS':                 u'უფლებები',
+    'HEADER_LOCK':                  u'ბლოკი',
+    'HEADER_MIC':                   u'მიკროფონი',
+    'HEADER_CAM':                   u'კამერა',
+    'HEADER_ACTIVE_WINDOW_TITLE':   u'აქტიური ფანჯრის სათაური',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
-    'bottom_status':                u'სტატუსი: ',
-    'bottom_ipv4':                  u'სერვერის მისამართი: ',
-    'bottom_port':                  u'პორტი: ',
-    'bottom_servers_total':         u'სერვერების რაოდენობა: ',
+    'BOTTOM_STATUS':                u'სტატუსი: ',
+    'BOTTOM_IPV4':                  u'სერვერის მისამართი: ',
+    'BOTTOM_PORT':                  u'პორტი: ',
+    'BOTTOM_SERVERS_TOTAL':         u'სერვერების რაოდენობა: ',
     # END BOTTOM
 
 }

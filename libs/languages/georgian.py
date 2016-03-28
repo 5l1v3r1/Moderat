@@ -21,5 +21,4 @@ words = {
     'BOTTOM_PORT':                  u'პორტი: ',
     'BOTTOM_SERVERS_TOTAL':         u'სერვერების რაოდენობა: ',
     # END BOTTOM
-
 }

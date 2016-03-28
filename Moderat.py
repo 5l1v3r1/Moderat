@@ -375,9 +375,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_user, item)
 
                 # add user privileges
-                item = QTableWidgetItem()
-
                 privs_status = 'User' if not self.streaming_socks[obj]['privileges'] == '1' else 'Admin'
+                item = QTableWidgetItem()
                 if privs_status == 'Admin':
                     item.setIcon(QIcon(os.path.join(assets, 'admin.png')))
                 else:

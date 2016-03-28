@@ -13,8 +13,6 @@ import random
 import datetime
 from threading import Thread
 
-import Image
-import ImageQt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -104,7 +102,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionDesktop_Preview.setDisabled(True)
         self.actionWebcam_Preview.setDisabled(True)
         self.actionLock_Client.setDisabled(True)
-        # self.lockServerButton.setVisible(False)
         self.actionStop_Client.setDisabled(True)
         self.actionUnlock_Client.setDisabled(True)
 

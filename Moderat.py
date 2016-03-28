@@ -11,6 +11,7 @@ import hashlib
 import string
 import random
 import datetime
+import ConfigParser
 from threading import Thread
 
 from PyQt4.QtGui import *
@@ -21,7 +22,7 @@ from ui import gui
 from libs.alias import Alias
 from libs.settings import Config, Settings
 from libs.modechat import get, send
-from libs import language
+from libs.language import ChooseLanguage
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
@@ -38,6 +39,7 @@ geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 # initial assets directories
 assets = os.path.join(os.getcwd(), 'assets\\')
 flags = os.path.join(assets, 'flags')
+languages = os.path.join(os.getcwd(), 'libs', 'languages')
 
 
 def get_ip_location(ip):

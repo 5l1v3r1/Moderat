@@ -21,6 +21,7 @@ from ui import gui
 from libs.alias import Alias
 from libs.settings import Config, Settings
 from libs.modechat import get, send
+from libs import language
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell

@@ -20,7 +20,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
 
-        self.setWindowTitle('%s - Desktop Preview - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle('%s - Web Camera Preview - Socket #%s' % (self.ipAddress, self.socket))
 
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)

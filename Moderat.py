@@ -570,7 +570,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
                                               self.terminate_client)
             else:
-                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Server', self.unlock_client)
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Client', self.unlock_client)
 
             server_menu.addSeparator()
 

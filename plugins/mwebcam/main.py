@@ -25,21 +25,21 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)
 
-        self.screenshotButton.clicked.connect(self.get_screenshot)
+        self.cameraButton.clicked.connect(self.get_screenshot)
         self.saveButton.clicked.connect(self.save_preview)
         self.clearButton.clicked.connect(self.clear_preview)
         self.alwaysTopButton.clicked.connect(self.always_top)
 
     def get_screenshot(self):
-        screen_dict = get(self.sock, 'getScreen', 'screenshot')
+        screen_dict = get(self.sock, 'getWebcam', 'webcamera')
         try:
-            screen_info = ast.literal_eval(screen_dict)
-            im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
-                                  zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
-            screen_bits = im.convert('RGBA')
-            self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(screen_bits)).scaled(
-                    self.screenshotLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
-            self.current_bits = screen_bits
+            camera_info = ast.literal_eval(screen_dict)
+            im = Image.fromstring('RGB', (int(camera_info['width']), int(camera_info['height'])),
+                                      zlib.decompress(camera_info['webcambits']), 'raw', 'BGR', 0, -1)
+            camera_bits = im.convert('RGBA')
+            self.cameraLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(camera_bits)).scaled(
+                    self.cameraLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            self.current_bits = camera_bits
             self.saveButton.setDisabled(False)
             self.clearButton.setDisabled(False)
         except SyntaxError:
@@ -57,13 +57,13 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
     def clear_preview(self):
         self.current_bits = None
-        self.screenshotLabel.clear()
+        self.cameraLabel.clear()
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)
 
     def resizeEvent(self, event):
-        self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.current_bits)).scaled(
-            self.screenshotLabel.width(), self.screenshotLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.cameraLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.current_bits)).scaled(
+            self.cameraLabel.width(), self.cameraLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
     def always_top(self):
         if self.alwaysTopButton.isChecked():

@@ -19,6 +19,7 @@ class Config:
             self.port = int(self.config.get('connection_settings', 'port'))
             self.timeout = int(self.config.get('connection_settings', 'timeout'))
             self.max_connections = int(self.config.get('connection_settings', 'max_connections'))
+            self.language = str(self.config.get('interface', 'language'))
         except:
             self.set_default_settings()
 
@@ -30,11 +31,19 @@ class Config:
         self.config.read(self.config_file)
 
         # add connection settings
-        self.config.add_section('connection_settings')
+        try:
+            self.config.add_section('connection_settings')
+        except ConfigParser.DuplicateSectionError:
+            pass
         self.config.set('connection_settings', 'ip_address', '0.0.0.0')
         self.config.set('connection_settings', 'port', 4434)
         self.config.set('connection_settings', 'timeout', 5)
         self.config.set('connection_settings', 'max_connections', 127)
+        try:
+            self.config.add_section('interface')
+        except ConfigParser.DuplicateSectionError:
+            pass
+        self.config.set('interface', 'language', 'english')
 
         with open(self.config_file, 'w') as config_file:
             self.config.write(config_file)

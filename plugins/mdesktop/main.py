@@ -62,8 +62,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.clearButton.setDisabled(True)
 
     def resizeEvent(self, event):
-        self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.current_bits)).scaled(
-            self.screenshotLabel.width(), self.screenshotLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        if self.screenshotLabel.pixmap():
+            self.screenshotLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.current_bits)).scaled(
+                self.screenshotLabel.width(), self.screenshotLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
     def always_top(self):
         if self.alwaysTopButton.isChecked():

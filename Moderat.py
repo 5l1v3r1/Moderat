@@ -545,6 +545,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.actionLock_Client.setDisabled(False)
                 self.actionStop_Client.setDisabled(False)
                 self.actionUnlock_Client.setDisabled(True)
+                self.actionSet_Alias.setDisabled(True)
+                self.actionRun_As_Admin.setDisabled(True)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':

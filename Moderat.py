@@ -49,9 +49,9 @@ def get_ip_location(ip):
         return os.path.join(flags, 'blank.png')
 
 
-def _(_dict, word):
-    if _dict.has_key(word):
-        return _dict[word]
+def _(_dict__, word):
+    if _dict__.has_key(word):
+        return _dict__[word]
     else:
         return word
 

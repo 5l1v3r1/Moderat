@@ -94,4 +94,17 @@ tr = {
     'ALIAS_SET':                    u'კლიენტისთვის სახელის შექმნა',
     'ALIAS_NAME':                   u'სახელი: ',
     # END SET ALIAS
+
+    # SETTINGS
+    'TAB_CONNECTION_SETTINGS':      u'სერვერის პარამეტრები',
+    'INTERFACE':                    u'ინტერფეისი',
+    'SETTINGS_IP_ADDRESS':          u'მისამართი',
+    'SETTINGS_PORT':                u'პორტი',
+    'SETTINGS_TIMEOUT':             u'ტაიმაუტი',
+    'SETTINGS_MAX_CONNECTIONS':     u'კლიენტების რაოდენობა',
+    'SETTINGS_LANGUAGE':            u'ენა',
+    'SETTINGS_SAVE':                u'შენახვა',
+    'SETTINGS_MSG_INFO':            u'ინფორმაცია',
+    'SETTINGS_MSG_TEXT':            u'ზოგიერთი ცვლილების შესატანად საჭიროა სერვერის გადატვირთვა',
+    # END SETTINGS
 }

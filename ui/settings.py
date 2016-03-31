@@ -169,7 +169,7 @@ class Ui_Form(object):
         self.gridLayout_2.addWidget(self.saveButton, 1, 0, 1, 2)
 
         self.retranslateUi(Form)
-        self.settingsTab.setCurrentIndex(1)
+        self.settingsTab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -183,3 +183,4 @@ class Ui_Form(object):
         self.languageCombo.setItemText(0, _translate("Form", "english", None))
         self.settingsTab.setTabText(self.settingsTab.indexOf(self.interfaceTab), _translate("Form", "Interface", None))
         self.saveButton.setText(_translate("Form", "Save", None))
+

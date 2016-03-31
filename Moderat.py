@@ -182,10 +182,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         self.set_language()
 
-    def set_language(self):
+    def get_language(self):
         if self.LANGUAGE in languages.__all__:
             lang = __import__('libs.languages.%s' % self.LANGUAGE, globals(), locals(), ['tr'], -1)
-            self.tr = lang.tr
+            return lang
+
+    def set_language(self):
+        language = self.get_language()
+        if language:
+            self.tr = language.tr
 
             # HEADERS
             self.serversTable.horizontalHeaderItem(0).setText(_(self.tr, 'HEADER_IP_ADDRESS'))
@@ -501,11 +506,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     text, ok = QInputDialog.getText(self, _(self.tr, 'UNLOCK_CLIENT'), _(self.tr, 'ENTER_PASSWORD'), QLineEdit.Password)
                     if ok:
                         _hash = hashlib.md5()
-                        _hash.update(str(text))
+                        try:
+                            _hash.update(str(text))
+                            answer = get(self.socks[server]['sock'], _hash.hexdigest(), 'password')
+                            if 'iamactive' in answer:
+                                break
+                        except UnicodeEncodeError:
+                            pass
 
-                        answer = get(self.socks[server]['sock'], _hash.hexdigest(), 'password')
-                        if 'iamactive' in answer:
-                            break
                     else:
                         break
             else:
@@ -707,7 +715,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.LANGUAGE = self.settings.language
 
     def run_settings(self):
-        self.settings_form = Settings()
+        lang = self.get_language()
+        args = {
+            'language': lang.tr
+        }
+        self.settings_form = Settings(args)
         self.settings_form.show()
 
     def closeEvent(self, event):

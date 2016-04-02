@@ -7,6 +7,11 @@ import main_ui
 import console
 
 from libs.modechat import get
+from libs.language import Translate
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -19,7 +24,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
 
-        self.setWindowTitle('Connected to - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MSHELL_TITLE') % (self.ipAddress, self.socket))
 
         self.console = console.Console()
         self.gridLayout.addWidget(self.console)

@@ -100,11 +100,31 @@ tr = {
     'INTERFACE':                    u'ინტერფეისი',
     'SETTINGS_IP_ADDRESS':          u'მისამართი',
     'SETTINGS_PORT':                u'პორტი',
-    'SETTINGS_TIMEOUT':             u'ტაიმაუტი',
+    'SETTINGS_TIMEOUT':             u'მოლოდინი',
     'SETTINGS_MAX_CONNECTIONS':     u'კლიენტების რაოდენობა',
     'SETTINGS_LANGUAGE':            u'ენა',
     'SETTINGS_SAVE':                u'შენახვა',
     'SETTINGS_MSG_INFO':            u'ინფორმაცია',
     'SETTINGS_MSG_TEXT':            u'ზოგიერთი ცვლილების შესატანად საჭიროა სერვერის გადატვირთვა',
     # END SETTINGS
+
+    # SHELL
+    'SHELL_CONNECTED_TO':           u'ბრძანებები - %s - სოკეტის #%s',
+    # END SHELL
+
+    # MAUDIO
+    'MAUDIO_TITLE':                 u'მიკროფონი - %s - სოკეტის #%s',
+    'MAUDIO_MSG_TITLE':             u'შეცდომა',
+    'MAUDIO_MSG_TEXT':              u'მიკროფონი ვერ მოიძებნა',
+    'MAUDIO_NO_SOUND':              u'სიჩუმეა',
+    'MAUDIO_RECORDING':             u'იწერება',
+    'MAUDIO_NOT_RECORDING':         u'არ იწერება',
+    'MAUDIO_START':                 u'ჩართვა',
+    'MAUDIO_RECORD':                u'ჩაწერა',
+    'MAUDIO_STOP':                  u'გაჩერება',
+    'MAUDIO_AUDIO_DEVICE':          u'მიკროფონი: ',
+    'MAUDIO_RATE':                  u'ხარისხი',
+    'MAUDIO_AUTOMATIC_RECORD':      u'ავტომატური ჩაწერის პარამეტრები',
+    'MAUDIO_DETECT_SOUND':          u'ხმის დაფიქსირება \nდა ჩაწერა',
+    # END MAUDIO
 }

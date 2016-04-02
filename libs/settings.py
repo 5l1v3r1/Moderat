@@ -1,10 +1,11 @@
 import ConfigParser
+import languages
 import os
 
 
-def _(tr3, word):
-    if word in tr3:
-        return tr3[word]
+def _(tr, word):
+    if word in tr:
+        return tr[word]
     else:
         return word
 
@@ -29,7 +30,6 @@ class Config:
             self.language = str(self.config.get('interface', 'language'))
         except:
             self.set_default_settings()
-
 
     def set_default_settings(self):
 
@@ -57,7 +57,6 @@ class Config:
 
 
 from ui.settings import Ui_Form
-from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 
@@ -69,7 +68,8 @@ class Settings(QWidget, Ui_Form):
 
         self.config_file = 'settings.ini'
 
-        self.t = args['language']
+        self.LANGUAGE = args['language']
+        self.t = self.get_language()
 
         self.settingsTab.setTabText(0, _(self.t, 'TAB_CONNECTION_SETTINGS'))
         self.settingsTab.setTabText(1, _(self.t, 'INTERFACE'))
@@ -83,6 +83,11 @@ class Settings(QWidget, Ui_Form):
         self.check_settings()
         self.get_settings()
         self.saveButton.clicked.connect(self.save_settings)
+
+    def get_language(self):
+        if self.LANGUAGE in languages.__all__:
+            lang = __import__('libs.languages.%s' % self.LANGUAGE, globals(), locals(), ['tr'], -1)
+            return lang.tr
 
     def get_settings(self):
         config = ConfigParser.ConfigParser()
@@ -116,4 +121,3 @@ class Settings(QWidget, Ui_Form):
 
         msg = QMessageBox(QMessageBox.Information, _(self.t, 'SETTINGS_MSG_INFO'), _(self.t, 'SETTINGS_MSG_TEXT'))
         msg.exec_()
-

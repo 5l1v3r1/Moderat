@@ -109,7 +109,7 @@ tr = {
     # END SETTINGS
 
     # MSHELL
-    'MSHELL_TITLE':                 u'Remote Shell - Connected to %s - Socket #%s',
+    'MSHELL_TITLE':                 u'Remote Shell',
     # END MSHELL
 
     # MAUDIO

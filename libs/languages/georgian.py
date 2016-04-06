@@ -109,7 +109,7 @@ tr = {
     # END SETTINGS
 
     # SHELL
-    'SHELL_CONNECTED_TO':           u'ბრძანებები - %s - სოკეტის #%s',
+    'MSHELL_TITLE':                 u'ბრძანებები',
     # END SHELL
 
     # MAUDIO

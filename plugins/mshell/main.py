@@ -24,7 +24,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
 
-        self.setWindowTitle(_('MSHELL_TITLE') % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MSHELL_TITLE'))
 
         self.console = console.Console()
         self.gridLayout.addWidget(self.console)

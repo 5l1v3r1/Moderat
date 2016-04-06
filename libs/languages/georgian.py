@@ -144,7 +144,7 @@ tr = {
     'MEXPLORER_TITLE':              u'ფაილების მენეჯერი',
     'MEXPLORER_UP':                 u'უკან',
     'MEXPLORER_REFRESH':            u'განახლება',
-    'MEXPLORER_DOWNLOAD':           u'ჩამოტვორთვა',
+    'MEXPLORER_DOWNLOAD':           u'ჩამოტვირთვა',
     'MEXPLORER_UPLOAD':             u'ატვირთვა',
     'MEXPLORER_MSG_RENAME':         u'სახელის გადარქმევა',
     'MEXPLORER_MSG_RENAME_WITH':    u'ახალი სახელი: ',

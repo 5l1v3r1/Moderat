@@ -2,6 +2,10 @@
 
 tr = {
 
+    # TITLE
+    'TITLE':                        u'ModeRat - მონიტორინგი',
+    # END TITLE
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'მისამართი',
     'HEADER_ALIAS':                 u'სახელი',
@@ -137,5 +141,42 @@ tr = {
     # END MDESKTOP
 
     # MEXPLORER
+    'MEXPLORER_TITLE':              u'ფაილების მენეჯერი',
+    'MEXPLORER_UP':                 u'უკან',
+    'MEXPLORER_REFRESH':            u'განახლება',
+    'MEXPLORER_DOWNLOAD':           u'ჩამოტვორთვა',
+    'MEXPLORER_UPLOAD':             u'ატვირთვა',
+    'MEXPLORER_MSG_RENAME':         u'სახელის გადარქმევა',
+    'MEXPLORER_MSG_RENAME_WITH':    u'ახალი სახელი: ',
+    'MEXPLORER_EXECUTE':            u'გაშვება',
+    'MEXPLORER_OPEN_FOLDER':        u'ფოლდერის გახსნა',
+    'MEXPLORER_RENAME':             u'სახელის გადარქმევა',
+    'MEXPLORER_HIDE':               u'დამალვა',
+    'MEXPLORER_SHOW':               u'ჩვენება',
+    'MEXPLORER_DELETE':             u'წაშლა',
+    'MEXPLORER_MSG_CONFIRM':        u'დასტური',
+    'MEXPLORER_MSG_DELETE':         u'დარწმუნებული ხართ წაშალოთ?',
+    'MEXPLORER_MSG_ERROR':          u'შეცდომა',
+    'MEXPLORER_MSG_NO_FILE':        u'ფაილი არჩეული არ არის',
+    'MEXPLORER_MSG_OPEN_FOLDER':    u'ფოლდერი არ გაიხსნა',
+    'MEXPLORER_CHOOSE_FILE':        u'აირჩიეთ ფაილი',
+    'MEXPLORER_TYPE':               u'ტიპი',
+    'MEXPLORER_NAME':               u'სახელი',
+    'MEXPLORER_DATE_MODIFIED':      u'ბოლოს განახლდა',
+    'MEXPLORER_SIZE':               u'ზომა',
+    'MEXPLORER_B':                  u'ბ',
+    'MEXPLORER_K':                  u'კ',
+    'MEXPLORER_M':                  u'მ',
+    'MEXPLORER_G':                  u'გ',
+    'MEXPLORER_T':                  u'ტ',
+    'MEXPLORER_P':                  u'პ',
+    'MEXPLORER_E':                  u'ე',
+    'MEXPLORER_Z':                  u'ზ',
+    'MEXPLORER_FILE':               u'ფაილი',
+    'MEXPLORER_FOLDER':             u'ფოლდერი',
+    'MEXPLORER_HIDDEN_FILE':        u'დამალული ფაილი',
+    'MEXPLORER_HIDDEN_FOLDER':      u'დამალული ფოლდერი',
+    'MEXPLORER_SELECTED':           u'არჩეული',
+    'MEXPLORER_FOLDERS_FILES':      u'ფოლდერი / ფაილი: ',
     # END MEXPLORER
 }

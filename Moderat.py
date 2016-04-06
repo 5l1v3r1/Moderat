@@ -179,6 +179,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def set_language(self):
 
+        # MAIN
+        self.setWindowTitle(_('TITLE'))
+
         # HEADERS
         self.serversTable.horizontalHeaderItem(0).setText(_('HEADER_IP_ADDRESS'))
         self.serversTable.horizontalHeaderItem(1).setText(_('HEADER_ALIAS'))
@@ -540,8 +543,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.actionLock_Client.setDisabled(False)
                 self.actionStop_Client.setDisabled(False)
                 self.actionUnlock_Client.setDisabled(True)
-                self.actionSet_Alias.setDisabled(True)
-                self.actionRun_As_Admin.setDisabled(True)
+                self.actionSet_Alias.setDisabled(False)
+                self.actionRun_As_Admin.setDisabled(False)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':

@@ -2,6 +2,10 @@
 
 tr = {
 
+    # TITLE
+    'TITLE':                        u'ModeRat - Monitoring Server',
+    # END TITLE
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'IP Address',
     'HEADER_ALIAS':                 u'Alias',
@@ -130,9 +134,49 @@ tr = {
 
     # MDESKTOP
     'MDESKTOP_TITLE':               u'Remote Dektop Preview',
-    'MDESKTOP_INFO':               u'Click Capture to Preview Desktop',
+    'MDESKTOP_INFO':                u'Click Capture to Preview Desktop',
     'MDESKTOP_CAPTURE':             u'Capture',
     'MDESKTOP_SAVE':                u'Save',
     'MDESKTOP_CLEAR':               u'Clear',
     # END MDESKTOP
+
+    # MEXPLORER
+    'MEXPLORER_TITLE':              u'File Manager',
+    'MEXPLORER_UP':                 u'Up',
+    'MEXPLORER_REFRESH':            u'Refresh',
+    'MEXPLORER_DOWNLOAD':           u'Download',
+    'MEXPLORER_UPLOAD':             u'Upload',
+    'MEXPLORER_MSG_RENAME':         u'Rename',
+    'MEXPLORER_MSG_RENAME_WITH':    u'Rename With: ',
+    'MEXPLORER_EXECUTE':            u'Execute',
+    'MEXPLORER_OPEN_FOLDER':        u'Open Folder',
+    'MEXPLORER_RENAME':             u'Rename',
+    'MEXPLORER_HIDE':               u'Hide',
+    'MEXPLORER_SHOW':               u'Show',
+    'MEXPLORER_DELETE':             u'Delete',
+    'MEXPLORER_MSG_CONFIRM':        u'Confirm',
+    'MEXPLORER_MSG_DELETE':         u'Are you sure?',
+    'MEXPLORER_MSG_ERROR':          u'Error',
+    'MEXPLORER_MSG_NO_FILE':        u'No File Selected',
+    'MEXPLORER_MSG_OPEN_FOLDER':    u'Cann\'t Open Folder',
+    'MEXPLORER_CHOOSE_FILE':        u'Select File',
+    'MEXPLORER_TYPE':               u'Type',
+    'MEXPLORER_NAME':               u'Name',
+    'MEXPLORER_DATE_MODIFIED':      u'Date Modified',
+    'MEXPLORER_SIZE':               u'Size',
+    'MEXPLORER_B':                  u'B',
+    'MEXPLORER_K':                  u'K',
+    'MEXPLORER_M':                  u'M',
+    'MEXPLORER_G':                  u'G',
+    'MEXPLORER_T':                  u'T',
+    'MEXPLORER_P':                  u'P',
+    'MEXPLORER_E':                  u'E',
+    'MEXPLORER_Z':                  u'Z',
+    'MEXPLORER_FILE':               u'File',
+    'MEXPLORER_FOLDER':             u'Folder',
+    'MEXPLORER_HIDDEN_FILE':        u'Hidden File',
+    'MEXPLORER_HIDDEN_FOLDER':      u'Hidden Folder',
+    'MEXPLORER_SELECTED':           u'Selected',
+    'MEXPLORER_FOLDERS_FILES':      u'Folders / Files: ',
+    # END MEXPLORER
 }

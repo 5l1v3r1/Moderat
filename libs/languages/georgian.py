@@ -127,4 +127,12 @@ tr = {
     'MAUDIO_AUTOMATIC_RECORD':      u'ავტომატური ჩაწერის პარამეტრები',
     'MAUDIO_DETECT_SOUND':          u'ხმის დაფიქსირება \nდა ჩაწერა',
     # END MAUDIO
+
+    # MDESKTOP
+    'MDESKTOP_TITLE':               u'ეკრანი',
+    'MDESKTOP_INFO':                u'ეკრანის სანახავად დააჭრეთ გადაღებას',
+    'MDESKTOP_CAPTURE':             u'გადაღება',
+    'MDESKTOP_SAVE':                u'შენახვა',
+    'MDESKTOP_CLEAR':               u'წაშლა',
+    # END MDESKTOP
 }

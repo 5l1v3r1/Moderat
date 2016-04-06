@@ -127,4 +127,12 @@ tr = {
     'MAUDIO_AUTOMATIC_RECORD':      u'Automatic Recording Settings',
     'MAUDIO_DETECT_SOUND':          u'Detect Sound \nand Record',
     # END MAUDIO
+
+    # MDESKTOP
+    'MDESKTOP_TITLE':               u'Remote Dektop Preview',
+    'MDESKTOP_INFO':               u'Click Capture to Preview Desktop',
+    'MDESKTOP_CAPTURE':             u'Capture',
+    'MDESKTOP_SAVE':                u'Save',
+    'MDESKTOP_CLEAR':               u'Clear',
+    # END MDESKTOP
 }

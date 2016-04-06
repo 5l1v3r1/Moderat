@@ -189,22 +189,6 @@ class mainPopup(QWidget, Ui_Form):
             self.upButton.blockSignals(False)
             self.refreshButton.blockSignals(False)
 
-    def disable_buttons(self, state, _file, download=False):
-        self.downloadButton.setDisabled(state)
-        self.executeButton.setDisabled(state)
-        self.renameButton.setDisabled(state)
-        self.deleteButton.setDisabled(state)
-        self.hideButton.setDisabled(state)
-        self.unhideButton.setDisabled(state)
-        if _file:
-            self.openFolderButton.setDisabled(True)
-            self.downloadButton.setDisabled(False)
-        else:
-            self.downloadButton.setDisabled(True)
-            self.openFolderButton.setDisabled(False)
-        if download:
-            self.downloadButton.setDisabled(True)
-
     def cancelProgress(self):
         self.activeProgress = False
 

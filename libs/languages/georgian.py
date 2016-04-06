@@ -135,4 +135,7 @@ tr = {
     'MDESKTOP_SAVE':                u'შენახვა',
     'MDESKTOP_CLEAR':               u'წაშლა',
     # END MDESKTOP
+
+    # MEXPLORER
+    # END MEXPLORER
 }

@@ -179,4 +179,13 @@ tr = {
     'MEXPLORER_SELECTED':           u'არჩეული',
     'MEXPLORER_FOLDERS_FILES':      u'ფოლდერი / ფაილი: ',
     # END MEXPLORER
+
+    # MKEYLOGGER
+    'MKEYLOGGER_TITLE':             u'კლავიატურის შპიონი',
+    'MKEYLOGGER_START':             u'ჩართვა',
+    'MKEYLOGGER_STOP':              u'გამორთვა',
+    'MKEYLOGGER_SAVE_AS':           u'შენახვა',
+    'MKEYLOGGER_AUTO_SAVE':         u'ავტომატური შენახვა',
+    'MKEYLOGGER_SAVE_TO':           u'შენახვა',
+    # END MKEYLOGGER
 }

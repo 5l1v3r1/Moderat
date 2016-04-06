@@ -179,4 +179,13 @@ tr = {
     'MEXPLORER_SELECTED':           u'Selected',
     'MEXPLORER_FOLDERS_FILES':      u'Folders / Files: ',
     # END MEXPLORER
+
+    # MKEYLOGGER
+    'MKEYLOGGER_TITLE':             u'Keylogger',
+    'MKEYLOGGER_START':             u'Start',
+    'MKEYLOGGER_STOP':              u'Stop',
+    'MKEYLOGGER_SAVE_AS':           u'Save As',
+    'MKEYLOGGER_AUTO_SAVE':         u'Auto Save',
+    'MKEYLOGGER_SAVE_TO':           u'Save To File',
+    # END MKEYLOGGER
 }

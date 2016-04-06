@@ -288,7 +288,7 @@ class Ui_Form(object):
         self.upButton.setStyleSheet(_fromUtf8("QPushButton#upButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -307,7 +307,7 @@ class Ui_Form(object):
         self.refreshButton.setStyleSheet(_fromUtf8("QPushButton#refreshButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -331,7 +331,7 @@ class Ui_Form(object):
         self.downloadButton.setStyleSheet(_fromUtf8("QPushButton#downloadButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -350,7 +350,7 @@ class Ui_Form(object):
         self.uploadButton.setStyleSheet(_fromUtf8("QPushButton#uploadButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -392,4 +392,3 @@ class Ui_Form(object):
         self.refreshButton.setText(_translate("Form", "Refresh", None))
         self.downloadButton.setText(_translate("Form", "Download", None))
         self.uploadButton.setText(_translate("Form", "Upload", None))
-

@@ -7,6 +7,12 @@ import socket
 import time
 
 from libs.modechat import get, send
+from libs.language import Translate
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
+
 
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
@@ -20,14 +26,22 @@ class mainPopup(QWidget, Ui_Form):
 
         self.gui = QApplication.processEvents
 
-        self.setWindowTitle('Processes Manager - %s - Socket #%s' % (self.ipAddress, self.socket))
-        self.setWindowIcon(QIcon(os.path.join(self.assets, 'processes.png')))
+        self.setWindowTitle(_('MPROCESSES_TITLE'))
+
+        self.set_language()
 
         self.get_processes_list()
 
         self.getProcessesButton.clicked.connect(self.get_processes_list)
         self.terminateProcessButton.clicked.connect(self.terminate_process)
         self.alwaysTopButton.clicked.connect(self.always_top)
+
+    def set_language(self):
+        self.getProcessesButton.setText(_('MPROCESSES_REFRESH'))
+        self.terminateProcessButton.setText(_('MPROCESSES_KILL'))
+        self.processesLabel.setText(_('MPROCESSES_COUNT'))
+        self.processesTable.horizontalHeaderItem(0).setText(_('MPROCESSES_PID'))
+        self.processesTable.horizontalHeaderItem(1).setText(_('MPROCESSES_FILE_NAME'))
 
     def get_processes_list(self):
         self.processesTable.clearContents()

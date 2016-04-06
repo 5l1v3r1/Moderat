@@ -36,8 +36,8 @@ class Ui_Form(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.cameraButton = QtGui.QPushButton(Form)
-        self.cameraButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.cameraButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.cameraButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.cameraButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.cameraButton.setStyleSheet(_fromUtf8("QPushButton#cameraButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
@@ -52,8 +52,8 @@ class Ui_Form(object):
         self.cameraButton.setObjectName(_fromUtf8("cameraButton"))
         self.horizontalLayout.addWidget(self.cameraButton)
         self.saveButton = QtGui.QPushButton(Form)
-        self.saveButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.saveButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.saveButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.saveButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
@@ -70,8 +70,8 @@ class Ui_Form(object):
         self.saveButton.setObjectName(_fromUtf8("saveButton"))
         self.horizontalLayout.addWidget(self.saveButton)
         self.clearButton = QtGui.QPushButton(Form)
-        self.clearButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.clearButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.clearButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.clearButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.clearButton.setStyleSheet(_fromUtf8("QPushButton#clearButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"

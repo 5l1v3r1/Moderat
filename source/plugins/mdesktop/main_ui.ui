@@ -29,20 +29,20 @@ color: #bdc3c7;</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#screenshotButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 3px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -64,20 +64,20 @@ QPushButton#screenshotButton:pressed {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#saveButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 3px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -99,20 +99,20 @@ QPushButton#saveButton:pressed {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>25</height>
+         <height>28</height>
         </size>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton#clearButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 3px;
+			padding: 5px;
             background-color: #34495e;
             }
 

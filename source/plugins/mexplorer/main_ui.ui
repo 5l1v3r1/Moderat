@@ -488,7 +488,7 @@ background-color: #34495e;</string>
         <string notr="true">QPushButton#upButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 3px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -529,7 +529,7 @@ QPushButton#upButton:pressed {
         <string notr="true">QPushButton#refreshButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 3px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -577,7 +577,7 @@ QPushButton#refreshButton:pressed {
         <string notr="true">QPushButton#downloadButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -618,7 +618,7 @@ QPushButton#downloadButton:pressed {
         <string notr="true">QPushButton#uploadButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 

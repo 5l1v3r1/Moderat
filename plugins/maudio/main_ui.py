@@ -43,7 +43,7 @@ class Ui_Form(object):
         self.listenButton.setStyleSheet(_fromUtf8("QPushButton#listenButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -61,7 +61,7 @@ class Ui_Form(object):
         self.recordButton.setStyleSheet(_fromUtf8("QPushButton#recordButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -79,7 +79,7 @@ class Ui_Form(object):
         self.stopButton.setStyleSheet(_fromUtf8("QPushButton#stopButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -117,9 +117,9 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.alwaysTopButton, 0, 2, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.defaultInputDeviceLavel = QtGui.QLabel(Form)
-        self.defaultInputDeviceLavel.setObjectName(_fromUtf8("defaultInputDeviceLavel"))
-        self.horizontalLayout.addWidget(self.defaultInputDeviceLavel)
+        self.defaultInputDeviceLabel = QtGui.QLabel(Form)
+        self.defaultInputDeviceLabel.setObjectName(_fromUtf8("defaultInputDeviceLabel"))
+        self.horizontalLayout.addWidget(self.defaultInputDeviceLabel)
         self.defaultInputDeviceNameLabel = QtGui.QLabel(Form)
         self.defaultInputDeviceNameLabel.setStyleSheet(_fromUtf8("color: white;"))
         self.defaultInputDeviceNameLabel.setText(_fromUtf8(""))
@@ -242,7 +242,7 @@ class Ui_Form(object):
         self.listenButton.setText(_translate("Form", "Listen", None))
         self.recordButton.setText(_translate("Form", "Record", None))
         self.stopButton.setText(_translate("Form", "Stop", None))
-        self.defaultInputDeviceLavel.setText(_translate("Form", "Default Input Device:", None))
+        self.defaultInputDeviceLabel.setText(_translate("Form", "Default Input Device:", None))
         self.rateLabel.setText(_translate("Form", "Rate:", None))
         self.rateDrop.setItemText(0, _translate("Form", "5120", None))
         self.rateDrop.setItemText(1, _translate("Form", "10240", None))
@@ -252,3 +252,4 @@ class Ui_Form(object):
 " and Record:", None))
         self.volumeProgress.setFormat(_translate("Form", "Volume", None))
         self.statusLabel.setText(_translate("Form", "Not Recording", None))
+

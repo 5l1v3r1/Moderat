@@ -36,12 +36,12 @@ class Ui_Form(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.screenshotButton = QtGui.QPushButton(Form)
-        self.screenshotButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.screenshotButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.screenshotButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.screenshotButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.screenshotButton.setStyleSheet(_fromUtf8("QPushButton#screenshotButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -52,12 +52,12 @@ class Ui_Form(object):
         self.screenshotButton.setObjectName(_fromUtf8("screenshotButton"))
         self.horizontalLayout.addWidget(self.screenshotButton)
         self.saveButton = QtGui.QPushButton(Form)
-        self.saveButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.saveButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.saveButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.saveButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -70,12 +70,12 @@ class Ui_Form(object):
         self.saveButton.setObjectName(_fromUtf8("saveButton"))
         self.horizontalLayout.addWidget(self.saveButton)
         self.clearButton = QtGui.QPushButton(Form)
-        self.clearButton.setMinimumSize(QtCore.QSize(0, 25))
-        self.clearButton.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.clearButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.clearButton.setMaximumSize(QtCore.QSize(16777215, 28))
         self.clearButton.setStyleSheet(_fromUtf8("QPushButton#clearButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 3px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -127,3 +127,4 @@ class Ui_Form(object):
         self.saveButton.setText(_translate("Form", "Save", None))
         self.clearButton.setText(_translate("Form", "Clear", None))
         self.screenshotLabel.setText(_translate("Form", "Desktop Preview", None))
+

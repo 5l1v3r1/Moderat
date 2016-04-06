@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(400, 326)
+        Form.resize(482, 326)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -59,7 +59,7 @@ class Ui_Form(object):
         self.startKeyloggingButton.setStyleSheet(_fromUtf8("QPushButton#startKeyloggingButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -79,7 +79,7 @@ class Ui_Form(object):
         self.stopKeyloggingButton.setStyleSheet(_fromUtf8("QPushButton#stopKeyloggingButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -106,7 +106,7 @@ class Ui_Form(object):
         self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -124,7 +124,7 @@ class Ui_Form(object):
         self.autoSaveButton.setStyleSheet(_fromUtf8("QPushButton#autoSaveButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -184,3 +184,4 @@ class Ui_Form(object):
         self.autoSaveButton.setToolTip(_translate("Form", "Automatic Save", None))
         self.autoSaveButton.setText(_translate("Form", "Auto Save", None))
         self.alwaysTopButton.setToolTip(_translate("Form", "Always Top", None))
+

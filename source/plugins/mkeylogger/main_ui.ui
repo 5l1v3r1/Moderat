@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>482</width>
     <height>326</height>
    </rect>
   </property>
@@ -86,7 +86,7 @@ p, li { white-space: pre-wrap; }
         <string notr="true">QPushButton#startKeyloggingButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -128,7 +128,7 @@ QPushButton#startKeyloggingButton:checked {
         <string notr="true">QPushButton#stopKeyloggingButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -183,7 +183,7 @@ QPushButton#stopKeyloggingButton:checked {
         <string notr="true">QPushButton#saveButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 
@@ -221,7 +221,7 @@ QPushButton#saveButton:pressed {
         <string notr="true">QPushButton#autoSaveButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
             }
 

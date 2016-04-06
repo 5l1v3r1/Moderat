@@ -188,4 +188,13 @@ tr = {
     'MKEYLOGGER_AUTO_SAVE':         u'Auto Save',
     'MKEYLOGGER_SAVE_TO':           u'Save To File',
     # END MKEYLOGGER
+
+    # MPROCESSES
+    'MPROCESSES_TITLE':             u'Process Manager',
+    'MPROCESSES_REFRESH':           u'Refresh',
+    'MPROCESSES_KILL':              u'Kill',
+    'MPROCESSES_COUNT':             u'Processes Total: ',
+    'MPROCESSES_PID':               u'PID',
+    'MPROCESSES_FILE_NAME':         u'File Name',
+    # END MPROCESSES
 }

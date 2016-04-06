@@ -188,4 +188,13 @@ tr = {
     'MKEYLOGGER_AUTO_SAVE':         u'ავტომატური შენახვა',
     'MKEYLOGGER_SAVE_TO':           u'შენახვა',
     # END MKEYLOGGER
+
+    # MPROCESSES
+    'MPROCESSES_TITLE':             u'პროცესები',
+    'MPROCESSES_REFRESH':           u'განახლება',
+    'MPROCESSES_KILL':              u'გათიშვა',
+    'MPROCESSES_COUNT':             u'პროცესების რაოდენობა: ',
+    'MPROCESSES_PID':               u'PID',
+    'MPROCESSES_FILE_NAME':         u'ფაილის სახელი',
+    # END MPROCESSES
 }

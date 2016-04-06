@@ -34,7 +34,7 @@ class mainPopup(QWidget, Ui_Form):
         self.listenButton.setText(_('MAUDIO_START'))
         self.recordButton.setText(_('MAUDIO_RECORD'))
         self.stopButton.setText(_('MAUDIO_STOP'))
-        self.defaultInputDeviceLavel.setText(_('MAUDIO_AUDIO_DEVICE'))
+        self.defaultInputDeviceLabel.setText(_('MAUDIO_AUDIO_DEVICE'))
         self.rateLabel.setText(_('MAUDIO_RATE'))
         self.groupBox.setTitle(_('MAUDIO_AUTOMATIC_RECORD'))
         self.detectRecordLabel.setText(_('MAUDIO_DETECT_SOUND'))

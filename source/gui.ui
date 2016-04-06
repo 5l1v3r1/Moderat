@@ -257,7 +257,7 @@ color: #cff7f8;
          <number>2</number>
         </property>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="madeByLabel">
           <property name="text">
            <string>Made By </string>
           </property>
@@ -575,15 +575,9 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
     <addaction name="actionSet_Alias"/>
     <addaction name="actionRun_As_Admin"/>
    </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="title">
-     <string>About</string>
-    </property>
-   </widget>
    <addaction name="serverMenu"/>
    <addaction name="menuServer"/>
    <addaction name="menuAction"/>
-   <addaction name="menuAbout"/>
   </widget>
   <action name="actionStartListen_for_connections">
    <property name="checkable">

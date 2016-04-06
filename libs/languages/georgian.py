@@ -20,6 +20,7 @@ tr = {
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
+    'BOTTOM_MADE_BY':               u'ავტორი: ',
     'BOTTOM_STATUS':                u'სტატუსი: ',
     'BOTTOM_IPV4':                  u'მისამართი: ',
     'BOTTOM_PORT':                  u'პორტი: ',

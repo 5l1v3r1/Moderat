@@ -196,6 +196,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # END HEADERS
 
         # BOTTOM
+        self.madeByLabel.setText(_('BOTTOM_MADE_BY'))
         self.clientStatusLabel.setText(_('BOTTOM_STATUS'))
         self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
         self.portTextLabel.setText(_('BOTTOM_PORT'))

@@ -20,6 +20,7 @@ tr = {
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
+    'BOTTOM_MADE_BY':               u'Made By: ',
     'BOTTOM_STATUS':                u'Status: ',
     'BOTTOM_IPV4':                  u'IP Address: ',
     'BOTTOM_PORT':                  u'PORT: ',

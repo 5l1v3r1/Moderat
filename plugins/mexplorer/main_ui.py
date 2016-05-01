@@ -112,235 +112,8 @@ class Ui_Form(object):
 "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
 "    background: none;\n"
 "}"))
-        self.verticalLayout = QtGui.QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.explorerDrivesDrop = QtGui.QComboBox(Form)
-        self.explorerDrivesDrop.setMinimumSize(QtCore.QSize(50, 0))
-        self.explorerDrivesDrop.setMaximumSize(QtCore.QSize(50, 32))
-        self.explorerDrivesDrop.setBaseSize(QtCore.QSize(0, 0))
-        self.explorerDrivesDrop.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
-"border-color: #2c3e50;\n"
-"height: 15px;\n"
-"font-size: 12px;\n"
-"background-color: #34495e;"))
-        self.explorerDrivesDrop.setObjectName(_fromUtf8("explorerDrivesDrop"))
-        self.horizontalLayout_2.addWidget(self.explorerDrivesDrop)
-        self.refreshButton = QtGui.QPushButton(Form)
-        self.refreshButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.refreshButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.refreshButton.setStyleSheet(_fromUtf8("QPushButton#refreshButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#refreshButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.refreshButton.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.refreshButton.setIcon(icon1)
-        self.refreshButton.setIconSize(QtCore.QSize(18, 18))
-        self.refreshButton.setObjectName(_fromUtf8("refreshButton"))
-        self.horizontalLayout_2.addWidget(self.refreshButton)
-        self.upButton = QtGui.QPushButton(Form)
-        self.upButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.upButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.upButton.setStyleSheet(_fromUtf8("QPushButton#upButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#upButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.upButton.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.upButton.setIcon(icon2)
-        self.upButton.setIconSize(QtCore.QSize(18, 18))
-        self.upButton.setObjectName(_fromUtf8("upButton"))
-        self.horizontalLayout_2.addWidget(self.upButton)
-        self.line = QtGui.QFrame(Form)
-        self.line.setFrameShape(QtGui.QFrame.VLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName(_fromUtf8("line"))
-        self.horizontalLayout_2.addWidget(self.line)
-        self.downloadButton = QtGui.QPushButton(Form)
-        self.downloadButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.downloadButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.downloadButton.setStyleSheet(_fromUtf8("QPushButton#downloadButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#downloadButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.downloadButton.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.downloadButton.setIcon(icon3)
-        self.downloadButton.setIconSize(QtCore.QSize(18, 18))
-        self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
-        self.horizontalLayout_2.addWidget(self.downloadButton)
-        self.uploadButton = QtGui.QPushButton(Form)
-        self.uploadButton.setStyleSheet(_fromUtf8("QPushButton#uploadButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#uploadButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.uploadButton.setText(_fromUtf8(""))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.uploadButton.setIcon(icon4)
-        self.uploadButton.setIconSize(QtCore.QSize(18, 18))
-        self.uploadButton.setObjectName(_fromUtf8("uploadButton"))
-        self.horizontalLayout_2.addWidget(self.uploadButton)
-        self.line_2 = QtGui.QFrame(Form)
-        self.line_2.setFrameShape(QtGui.QFrame.VLine)
-        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line_2.setObjectName(_fromUtf8("line_2"))
-        self.horizontalLayout_2.addWidget(self.line_2)
-        self.executeButton = QtGui.QPushButton(Form)
-        self.executeButton.setStyleSheet(_fromUtf8("QPushButton#executeButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#executeButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.executeButton.setText(_fromUtf8(""))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/execute.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.executeButton.setIcon(icon5)
-        self.executeButton.setIconSize(QtCore.QSize(18, 18))
-        self.executeButton.setObjectName(_fromUtf8("executeButton"))
-        self.horizontalLayout_2.addWidget(self.executeButton)
-        self.openFolderButton = QtGui.QPushButton(Form)
-        self.openFolderButton.setStyleSheet(_fromUtf8("QPushButton#openFolderButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#openFolderButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.openFolderButton.setText(_fromUtf8(""))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.openFolderButton.setIcon(icon6)
-        self.openFolderButton.setIconSize(QtCore.QSize(18, 18))
-        self.openFolderButton.setObjectName(_fromUtf8("openFolderButton"))
-        self.horizontalLayout_2.addWidget(self.openFolderButton)
-        self.renameButton = QtGui.QPushButton(Form)
-        self.renameButton.setStyleSheet(_fromUtf8("QPushButton#renameButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#renameButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.renameButton.setText(_fromUtf8(""))
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/rename.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.renameButton.setIcon(icon7)
-        self.renameButton.setIconSize(QtCore.QSize(18, 18))
-        self.renameButton.setObjectName(_fromUtf8("renameButton"))
-        self.horizontalLayout_2.addWidget(self.renameButton)
-        self.deleteButton = QtGui.QPushButton(Form)
-        self.deleteButton.setStyleSheet(_fromUtf8("QPushButton#deleteButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#deleteButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.deleteButton.setText(_fromUtf8(""))
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.deleteButton.setIcon(icon8)
-        self.deleteButton.setIconSize(QtCore.QSize(18, 18))
-        self.deleteButton.setObjectName(_fromUtf8("deleteButton"))
-        self.horizontalLayout_2.addWidget(self.deleteButton)
-        self.line_3 = QtGui.QFrame(Form)
-        self.line_3.setFrameShape(QtGui.QFrame.VLine)
-        self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line_3.setObjectName(_fromUtf8("line_3"))
-        self.horizontalLayout_2.addWidget(self.line_3)
-        self.hideButton = QtGui.QPushButton(Form)
-        self.hideButton.setStyleSheet(_fromUtf8("QPushButton#hideButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#hideButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.hideButton.setText(_fromUtf8(""))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/hidden.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.hideButton.setIcon(icon9)
-        self.hideButton.setIconSize(QtCore.QSize(18, 18))
-        self.hideButton.setObjectName(_fromUtf8("hideButton"))
-        self.horizontalLayout_2.addWidget(self.hideButton)
-        self.unhideButton = QtGui.QPushButton(Form)
-        self.unhideButton.setStyleSheet(_fromUtf8("QPushButton#unhideButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#unhideButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.unhideButton.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unhide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.unhideButton.setIcon(icon10)
-        self.unhideButton.setIconSize(QtCore.QSize(18, 18))
-        self.unhideButton.setObjectName(_fromUtf8("unhideButton"))
-        self.horizontalLayout_2.addWidget(self.unhideButton)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem)
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.explorerPathEntry = QtGui.QLineEdit(Form)
-        self.explorerPathEntry.setMinimumSize(QtCore.QSize(0, 28))
-        self.explorerPathEntry.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
-"border-color: #2c3e50;\n"
-"height: 15px;\n"
-"font-size: 12px;\n"
-"background-color: #34495e;"))
-        self.explorerPathEntry.setText(_fromUtf8(""))
-        self.explorerPathEntry.setObjectName(_fromUtf8("explorerPathEntry"))
-        self.verticalLayout.addWidget(self.explorerPathEntry)
+        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.explorerTable = QtGui.QTableWidget(Form)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -406,7 +179,7 @@ class Ui_Form(object):
         self.explorerTable.horizontalHeader().setStretchLastSection(True)
         self.explorerTable.verticalHeader().setVisible(False)
         self.explorerTable.verticalHeader().setCascadingSectionResizes(False)
-        self.verticalLayout.addWidget(self.explorerTable)
+        self.gridLayout.addWidget(self.explorerTable, 1, 0, 1, 2)
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
@@ -434,15 +207,15 @@ class Ui_Form(object):
         self.selectedLabel.setStyleSheet(_fromUtf8("color: #f1c40f;"))
         self.selectedLabel.setObjectName(_fromUtf8("selectedLabel"))
         self.horizontalLayout_5.addWidget(self.selectedLabel)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem1)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem)
         self.dirfilesLabel = QtGui.QLabel(Form)
         self.dirfilesLabel.setObjectName(_fromUtf8("dirfilesLabel"))
         self.horizontalLayout_5.addWidget(self.dirfilesLabel)
         self.dirfilesCountLabel = QtGui.QLabel(Form)
         self.dirfilesCountLabel.setObjectName(_fromUtf8("dirfilesCountLabel"))
         self.horizontalLayout_5.addWidget(self.dirfilesCountLabel)
-        self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.gridLayout.addLayout(self.horizontalLayout_5, 2, 0, 1, 2)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.progressBar = QtGui.QProgressBar(Form)
@@ -484,7 +257,113 @@ class Ui_Form(object):
 "            }"))
         self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
         self.horizontalLayout.addWidget(self.cancelButton)
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.gridLayout.addLayout(self.horizontalLayout, 3, 0, 1, 1)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(6)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.explorerDrivesDrop = QtGui.QComboBox(Form)
+        self.explorerDrivesDrop.setMinimumSize(QtCore.QSize(50, 0))
+        self.explorerDrivesDrop.setMaximumSize(QtCore.QSize(50, 32))
+        self.explorerDrivesDrop.setBaseSize(QtCore.QSize(0, 0))
+        self.explorerDrivesDrop.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"height: 15px;\n"
+"font-size: 12px;\n"
+"background-color: #34495e;"))
+        self.explorerDrivesDrop.setObjectName(_fromUtf8("explorerDrivesDrop"))
+        self.horizontalLayout_2.addWidget(self.explorerDrivesDrop)
+        self.explorerPathEntry = QtGui.QLineEdit(Form)
+        self.explorerPathEntry.setMinimumSize(QtCore.QSize(0, 28))
+        self.explorerPathEntry.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"height: 15px;\n"
+"font-size: 12px;\n"
+"background-color: #34495e;"))
+        self.explorerPathEntry.setText(_fromUtf8(""))
+        self.explorerPathEntry.setObjectName(_fromUtf8("explorerPathEntry"))
+        self.horizontalLayout_2.addWidget(self.explorerPathEntry)
+        self.upButton = QtGui.QPushButton(Form)
+        self.upButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.upButton.setMaximumSize(QtCore.QSize(500, 28))
+        self.upButton.setStyleSheet(_fromUtf8("QPushButton#upButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#upButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.upButton.setIcon(icon1)
+        self.upButton.setIconSize(QtCore.QSize(14, 14))
+        self.upButton.setObjectName(_fromUtf8("upButton"))
+        self.horizontalLayout_2.addWidget(self.upButton)
+        self.refreshButton = QtGui.QPushButton(Form)
+        self.refreshButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.refreshButton.setMaximumSize(QtCore.QSize(500, 28))
+        self.refreshButton.setStyleSheet(_fromUtf8("QPushButton#refreshButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#refreshButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.refreshButton.setIcon(icon2)
+        self.refreshButton.setIconSize(QtCore.QSize(14, 14))
+        self.refreshButton.setObjectName(_fromUtf8("refreshButton"))
+        self.horizontalLayout_2.addWidget(self.refreshButton)
+        self.line = QtGui.QFrame(Form)
+        self.line.setFrameShape(QtGui.QFrame.VLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.horizontalLayout_2.addWidget(self.line)
+        self.downloadButton = QtGui.QPushButton(Form)
+        self.downloadButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.downloadButton.setMaximumSize(QtCore.QSize(500, 28))
+        self.downloadButton.setStyleSheet(_fromUtf8("QPushButton#downloadButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#downloadButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.downloadButton.setIcon(icon3)
+        self.downloadButton.setIconSize(QtCore.QSize(14, 14))
+        self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
+        self.horizontalLayout_2.addWidget(self.downloadButton)
+        self.uploadButton = QtGui.QPushButton(Form)
+        self.uploadButton.setMinimumSize(QtCore.QSize(28, 28))
+        self.uploadButton.setMaximumSize(QtCore.QSize(500, 28))
+        self.uploadButton.setStyleSheet(_fromUtf8("QPushButton#uploadButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#uploadButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.uploadButton.setIcon(icon4)
+        self.uploadButton.setIconSize(QtCore.QSize(14, 14))
+        self.uploadButton.setObjectName(_fromUtf8("uploadButton"))
+        self.horizontalLayout_2.addWidget(self.uploadButton)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -509,4 +388,7 @@ class Ui_Form(object):
         self.dirfilesCountLabel.setText(_translate("Form", "0", None))
         self.progressBar.setFormat(_translate("Form", "%p%", None))
         self.cancelButton.setText(_translate("Form", "Cancel", None))
-
+        self.upButton.setText(_translate("Form", "Up Dir", None))
+        self.refreshButton.setText(_translate("Form", "Refresh", None))
+        self.downloadButton.setText(_translate("Form", "Download", None))
+        self.uploadButton.setText(_translate("Form", "Upload", None))

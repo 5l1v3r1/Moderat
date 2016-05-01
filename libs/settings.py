@@ -1,5 +1,13 @@
 import ConfigParser
+import languages
 import os
+
+
+def _(tr, word):
+    if word in tr:
+        return tr[word]
+    else:
+        return word
 
 
 class Config:
@@ -19,9 +27,9 @@ class Config:
             self.port = int(self.config.get('connection_settings', 'port'))
             self.timeout = int(self.config.get('connection_settings', 'timeout'))
             self.max_connections = int(self.config.get('connection_settings', 'max_connections'))
+            self.language = str(self.config.get('interface', 'language'))
         except:
             self.set_default_settings()
-
 
     def set_default_settings(self):
 
@@ -30,32 +38,56 @@ class Config:
         self.config.read(self.config_file)
 
         # add connection settings
-        self.config.add_section('connection_settings')
+        try:
+            self.config.add_section('connection_settings')
+        except ConfigParser.DuplicateSectionError:
+            pass
         self.config.set('connection_settings', 'ip_address', '0.0.0.0')
         self.config.set('connection_settings', 'port', 4434)
         self.config.set('connection_settings', 'timeout', 5)
         self.config.set('connection_settings', 'max_connections', 127)
+        try:
+            self.config.add_section('interface')
+        except ConfigParser.DuplicateSectionError:
+            pass
+        self.config.set('interface', 'language', 'english')
 
         with open(self.config_file, 'w') as config_file:
             self.config.write(config_file)
 
 
 from ui.settings import Ui_Form
-from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 
 class Settings(QWidget, Ui_Form):
 
-    def __init__(self, parent=None):
-        super(Settings, self).__init__(parent)
+    def __init__(self, args):
+        QWidget.__init__(self)
         self.setupUi(self)
 
         self.config_file = 'settings.ini'
 
+        self.LANGUAGE = args['language']
+        self.t = self.get_language()
+
+        self.settingsTab.setTabText(0, _(self.t, 'TAB_CONNECTION_SETTINGS'))
+        self.settingsTab.setTabText(1, _(self.t, 'INTERFACE'))
+        self.ipAddressLabel.setText(_(self.t, 'SETTINGS_IP_ADDRESS'))
+        self.portLabel.setText(_(self.t, 'SETTINGS_PORT'))
+        self.timeoutLabel.setText(_(self.t, 'SETTINGS_TIMEOUT'))
+        self.maxConnectionsLabel.setText(_(self.t, 'SETTINGS_MAX_CONNECTIONS'))
+        self.languageLabel.setText(_(self.t, 'SETTINGS_LANGUAGE'))
+        self.saveButton.setText(_(self.t, 'SETTINGS_SAVE'))
+
         self.check_settings()
         self.get_settings()
         self.saveButton.clicked.connect(self.save_settings)
+
+    def get_language(self):
+        if self.LANGUAGE in languages.__all__:
+            lang = __import__('libs.languages.%s' % self.LANGUAGE, globals(), locals(), ['tr'], -1)
+            return lang.tr
 
     def get_settings(self):
         config = ConfigParser.ConfigParser()
@@ -87,6 +119,5 @@ class Settings(QWidget, Ui_Form):
         with open(self.config_file, 'wb') as config_file:
             config.write(config_file)
 
-        msg = QMessageBox(QMessageBox.Information, 'Info', 'You must restart connection for the changes to take effect')
+        msg = QMessageBox(QMessageBox.Information, _(self.t, 'SETTINGS_MSG_INFO'), _(self.t, 'SETTINGS_MSG_TEXT'))
         msg.exec_()
-

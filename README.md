@@ -39,8 +39,10 @@ Server Features:
 Client Features:
  * User Friendly Gui
  * Identify Ip Address Country
+ * Custom Alias
  * Desktop Preview
  * Web Camera Preview
+ * Save Preview
  * Active Window Title Preview
  * Servers Status Live Update
  * Catch Errors and Save In Log File

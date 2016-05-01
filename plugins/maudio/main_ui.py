@@ -36,22 +36,20 @@ class Ui_Form(object):
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.listenButton = QtGui.QPushButton(Form)
         self.listenButton.setMinimumSize(QtCore.QSize(0, 24))
         self.listenButton.setStyleSheet(_fromUtf8("QPushButton#listenButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
-"            border-right: none;\n"
 "            }\n"
 "\n"
 "QPushButton#listenButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.listenButton.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.listenButton.setIcon(icon1)
@@ -63,16 +61,13 @@ class Ui_Form(object):
         self.recordButton.setStyleSheet(_fromUtf8("QPushButton#recordButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
-"            border-right: none;\n"
-"            border-left: none;\n"
 "            }\n"
 "\n"
 "QPushButton#recordButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.recordButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/record.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.recordButton.setIcon(icon2)
@@ -84,15 +79,13 @@ class Ui_Form(object):
         self.stopButton.setStyleSheet(_fromUtf8("QPushButton#stopButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
-"            border-left: none;\n"
 "            }\n"
 "\n"
 "QPushButton#stopButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.stopButton.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopButton.setIcon(icon3)
@@ -124,9 +117,9 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.alwaysTopButton, 0, 2, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.defaultInputDeviceLavel = QtGui.QLabel(Form)
-        self.defaultInputDeviceLavel.setObjectName(_fromUtf8("defaultInputDeviceLavel"))
-        self.horizontalLayout.addWidget(self.defaultInputDeviceLavel)
+        self.defaultInputDeviceLabel = QtGui.QLabel(Form)
+        self.defaultInputDeviceLabel.setObjectName(_fromUtf8("defaultInputDeviceLabel"))
+        self.horizontalLayout.addWidget(self.defaultInputDeviceLabel)
         self.defaultInputDeviceNameLabel = QtGui.QLabel(Form)
         self.defaultInputDeviceNameLabel.setStyleSheet(_fromUtf8("color: white;"))
         self.defaultInputDeviceNameLabel.setText(_fromUtf8(""))
@@ -246,7 +239,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Audio Streaming", None))
-        self.defaultInputDeviceLavel.setText(_translate("Form", "Default Input Device:", None))
+        self.listenButton.setText(_translate("Form", "Listen", None))
+        self.recordButton.setText(_translate("Form", "Record", None))
+        self.stopButton.setText(_translate("Form", "Stop", None))
+        self.defaultInputDeviceLabel.setText(_translate("Form", "Default Input Device:", None))
         self.rateLabel.setText(_translate("Form", "Rate:", None))
         self.rateDrop.setItemText(0, _translate("Form", "5120", None))
         self.rateDrop.setItemText(1, _translate("Form", "10240", None))

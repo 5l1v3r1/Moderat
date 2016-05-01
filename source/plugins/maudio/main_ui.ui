@@ -37,7 +37,7 @@ color: #bdc3c7;</string>
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
-      <number>0</number>
+      <number>6</number>
      </property>
      <item>
       <widget class="QPushButton" name="listenButton">
@@ -51,9 +51,8 @@ color: #bdc3c7;</string>
         <string notr="true">QPushButton#listenButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
-			border-right: none;
             }
 
 QPushButton#listenButton:pressed {
@@ -61,7 +60,7 @@ QPushButton#listenButton:pressed {
             }</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Listen</string>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
@@ -87,10 +86,8 @@ QPushButton#listenButton:pressed {
         <string notr="true">QPushButton#recordButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
-			border-right: none;
-			border-left: none;
             }
 
 QPushButton#recordButton:pressed {
@@ -98,7 +95,7 @@ QPushButton#recordButton:pressed {
             }</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Record</string>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
@@ -124,9 +121,8 @@ QPushButton#recordButton:pressed {
         <string notr="true">QPushButton#stopButton {
 			border: 1px ridge;
             border-color: #2c3e50;
-			padding: 2px;
+			padding: 5px;
             background-color: #34495e;
-			border-left: none;
             }
 
 QPushButton#stopButton:pressed {
@@ -134,7 +130,7 @@ QPushButton#stopButton:pressed {
             }</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Stop</string>
        </property>
        <property name="icon">
         <iconset resource="../../res.qrc">
@@ -199,7 +195,7 @@ QPushButton#alwaysTopButton:checked {
    <item row="2" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="defaultInputDeviceLavel">
+      <widget class="QLabel" name="defaultInputDeviceLabel">
        <property name="text">
         <string>Default Input Device:</string>
        </property>

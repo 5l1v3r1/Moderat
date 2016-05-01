@@ -84,48 +84,44 @@ class Ui_Form(object):
         self.processesTable.verticalHeader().setVisible(False)
         self.gridLayout.addWidget(self.processesTable, 1, 0, 1, 3)
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.getProcessesButton = QtGui.QPushButton(Form)
-        self.getProcessesButton.setMinimumSize(QtCore.QSize(32, 32))
-        self.getProcessesButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.getProcessesButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.getProcessesButton.setMaximumSize(QtCore.QSize(500, 28))
         self.getProcessesButton.setStyleSheet(_fromUtf8("QPushButton#getProcessesButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
-"            border-right: none\n"
 "            }\n"
 "\n"
 "QPushButton#getProcessesButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.getProcessesButton.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.getProcessesButton.setIcon(icon1)
-        self.getProcessesButton.setIconSize(QtCore.QSize(18, 18))
+        self.getProcessesButton.setIconSize(QtCore.QSize(16, 16))
         self.getProcessesButton.setObjectName(_fromUtf8("getProcessesButton"))
         self.horizontalLayout.addWidget(self.getProcessesButton)
         self.terminateProcessButton = QtGui.QPushButton(Form)
-        self.terminateProcessButton.setMinimumSize(QtCore.QSize(32, 32))
-        self.terminateProcessButton.setMaximumSize(QtCore.QSize(32, 32))
+        self.terminateProcessButton.setMinimumSize(QtCore.QSize(0, 28))
+        self.terminateProcessButton.setMaximumSize(QtCore.QSize(500, 28))
         self.terminateProcessButton.setStyleSheet(_fromUtf8("QPushButton#terminateProcessButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
+"            padding: 5px;\n"
 "            background-color: #34495e;\n"
-"            border-left: none\n"
 "            }\n"
 "\n"
 "QPushButton#terminateProcessButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.terminateProcessButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/terminate.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.terminateProcessButton.setIcon(icon2)
-        self.terminateProcessButton.setIconSize(QtCore.QSize(18, 18))
+        self.terminateProcessButton.setIconSize(QtCore.QSize(16, 16))
         self.terminateProcessButton.setCheckable(False)
         self.terminateProcessButton.setObjectName(_fromUtf8("terminateProcessButton"))
         self.horizontalLayout.addWidget(self.terminateProcessButton)
@@ -166,6 +162,8 @@ class Ui_Form(object):
         item = self.processesTable.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Filename", None))
         self.getProcessesButton.setToolTip(_translate("Form", "Save", None))
+        self.getProcessesButton.setText(_translate("Form", "Refresh", None))
         self.terminateProcessButton.setToolTip(_translate("Form", "Smilies Detection", None))
+        self.terminateProcessButton.setText(_translate("Form", "Kill", None))
         self.alwaysTopButton.setToolTip(_translate("Form", "Always Top", None))
 

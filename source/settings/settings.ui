@@ -232,6 +232,11 @@ background-color: #34495e;</string>
              <string>english</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>georgian</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

@@ -98,14 +98,19 @@ class Settings(QWidget, Ui_Form):
         self.timeoutLine.setText(str(config.get('connection_settings', 'timeout')))
         self.maxConnectionsLine.setText(str(config.get('connection_settings', 'max_connections')))
 
+        self.languageCombo.setCurrentIndex(self.languageCombo.findText(str(config.get('interface', 'language'))))
+
     def check_settings(self):
         Config()
 
     def save_settings(self):
+        # Connection values
         ip_address = str(self.ipAddressLine.text())
         port = str(self.portLine.text())
         timeout = str(self.timeoutLine.text())
         max_connections = str(self.maxConnectionsLine.text())
+        # Interface Values
+        language = str(self.languageCombo.currentText())
 
         config = ConfigParser.ConfigParser()
         config.read(self.config_file)
@@ -115,6 +120,8 @@ class Settings(QWidget, Ui_Form):
         config.set('connection_settings', 'port', port)
         config.set('connection_settings', 'timeout', timeout)
         config.set('connection_settings', 'max_connections', max_connections)
+        # add interface settings
+        config.set('interface', 'language', language)
 
         with open(self.config_file, 'wb') as config_file:
             config.write(config_file)

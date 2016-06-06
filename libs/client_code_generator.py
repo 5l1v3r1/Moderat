@@ -2,6 +2,8 @@ __author__ = 'Uri Patton'
 
 import client_source
 import client_snippets
+import subprocess
+import pyminifier
 
 
 class SourceGenerator:
@@ -24,6 +26,9 @@ class SourceGenerator:
         self.source = client_source.source
         with open('source.py', 'w') as source:
             source.write(self.format_source(self.source))
+        output = subprocess.Popen(["pyminifier", "--obfuscate", "source.py"], stdout=subprocess.PIPE).communicate()[0]
+        print output
+
 
     def generate_snippets(self):
         return {

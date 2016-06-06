@@ -170,8 +170,7 @@ def main():
     if not files:
         parser.print_help()
         sys.exit(2)
+    print type(options)
     pyminify(options, files)
 
-
-if __name__ == "__main__":
-    main()
+main()

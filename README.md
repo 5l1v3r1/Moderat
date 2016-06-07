@@ -15,7 +15,7 @@ Fun Made Windows Remote Administration Tool in Python
 
 ###### Features list
 
-Server Features:
+Client Features:
  * No Installed Python Required On Target Machine
  * Silent Installation
  * Auto Run
@@ -36,11 +36,11 @@ Server Features:
  * Download
  * Hide
 
-Client Features:
+Server Features:
  * User Friendly Gui
  * Identify Ip Address Country
  * Custom Alias
- * Desktop Preview
+ * Desktop Preview & Desktop Preview in Popup
  * Web Camera Preview
  * Save Preview
  * Active Window Title Preview
@@ -70,6 +70,17 @@ Remote Scripting:
 
 Process Manager:
  * Kill Process
+ 
+ 
+Client Builder (Under Development):
+ * Remote Audio On/Off
+ * Remote Webcam On/Off
+ * Use Usb Spreading On/Off
+ * Use Autostart On/Off
+ * Use Fake File On/Off
+ * Set Custom IP Adreess, Port, Password, File Name, Destionation Dir
+ * Obfuscating Source Code (using https://github.com/astrand/pyobfuscate)
+ * To Be Continued...
  
 
 

@@ -52,8 +52,12 @@ Remote Shell:
  *  Commands History
 
 File Manager:
- * Basic Commands
+ * Navigation
+ * Execute Remote File
+ * Hide/Show
+ * Delete Content
  * Drag & Drop File Upload
+ * File Download
 
 Remote Microphone:
  * Remote Microphone Streaming

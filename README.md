@@ -78,7 +78,7 @@ Client Builder (Under Development):
  * Use Usb Spreading On/Off
  * Use Autostart On/Off
  * Use Fake File On/Off
- * Set Custom IP Adreess, Port, Password, File Name, Destionation Dir
+ * Set Custom IP Address, Port, Password, File Name, Destination Dir
  * Obfuscating Source Code (using https://github.com/astrand/pyobfuscate)
  * To Be Continued...
  

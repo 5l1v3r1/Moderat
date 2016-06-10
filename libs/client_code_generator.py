@@ -21,7 +21,6 @@ class SourceGenerator:
         pass
 
     def generate_source(self, path):
-        print self.filename
         self.source = client_source.source
         source_file = open(path, 'w')
         source_file.write(self.format_source(self.source))

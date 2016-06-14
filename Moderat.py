@@ -238,6 +238,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # END PLUGINS
 
         # BUILDER
+        self.menuBuilder.setTitle(_('MENU_BUILDER'))
         self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
         # END BUILDER
 

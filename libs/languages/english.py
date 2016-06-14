@@ -47,6 +47,8 @@ tr = {
     'MENU_PLUGIN_SCRIPTING':        u'Scripting',
     'MENU_PLUGIN_DESKTOP':          u'Desktop Preview',
     'MENU_PLUGIN_WEBCAM':           u'Webcam Preview',
+    'MENU_BUILDER':                 u'Builder',
+    'MENU_BUILDER_PYINSTALLER':     u'Windows Client (PyInstaller)',
     # END MENU
 
     # STATUS

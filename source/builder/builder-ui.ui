@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Client Builder (PyInstaller)</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #2c3e50;
@@ -504,8 +504,8 @@ QPushButton#buildButton:pressed {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
-        <height>435</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -521,8 +521,8 @@ QPushButton#buildButton:pressed {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
-        <height>435</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -534,8 +534,8 @@ QPushButton#buildButton:pressed {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
-        <height>435</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">

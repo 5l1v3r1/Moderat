@@ -67,14 +67,14 @@ class Ui_Form(object):
         self.currentUserLabel.setObjectName(_fromUtf8("currentUserLabel"))
         self.horizontalLayout_3.addWidget(self.currentUserLabel)
         self.workingDirLine = QtGui.QLineEdit(self.clientOptionsTab)
-        self.workingDirLine.setStyleSheet(_fromUtf8("QLineEdit#currentUserLine {\n"
+        self.workingDirLine.setStyleSheet(_fromUtf8("QLineEdit#workingDirLine {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
-"QLineEdit#currentUserLine:pressed {\n"
+"QLineEdit#workingDirLine:pressed {\n"
 "            border: 1px ridge #c9f5f7;\n"
 "            }"))
         self.workingDirLine.setObjectName(_fromUtf8("workingDirLine"))

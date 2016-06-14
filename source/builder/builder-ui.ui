@@ -89,14 +89,14 @@ padding-bottom: 5px;</string>
          <item>
           <widget class="QLineEdit" name="workingDirLine">
            <property name="styleSheet">
-            <string notr="true">QLineEdit#currentUserLine {
+            <string notr="true">QLineEdit#workingDirLine {
 			border: 1px ridge;
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
             }
 
-QLineEdit#currentUserLine:pressed {
+QLineEdit#workingDirLine:pressed {
             border: 1px ridge #c9f5f7;
             }</string>
            </property>

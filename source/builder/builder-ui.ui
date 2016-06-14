@@ -52,7 +52,7 @@ color: #c9f5f7;</string>
         <x>0</x>
         <y>0</y>
         <width>514</width>
-        <height>351</height>
+        <height>382</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -70,7 +70,7 @@ padding-bottom: 5px;</string>
        <item row="4" column="1" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="currentUserLabel">
            <property name="styleSheet">
             <string notr="true">padding-top: 4px;</string>
            </property>
@@ -80,7 +80,7 @@ padding-bottom: 5px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="currentUserLine">
+          <widget class="QLineEdit" name="workingDirLine">
            <property name="styleSheet">
             <string notr="true">QLineEdit#currentUserLine {
 			border: 1px ridge;
@@ -166,7 +166,7 @@ QPushButton#generateRandomNameButton:pressed {
         </layout>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="fileNameLabel">
          <property name="text">
           <string>Client File Name:</string>
          </property>
@@ -370,14 +370,14 @@ QPushButton#checkConnectionButton:pressed {
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="workingDirLabel">
          <property name="text">
           <string>Working Dir:</string>
          </property>
         </widget>
        </item>
        <item row="8" column="0">
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="autostartCheck">
          <property name="text">
           <string>Enable Autostart</string>
          </property>
@@ -395,7 +395,7 @@ QPushButton#checkConnectionButton:pressed {
         </widget>
        </item>
        <item row="10" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="FakeGroup">
          <property name="styleSheet">
           <string notr="true">padding-top: 15px;
 border: 1px ridge;
@@ -436,7 +436,7 @@ QLineEdit#fakeFileExtension:pressed {
             }</string>
               </property>
               <property name="placeholderText">
-               <string>example: doc, docx, xls, jpeg</string>
+               <string>examples: doc, docx, xls, jpeg</string>
               </property>
              </widget>
             </item>
@@ -446,7 +446,7 @@ QLineEdit#fakeFileExtension:pressed {
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QCheckBox" name="checkBox_2">
+        <widget class="QCheckBox" name="usbSpredingCheck">
          <property name="text">
           <string>Enable Usb Spreading</string>
          </property>
@@ -464,26 +464,13 @@ QLineEdit#fakeFileExtension:pressed {
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="fakeDialog">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>514</width>
-        <height>351</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Fake Dialog</string>
-      </attribute>
-     </widget>
      <widget class="QWidget" name="page">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
         <width>514</width>
-        <height>351</height>
+        <height>382</height>
        </rect>
       </property>
       <attribute name="label">
@@ -496,7 +483,7 @@ QLineEdit#fakeFileExtension:pressed {
         <x>0</x>
         <y>0</y>
         <width>514</width>
-        <height>351</height>
+        <height>382</height>
        </rect>
       </property>
       <attribute name="label">
@@ -509,7 +496,7 @@ QLineEdit#fakeFileExtension:pressed {
         <x>0</x>
         <y>0</y>
         <width>514</width>
-        <height>351</height>
+        <height>382</height>
        </rect>
       </property>
       <attribute name="label">
@@ -532,7 +519,6 @@ QLineEdit#fakeFileExtension:pressed {
             border-color: #2c3e50;
 			padding: 2px;
             background-color: #34495e;
-			border-left: none;
             }
 
 QPushButton#buildButton:pressed {

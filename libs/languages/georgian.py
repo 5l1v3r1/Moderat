@@ -200,4 +200,20 @@ tr = {
     'MPROCESSES_PID':               u'PID',
     'MPROCESSES_FILE_NAME':         u'ფაილის სახელი',
     # END MPROCESSES
+
+    # BUILDER (PYINSTALLER)
+    'BUILDER_TITLE':                        u'კლიენტის შექმნა',
+    'BUILDER_SERVER_ADDRESS_LABEL':         u'სერვერის მისამართი',
+    'BUILDER_SERVER_PORT_LABEL':            u'პორტი',
+    'BUILDER_CHECK_CONNECTION_BUTTON':      u'შემოწმება',
+    'BUILDER_CLIENT_PASSWORD_LABEL':        u'პაროლი (სტანდარტულად: Moderat123)',
+    'BUILDER_TIMEOUT_LABEL':                u'ლოდინის ხანგძლივობა',
+    'BUILDER_FILE_NAME_LABEL':              u'ფაილის სახელი',
+    'BUILDER_WORKING_DIR_LABEL':            u'საქაღალდე',
+    'BUILDER_CURRENT_USER_LABEL':           u'/%მომხმარებელი%/',
+    'BUILDER_AUTOSTART_CHECK':              u'ავტომატური ჩართვა',
+    'BUILDER_USB_SPREADING_CHECK':          u'ბარათებზე ავტომატური ჩაწერა',
+    'BUILDER_FAKE_CHECK':                   u'პირველი ჩართვისას გახსნას ფაილი',
+    'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'ფაილის გაფართოება',
+    # END BUILDER
 }

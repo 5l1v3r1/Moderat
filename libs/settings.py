@@ -56,11 +56,11 @@ class Config:
             self.config.write(config_file)
 
 
-from ui.settings import Ui_Form
+from ui.settings import Ui_Form as settingsUi
 from PyQt4.QtGui import *
 
 
-class Settings(QWidget, Ui_Form):
+class Settings(QWidget, settingsUi):
 
     def __init__(self, args):
         QWidget.__init__(self)

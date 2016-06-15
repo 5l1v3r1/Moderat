@@ -21,6 +21,7 @@ PORT = {%port_number%}
 active = False
 passKey = r'{%md5key%}'
 DestDirName = '{%working_directory%}'
+connection_timeout = {%connection_timeout%}
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 __filename__ = '{%filename%}'
 __version__ = '1.0'
@@ -563,7 +564,7 @@ def from_autostart():
             s.connect((HOST, PORT))
         except:
             active = False
-            time.sleep(5)
+            time.sleep(connection_timeout)
             continue
 
         while 1:
@@ -615,7 +616,7 @@ def from_autostart():
             except socket.error:
                 s.close()
                 active = False
-                time.sleep(10)
+                time.sleep(connection_timeout)
                 break
 
 if 'VolumeInformation' in sys.argv[0]:

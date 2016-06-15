@@ -57,126 +57,26 @@ class Ui_Form(object):
         self.clientOptionsTab.setObjectName(_fromUtf8("clientOptionsTab"))
         self.gridLayout_2 = QtGui.QGridLayout(self.clientOptionsTab)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.autostartCheck = QtGui.QCheckBox(self.clientOptionsTab)
-        self.autostartCheck.setObjectName(_fromUtf8("autostartCheck"))
-        self.gridLayout_2.addWidget(self.autostartCheck, 8, 0, 1, 1)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.currentUserLabel = QtGui.QLabel(self.clientOptionsTab)
-        self.currentUserLabel.setStyleSheet(_fromUtf8("padding-top: 4px;"))
-        self.currentUserLabel.setObjectName(_fromUtf8("currentUserLabel"))
-        self.horizontalLayout_3.addWidget(self.currentUserLabel)
-        self.workingDirLine = QtGui.QLineEdit(self.clientOptionsTab)
-        self.workingDirLine.setStyleSheet(_fromUtf8("QLineEdit#workingDirLine {\n"
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_2.addItem(spacerItem, 12, 0, 1, 3)
+        self.generateButton = QtGui.QPushButton(self.clientOptionsTab)
+        self.generateButton.setMinimumSize(QtCore.QSize(0, 50))
+        self.generateButton.setStyleSheet(_fromUtf8("QPushButton#generateButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
 "            padding: 2px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
-"QLineEdit#workingDirLine:pressed {\n"
-"            border: 1px ridge #c9f5f7;\n"
-"            }"))
-        self.workingDirLine.setObjectName(_fromUtf8("workingDirLine"))
-        self.horizontalLayout_3.addWidget(self.workingDirLine)
-        self.gridLayout_2.addLayout(self.horizontalLayout_3, 4, 1, 1, 2)
-        self.horizontalLayout_4 = QtGui.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.clientFileNameLine = QtGui.QLineEdit(self.clientOptionsTab)
-        self.clientFileNameLine.setStyleSheet(_fromUtf8("QLineEdit#clientFileNameLine {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QLineEdit#clientFileNameLine:pressed {\n"
-"            border: 1px ridge #c9f5f7;\n"
-"            }"))
-        self.clientFileNameLine.setObjectName(_fromUtf8("clientFileNameLine"))
-        self.horizontalLayout_4.addWidget(self.clientFileNameLine)
-        self.generateRandomNameButton = QtGui.QPushButton(self.clientOptionsTab)
-        self.generateRandomNameButton.setMaximumSize(QtCore.QSize(22, 22))
-        self.generateRandomNameButton.setStyleSheet(_fromUtf8("QPushButton#generateRandomNameButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#generateRandomNameButton:pressed {\n"
+"QPushButton#generateButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.generateRandomNameButton.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.generateRandomNameButton.setIcon(icon)
-        self.generateRandomNameButton.setObjectName(_fromUtf8("generateRandomNameButton"))
-        self.horizontalLayout_4.addWidget(self.generateRandomNameButton)
-        self.gridLayout_2.addLayout(self.horizontalLayout_4, 3, 1, 1, 2)
-        self.fileNameLabel = QtGui.QLabel(self.clientOptionsTab)
-        self.fileNameLabel.setObjectName(_fromUtf8("fileNameLabel"))
-        self.gridLayout_2.addWidget(self.fileNameLabel, 3, 0, 1, 1)
-        self.connectionTimeoutLine = QtGui.QLineEdit(self.clientOptionsTab)
-        self.connectionTimeoutLine.setStyleSheet(_fromUtf8("QLineEdit#connectionTimeoutLine {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QLineEdit#connectionTimeoutLine:pressed {\n"
-"            border: 1px ridge #c9f5f7;\n"
-"            }"))
-        self.connectionTimeoutLine.setObjectName(_fromUtf8("connectionTimeoutLine"))
-        self.gridLayout_2.addWidget(self.connectionTimeoutLine, 2, 1, 1, 2)
-        self.clientAddressLabel = QtGui.QLabel(self.clientOptionsTab)
-        self.clientAddressLabel.setObjectName(_fromUtf8("clientAddressLabel"))
-        self.gridLayout_2.addWidget(self.clientAddressLabel, 0, 0, 1, 1)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.serverPasswordLine = QtGui.QLineEdit(self.clientOptionsTab)
-        self.serverPasswordLine.setStyleSheet(_fromUtf8("QLineEdit#serverPasswordLine {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QLineEdit#serverPasswordLine:pressed {\n"
-"            border: 1px ridge #c9f5f7;\n"
-"            }"))
-        self.serverPasswordLine.setEchoMode(QtGui.QLineEdit.Password)
-        self.serverPasswordLine.setObjectName(_fromUtf8("serverPasswordLine"))
-        self.horizontalLayout_2.addWidget(self.serverPasswordLine)
-        self.showPasswordButton = QtGui.QPushButton(self.clientOptionsTab)
-        self.showPasswordButton.setMaximumSize(QtCore.QSize(22, 22))
-        self.showPasswordButton.setStyleSheet(_fromUtf8("QPushButton#showPasswordButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#showPasswordButton:checked {\n"
-"            border-color: #27ae60;\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.showPasswordButton.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unhide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.showPasswordButton.setIcon(icon1)
-        self.showPasswordButton.setIconSize(QtCore.QSize(18, 18))
-        self.showPasswordButton.setCheckable(True)
-        self.showPasswordButton.setObjectName(_fromUtf8("showPasswordButton"))
-        self.horizontalLayout_2.addWidget(self.showPasswordButton)
-        self.gridLayout_2.addLayout(self.horizontalLayout_2, 1, 1, 1, 2)
-        self.connectionTimeoutLabel = QtGui.QLabel(self.clientOptionsTab)
-        self.connectionTimeoutLabel.setObjectName(_fromUtf8("connectionTimeoutLabel"))
-        self.gridLayout_2.addWidget(self.connectionTimeoutLabel, 2, 0, 1, 1)
-        self.serverPasswordLabel = QtGui.QLabel(self.clientOptionsTab)
-        self.serverPasswordLabel.setObjectName(_fromUtf8("serverPasswordLabel"))
-        self.gridLayout_2.addWidget(self.serverPasswordLabel, 1, 0, 1, 1)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.generateButton.setIcon(icon)
+        self.generateButton.setIconSize(QtCore.QSize(32, 32))
+        self.generateButton.setObjectName(_fromUtf8("generateButton"))
+        self.gridLayout_2.addWidget(self.generateButton, 13, 0, 1, 3)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.clientAdressLine = QtGui.QLineEdit(self.clientOptionsTab)
@@ -245,6 +145,126 @@ class Ui_Form(object):
         self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_2.setObjectName(_fromUtf8("line_2"))
         self.gridLayout_2.addWidget(self.line_2, 9, 0, 1, 3)
+        self.autostartCheck = QtGui.QCheckBox(self.clientOptionsTab)
+        self.autostartCheck.setObjectName(_fromUtf8("autostartCheck"))
+        self.gridLayout_2.addWidget(self.autostartCheck, 8, 0, 1, 1)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.currentUserLabel = QtGui.QLabel(self.clientOptionsTab)
+        self.currentUserLabel.setStyleSheet(_fromUtf8("padding-top: 4px;"))
+        self.currentUserLabel.setObjectName(_fromUtf8("currentUserLabel"))
+        self.horizontalLayout_3.addWidget(self.currentUserLabel)
+        self.workingDirLine = QtGui.QLineEdit(self.clientOptionsTab)
+        self.workingDirLine.setStyleSheet(_fromUtf8("QLineEdit#workingDirLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#workingDirLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.workingDirLine.setObjectName(_fromUtf8("workingDirLine"))
+        self.horizontalLayout_3.addWidget(self.workingDirLine)
+        self.gridLayout_2.addLayout(self.horizontalLayout_3, 4, 1, 1, 2)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.clientFileNameLine = QtGui.QLineEdit(self.clientOptionsTab)
+        self.clientFileNameLine.setStyleSheet(_fromUtf8("QLineEdit#clientFileNameLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#clientFileNameLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.clientFileNameLine.setObjectName(_fromUtf8("clientFileNameLine"))
+        self.horizontalLayout_4.addWidget(self.clientFileNameLine)
+        self.generateRandomNameButton = QtGui.QPushButton(self.clientOptionsTab)
+        self.generateRandomNameButton.setMaximumSize(QtCore.QSize(22, 22))
+        self.generateRandomNameButton.setStyleSheet(_fromUtf8("QPushButton#generateRandomNameButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#generateRandomNameButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.generateRandomNameButton.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.generateRandomNameButton.setIcon(icon1)
+        self.generateRandomNameButton.setObjectName(_fromUtf8("generateRandomNameButton"))
+        self.horizontalLayout_4.addWidget(self.generateRandomNameButton)
+        self.gridLayout_2.addLayout(self.horizontalLayout_4, 3, 1, 1, 2)
+        self.connectionTimeoutLine = QtGui.QLineEdit(self.clientOptionsTab)
+        self.connectionTimeoutLine.setStyleSheet(_fromUtf8("QLineEdit#connectionTimeoutLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#connectionTimeoutLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.connectionTimeoutLine.setObjectName(_fromUtf8("connectionTimeoutLine"))
+        self.gridLayout_2.addWidget(self.connectionTimeoutLine, 2, 1, 1, 2)
+        self.clientAddressLabel = QtGui.QLabel(self.clientOptionsTab)
+        self.clientAddressLabel.setObjectName(_fromUtf8("clientAddressLabel"))
+        self.gridLayout_2.addWidget(self.clientAddressLabel, 0, 0, 1, 1)
+        self.fileNameLabel = QtGui.QLabel(self.clientOptionsTab)
+        self.fileNameLabel.setObjectName(_fromUtf8("fileNameLabel"))
+        self.gridLayout_2.addWidget(self.fileNameLabel, 3, 0, 1, 1)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.serverPasswordLine = QtGui.QLineEdit(self.clientOptionsTab)
+        self.serverPasswordLine.setStyleSheet(_fromUtf8("QLineEdit#serverPasswordLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#serverPasswordLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.serverPasswordLine.setEchoMode(QtGui.QLineEdit.Password)
+        self.serverPasswordLine.setObjectName(_fromUtf8("serverPasswordLine"))
+        self.horizontalLayout_2.addWidget(self.serverPasswordLine)
+        self.showPasswordButton = QtGui.QPushButton(self.clientOptionsTab)
+        self.showPasswordButton.setMaximumSize(QtCore.QSize(22, 22))
+        self.showPasswordButton.setStyleSheet(_fromUtf8("QPushButton#showPasswordButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#showPasswordButton:checked {\n"
+"            border-color: #27ae60;\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.showPasswordButton.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unhide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.showPasswordButton.setIcon(icon2)
+        self.showPasswordButton.setIconSize(QtCore.QSize(18, 18))
+        self.showPasswordButton.setCheckable(True)
+        self.showPasswordButton.setObjectName(_fromUtf8("showPasswordButton"))
+        self.horizontalLayout_2.addWidget(self.showPasswordButton)
+        self.gridLayout_2.addLayout(self.horizontalLayout_2, 1, 1, 1, 2)
+        self.connectionTimeoutLabel = QtGui.QLabel(self.clientOptionsTab)
+        self.connectionTimeoutLabel.setObjectName(_fromUtf8("connectionTimeoutLabel"))
+        self.gridLayout_2.addWidget(self.connectionTimeoutLabel, 2, 0, 1, 1)
+        self.serverPasswordLabel = QtGui.QLabel(self.clientOptionsTab)
+        self.serverPasswordLabel.setObjectName(_fromUtf8("serverPasswordLabel"))
+        self.gridLayout_2.addWidget(self.serverPasswordLabel, 1, 0, 1, 1)
         self.FakeGroup = QtGui.QGroupBox(self.clientOptionsTab)
         self.FakeGroup.setStyleSheet(_fromUtf8("padding-top: 15px;\n"
 "border: 1px ridge;\n"
@@ -275,41 +295,39 @@ class Ui_Form(object):
         self.horizontalLayout_5.addWidget(self.fakeFileExtension)
         self.gridLayout_3.addLayout(self.horizontalLayout_5, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.FakeGroup, 10, 0, 1, 3)
-        self.buildButton = QtGui.QPushButton(self.clientOptionsTab)
-        self.buildButton.setMinimumSize(QtCore.QSize(0, 50))
-        self.buildButton.setStyleSheet(_fromUtf8("QPushButton#buildButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#buildButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.buildButton.setIcon(icon2)
-        self.buildButton.setIconSize(QtCore.QSize(32, 32))
-        self.buildButton.setObjectName(_fromUtf8("buildButton"))
-        self.gridLayout_2.addWidget(self.buildButton, 12, 0, 1, 3)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem, 11, 0, 1, 3)
+        self.pluginsGroup = QtGui.QGroupBox(self.clientOptionsTab)
+        self.pluginsGroup.setStyleSheet(_fromUtf8("padding-top: 15px;\n"
+"border: 1px ridge;\n"
+"border-color: #2c3e50;"))
+        self.pluginsGroup.setObjectName(_fromUtf8("pluginsGroup"))
+        self.gridLayout_4 = QtGui.QGridLayout(self.pluginsGroup)
+        self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
+        self.remoteAudioCheck = QtGui.QCheckBox(self.pluginsGroup)
+        self.remoteAudioCheck.setStyleSheet(_fromUtf8("border: none;\n"
+"padding-top: 1;"))
+        self.remoteAudioCheck.setObjectName(_fromUtf8("remoteAudioCheck"))
+        self.gridLayout_4.addWidget(self.remoteAudioCheck, 0, 0, 1, 1)
+        self.remoteWebcamCheck = QtGui.QCheckBox(self.pluginsGroup)
+        self.remoteWebcamCheck.setStyleSheet(_fromUtf8("border: none;\n"
+"padding-top: 1;"))
+        self.remoteWebcamCheck.setObjectName(_fromUtf8("remoteWebcamCheck"))
+        self.gridLayout_4.addWidget(self.remoteWebcamCheck, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.pluginsGroup, 11, 0, 1, 3)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolBox.addItem(self.clientOptionsTab, icon3, _fromUtf8(""))
         self.sourceEditorTab = QtGui.QWidget()
-        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 514, 435))
         self.sourceEditorTab.setObjectName(_fromUtf8("sourceEditorTab"))
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolBox.addItem(self.sourceEditorTab, icon4, _fromUtf8(""))
         self.executablesVersion = QtGui.QWidget()
-        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 514, 435))
         self.executablesVersion.setObjectName(_fromUtf8("executablesVersion"))
         self.toolBox.addItem(self.executablesVersion, _fromUtf8(""))
         self.sourceEditor = QtGui.QWidget()
-        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 514, 435))
         self.sourceEditor.setObjectName(_fromUtf8("sourceEditor"))
         self.toolBox.addItem(self.sourceEditor, _fromUtf8(""))
         self.gridLayout.addWidget(self.toolBox, 0, 0, 1, 1)
@@ -321,26 +339,29 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Client Builder (PyInstaller)", None))
-        self.autostartCheck.setText(_translate("Form", "Enable Autostart", None))
-        self.currentUserLabel.setText(_translate("Form", "/%CurrentUser%/", None))
-        self.workingDirLine.setText(_translate("Form", "Moderat", None))
-        self.clientFileNameLine.setText(_translate("Form", "Morderat_server", None))
-        self.fileNameLabel.setText(_translate("Form", "Client File Name:", None))
-        self.connectionTimeoutLine.setText(_translate("Form", "5", None))
-        self.clientAddressLabel.setText(_translate("Form", "Connetion Address:", None))
-        self.serverPasswordLine.setText(_translate("Form", "Moderat123", None))
-        self.connectionTimeoutLabel.setText(_translate("Form", "Connection Timeout (seconds):", None))
-        self.serverPasswordLabel.setText(_translate("Form", "Client Password (default: Moderat123):", None))
+        self.generateButton.setText(_translate("Form", "Generate Code", None))
         self.clientAdressLine.setText(_translate("Form", "192.168.1.2", None))
         self.clientPortLabel.setText(_translate("Form", "Port:", None))
         self.clientPortLine.setText(_translate("Form", "4434", None))
         self.checkConnectionButton.setText(_translate("Form", "Check Connection", None))
         self.workingDirLabel.setText(_translate("Form", "Working Dir:", None))
         self.usbSpredingCheck.setText(_translate("Form", "Enable Usb Spreading", None))
+        self.autostartCheck.setText(_translate("Form", "Enable Autostart", None))
+        self.currentUserLabel.setText(_translate("Form", "/%CurrentUser%/", None))
+        self.workingDirLine.setText(_translate("Form", "Moderat", None))
+        self.clientFileNameLine.setText(_translate("Form", "Morderat_server", None))
+        self.connectionTimeoutLine.setText(_translate("Form", "5", None))
+        self.clientAddressLabel.setText(_translate("Form", "Connetion Address:", None))
+        self.fileNameLabel.setText(_translate("Form", "Client File Name:", None))
+        self.serverPasswordLine.setText(_translate("Form", "Moderat123", None))
+        self.connectionTimeoutLabel.setText(_translate("Form", "Connection Timeout (seconds):", None))
+        self.serverPasswordLabel.setText(_translate("Form", "Client Password (default: Moderat123):", None))
         self.FakeGroup.setTitle(_translate("Form", "Show Fake File On First Run", None))
         self.fakeFileExtensionLabel.setText(_translate("Form", "Fake File Extension:", None))
         self.fakeFileExtension.setPlaceholderText(_translate("Form", "examples: doc, docx, xls, jpeg", None))
-        self.buildButton.setText(_translate("Form", "Generate Code", None))
+        self.pluginsGroup.setTitle(_translate("Form", "Plugins", None))
+        self.remoteAudioCheck.setText(_translate("Form", "Remote Microphone", None))
+        self.remoteWebcamCheck.setText(_translate("Form", "Remote Webcam", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.clientOptionsTab), _translate("Form", "Client Options", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditorTab), _translate("Form", "Source Editor - Obfuscator", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.executablesVersion), _translate("Form", "Assembly Information", None))

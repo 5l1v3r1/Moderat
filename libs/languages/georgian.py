@@ -215,5 +215,6 @@ tr = {
     'BUILDER_USB_SPREADING_CHECK':          u'ბარათებზე ავტომატური ჩაწერა',
     'BUILDER_FAKE_CHECK':                   u'პირველი ჩართვისას გახსნას ფაილი',
     'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'ფაილის გაფართოება',
+    'BUILDER_SAVE_FILE_NAME':               u'მიუთითე სად შევინახო',
     # END BUILDER
 }

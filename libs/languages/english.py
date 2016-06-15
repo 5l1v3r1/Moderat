@@ -215,5 +215,6 @@ tr = {
     'BUILDER_USB_SPREADING_CHECK':          u'USB Spreading',
     'BUILDER_FAKE_CHECK':                   u'Fake File (First Run)',
     'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'Fake File Extension',
+    'BUILDER_SAVE_FILE_NAME':               u'Select File To Save',
     # END BUILDER
 }

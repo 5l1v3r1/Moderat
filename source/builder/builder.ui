@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
+    <width>755</width>
     <height>583</height>
    </rect>
   </property>
@@ -51,7 +51,7 @@ color: #c9f5f7;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
+        <width>737</width>
         <height>435</height>
        </rect>
       </property>
@@ -540,7 +540,7 @@ padding-top: 1;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
+        <width>737</width>
         <height>435</height>
        </rect>
       </property>
@@ -551,13 +551,162 @@ padding-top: 1;</string>
       <attribute name="label">
        <string>Source Editor - Obfuscator</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="idleLayout">
+         <item>
+          <layout class="QHBoxLayout" name="buttonsLayout">
+           <item>
+            <widget class="QPushButton" name="obfuscateButton">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#obfuscateButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#obfuscateButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string>Obfuscate</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../res.qrc">
+               <normaloff>:/icons/assets/shuffle.png</normaloff>:/icons/assets/shuffle.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="saveButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#saveButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#saveButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string>Save</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../res.qrc">
+               <normaloff>:/icons/assets/save_as.png</normaloff>:/icons/assets/save_as.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QPushButton" name="backToOptionsButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#backToOptionsButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#backToOptionsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string>Back To Client Options</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/icons/assets/back.png</normaloff>:/icons/assets/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="nextToAssemblyButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#nextToAssemblyButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#nextToAssemblyButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string>Next To Assembly Editor</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/icons/assets/start.png</normaloff>:/icons/assets/start.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="executablesVersion">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
+        <width>737</width>
         <height>435</height>
        </rect>
       </property>
@@ -570,7 +719,7 @@ padding-top: 1;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>514</width>
+        <width>737</width>
         <height>435</height>
        </rect>
       </property>

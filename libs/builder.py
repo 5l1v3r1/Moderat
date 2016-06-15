@@ -6,6 +6,7 @@ import string
 import hashlib
 import os
 
+import linesnum
 from language import Translate
 from client_code_generator import SourceGenerator
 
@@ -21,14 +22,24 @@ class Builder(QWidget, builderUi):
         self.setupUi(self)
 
         # START: triggers
+        # Client Configuration
         self.showPasswordButton.clicked.connect(self.set_password_echo_mode)
         self.generateRandomNameButton.clicked.connect(self.set_new_file_name)
         self.generateButton.clicked.connect(self.genereate_source)
+
+        # Idle
+        self.obfuscateButton.clicked.connect(self.obfuscate_code)
+        self.backToOptionsButton.clicked.connect(self.back_to_client_configuration)
+        self.nextToAssemblyButton.clicked.connect(self.next_to_assembly_editor)
         # END: triggers
 
         self.set_language()
         self.tabs_disable()
         self.toolBox.setCurrentIndex(0)
+
+        # init idle with lines
+        self.idle = linesnum.LineTextWidget()
+        self.idleLayout.addWidget(self.idle)
 
     def set_language(self):
 
@@ -148,6 +159,28 @@ class Builder(QWidget, builderUi):
                 return
         self.source_file_name = str(file_name)
         self.source_file_dir = os.path.dirname(str(self.source_file_name))
+
+        self.next_to_idle()
+
+    # IDLE & Obfuscator
+    def next_to_idle(self):
         self.toolBox.setCurrentIndex(1)
+        self.set_source_in_idle()
+
+    def set_source_in_idle(self):
+        with open(self.source_file_name, 'r') as source_file:
+            self.idle.clearText()
+            self.idle.appendText(source_file.read())
+
+    def obfuscate_code(self):
+        generator = SourceGenerator()
+        generator.obfuscate(self.source_file_name)
+        self.set_source_in_idle()
+
+    def back_to_client_configuration(self):
+        self.toolBox.setCurrentIndex(0)
+
+    def next_to_assembly_editor(self):
+        self.toolBox.setCurrentIndex(2)
 
 

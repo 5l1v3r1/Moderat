@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'builder-ui.ui'
+# Form implementation generated from reading ui file 'builder.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(532, 583)
+        Form.resize(755, 583)
         Form.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
 "color: #c9f5f7;"))
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -51,7 +51,7 @@ class Ui_Form(object):
 "}"))
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.clientOptionsTab = QtGui.QWidget()
-        self.clientOptionsTab.setGeometry(QtCore.QRect(0, 0, 514, 435))
+        self.clientOptionsTab.setGeometry(QtCore.QRect(0, 0, 737, 435))
         self.clientOptionsTab.setStyleSheet(_fromUtf8("border: none;\n"
 "padding-bottom: 5px;"))
         self.clientOptionsTab.setObjectName(_fromUtf8("clientOptionsTab"))
@@ -317,17 +317,97 @@ class Ui_Form(object):
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolBox.addItem(self.clientOptionsTab, icon3, _fromUtf8(""))
         self.sourceEditorTab = QtGui.QWidget()
-        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 514, 435))
+        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 737, 435))
         self.sourceEditorTab.setObjectName(_fromUtf8("sourceEditorTab"))
+        self.gridLayout_5 = QtGui.QGridLayout(self.sourceEditorTab)
+        self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
+        self.idleLayout = QtGui.QVBoxLayout()
+        self.idleLayout.setObjectName(_fromUtf8("idleLayout"))
+        self.buttonsLayout = QtGui.QHBoxLayout()
+        self.buttonsLayout.setObjectName(_fromUtf8("buttonsLayout"))
+        self.obfuscateButton = QtGui.QPushButton(self.sourceEditorTab)
+        self.obfuscateButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.obfuscateButton.setStyleSheet(_fromUtf8("QPushButton#obfuscateButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#obfuscateButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolBox.addItem(self.sourceEditorTab, icon4, _fromUtf8(""))
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/shuffle.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.obfuscateButton.setIcon(icon4)
+        self.obfuscateButton.setObjectName(_fromUtf8("obfuscateButton"))
+        self.buttonsLayout.addWidget(self.obfuscateButton)
+        self.saveButton = QtGui.QPushButton(self.sourceEditorTab)
+        self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#saveButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/save_as.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.saveButton.setIcon(icon5)
+        self.saveButton.setObjectName(_fromUtf8("saveButton"))
+        self.buttonsLayout.addWidget(self.saveButton)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.buttonsLayout.addItem(spacerItem1)
+        self.idleLayout.addLayout(self.buttonsLayout)
+        self.gridLayout_5.addLayout(self.idleLayout, 0, 0, 1, 1)
+        self.horizontalLayout_6 = QtGui.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+        self.backToOptionsButton = QtGui.QPushButton(self.sourceEditorTab)
+        self.backToOptionsButton.setMinimumSize(QtCore.QSize(0, 50))
+        self.backToOptionsButton.setStyleSheet(_fromUtf8("QPushButton#backToOptionsButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#backToOptionsButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/back.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backToOptionsButton.setIcon(icon6)
+        self.backToOptionsButton.setIconSize(QtCore.QSize(32, 32))
+        self.backToOptionsButton.setObjectName(_fromUtf8("backToOptionsButton"))
+        self.horizontalLayout_6.addWidget(self.backToOptionsButton)
+        self.nextToAssemblyButton = QtGui.QPushButton(self.sourceEditorTab)
+        self.nextToAssemblyButton.setMinimumSize(QtCore.QSize(0, 50))
+        self.nextToAssemblyButton.setStyleSheet(_fromUtf8("QPushButton#nextToAssemblyButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#nextToAssemblyButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.nextToAssemblyButton.setIcon(icon)
+        self.nextToAssemblyButton.setIconSize(QtCore.QSize(32, 32))
+        self.nextToAssemblyButton.setObjectName(_fromUtf8("nextToAssemblyButton"))
+        self.horizontalLayout_6.addWidget(self.nextToAssemblyButton)
+        self.gridLayout_5.addLayout(self.horizontalLayout_6, 1, 0, 1, 1)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolBox.addItem(self.sourceEditorTab, icon7, _fromUtf8(""))
         self.executablesVersion = QtGui.QWidget()
-        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 514, 435))
+        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 737, 435))
         self.executablesVersion.setObjectName(_fromUtf8("executablesVersion"))
         self.toolBox.addItem(self.executablesVersion, _fromUtf8(""))
         self.sourceEditor = QtGui.QWidget()
-        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 514, 435))
+        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 737, 435))
         self.sourceEditor.setObjectName(_fromUtf8("sourceEditor"))
         self.toolBox.addItem(self.sourceEditor, _fromUtf8(""))
         self.gridLayout.addWidget(self.toolBox, 0, 0, 1, 1)
@@ -363,6 +443,10 @@ class Ui_Form(object):
         self.remoteAudioCheck.setText(_translate("Form", "Remote Microphone", None))
         self.remoteWebcamCheck.setText(_translate("Form", "Remote Webcam", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.clientOptionsTab), _translate("Form", "Client Options", None))
+        self.obfuscateButton.setText(_translate("Form", "Obfuscate", None))
+        self.saveButton.setText(_translate("Form", "Save", None))
+        self.backToOptionsButton.setText(_translate("Form", "Back To Client Options", None))
+        self.nextToAssemblyButton.setText(_translate("Form", "Next To Assembly Editor", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditorTab), _translate("Form", "Source Editor - Obfuscator", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.executablesVersion), _translate("Form", "Assembly Information", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditor), _translate("Form", "Source Editor - Obfuscator", None))

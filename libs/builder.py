@@ -4,6 +4,7 @@ from PyQt4.QtGui import *
 import random
 import string
 import hashlib
+import os
 
 from language import Translate
 from client_code_generator import SourceGenerator
@@ -134,7 +135,8 @@ class Builder(QWidget, builderUi):
                 generator.generate_source(file_name)
             except IOError:
                 return
-        self.source_file_name = file_name
+        self.source_file_name = str(file_name)
+        self.source_file_dir = os.path.dirname(str(self.source_file_name))
         self.toolBox.setCurrentIndex(1)
 
 

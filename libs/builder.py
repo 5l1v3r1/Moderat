@@ -3,8 +3,10 @@ from PyQt4.QtGui import *
 
 import random
 import string
+import hashlib
 
 from language import Translate
+from client_code_generator import SourceGenerator
 
 # Multi Lang
 translate = Translate()
@@ -58,4 +60,30 @@ class Builder(QWidget, builderUi):
         while len(str(length)) < 2:
             length = int(random.choice(string.digits)) + int(random.choice(string.digits))
         return ''.join(random.choice(string.lowercase + string.uppercase + '_') for i in range(length))
+
+    def check_server_address(self):
+        md5 = hashlib.md5()
+        md5.update(str(self.clientAdressLine.text()))
+        return md5.hexdigest()
+
+    def check_port(self):
+        return self.clientPortLine.text()
+
+    def check_password(self):
+        return str(self.serverPasswordLine.text())
+
+    def check_timeout(self):
+        return self.connectionTimeoutLine.text()
+
+    def check_working_dir(self):
+        return str(self.workingDirLine.text())
+
+    def genereate_source(self):
+        generator = SourceGenerator()
+        generator.set_ip_address(self.check_server_address())
+        generator.set_port(self.check_port())
+        generator.set_passkey(self.check_password())
+        #generator.set_timeout(self.check_timeout())
+        generator.set_working_dir_name()
+
 

@@ -23,7 +23,7 @@ Client Features:
  * Password Protection
  * Usb Flash Drive Spreading
  * Multi Threading
- * Server Size 3.4~3.5 MB 
+ * Client Size 3.4~3.5 MB 
  * Execute Cmd Commands
  * File Explorer
  * Audio Spy

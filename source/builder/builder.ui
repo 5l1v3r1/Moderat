@@ -26,7 +26,7 @@ color: #c9f5f7;</string>
   width: 110%;
   border: 1px ridge;
   border-color: #2c3e50;
-  color: 
+  font-size: 14px;
  }
 
  QToolBox::tab:selected {
@@ -52,17 +52,13 @@ color: #c9f5f7;</string>
         <x>0</x>
         <y>0</y>
         <width>737</width>
-        <height>435</height>
+        <height>441</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border: none;
 padding-bottom: 5px;</string>
       </property>
-      <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icons/assets/settings.png</normaloff>:/icons/assets/settings.png</iconset>
-      </attribute>
       <attribute name="label">
        <string>Client Options</string>
       </attribute>
@@ -171,37 +167,6 @@ QLineEdit#clientPortLine:pressed {
            </property>
            <property name="text">
             <string>4434</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="checkConnectionButton">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>22</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>22</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton#checkConnectionButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 2px;
-            background-color: #34495e;
-            }
-
-QPushButton#checkConnectionButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-           </property>
-           <property name="text">
-            <string>Check Connection</string>
            </property>
           </widget>
          </item>
@@ -469,7 +434,7 @@ border-color: #2c3e50;</string>
 border: none;</string>
               </property>
               <property name="text">
-               <string>Fake File Extension:</string>
+               <string>Fake File Name with Extension:</string>
               </property>
              </widget>
             </item>
@@ -488,7 +453,7 @@ QLineEdit#fakeFileExtension:pressed {
             }</string>
               </property>
               <property name="placeholderText">
-               <string>examples: doc, docx, xls, jpeg</string>
+               <string>examples: document.docx, some_image.jpeg</string>
               </property>
              </widget>
             </item>
@@ -541,13 +506,9 @@ padding-top: 1;</string>
         <x>0</x>
         <y>0</y>
         <width>737</width>
-        <height>435</height>
+        <height>441</height>
        </rect>
       </property>
-      <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icons/assets/python.png</normaloff>:/icons/assets/python.png</iconset>
-      </attribute>
       <attribute name="label">
        <string>Source Editor - Obfuscator</string>
       </attribute>
@@ -707,30 +668,338 @@ QPushButton#nextToAssemblyButton:pressed {
         <x>0</x>
         <y>0</y>
         <width>737</width>
-        <height>435</height>
+        <height>441</height>
        </rect>
       </property>
       <attribute name="label">
        <string>Assembly Information</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="8" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <widget class="QPushButton" name="backToIdleButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#backToIdleButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#backToIdleButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string>Back To Source Editor</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/icons/assets/back.png</normaloff>:/icons/assets/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="nextToOtherButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#nextToOtherButton {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QPushButton#nextToOtherButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string>Save and Next</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/icons/assets/start.png</normaloff>:/icons/assets/start.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="asmFileVersionLabel">
+         <property name="text">
+          <string>File Version:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="asmFileNameLabel">
+         <property name="text">
+          <string>File Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLineEdit" name="asmFileNameLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmFileNameLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmFileNameLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="asmProductNameLabel">
+         <property name="text">
+          <string>Product Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QLineEdit" name="asmProductNameLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmProductNameLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmProductNameLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QLineEdit" name="asmLegalCopyrightLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmLegalCopyrightLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmLegalCopyrightLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="asmProductVersionLabel">
+         <property name="text">
+          <string>Product Version:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLineEdit" name="asmFileVersionLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmFileVersionLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmFileVersionLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QLineEdit" name="asmFileDescriptionLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmFileDescriptionLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmFileDescriptionLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="asmFileDescriptionLabel">
+         <property name="text">
+          <string>File Description:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="asmCompanyNameLabel">
+         <property name="text">
+          <string>Company Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLineEdit" name="asmCompanyNameLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmCompanyNameLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmCompanyNameLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="asmLegalCopyrightLabel">
+         <property name="text">
+          <string>Legal Copyright:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QLineEdit" name="asmProductVersionLine">
+           <property name="styleSheet">
+            <string notr="true">QLineEdit#asmProductVersionLine {
+			border: 1px ridge;
+            border-color: #2c3e50;
+			padding: 2px;
+            background-color: #34495e;
+            }
+
+QLineEdit#asmProductVersionLine:pressed {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="sourceEditor">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>737</width>
-        <height>435</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
-       <string>Source Editor - Obfuscator</string>
+       <string>Other Configuration</string>
       </attribute>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>clientAdressLine</tabstop>
+  <tabstop>clientPortLine</tabstop>
+  <tabstop>serverPasswordLine</tabstop>
+  <tabstop>showPasswordButton</tabstop>
+  <tabstop>connectionTimeoutLine</tabstop>
+  <tabstop>clientFileNameLine</tabstop>
+  <tabstop>generateRandomNameButton</tabstop>
+  <tabstop>workingDirLine</tabstop>
+  <tabstop>autostartCheck</tabstop>
+  <tabstop>usbSpredingCheck</tabstop>
+  <tabstop>FakeGroup</tabstop>
+  <tabstop>fakeFileExtension</tabstop>
+  <tabstop>remoteAudioCheck</tabstop>
+  <tabstop>remoteWebcamCheck</tabstop>
+  <tabstop>generateButton</tabstop>
+  <tabstop>obfuscateButton</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>backToOptionsButton</tabstop>
+  <tabstop>nextToAssemblyButton</tabstop>
+  <tabstop>asmFileNameLine</tabstop>
+  <tabstop>asmFileVersionLine</tabstop>
+  <tabstop>asmFileDescriptionLine</tabstop>
+  <tabstop>asmCompanyNameLine</tabstop>
+  <tabstop>asmLegalCopyrightLine</tabstop>
+  <tabstop>asmProductNameLine</tabstop>
+  <tabstop>asmProductVersionLine</tabstop>
+  <tabstop>backToIdleButton</tabstop>
+  <tabstop>nextToOtherButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../res.qrc"/>
  </resources>

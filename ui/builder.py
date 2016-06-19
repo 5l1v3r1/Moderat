@@ -36,7 +36,7 @@ class Ui_Form(object):
 "  width: 110%;\n"
 "  border: 1px ridge;\n"
 "  border-color: #2c3e50;\n"
-"  color: \n"
+"  font-size: 14px;\n"
 " }\n"
 "\n"
 " QToolBox::tab:selected {\n"
@@ -51,7 +51,7 @@ class Ui_Form(object):
 "}"))
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.clientOptionsTab = QtGui.QWidget()
-        self.clientOptionsTab.setGeometry(QtCore.QRect(0, 0, 737, 435))
+        self.clientOptionsTab.setGeometry(QtCore.QRect(0, 0, 737, 441))
         self.clientOptionsTab.setStyleSheet(_fromUtf8("border: none;\n"
 "padding-bottom: 5px;"))
         self.clientOptionsTab.setObjectName(_fromUtf8("clientOptionsTab"))
@@ -110,21 +110,6 @@ class Ui_Form(object):
 "            }"))
         self.clientPortLine.setObjectName(_fromUtf8("clientPortLine"))
         self.horizontalLayout.addWidget(self.clientPortLine)
-        self.checkConnectionButton = QtGui.QPushButton(self.clientOptionsTab)
-        self.checkConnectionButton.setMinimumSize(QtCore.QSize(0, 22))
-        self.checkConnectionButton.setMaximumSize(QtCore.QSize(16777215, 22))
-        self.checkConnectionButton.setStyleSheet(_fromUtf8("QPushButton#checkConnectionButton {\n"
-"            border: 1px ridge;\n"
-"            border-color: #2c3e50;\n"
-"            padding: 2px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#checkConnectionButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.checkConnectionButton.setObjectName(_fromUtf8("checkConnectionButton"))
-        self.horizontalLayout.addWidget(self.checkConnectionButton)
         self.gridLayout_2.addLayout(self.horizontalLayout, 0, 1, 1, 2)
         self.workingDirLabel = QtGui.QLabel(self.clientOptionsTab)
         self.workingDirLabel.setObjectName(_fromUtf8("workingDirLabel"))
@@ -313,11 +298,9 @@ class Ui_Form(object):
         self.remoteWebcamCheck.setObjectName(_fromUtf8("remoteWebcamCheck"))
         self.gridLayout_4.addWidget(self.remoteWebcamCheck, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.pluginsGroup, 11, 0, 1, 3)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolBox.addItem(self.clientOptionsTab, icon3, _fromUtf8(""))
+        self.toolBox.addItem(self.clientOptionsTab, _fromUtf8(""))
         self.sourceEditorTab = QtGui.QWidget()
-        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 737, 435))
+        self.sourceEditorTab.setGeometry(QtCore.QRect(0, 0, 737, 441))
         self.sourceEditorTab.setObjectName(_fromUtf8("sourceEditorTab"))
         self.gridLayout_5 = QtGui.QGridLayout(self.sourceEditorTab)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
@@ -337,9 +320,9 @@ class Ui_Form(object):
 "QPushButton#obfuscateButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/shuffle.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.obfuscateButton.setIcon(icon4)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/shuffle.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.obfuscateButton.setIcon(icon3)
         self.obfuscateButton.setObjectName(_fromUtf8("obfuscateButton"))
         self.buttonsLayout.addWidget(self.obfuscateButton)
         self.saveButton = QtGui.QPushButton(self.sourceEditorTab)
@@ -353,9 +336,9 @@ class Ui_Form(object):
 "QPushButton#saveButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/save_as.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.saveButton.setIcon(icon5)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/save_as.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.saveButton.setIcon(icon4)
         self.saveButton.setObjectName(_fromUtf8("saveButton"))
         self.buttonsLayout.addWidget(self.saveButton)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -376,9 +359,9 @@ class Ui_Form(object):
 "QPushButton#backToOptionsButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/back.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.backToOptionsButton.setIcon(icon6)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/back.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backToOptionsButton.setIcon(icon5)
         self.backToOptionsButton.setIconSize(QtCore.QSize(32, 32))
         self.backToOptionsButton.setObjectName(_fromUtf8("backToOptionsButton"))
         self.horizontalLayout_6.addWidget(self.backToOptionsButton)
@@ -399,15 +382,185 @@ class Ui_Form(object):
         self.nextToAssemblyButton.setObjectName(_fromUtf8("nextToAssemblyButton"))
         self.horizontalLayout_6.addWidget(self.nextToAssemblyButton)
         self.gridLayout_5.addLayout(self.horizontalLayout_6, 1, 0, 1, 1)
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolBox.addItem(self.sourceEditorTab, icon7, _fromUtf8(""))
+        self.toolBox.addItem(self.sourceEditorTab, _fromUtf8(""))
         self.executablesVersion = QtGui.QWidget()
-        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 737, 435))
+        self.executablesVersion.setGeometry(QtCore.QRect(0, 0, 737, 441))
         self.executablesVersion.setObjectName(_fromUtf8("executablesVersion"))
+        self.gridLayout_6 = QtGui.QGridLayout(self.executablesVersion)
+        self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
+        self.horizontalLayout_12 = QtGui.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(_fromUtf8("horizontalLayout_12"))
+        self.backToIdleButton = QtGui.QPushButton(self.executablesVersion)
+        self.backToIdleButton.setMinimumSize(QtCore.QSize(0, 50))
+        self.backToIdleButton.setStyleSheet(_fromUtf8("QPushButton#backToIdleButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#backToIdleButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.backToIdleButton.setIcon(icon5)
+        self.backToIdleButton.setIconSize(QtCore.QSize(32, 32))
+        self.backToIdleButton.setObjectName(_fromUtf8("backToIdleButton"))
+        self.horizontalLayout_12.addWidget(self.backToIdleButton)
+        self.nextToOtherButton = QtGui.QPushButton(self.executablesVersion)
+        self.nextToOtherButton.setMinimumSize(QtCore.QSize(0, 50))
+        self.nextToOtherButton.setStyleSheet(_fromUtf8("QPushButton#nextToOtherButton {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#nextToOtherButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.nextToOtherButton.setIcon(icon)
+        self.nextToOtherButton.setIconSize(QtCore.QSize(32, 32))
+        self.nextToOtherButton.setObjectName(_fromUtf8("nextToOtherButton"))
+        self.horizontalLayout_12.addWidget(self.nextToOtherButton)
+        self.gridLayout_6.addLayout(self.horizontalLayout_12, 8, 0, 1, 2)
+        self.asmFileVersionLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmFileVersionLabel.setObjectName(_fromUtf8("asmFileVersionLabel"))
+        self.gridLayout_6.addWidget(self.asmFileVersionLabel, 1, 0, 1, 1)
+        self.asmFileNameLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmFileNameLabel.setObjectName(_fromUtf8("asmFileNameLabel"))
+        self.gridLayout_6.addWidget(self.asmFileNameLabel, 0, 0, 1, 1)
+        self.horizontalLayout_7 = QtGui.QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
+        self.asmFileNameLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmFileNameLine.setStyleSheet(_fromUtf8("QLineEdit#asmFileNameLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmFileNameLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmFileNameLine.setObjectName(_fromUtf8("asmFileNameLine"))
+        self.horizontalLayout_7.addWidget(self.asmFileNameLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_7, 0, 1, 1, 1)
+        self.asmProductNameLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmProductNameLabel.setObjectName(_fromUtf8("asmProductNameLabel"))
+        self.gridLayout_6.addWidget(self.asmProductNameLabel, 5, 0, 1, 1)
+        self.horizontalLayout_11 = QtGui.QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(_fromUtf8("horizontalLayout_11"))
+        self.asmProductNameLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmProductNameLine.setStyleSheet(_fromUtf8("QLineEdit#asmProductNameLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmProductNameLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmProductNameLine.setObjectName(_fromUtf8("asmProductNameLine"))
+        self.horizontalLayout_11.addWidget(self.asmProductNameLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_11, 5, 1, 1, 1)
+        self.horizontalLayout_10 = QtGui.QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
+        self.asmLegalCopyrightLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmLegalCopyrightLine.setStyleSheet(_fromUtf8("QLineEdit#asmLegalCopyrightLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmLegalCopyrightLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmLegalCopyrightLine.setObjectName(_fromUtf8("asmLegalCopyrightLine"))
+        self.horizontalLayout_10.addWidget(self.asmLegalCopyrightLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_10, 4, 1, 1, 1)
+        self.asmProductVersionLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmProductVersionLabel.setObjectName(_fromUtf8("asmProductVersionLabel"))
+        self.gridLayout_6.addWidget(self.asmProductVersionLabel, 6, 0, 1, 1)
+        self.horizontalLayout_8 = QtGui.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
+        self.asmFileVersionLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmFileVersionLine.setStyleSheet(_fromUtf8("QLineEdit#asmFileVersionLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmFileVersionLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmFileVersionLine.setObjectName(_fromUtf8("asmFileVersionLine"))
+        self.horizontalLayout_8.addWidget(self.asmFileVersionLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_8, 1, 1, 1, 1)
+        self.horizontalLayout_15 = QtGui.QHBoxLayout()
+        self.horizontalLayout_15.setObjectName(_fromUtf8("horizontalLayout_15"))
+        self.asmFileDescriptionLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmFileDescriptionLine.setStyleSheet(_fromUtf8("QLineEdit#asmFileDescriptionLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmFileDescriptionLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmFileDescriptionLine.setObjectName(_fromUtf8("asmFileDescriptionLine"))
+        self.horizontalLayout_15.addWidget(self.asmFileDescriptionLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_15, 2, 1, 1, 1)
+        self.asmFileDescriptionLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmFileDescriptionLabel.setObjectName(_fromUtf8("asmFileDescriptionLabel"))
+        self.gridLayout_6.addWidget(self.asmFileDescriptionLabel, 2, 0, 1, 1)
+        self.asmCompanyNameLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmCompanyNameLabel.setObjectName(_fromUtf8("asmCompanyNameLabel"))
+        self.gridLayout_6.addWidget(self.asmCompanyNameLabel, 3, 0, 1, 1)
+        self.horizontalLayout_9 = QtGui.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
+        self.asmCompanyNameLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmCompanyNameLine.setStyleSheet(_fromUtf8("QLineEdit#asmCompanyNameLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmCompanyNameLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmCompanyNameLine.setObjectName(_fromUtf8("asmCompanyNameLine"))
+        self.horizontalLayout_9.addWidget(self.asmCompanyNameLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_9, 3, 1, 1, 1)
+        self.asmLegalCopyrightLabel = QtGui.QLabel(self.executablesVersion)
+        self.asmLegalCopyrightLabel.setObjectName(_fromUtf8("asmLegalCopyrightLabel"))
+        self.gridLayout_6.addWidget(self.asmLegalCopyrightLabel, 4, 0, 1, 1)
+        self.horizontalLayout_14 = QtGui.QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(_fromUtf8("horizontalLayout_14"))
+        self.asmProductVersionLine = QtGui.QLineEdit(self.executablesVersion)
+        self.asmProductVersionLine.setStyleSheet(_fromUtf8("QLineEdit#asmProductVersionLine {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            padding: 2px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QLineEdit#asmProductVersionLine:pressed {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.asmProductVersionLine.setObjectName(_fromUtf8("asmProductVersionLine"))
+        self.horizontalLayout_14.addWidget(self.asmProductVersionLine)
+        self.gridLayout_6.addLayout(self.horizontalLayout_14, 6, 1, 1, 1)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_6.addItem(spacerItem2, 7, 1, 1, 1)
         self.toolBox.addItem(self.executablesVersion, _fromUtf8(""))
         self.sourceEditor = QtGui.QWidget()
-        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 737, 435))
+        self.sourceEditor.setGeometry(QtCore.QRect(0, 0, 737, 441))
         self.sourceEditor.setObjectName(_fromUtf8("sourceEditor"))
         self.toolBox.addItem(self.sourceEditor, _fromUtf8(""))
         self.gridLayout.addWidget(self.toolBox, 0, 0, 1, 1)
@@ -423,7 +576,6 @@ class Ui_Form(object):
         self.clientAdressLine.setText(_translate("Form", "192.168.1.2", None))
         self.clientPortLabel.setText(_translate("Form", "Port:", None))
         self.clientPortLine.setText(_translate("Form", "4434", None))
-        self.checkConnectionButton.setText(_translate("Form", "Check Connection", None))
         self.workingDirLabel.setText(_translate("Form", "Working Dir:", None))
         self.usbSpredingCheck.setText(_translate("Form", "Enable Usb Spreading", None))
         self.autostartCheck.setText(_translate("Form", "Enable Autostart", None))
@@ -437,8 +589,8 @@ class Ui_Form(object):
         self.connectionTimeoutLabel.setText(_translate("Form", "Connection Timeout (seconds):", None))
         self.serverPasswordLabel.setText(_translate("Form", "Client Password (default: Moderat123):", None))
         self.FakeGroup.setTitle(_translate("Form", "Show Fake File On First Run", None))
-        self.fakeFileExtensionLabel.setText(_translate("Form", "Fake File Extension:", None))
-        self.fakeFileExtension.setPlaceholderText(_translate("Form", "examples: doc, docx, xls, jpeg", None))
+        self.fakeFileExtensionLabel.setText(_translate("Form", "Fake File Name with Extension:", None))
+        self.fakeFileExtension.setPlaceholderText(_translate("Form", "examples: document.docx, some_image.jpeg", None))
         self.pluginsGroup.setTitle(_translate("Form", "Plugins", None))
         self.remoteAudioCheck.setText(_translate("Form", "Remote Microphone", None))
         self.remoteWebcamCheck.setText(_translate("Form", "Remote Webcam", None))
@@ -448,7 +600,16 @@ class Ui_Form(object):
         self.backToOptionsButton.setText(_translate("Form", "Back To Client Options", None))
         self.nextToAssemblyButton.setText(_translate("Form", "Next To Assembly Editor", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditorTab), _translate("Form", "Source Editor - Obfuscator", None))
+        self.backToIdleButton.setText(_translate("Form", "Back To Source Editor", None))
+        self.nextToOtherButton.setText(_translate("Form", "Save and Next", None))
+        self.asmFileVersionLabel.setText(_translate("Form", "File Version:", None))
+        self.asmFileNameLabel.setText(_translate("Form", "File Name:", None))
+        self.asmProductNameLabel.setText(_translate("Form", "Product Name:", None))
+        self.asmProductVersionLabel.setText(_translate("Form", "Product Version:", None))
+        self.asmFileDescriptionLabel.setText(_translate("Form", "File Description:", None))
+        self.asmCompanyNameLabel.setText(_translate("Form", "Company Name:", None))
+        self.asmLegalCopyrightLabel.setText(_translate("Form", "Legal Copyright:", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.executablesVersion), _translate("Form", "Assembly Information", None))
-        self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditor), _translate("Form", "Source Editor - Obfuscator", None))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.sourceEditor), _translate("Form", "Other Configuration", None))
 
 import res_rc

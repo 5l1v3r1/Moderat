@@ -1,5 +1,6 @@
 from ui.builder import Ui_Form as builderUi
 from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 
 import random
 import string
@@ -29,6 +30,7 @@ class Builder(QWidget, builderUi):
 
         # Idle
         self.obfuscateButton.clicked.connect(self.obfuscate_code)
+        self.saveButton.clicked.connect(self.save_code)
         self.backToOptionsButton.clicked.connect(self.back_to_client_configuration)
         self.nextToAssemblyButton.clicked.connect(self.next_to_assembly_editor)
         # END: triggers
@@ -49,7 +51,6 @@ class Builder(QWidget, builderUi):
         # Client Configuration
         self.clientAddressLabel.setText(_('BUILDER_SERVER_ADDRESS_LABEL'))
         self.clientPortLabel.setText(_('BUILDER_SERVER_PORT_LABEL'))
-        self.checkConnectionButton.setText(_('BUILDER_CHECK_CONNECTION_BUTTON'))
         self.serverPasswordLabel.setText(_('BUILDER_CLIENT_PASSWORD_LABEL'))
         self.connectionTimeoutLabel.setText(_('BUILDER_TIMEOUT_LABEL'))
         self.fileNameLabel.setText(_('BUILDER_FILE_NAME_LABEL'))
@@ -183,4 +184,7 @@ class Builder(QWidget, builderUi):
     def next_to_assembly_editor(self):
         self.toolBox.setCurrentIndex(2)
 
+    def save_code(self):
+        with open(self.source_file_name, 'w') as source_file:
+            source_file.write(self.idle.getTextEdit())
 

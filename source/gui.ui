@@ -575,9 +575,16 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
     <addaction name="actionSet_Alias"/>
     <addaction name="actionRun_As_Admin"/>
    </widget>
+   <widget class="QMenu" name="menuBuilder">
+    <property name="title">
+     <string>Builder</string>
+    </property>
+    <addaction name="actionWindows_Client_PyInstaller"/>
+   </widget>
    <addaction name="serverMenu"/>
    <addaction name="menuServer"/>
    <addaction name="menuAction"/>
+   <addaction name="menuBuilder"/>
   </widget>
   <action name="actionStartListen_for_connections">
    <property name="checkable">
@@ -751,6 +758,11 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
    </property>
    <property name="text">
     <string>Terminate</string>
+   </property>
+  </action>
+  <action name="actionWindows_Client_PyInstaller">
+   <property name="text">
+    <string>Windows Client (PyInstaller 3.0)</string>
    </property>
   </action>
  </widget>

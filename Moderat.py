@@ -22,6 +22,7 @@ from libs.language import Translate
 from ui import gui
 from libs.alias import Alias
 from libs.settings import Config, Settings
+from libs.builder import Builder
 from libs.modechat import get, send
 from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
@@ -170,6 +171,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
+        # builder trigger
+        self.actionWindows_Client_PyInstaller.triggered.connect(self.run_builder)
+
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.update_servers_table)
         self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)
@@ -232,6 +236,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionDesktop_Preview.setText(_('MENU_PLUGIN_DESKTOP'))
         self.actionWebcam_Preview.setText(_('MENU_PLUGIN_WEBCAM'))
         # END PLUGINS
+
+        # BUILDER
+        self.menuBuilder.setTitle(_('MENU_BUILDER'))
+        self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
+        # END BUILDER
 
     # Start Listen for Servers
     def listen_start(self):
@@ -738,6 +747,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         }
         self.settings_form = Settings(args)
         self.settings_form.show()
+
+    def run_builder(self):
+        args = {
+            'language': self.LANGUAGE
+        }
+        self.builder_form = Builder(args)
+        self.builder_form.show()
 
     def closeEvent(self, event):
         sys.exit(1)

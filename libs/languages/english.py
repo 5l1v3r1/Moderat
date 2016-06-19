@@ -47,6 +47,8 @@ tr = {
     'MENU_PLUGIN_SCRIPTING':        u'Scripting',
     'MENU_PLUGIN_DESKTOP':          u'Desktop Preview',
     'MENU_PLUGIN_WEBCAM':           u'Webcam Preview',
+    'MENU_BUILDER':                 u'Builder',
+    'MENU_BUILDER_PYINSTALLER':     u'Windows Client (PyInstaller)',
     # END MENU
 
     # STATUS
@@ -198,4 +200,21 @@ tr = {
     'MPROCESSES_PID':               u'PID',
     'MPROCESSES_FILE_NAME':         u'File Name',
     # END MPROCESSES
+
+    # BUILDER (PYINSTALLER)
+    'BUILDER_TITLE':                        u'Client Builder',
+    'BUILDER_SERVER_ADDRESS_LABEL':         u'Server IP Address',
+    'BUILDER_SERVER_PORT_LABEL':            u'Port',
+    'BUILDER_CHECK_CONNECTION_BUTTON':      u'Check Connection',
+    'BUILDER_CLIENT_PASSWORD_LABEL':        u'Password (Default: Moderat123)',
+    'BUILDER_TIMEOUT_LABEL':                u'Client Timeout',
+    'BUILDER_FILE_NAME_LABEL':              u'File Name',
+    'BUILDER_WORKING_DIR_LABEL':            u'Working Directory',
+    'BUILDER_CURRENT_USER_LABEL':           u'/%CurrentUser%/',
+    'BUILDER_AUTOSTART_CHECK':              u'Autorun',
+    'BUILDER_USB_SPREADING_CHECK':          u'USB Spreading',
+    'BUILDER_FAKE_CHECK':                   u'Fake File (First Run)',
+    'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'Fake File Extension',
+    'BUILDER_SAVE_FILE_NAME':               u'Select File To Save',
+    # END BUILDER
 }

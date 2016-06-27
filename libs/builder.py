@@ -165,13 +165,17 @@ class Builder(QWidget, builderUi):
 
     # IDLE & Obfuscator
     def next_to_idle(self):
-        self.toolBox.setCurrentIndex(1)
-        self.set_source_in_idle()
+        if self.set_source_in_idle():
+            self.toolBox.setCurrentIndex(1)
 
     def set_source_in_idle(self):
-        with open(self.source_file_name, 'r') as source_file:
-            self.idle.clearText()
-            self.idle.appendText(source_file.read())
+        try:
+            with open(self.source_file_name, 'r') as source_file:
+                self.idle.clearText()
+                self.idle.appendText(source_file.read())
+                return True
+        except IOError:
+            return False
 
     def obfuscate_code(self):
         generator = SourceGenerator()

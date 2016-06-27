@@ -33,6 +33,7 @@ class Builder(QWidget, builderUi):
         self.saveButton.clicked.connect(self.save_code)
         self.backToOptionsButton.clicked.connect(self.back_to_client_configuration)
         self.nextToAssemblyButton.clicked.connect(self.next_to_assembly_editor)
+        self.nextToOtherButton.clicked.connect(self.generate_version_file)
         # END: triggers
 
         self.set_language()
@@ -191,4 +192,20 @@ class Builder(QWidget, builderUi):
     def save_code(self):
         with open(self.source_file_name, 'w') as source_file:
             source_file.write(self.idle.getTextEdit())
+
+    def generate_version_file(self):
+        from libs.version_body import version_body
+        values = {
+            '{%CompanyName%}': str(self.asmCompanyNameLine.text()),
+            '{%FileDescription%}': str(self.asmFileDescriptionLine.text()),
+            '{%FileVersion%}': str(self.asmFileVersionLine.text()),
+            '{%InternalName%}': str(self.asmFileNameLine.text()),
+            '{%LegalCopyright%}': str(self.asmLegalCopyrightLine.text()),
+            '{%ProductName%}': str(self.asmProductNameLine.text()),
+            '{%ProductVersion%}': str(self.asmProductVersionLine.text()),
+        }
+        print self.format_body(version_body, values)
+
+    def format_body(self, source, values):
+        return reduce(lambda x, y: x.replace(y, values[y]), values, source)
 

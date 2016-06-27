@@ -20,7 +20,7 @@ VSVersionInfo(
         StringStruct(u'FileVersion', u'{%FileVersion%}'),
         StringStruct(u'InternalName', u'{%InternalName%}'),
         StringStruct(u'LegalCopyright', u'{%LegalCopyright%}'),
-        StringStruct(u'OriginalFilename', u'{%InternalName%}.exe'),
+        StringStruct(u'OriginalFilename', u'{%InternalName%}'),
         StringStruct(u'ProductName', u'{%ProductName%}'),
         StringStruct(u'ProductVersion', u'{%ProductVersion%}')])
       ]),

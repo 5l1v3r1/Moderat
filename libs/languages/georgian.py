@@ -47,8 +47,8 @@ tr = {
     'MENU_PLUGIN_SCRIPTING':        u'პროგრამირება',
     'MENU_PLUGIN_DESKTOP':          u'ეკრანი',
     'MENU_PLUGIN_WEBCAM':           u'ვებ კამერა',
-    'MENU_BUILDER':                 u'კლიენტის აწყობა',
-    'MENU_BUILDER_PYINSTALLER':     u'კლიენტის ამწყობი (PyInstaller)',
+    'MENU_BUILDER':                 u'კლიენტის შექმნა',
+    'MENU_BUILDER_PYINSTALLER':     u'კლიენტის შექმნა (PyInstaller)',
     # END MENU
 
     # STATUS

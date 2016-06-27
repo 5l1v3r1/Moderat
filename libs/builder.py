@@ -204,8 +204,16 @@ class Builder(QWidget, builderUi):
             '{%ProductName%}': str(self.asmProductNameLine.text()),
             '{%ProductVersion%}': str(self.asmProductVersionLine.text()),
         }
+
+        # TODO: save version file
         print self.format_body(version_body, values)
 
     def format_body(self, source, values):
         return reduce(lambda x, y: x.replace(y, values[y]), values, source)
 
+    def back_to_idle(self):
+        self.toolBox.setCurrentIndex(1)
+
+    def next_to_other(self):
+        self.generate_version_file()
+        self.toolBox.setCurrentIndex(3)

@@ -33,7 +33,7 @@ class Builder(QWidget, builderUi):
         self.saveButton.clicked.connect(self.save_code)
         self.backToOptionsButton.clicked.connect(self.back_to_client_configuration)
         self.nextToAssemblyButton.clicked.connect(self.next_to_assembly_editor)
-        self.nextToOtherButton.clicked.connect(self.generate_version_file)
+        self.nextToOtherButton.clicked.connect(self.next_to_other)
         # END: triggers
 
         self.set_language()
@@ -205,8 +205,8 @@ class Builder(QWidget, builderUi):
             '{%ProductVersion%}': str(self.asmProductVersionLine.text()),
         }
 
-        # TODO: save version file
-        print self.format_body(version_body, values)
+        with open(os.path.join(self.source_file_dir, 'version.inf'), 'w') as version_file:
+            version_file.write(self.format_body(version_body, values))
 
     def format_body(self, source, values):
         return reduce(lambda x, y: x.replace(y, values[y]), values, source)

@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/other_settings.png</file>
+    <file>../assets/info.png</file>
+    <file>../assets/idle.png</file>
+    <file>../assets/client_settings.png</file>
     <file>../assets/back.png</file>
     <file>../assets/shuffle.png</file>
     <file>../assets/flags/ge.png</file>

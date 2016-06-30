@@ -23,7 +23,10 @@ color: #c9f5f7;</string>
      <property name="styleSheet">
       <string notr="true"> QToolBox::tab {
   padding-left: 15px;
+  background-color: #34495e;
+  color: #c9f5f7;
   width: 110%;
+  height: 100px;
   border: 1px ridge;
   border-color: #2c3e50;
   font-size: 14px;
@@ -31,34 +34,52 @@ color: #c9f5f7;</string>
 
  QToolBox::tab:selected {
    background: #34495e;
+   color: #c9f5f7;
  }
 
  QToolBox::panel {
-   background-color: #2c3e50;
+	background-color: #fff;
  }
 
  QToolBox{
+	padding: 5px;
 }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
      </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <property name="tabSpacing">
-      <number>10</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="clientOptionsTab">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>737</width>
-        <height>441</height>
+        <width>725</width>
+        <height>437</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border: none;
 padding-bottom: 5px;</string>
       </property>
+      <attribute name="icon">
+       <iconset resource="../res.qrc">
+        <normaloff>:/icons/assets/client_settings.png</normaloff>:/icons/assets/client_settings.png</iconset>
+      </attribute>
       <attribute name="label">
        <string>Client Options</string>
       </attribute>
@@ -505,12 +526,16 @@ padding-top: 1;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>737</width>
-        <height>441</height>
+        <width>725</width>
+        <height>437</height>
        </rect>
       </property>
+      <attribute name="icon">
+       <iconset resource="../res.qrc">
+        <normaloff>:/icons/assets/idle.png</normaloff>:/icons/assets/idle.png</iconset>
+      </attribute>
       <attribute name="label">
-       <string>Source Editor - Obfuscator</string>
+       <string>Source Editor</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
@@ -667,12 +692,16 @@ QPushButton#nextToAssemblyButton:pressed {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>737</width>
-        <height>441</height>
+        <width>725</width>
+        <height>437</height>
        </rect>
       </property>
+      <attribute name="icon">
+       <iconset resource="../res.qrc">
+        <normaloff>:/icons/assets/info.png</normaloff>:/icons/assets/info.png</iconset>
+      </attribute>
       <attribute name="label">
-       <string>Assembly Information</string>
+       <string>Version Information</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="8" column="0" colspan="2">
@@ -958,10 +987,14 @@ QLineEdit#asmProductVersionLine:pressed {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>100</width>
-        <height>30</height>
+        <width>725</width>
+        <height>437</height>
        </rect>
       </property>
+      <attribute name="icon">
+       <iconset resource="../res.qrc">
+        <normaloff>:/icons/assets/other_settings.png</normaloff>:/icons/assets/other_settings.png</iconset>
+      </attribute>
       <attribute name="label">
        <string>Other Configuration</string>
       </attribute>

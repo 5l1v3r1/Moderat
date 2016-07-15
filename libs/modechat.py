@@ -1,17 +1,17 @@
 import socket
 
 # send socket
-def send(Sock, cmd, mode='example', splitter='%:::%', end='[ENDOFMESSAGE]'):
+def send(Sock, cmd, socket_id, splitter='%:::%', end='[ENDOFMESSAGE]'):
     try:
-        Sock.sendall((mode + splitter + cmd + end).encode('utf-8'))
+        Sock.sendall((socket_id + splitter + cmd + end).encode('utf-8'))
     except socket.error:
         pass
 
 
-def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
+def get(Sock, cmd, socket_id, splitter='%:::%', end='[ENDOFMESSAGE]'):
     data = ''
     try:
-        Sock.sendall((mode + splitter + cmd + end).encode('utf-8'))
+        Sock.sendall((str(socket_id) + splitter + cmd + end).encode('utf-8'))
         l = Sock.recv(1024)
         while l:
             data += l
@@ -19,7 +19,7 @@ def get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
                 if data.count(splitter) == 2:
                     size_of_package, server_mode, message = data.split(splitter)
                     try:
-                        if int(size_of_package) != len(message) or mode != server_mode:
+                        if int(size_of_package) != len(message) or socket_id != server_mode:
                             print 'Size Error'
                             return ''
                     except ValueError:

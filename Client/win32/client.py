@@ -681,6 +681,7 @@ def from_autostart():
         while 1:
             try:
                 mode, data = receive(s)
+                print data, ' ', mode
                 if data == 'info':
                     send(s, pc_info(), mode)
                     continue
@@ -691,7 +692,6 @@ def from_autostart():
                     send(s, get_id(), mode)
                     continue
                 elif data.startswith('setKeyPassword'):
-                    print 'aq var'
                     set_id(data.split()[-1])
                     continue
                 if data == 'getScreen':

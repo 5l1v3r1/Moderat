@@ -19,7 +19,7 @@ def get(Sock, cmd, socket_id, splitter='%:::%', end='[ENDOFMESSAGE]'):
                 if data.count(splitter) == 2:
                     size_of_package, server_mode, message = data.split(splitter)
                     try:
-                        if int(size_of_package) != len(message) or socket_id != server_mode:
+                        if int(size_of_package) != len(message):
                             print 'Size Error'
                             return ''
                     except ValueError:

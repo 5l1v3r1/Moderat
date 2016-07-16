@@ -249,9 +249,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.servers_checker_thread.start()
 
     def check_servers(self):
+        self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.checker_socket.connect((self.IPADDRESS, self.PORT))
         while 1:
             try:
-                data = get(self.connection_socket, 'getClients', 'getClients')
+                data = get(self.checker_socket, 'getClients', 'getClients')
                 self.streaming_socks = ast.literal_eval(data)
                 self.emit(SIGNAL('updateTable()'))
                 time.sleep(3)
@@ -330,9 +332,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         client = self.current_client()
         if client:
             args = {
-                'sock': self.socks[client]['sock'],
-                'socket': self.socks[client]['socket'],
-                'ipAddress': self.socks[client]['ip_address'],
+                'sock': self.connection_socket,
+                'socket': self.streaming_socks[client]['socket'],
+                'ipAddress': self.streaming_socks[client]['ip_address'],
                 'assets': assets,
             }
             self.desktop_desktop_preview = mdesktop.mainPopup(args)
@@ -442,14 +444,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def unlock_client(self):
         while 1:
             if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
-                server = self.current_client()
-                if server:
+                client = self.current_client()
+                if client:
                     text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
                     if ok:
                         _hash = hashlib.md5()
                         try:
                             _hash.update(str(text))
-                            answer = get(self.socks[server]['sock'], _hash.hexdigest(), 'password')
+                            answer = get(self.connection_socket, _hash.hexdigest(), client)
+                            print answer
                             if 'iamactive' in answer:
                                 break
                         except UnicodeEncodeError:
@@ -518,7 +521,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def has_microphone(self):
         client = self.current_client()
         if client:
-            if self.socks[client]['inputdevice'] != 'NoDevice':
+            if self.streaming_socks[client]['inputdevice'] != 'NoDevice':
                 return True
             else:
                 return False

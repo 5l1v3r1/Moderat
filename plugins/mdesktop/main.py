@@ -42,7 +42,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.screenshotLabel.setText(_('MDESKTOP_INFO'))
 
     def get_screenshot(self):
-        screen_dict = get(self.sock, 'getScreen', 'screenshot')
+        screen_dict = get(self.sock, 'getScreen', self.socket)
         try:
             screen_info = ast.literal_eval(screen_dict)
             im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),

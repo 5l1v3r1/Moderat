@@ -13,7 +13,6 @@ def client_get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
     data = ''
     try:
         Sock.sendall((mode + splitter + cmd + end).encode('utf-8'))
-        print 'SENTO %s' % (mode + splitter + cmd + end).encode('utf-8')
         l = Sock.recv(1024)
         while l:
             data += l
@@ -35,9 +34,7 @@ def client_get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
                     print 'Data Count Error'
                     return ''
             else:
-                print 'MORE DATA'
                 l = Sock.recv(1024)
-        print 'RECEIVED %s' % data
         return message[:-len(end)].decode('utf-8')
     except socket.error:
         return ''

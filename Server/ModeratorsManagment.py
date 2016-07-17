@@ -33,12 +33,47 @@ class ModeratorsManagment:
         else:
             return False
 
-    def check_user(self, moderator_id, moderator_password):
-        pass
+    def login_user(self, moderator_id, moderator_password):
+        check_user = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
+        self.conn.commit()
+        if len(check_user.fetchall()) == 0:
+            return False
+        else:
+            password_hash = hashlib.md5()
+            password_hash.update(moderator_password)
+            db_password_hash = self.cur.execute('SELECT moderator_password FROM Moderators WHERE moderator_id=?', (moderator_id,))
+            self.conn.commit()
+            if db_password_hash.fetchone()[0] == password_hash.hexdigest():
+                return True
+            else:
+                return False
 
-    def delete_user(self):
-        pass
+    def change_password(self, moderator_id, new_password):
+        check_user = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
+        self.conn.commit()
+        if len(check_user.fetchall()) == 0:
+            return False
+        else:
+            generate_hash = hashlib.md5()
+            generate_hash.update(new_password)
+            self.cur.execute('UPDATE Moderators SET moderator_password=? WHERE moderator_id=?', (generate_hash.hexdigest(), moderator_id))
+            self.conn.commit()
+            return True
+
+    def delete_user(self, moderator_id):
+        check_moderator_id = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
+        self.conn.commit()
+        if len(check_moderator_id.fetchall()) == 0:
+            return False
+        else:
+            self.cur.execute('DELETE FROM Moderators WHERE moderator_id=?', (moderator_id,))
+            self.conn.commit()
+            return True
 
 
+# TESTS
 a = ModeratorsManagment()
-a.create_user('administrator2', '5297a52972')
+a.create_user('administrator23', '5297a529722')
+print a.login_user('administrator23', '5297a529722')
+a.change_password('administrator23', 'paroli123')
+print a.login_user('administrator23', 'paroli123')

@@ -6,7 +6,7 @@ import ast
 import time
 import random
 import string
-from ModeChat import *
+from modechat import *
 
 CLIENT_PORT = 4434
 MODERATOR_PORT = 1313

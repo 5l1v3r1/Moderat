@@ -6,7 +6,7 @@ import ast
 import time
 import random
 import string
-from modechat import *
+from ModeChat import *
 
 CLIENT_PORT = 4434
 MODERATOR_PORT = 1313
@@ -167,7 +167,6 @@ class ModeratServer:
                 print '[+] New Moderator Connected (%s(%s))' % (self.moderator_address[0], self.moderator_address[1])
                 self.moderator_threads[self.moderator_address[1]] = threading.Thread(target=self.moderator_listener, args=(self.moderator_sock, self.moderator_address[1]))
                 self.moderator_threads[self.moderator_address[1]].start()
-
 
 
     def moderator_listener(self, sock, socket_id):

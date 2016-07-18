@@ -315,7 +315,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.clearContents()
         self.offlineServersTable.clearContents()
 
-        # Split Clients
+        # Split Clients#
         for index, key in enumerate(self.streaming_socks):
             if self.streaming_socks[key]['status']:
                 online_clients[index] = self.streaming_socks[key]

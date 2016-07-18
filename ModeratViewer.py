@@ -312,9 +312,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         online_clients = {}
         offline_clients = {}
 
-        self.serversTable.clearContents()
-        self.offlineServersTable.clearContents()
-
         # Split Clients#
         for index, key in enumerate(self.streaming_socks):
             if self.streaming_socks[key]['status']:
@@ -410,6 +407,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             pass
 
         self.offlineServersTable.setRowCount(len(offline_clients))
+        print offline_clients
         try:
             for index, obj in enumerate(offline_clients):
 

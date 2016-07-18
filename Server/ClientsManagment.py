@@ -60,7 +60,18 @@ class ClientsManagment:
             self.cur.execute('UPDATE Clients SET client_status=0 WHERE client_id=?', (client_id,))
             self.conn.commit()
 
+    def is_online(self, client_id):
+        client_status = self.cur.execute('SELECT client_status FROM Clients WHERE client_id=?', (client_id,))
+        self.conn.commit()
+        status = client_status.fetchall()[0]
+        print client_id, ' status ', status
+        if status == 1:
+            return True
+        else:
+            return False
+
     def get_offline_clients(self, moderator_id):
         client_status = self.cur.execute('SELECT * FROM Clients WHERE moderator_id=? AND client_status=0', (moderator_id,))
         self.conn.commit()
-        return client_status.fetchall()
+        status = client_status.fetchall()
+        return status

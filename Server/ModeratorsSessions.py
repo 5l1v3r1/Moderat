@@ -32,7 +32,6 @@ class SessionsManagment:
             self.conn.commit()
 
     def get_session(self, session_id):
-        print session_id
         username = self.cur.execute('SELECT moderator_id FROM Sessions WHERE session_id=?', (session_id,))
         self.conn.commit()
         return username.fetchone()[0]

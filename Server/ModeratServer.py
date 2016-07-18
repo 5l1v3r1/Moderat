@@ -8,6 +8,9 @@ import random
 import string
 from modechat import *
 from ModeratorsManagment import ModeratorsManagment
+from ClientsManagment import ClientsManagment
+from ModeratorsSessions import SessionsManagment
+
 CLIENT_PORT = 4434
 MODERATOR_PORT = 1313
 MAX_CONNECTIONS = 6400
@@ -20,9 +23,6 @@ def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
 class ModeratServer:
 
     def __init__(self):
-
-        # Init Database
-        self.db = ModeratorsManagment()
 
         # connection accept threads state
         self.accept_thread_state = False
@@ -96,9 +96,13 @@ class ModeratServer:
                         self.socks[socket_index]['id'] = keypassword
                         print '[+] Get ID (%s)' % keypassword
                     else:
-                        new_id = id_generator()
-                        print '[+] Generating New ID (%s)' % new_id
-                        client_send(self.sock, 'setKeyPassword %s' % new_id)
+                        keypassword = id_generator()
+                        print '[+] Generating New ID (%s)' % keypassword
+                        client_send(self.sock, 'setKeyPassword %s' % keypassword)
+                    self.socks[socket_index]['id'] = keypassword
+
+                    print '[+] Creating Database Entry'
+                    ClientsManagment().create_client('admin', keypassword, self.address[0])
 
                     temp_var = client_get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
 
@@ -175,25 +179,26 @@ class ModeratServer:
     def moderator_listener(self, sock, socket_id):
         while 1:
             try:
-                client_socket, data = moderator_receive(sock)
+                session_id, data = moderator_receive(sock)
                 if data == 'initSession':
-                    if client_socket in self.active_sessions:
-                        print '[+] Start Moderators Checker Session ID (%s)' % client_socket
-                        moderator_send(sock, 'sessionSuccess', client_socket)
+                    if session_id in self.active_sessions:
+                        print '[+] Start Moderators Checker Session ID (%s)' % session_id
+                        moderator_send(sock, 'sessionSuccess', session_id)
                     else:
-                        moderator_send(sock, 'sessionError', client_socket)
+                        moderator_send(sock, 'sessionError', session_id)
                         continue
                 elif data.startswith('auth '):
                     print '[+] New Moderator Connection'
                     try:
                         command, username, password = data.split()
                         if ModeratorsManagment().login_user(username, password):
-                            print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, client_socket)
-                            self.active_sessions.append(client_socket)
-                            moderator_send(sock, 'LoginSuccess', client_socket)
+                            print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, session_id)
+                            self.active_sessions.append(session_id)
+                            SessionsManagment().create_session(username, session_id)
+                            moderator_send(sock, 'LoginSuccess', session_id)
                         else:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
-                            moderator_send(sock, 'LoginError', client_socket)
+                            moderator_send(sock, 'LoginError', session_id)
                             continue
                     except Exception as e:
                         print e
@@ -202,7 +207,8 @@ class ModeratServer:
                     try:
                         client_socket, data = moderator_receive(sock)
                         if data == 'getClients':
-                            output = self.command_get_clients()
+                            username_from_sessions = SessionsManagment().get_session(session_id)
+                            output = self.command_get_clients(username_from_sessions)
                         else:
                             output = self.command_all(data, client_socket)
                         moderator_send(sock, output, client_socket)
@@ -217,20 +223,29 @@ class ModeratServer:
             time.sleep(3)
 
     # Moderator Commands
-    def command_get_clients(self):
+    def command_get_clients(self, moderator_id):
+
+        clients = ClientsManagment().get_clients(moderator_id)
+        clients = str(clients)
+        print clients
+
         for i, k in self.socks.iteritems():
-            self.shared_socks[i] = {
-                'ip_address': self.socks[i]['ip_address'],
-                'socket': self.socks[i]['socket'],
-                'ostype': self.socks[i]['ostype'],
-                'protection': self.streaming_socks[i]['protection'],
-                'os': self.socks[i]['os'],
-                'user': self.socks[i]['user'],
-                'privileges': self.streaming_socks[i]['privileges'],
-                'inputdevice': self.socks[i]['inputdevice'],
-                'webcamdevice': self.socks[i]['webcamdevice'],
-                'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
-            }
+            if self.socks[i]['id'] in clients:
+                self.shared_socks[i] = {
+                    'ip_address': self.socks[i]['ip_address'],
+                    'socket': self.socks[i]['socket'],
+                    'ostype': self.socks[i]['ostype'],
+                    'protection': self.streaming_socks[i]['protection'],
+                    'os': self.socks[i]['os'],
+                    'user': self.socks[i]['user'],
+                    'privileges': self.streaming_socks[i]['privileges'],
+                    'inputdevice': self.socks[i]['inputdevice'],
+                    'webcamdevice': self.socks[i]['webcamdevice'],
+                    'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
+                }
+            else:
+                if i in self.shared_socks:
+                    del self.shared_socks[i]
         return str(self.shared_socks)
 
     def command_all(self, payload, client_socket):

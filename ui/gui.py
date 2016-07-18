@@ -120,7 +120,119 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.serversTable = QtGui.QTableWidget(self.centralwidget)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setSpacing(50)
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setSpacing(2)
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem)
+        self.horizontalLayout_3.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_6 = QtGui.QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(2)
+        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+        self.clientStatusLabel = QtGui.QLabel(self.centralwidget)
+        self.clientStatusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none;"))
+        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
+        self.horizontalLayout_6.addWidget(self.clientStatusLabel)
+        self.statusLabel = QtGui.QLabel(self.centralwidget)
+        self.statusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"color: #e74c3c;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.statusLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
+        self.horizontalLayout_6.addWidget(self.statusLabel)
+        self.horizontalLayout_3.addLayout(self.horizontalLayout_6)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(2)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.ipv4TextLabel = QtGui.QLabel(self.centralwidget)
+        self.ipv4TextLabel.setObjectName(_fromUtf8("ipv4TextLabel"))
+        self.horizontalLayout_2.addWidget(self.ipv4TextLabel)
+        self.ipv4Label = QtGui.QLabel(self.centralwidget)
+        self.ipv4Label.setObjectName(_fromUtf8("ipv4Label"))
+        self.horizontalLayout_2.addWidget(self.ipv4Label)
+        self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setSpacing(2)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.portTextLabel = QtGui.QLabel(self.centralwidget)
+        self.portTextLabel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.portTextLabel.setStyleSheet(_fromUtf8("border: none;"))
+        self.portTextLabel.setObjectName(_fromUtf8("portTextLabel"))
+        self.horizontalLayout.addWidget(self.portTextLabel)
+        self.portLabel = QtGui.QLabel(self.centralwidget)
+        self.portLabel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.portLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.portLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.portLabel.setObjectName(_fromUtf8("portLabel"))
+        self.horizontalLayout.addWidget(self.portLabel)
+        self.horizontalLayout_3.addLayout(self.horizontalLayout)
+        self.horizontalLayout_5 = QtGui.QHBoxLayout()
+        self.horizontalLayout_5.setSpacing(2)
+        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
+        self.serversOnlineStatus = QtGui.QLabel(self.centralwidget)
+        self.serversOnlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none;"))
+        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
+        self.horizontalLayout_5.addWidget(self.serversOnlineStatus)
+        self.onlineStatus = QtGui.QLabel(self.centralwidget)
+        self.onlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
+"font: 8pt \"MS Shell Dlg 2\";"))
+        self.onlineStatus.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
+        self.horizontalLayout_5.addWidget(self.onlineStatus)
+        self.horizontalLayout_3.addLayout(self.horizontalLayout_5)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
+        self.clientsTabs = QtGui.QTabWidget(self.centralwidget)
+        self.clientsTabs.setStyleSheet(_fromUtf8("QTabWidget::pane { /* The tab widget frame */\n"
+"    border-top: 2px solid #34495e;\n"
+"}\n"
+"\n"
+"QTabWidget::tab-bar {\n"
+"    left: 5px; /* move to the right by 5px */\n"
+"}\n"
+"\n"
+"/* Style the tab using the tab sub-control. Note that\n"
+"    it reads QTabBar _not_ QTabWidget */\n"
+"QTabBar::tab {\n"
+"   \n"
+"    border: 1px ridge;\n"
+"    border-bottom: none;\n"
+"    border-color: #2c3e50;\n"
+"    min-width: 8ex;\n"
+"    padding: 10px;\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected, QTabBar::tab:hover {\n"
+"    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                stop: 0 #34495e, stop: 0.4 #34495e,\n"
+"                                stop: 0.5 #34495e, stop: 1.0 #34495e);\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    border: 1px ridge;\n"
+"    border-bottom: none;\n"
+"    border-color: #2c3e50;\n"
+"}\n"
+"\n"
+"QTabBar::tab:!selected {\n"
+"    margin-top: 2px; /* make non-selected tabs look smaller */\n"
+"}"))
+        self.clientsTabs.setDocumentMode(False)
+        self.clientsTabs.setTabsClosable(False)
+        self.clientsTabs.setMovable(False)
+        self.clientsTabs.setObjectName(_fromUtf8("clientsTabs"))
+        self.onlineClients = QtGui.QWidget()
+        self.onlineClients.setObjectName(_fromUtf8("onlineClients"))
+        self.gridLayout_2 = QtGui.QGridLayout(self.onlineClients)
+        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
+        self.serversTable = QtGui.QTableWidget(self.onlineClients)
         self.serversTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.serversTable.setAutoFillBackground(False)
         self.serversTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
@@ -187,97 +299,68 @@ class Ui_MainWindow(object):
         self.serversTable.horizontalHeader().setSortIndicatorShown(False)
         self.serversTable.horizontalHeader().setStretchLastSection(True)
         self.serversTable.verticalHeader().setVisible(False)
-        self.gridLayout.addWidget(self.serversTable, 0, 0, 1, 1)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setSpacing(50)
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.horizontalLayout_4 = QtGui.QHBoxLayout()
-        self.horizontalLayout_4.setSpacing(2)
-        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.madeByLabel = QtGui.QLabel(self.centralwidget)
-        self.madeByLabel.setObjectName(_fromUtf8("madeByLabel"))
-        self.horizontalLayout_4.addWidget(self.madeByLabel)
-        self.creditFlagLabel = QtGui.QLabel(self.centralwidget)
-        self.creditFlagLabel.setText(_fromUtf8(""))
-        self.creditFlagLabel.setPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/flags/ge.png")))
-        self.creditFlagLabel.setObjectName(_fromUtf8("creditFlagLabel"))
-        self.horizontalLayout_4.addWidget(self.creditFlagLabel)
-        self.creditLabel = QtGui.QLabel(self.centralwidget)
-        self.creditLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.creditLabel.setFont(font)
-        self.creditLabel.setStyleSheet(_fromUtf8("font: 8pt \"MS Shell Dlg 2\";"))
-        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
-        self.horizontalLayout_4.addWidget(self.creditLabel)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_4)
-        self.horizontalLayout_6 = QtGui.QHBoxLayout()
-        self.horizontalLayout_6.setSpacing(2)
-        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
-        self.clientStatusLabel = QtGui.QLabel(self.centralwidget)
-        self.clientStatusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none;"))
-        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
-        self.horizontalLayout_6.addWidget(self.clientStatusLabel)
-        self.statusLabel = QtGui.QLabel(self.centralwidget)
-        self.statusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"color: #e74c3c;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.statusLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
-        self.horizontalLayout_6.addWidget(self.statusLabel)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_6)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setSpacing(2)
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.ipv4TextLabel = QtGui.QLabel(self.centralwidget)
-        self.ipv4TextLabel.setObjectName(_fromUtf8("ipv4TextLabel"))
-        self.horizontalLayout_2.addWidget(self.ipv4TextLabel)
-        self.ipv4Label = QtGui.QLabel(self.centralwidget)
-        self.ipv4Label.setObjectName(_fromUtf8("ipv4Label"))
-        self.horizontalLayout_2.addWidget(self.ipv4Label)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setSpacing(2)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.portTextLabel = QtGui.QLabel(self.centralwidget)
-        self.portTextLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.portTextLabel.setStyleSheet(_fromUtf8("border: none;"))
-        self.portTextLabel.setObjectName(_fromUtf8("portTextLabel"))
-        self.horizontalLayout.addWidget(self.portTextLabel)
-        self.portLabel = QtGui.QLabel(self.centralwidget)
-        self.portLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.portLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.portLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.portLabel.setObjectName(_fromUtf8("portLabel"))
-        self.horizontalLayout.addWidget(self.portLabel)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout)
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setSpacing(2)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.serversOnlineStatus = QtGui.QLabel(self.centralwidget)
-        self.serversOnlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none;"))
-        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
-        self.horizontalLayout_5.addWidget(self.serversOnlineStatus)
-        self.onlineStatus = QtGui.QLabel(self.centralwidget)
-        self.onlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.onlineStatus.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
-        self.horizontalLayout_5.addWidget(self.onlineStatus)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_5)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.serversTable, 0, 0, 1, 1)
+        self.clientsTabs.addTab(self.onlineClients, _fromUtf8(""))
+        self.tab_2 = QtGui.QWidget()
+        self.tab_2.setObjectName(_fromUtf8("tab_2"))
+        self.gridLayout_3 = QtGui.QGridLayout(self.tab_2)
+        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        self.offlineServersTable = QtGui.QTableWidget(self.tab_2)
+        self.offlineServersTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.offlineServersTable.setAutoFillBackground(False)
+        self.offlineServersTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
+"    background-color: #34495e;\n"
+"    padding: 2px;\n"
+"    color: #cff7f8;\n"
+"    font: 75 10px \"MS Shell Dlg 2\";\n"
+"    border: 1px ridge;\n"
+"    border-right: none;\n"
+"    border-color: #2c3e50;\n"
+"}\n"
+"\n"
+"QTableWidget#offlineServersTable {\n"
+"    background-position: center;\n"
+"    border: 1px ridge;\n"
+"    padding: 5px;\n"
+"    color: #cff7f8;\n"
+"    border-color: #2c3e50;\n"
+"    font: 8pt \"MS Shell Dlg 2\";\n"
+"    background-color: #34495e;\n"
+"\n"
+"    background-image: url(assets/bg.png);\n"
+"}\n"
+"\n"
+"QTableWidget#offlineServersTable:item:selected {\n"
+"background-color: #2c3e50;\n"
+"color: #cff7f8;\n"
+"}"))
+        self.offlineServersTable.setFrameShadow(QtGui.QFrame.Plain)
+        self.offlineServersTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.offlineServersTable.setDragDropOverwriteMode(False)
+        self.offlineServersTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.offlineServersTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.offlineServersTable.setTextElideMode(QtCore.Qt.ElideMiddle)
+        self.offlineServersTable.setShowGrid(False)
+        self.offlineServersTable.setGridStyle(QtCore.Qt.NoPen)
+        self.offlineServersTable.setWordWrap(False)
+        self.offlineServersTable.setCornerButtonEnabled(False)
+        self.offlineServersTable.setObjectName(_fromUtf8("offlineServersTable"))
+        self.offlineServersTable.setColumnCount(3)
+        self.offlineServersTable.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.offlineServersTable.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineServersTable.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineServersTable.setHorizontalHeaderItem(2, item)
+        self.offlineServersTable.horizontalHeader().setCascadingSectionResizes(True)
+        self.offlineServersTable.horizontalHeader().setDefaultSectionSize(100)
+        self.offlineServersTable.horizontalHeader().setSortIndicatorShown(False)
+        self.offlineServersTable.horizontalHeader().setStretchLastSection(True)
+        self.offlineServersTable.verticalHeader().setVisible(False)
+        self.gridLayout_3.addWidget(self.offlineServersTable, 0, 0, 1, 1)
+        self.clientsTabs.addTab(self.tab_2, _fromUtf8(""))
+        self.gridLayout.addWidget(self.clientsTabs, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 34))
@@ -457,10 +540,19 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuBuilder.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.clientsTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Monitoring Server", None))
+        self.clientStatusLabel.setText(_translate("MainWindow", "STATUS:", None))
+        self.statusLabel.setText(_translate("MainWindow", "Offline", None))
+        self.ipv4TextLabel.setText(_translate("MainWindow", "IPv4:", None))
+        self.ipv4Label.setText(_translate("MainWindow", "N/A", None))
+        self.portTextLabel.setText(_translate("MainWindow", "PORT:", None))
+        self.portLabel.setText(_translate("MainWindow", "N/A", None))
+        self.serversOnlineStatus.setText(_translate("MainWindow", "SERVERS TOTAL:", None))
+        self.onlineStatus.setText(_translate("MainWindow", "0", None))
         self.serversTable.setSortingEnabled(False)
         item = self.serversTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Ip Address", None))
@@ -482,16 +574,15 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Cam", None))
         item = self.serversTable.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Active Window Title", None))
-        self.madeByLabel.setText(_translate("MainWindow", "Made By ", None))
-        self.creditLabel.setText(_translate("MainWindow", " Uri Patton", None))
-        self.clientStatusLabel.setText(_translate("MainWindow", "STATUS:", None))
-        self.statusLabel.setText(_translate("MainWindow", "Offline", None))
-        self.ipv4TextLabel.setText(_translate("MainWindow", "IPv4:", None))
-        self.ipv4Label.setText(_translate("MainWindow", "N/A", None))
-        self.portTextLabel.setText(_translate("MainWindow", "PORT:", None))
-        self.portLabel.setText(_translate("MainWindow", "N/A", None))
-        self.serversOnlineStatus.setText(_translate("MainWindow", "SERVERS TOTAL:", None))
-        self.onlineStatus.setText(_translate("MainWindow", "0", None))
+        self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.onlineClients), _translate("MainWindow", "Online", None))
+        self.offlineServersTable.setSortingEnabled(False)
+        item = self.offlineServersTable.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Alias", None))
+        item = self.offlineServersTable.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Ip Address", None))
+        item = self.offlineServersTable.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Last Online", None))
+        self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.tab_2), _translate("MainWindow", "Offline", None))
         self.serverMenu.setTitle(_translate("MainWindow", "Server", None))
         self.menuAction.setTitle(_translate("MainWindow", "Plugins", "asd"))
         self.menuServer.setTitle(_translate("MainWindow", "Client", None))

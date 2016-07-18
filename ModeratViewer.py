@@ -240,20 +240,26 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def connect_to_server(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+            session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
-            auth_status = get(self.connection_socket, 'auth administrator23 paroli123', 'auth')
+            auth_status = get(self.connection_socket, 'auth administrator23 paroli123', session_id)
             print auth_status
             if auth_status == 'LoginSuccess':
-                self.servers_checker_thread = threading.Thread(target=self.check_servers)
+                self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
                 self.servers_checker_thread.start()
             elif auth_status == 'LoginError':
                 return
         except socket.error:
             return
 
-    def check_servers(self):
+    def check_servers(self, session_id):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.checker_socket.connect((self.IPADDRESS, self.PORT))
+        status = get(self.checker_socket, 'initSession', session_id)
+        if status == 'sessionSuccess':
+            pass
+        elif status == 'sessionError':
+            return
         while 1:
             try:
                 data = get(self.checker_socket, 'getClients', 'getClients')
@@ -264,53 +270,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 continue
             except SyntaxError:
                 continue
-
-
-    # Start Listen for Servers
-    def listen_start2(self):
-        # update settings
-        self.update_settings()
-        self.portLabel.setText('[%s]' % str(self.PORT))
-        self.ipv4Label.setText('[%s]' % str(self.IPADDRESS))
-
-        # Initializing variables
-        if not self.acceptthreadState:
-            self.socks = {}
-            self.streaming_socks = {}
-            self.acceptthreadState = True
-            self.listenthread = Thread(target=self.accept_connections)
-            self.listenthread.setDaemon(True)
-            self.listenthread.start()
-            self.statusLabel.setText(_('STATUS_ONLINE'))
-            self.statusLabel.setStyleSheet('color: lime; border: none; font: 8pt "MS Shell Dlg 2";')
-            self.actionStartListen_for_connections.setChecked(True)
-            self.actionStopListen_for_connections.setChecked(False)
-        else:
-            self.actionStartListen_for_connections.setChecked(True)
-
-    def listen_stop(self):
-        self.connection_socket.send('TEST MESSAGE')
-
-    # Stop Listen for Servers
-    def listen_stop2(self):
-        if self.acceptthreadState:
-            self.acceptthreadState = False
-            self.serversTable.clearContents()
-            self.actionStartListen_for_connections.setChecked(False)
-            self.actionStopListen_for_connections.setChecked(True)
-            self.statusLabel.setText(_('STATUS_OFFLINE'))
-            self.statusLabel.setStyleSheet('color: #e74c3c; border: none; font: 8pt "MS Shell Dlg 2";')
-            self.onlineStatus.setText('0')
-            try:
-                self.shd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.shd.connect(('127.0.0.1', self.PORT))
-                self.shd.close()
-            except:
-                pass
-        else:
-            self.actionStopListen_for_connections.setChecked(True)
-
-        self.update_main_menu()
 
     def get_preview(self):
         client = self.current_client()
@@ -469,7 +428,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def lock_client(self):
         client = self.current_client()
         if client:
-            send(self.socks[client]['sock'], 'lock')
+            send(self.connection_socket, 'lock', client)
 
     def update_main_menu(self):
         try:

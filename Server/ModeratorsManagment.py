@@ -79,11 +79,3 @@ class ModeratorsManagment:
             priv = self.cur.executeself.cur.execute('SELECT moderator_privs FROM Moderators WHERE moderator_id=?', (moderator_id,))
             self.conn.commit()
             return priv.fetchone()[0]
-
-
-# TESTS
-a = ModeratorsManagment()
-a.create_user('administrator23', '5297a529722', 1)
-print a.login_user('administrator23', '5297a529722')
-a.change_password('administrator23', 'paroli123')
-print a.login_user('administrator23', 'paroli123')

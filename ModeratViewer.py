@@ -145,7 +145,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         #self.serversTable.clicked.connect(self.get_preview)
 
         # Triggers
-        self.actionStartListen_for_connections.triggered.connect(self.listen_start)
+        self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
         self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
@@ -237,16 +237,19 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
         # END BUILDER
 
-    def listen_start(self):
+    def connect_to_server(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
+            auth_status = get(self.connection_socket, 'auth administrator23 paroli123', 'auth')
+            print auth_status
+            if auth_status == 'LoginSuccess':
+                self.servers_checker_thread = threading.Thread(target=self.check_servers)
+                self.servers_checker_thread.start()
+            elif auth_status == 'LoginError':
+                return
         except socket.error:
-            print 'No Connetion To Server'
             return
-
-        self.servers_checker_thread = threading.Thread(target=self.check_servers)
-        self.servers_checker_thread.start()
 
     def check_servers(self):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

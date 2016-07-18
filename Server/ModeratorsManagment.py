@@ -18,16 +18,16 @@ class ModeratorsManagment:
             self.create_table()
 
     def create_table(self):
-        self.cur.execute('CREATE TABLE Moderators (moderator_id VARCHAR(100), moderator_password VARCHAR(100))')
+        self.cur.execute('CREATE TABLE Moderators (moderator_id VARCHAR(100), moderator_password VARCHAR(100), moderator_privs INTEGER(10))')
         self.conn.commit()
 
-    def create_user(self, moderator_id, moderator_password):
+    def create_user(self, moderator_id, moderator_password, moderator_privs):
         password_hash = hashlib.md5()
         password_hash.update(moderator_password)
         check_moderators = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
         self.conn.commit()
         if len(check_moderators.fetchall()) == 0:
-            self.cur.execute('INSERT INTO Moderators VALUES (?,?)', (moderator_id, password_hash.hexdigest()))
+            self.cur.execute('INSERT INTO Moderators VALUES (?,?,?)', (moderator_id, password_hash.hexdigest(), moderator_privs))
             self.conn.commit()
             return True
         else:
@@ -70,10 +70,20 @@ class ModeratorsManagment:
             self.conn.commit()
             return True
 
+    def get_privs(self, moderator_id):
+        check_moderator_id = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
+        self.conn.commit()
+        if len(check_moderator_id.fetchall()) == 0:
+            return False
+        else:
+            priv = self.cur.executeself.cur.execute('SELECT moderator_privs FROM Moderators WHERE moderator_id=?', (moderator_id,))
+            self.conn.commit()
+            return priv.fetchone()[0]
+
 
 # TESTS
 a = ModeratorsManagment()
-a.create_user('administrator23', '5297a529722')
+a.create_user('administrator23', '5297a529722', 1)
 print a.login_user('administrator23', '5297a529722')
 a.change_password('administrator23', 'paroli123')
 print a.login_user('administrator23', 'paroli123')

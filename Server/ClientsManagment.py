@@ -36,7 +36,6 @@ class ClientsManagment:
         return alias.fetchone()[0]
 
     def set_alias(self, client_id, client_alias):
-        print client_id, ' ', client_alias
         self.cur.execute('UPDATE Clients SET client_alias=? WHERE client_id=?', (client_alias, client_id))
         self.conn.commit()
         return 'Success'
@@ -75,7 +74,6 @@ class ClientsManagment:
         client_status = self.cur.execute('SELECT client_status FROM Clients WHERE client_id=?', (client_id,))
         self.conn.commit()
         status = client_status.fetchall()[0]
-        print client_id, ' status ', status
         if status == 1:
             return True
         else:

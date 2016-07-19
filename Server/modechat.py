@@ -21,10 +21,6 @@ def client_get(Sock, cmd, mode, splitter='%:::%', end='[ENDOFMESSAGE]'):
                     size_of_package, server_mode, message = data.split(splitter)
                     try:
                         if int(size_of_package) != len(message) or mode != server_mode:
-                            print len(size_of_package), ' ', len(message)
-                            print mode, ' ', server_mode
-                            print message
-                            print 'Size Error (%s)' % data
                             return ''
                     except ValueError:
                         print 'Value Error'

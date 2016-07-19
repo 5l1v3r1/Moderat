@@ -10,7 +10,6 @@ import threading
 import hashlib
 import string
 import random
-import datetime
 from PIL import Image
 from threading import Thread
 
@@ -82,7 +81,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.unlockedSockets = []
 
         # listen status
-        self.acceptthreadState = False
+        self.acceptthreadState = True
 
         # plugins bank
         self.pluginsBank = {}
@@ -135,7 +134,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Triggers
         self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
-        #self.actionStopListen_for_connections.triggered.connect(self.listen_stop)
+        self.actionStopListen_for_connections.triggered.connect(self.disconnect_from_server)
         self.actionClient_Configuration.triggered.connect(self.run_settings)
 
         # Panel Triggers
@@ -245,6 +244,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except socket.error:
             return
 
+    def disconnect_from_server(self):
+        print 'Disconnect'
+
     def check_servers(self, session_id):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.checker_socket.connect((self.IPADDRESS, self.PORT))
@@ -253,7 +255,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             pass
         elif status == 'sessionError':
             return
-        while 1:
+        while self.acceptthreadState:
             try:
                 data = get(self.checker_socket, 'getClients', 'getClients')
                 self.streaming_socks = ast.literal_eval(data)
@@ -664,6 +666,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.builder_form.show()
 
     def closeEvent(self, event):
+        self.acceptthreadState = False
+        try:
+            get(self.connection_socket, 'quitModerator', 'quit')
+        except:
+            pass
         sys.exit(1)
 
 # Run Application

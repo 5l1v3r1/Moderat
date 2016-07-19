@@ -210,6 +210,8 @@ class ModeratServer:
                     except Exception as e:
                         print e
                         continue
+                else:
+                    moderator_send(sock, 'AuthError', session_id)
                 while 1:
                     try:
                         client_socket, data = moderator_receive(sock)
@@ -218,17 +220,16 @@ class ModeratServer:
                             output = self.command_get_clients(username_from_sessions)
                         elif data.startswith('setAlias '):
                             output = ClientsManagment().set_alias(client_socket, data.split()[-1])
+                        elif data == 'quitModerator':
+                            print '[!] Moderator Checker Exit'
+                            output = ''
                         else:
                             output = self.command_all(data, client_socket)
                         moderator_send(sock, output, client_socket)
                     except socket.error:
-                        print '[-] Socket Error'
                         break
-                else:
-                    moderator_send(sock, 'AuthError', client_socket)
             except socket.error:
-                print '[-] Socket Error'
-                return
+                break
             time.sleep(3)
 
     # Moderator Commands

@@ -7,7 +7,6 @@ class ClientsManagment:
 
     def __init__(self):
 
-        print '[+] Initializing Clients Database'
         self.conn = sqlite3.connect('Moderators.db')
         self.cur = self.conn.cursor()
 
@@ -30,6 +29,18 @@ class ClientsManagment:
                           last_connected DATETIME(100),
                           client_status INTEGER(10))'''),
         self.conn.commit()
+
+    def get_alias(self, client_id):
+        alias = self.cur.execute('SELECT client_alias FROM Clients WHERE client_id=?', (client_id,))
+        self.conn.commit()
+        return alias.fetchone()[0]
+
+    def set_alias(self, client_id, client_alias):
+        print client_id, ' ', client_alias
+        self.cur.execute('UPDATE Clients SET client_alias=? WHERE client_id=?', (client_alias, client_id))
+        self.conn.commit()
+        return 'Success'
+
 
     def create_client(self, moderator_id, client_id, client_ip):
         check_clients = self.cur.execute('SELECT * FROM Clients WHERE client_id=?', (client_id,))

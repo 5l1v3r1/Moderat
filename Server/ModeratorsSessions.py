@@ -7,7 +7,6 @@ class SessionsManagment:
 
     def __init__(self):
 
-        print '[+] Initializing Sessions Database'
         self.conn = sqlite3.connect('Moderators.db')
         self.cur = self.conn.cursor()
 
@@ -35,3 +34,11 @@ class SessionsManagment:
         username = self.cur.execute('SELECT moderator_id FROM Sessions WHERE session_id=?', (session_id,))
         self.conn.commit()
         return username.fetchone()[0]
+
+    def check_session(self, session_id):
+        session = self.cur.execute('SELECT * FROM Sessions WHERE session_id=?', (session_id,))
+        self.conn.commit()
+        if len(session.fetchall()) > 0:
+            return True
+        else:
+            return False

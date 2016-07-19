@@ -260,7 +260,7 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
            <string notr="true">border: none;</string>
           </property>
           <property name="text">
-           <string>SERVERS TOTAL:</string>
+           <string>CLIENTS TOTAL:</string>
           </property>
          </widget>
         </item>
@@ -636,11 +636,7 @@ color: #cff7f8;
         QMenu::item::selected {
             background-color: #2c3e50;
 			color: #ecf0f1;
-        }
-		QMenu::item::checked {
-			border: 1px ridge;
-			border-color: #27ae60;
-		}</string>
+        }</string>
    </property>
    <property name="defaultUp">
     <bool>false</bool>

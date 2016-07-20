@@ -6,6 +6,11 @@ tr = {
     'TITLE':                        u'ModeRat - მონიტორინგი',
     # END TITLE
 
+    # CLIENTS TAB
+    'CLIENTS_TAB_ONLINE':           u'ჩართული',
+    'CLIENTS_TAB_OFFLINE':          u'გამორთული',
+    # END CLIENTS TAB
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'მისამართი',
     'HEADER_ALIAS':                 u'სახელი',
@@ -17,6 +22,7 @@ tr = {
     'HEADER_MIC':                   u'მიკროფონი',
     'HEADER_CAM':                   u'კამერა',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'აქტიური ფანჯრის სათაური',
+    'HEADER_MODERATOR':             u'მოდერატორი',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
@@ -217,4 +223,9 @@ tr = {
     'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'ფაილის გაფართოება',
     'BUILDER_SAVE_FILE_NAME':               u'მიუთითე სად შევინახო',
     # END BUILDER
+
+    # ADMINISTRATOR
+    'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',
+    'ADMINISTRATOR_RM_SET_MODERATOR':   u'მოდერატორზე მიბმა',
+    # END ADMINISTRATOR
 }

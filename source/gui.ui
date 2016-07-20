@@ -477,6 +477,11 @@ color: #cff7f8;
             <string>Active Window Title</string>
            </property>
           </column>
+          <column>
+           <property name="text">
+            <string>Moderator</string>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>
@@ -570,6 +575,16 @@ color: #cff7f8;
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
+          <column>
+           <property name="text">
+            <string>Moderator</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
           <column>
            <property name="text">
             <string>Alias</string>

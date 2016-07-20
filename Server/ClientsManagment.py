@@ -56,6 +56,12 @@ class ClientsManagment:
         self.conn.commit()
         return clients.fetchall()
 
+    # Administrator Query
+    def get_all_clients(self):
+        clients = self.cur.execute('SELECT client_id FROM Clients')
+        self.conn.commit()
+        return clients.fetchall()
+
     def set_client_online(self, client_id):
         check_clients = self.cur.execute('SELECT * FROM Clients WHERE client_id=?', (client_id,))
         self.conn.commit()
@@ -84,3 +90,15 @@ class ClientsManagment:
         self.conn.commit()
         status = client_status.fetchall()
         return status
+
+    # Administrator Query
+    def get_all_offline_clients(self):
+        client_status = self.cur.execute('SELECT * FROM Clients WHERE client_status=0')
+        self.conn.commit()
+        status = client_status.fetchall()
+        return status
+
+    def get_moderator(self, client_id):
+        moderator = self.cur.execute('SELECT moderator_id FROM Clients WHERE client_id=?', (client_id,))
+        self.conn.commit()
+        return moderator.fetchone()[0]

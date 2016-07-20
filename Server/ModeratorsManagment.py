@@ -7,7 +7,6 @@ class ModeratorsManagment:
 
     def __init__(self):
 
-        print '[+] Initializing Moderators Database'
         self.conn = sqlite3.connect('Moderators.db')
         self.cur = self.conn.cursor()
 
@@ -76,10 +75,6 @@ class ModeratorsManagment:
         if len(check_moderator_id.fetchall()) == 0:
             return False
         else:
-            priv = self.cur.executeself.cur.execute('SELECT moderator_privs FROM Moderators WHERE moderator_id=?', (moderator_id,))
+            priv = self.cur.execute('SELECT moderator_privs FROM Moderators WHERE moderator_id=?', (moderator_id,))
             self.conn.commit()
             return priv.fetchone()[0]
-
-
-a = ModeratorsManagment()
-a.change_password('admin', '1234')

@@ -429,6 +429,11 @@ color: #cff7f8;
           </attribute>
           <column>
            <property name="text">
+            <string>Moderator</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
             <string>Ip Address</string>
            </property>
           </column>
@@ -475,11 +480,6 @@ color: #cff7f8;
           <column>
            <property name="text">
             <string>Active Window Title</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Moderator</string>
            </property>
           </column>
          </widget>

@@ -11,6 +11,10 @@ tr = {
     'CLIENTS_TAB_OFFLINE':          u'Offline',
     # END CLIENTS TAB
 
+    # FILTERS
+    'FILTER_FILTER':                u'Filter',
+    # END FILTERS
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'IP Address',
     'HEADER_ALIAS':                 u'Alias',
@@ -23,6 +27,8 @@ tr = {
     'HEADER_CAM':                   u'Cam',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'Active Window Title',
     'HEADER_MODERATOR':             u'Moderator',
+    'HEADER_ID':                    u'ID',
+    'HEADER_LAST_ONLINE':           u'Last Online',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM

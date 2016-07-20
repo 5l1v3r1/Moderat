@@ -11,6 +11,10 @@ tr = {
     'CLIENTS_TAB_OFFLINE':          u'გამორთული',
     # END CLIENTS TAB
 
+    # FILTERS
+    'FILTER_FILTER':                u'ფილტრი',
+    # END FILTERS
+
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'მისამართი',
     'HEADER_ALIAS':                 u'სახელი',
@@ -23,6 +27,8 @@ tr = {
     'HEADER_CAM':                   u'კამერა',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'აქტიური ფანჯრის სათაური',
     'HEADER_MODERATOR':             u'მოდერატორი',
+    'HEADER_ID':                    u'იდენტიფიკატორი',
+    'HEADER_LAST_ONLINE':           u'ბოლო შემოსვლა',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM

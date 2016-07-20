@@ -194,7 +194,11 @@ class ModeratServer:
                         output = self.command_get_clients(username_from_sessions)
                         moderator_send(sock, output, session_id)
                     else:
-                        command, username, password = data.split()
+                        try:
+                            command, username, password = data.split()
+                        except ValueError:
+                            moderator_send(sock, 'LoginError', session_id)
+                            continue
                         if ModeratorsManagment().login_user(username, password):
                             privs = ModeratorsManagment().get_privs(username)
                             if privs == 1:

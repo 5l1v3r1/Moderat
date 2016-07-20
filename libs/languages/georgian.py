@@ -13,6 +13,7 @@ tr = {
 
     # FILTERS
     'FILTER_FILTER':                u'ფილტრი',
+    'FILTER_ALL':                   u'ყველა',
     # END FILTERS
 
     # CLIENTS TABLE HEADER

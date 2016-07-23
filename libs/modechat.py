@@ -30,7 +30,8 @@ def get(Sock, cmd, socket_id, splitter='%:::%', end='[ENDOFMESSAGE]'):
                     print 'Data Count Error'
                     return ''
             else:
-                 l = Sock.recv(1024)
+                l = Sock.recv(1024)
+                continue
         return message[:-len(end)].decode('utf-8')
     except socket.error:
         return ''

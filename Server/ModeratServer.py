@@ -333,3 +333,7 @@ server.start_listen_for_clients()
 server.check_servers_start()
 server.start_listen_for_moderators()
 
+
+ModeratorsManagment().create_user('admin', '1234', 1)
+ModeratorsManagment().create_user('admin2', '1234', 0)
+

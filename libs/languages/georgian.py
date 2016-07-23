@@ -33,11 +33,13 @@ tr = {
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
-    'BOTTOM_MADE_BY':               u'ავტორი: ',
-    'BOTTOM_STATUS':                u'სტატუსი: ',
-    'BOTTOM_IPV4':                  u'მისამართი: ',
-    'BOTTOM_PORT':                  u'პორტი: ',
-    'BOTTOM_SERVERS_TOTAL':         u'კლიენტების რაოდენობა: ',
+    'BOTTOM_LOGIN_STATUS':                  u'არა ავტორიზირებული',
+    'BOTTOM_LOGIN_STATUS_ADMINISTRATOR':    u'ავტორიზირებული როგორც ადმინისტრატორი',
+    'BOTTOM_LOGIN_STATUS_MODERATOR':        u'ავტორიზირებული როგორც მოდერატორი',
+    'BOTTOM_STATUS':                        u'სტატუსი: ',
+    'BOTTOM_IPV4':                          u'მისამართი: ',
+    'BOTTOM_PORT':                          u'პორტი: ',
+    'BOTTOM_SERVERS_TOTAL':                 u'კლიენტების რაოდენობა: ',
     # END BOTTOM
 
     # MENU

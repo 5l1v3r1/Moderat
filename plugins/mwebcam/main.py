@@ -31,7 +31,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.alwaysTopButton.clicked.connect(self.always_top)
 
     def get_screenshot(self):
-        screen_dict = get(self.sock, 'getWebcam', 'webcamera')
+        screen_dict = get(self.sock, 'getWebcam', self.socket)
         try:
             camera_info = ast.literal_eval(screen_dict)
             im = Image.fromstring('RGB', (int(camera_info['width']), int(camera_info['height'])),

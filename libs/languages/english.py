@@ -33,11 +33,13 @@ tr = {
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
-    'BOTTOM_MADE_BY':               u'Made By: ',
-    'BOTTOM_STATUS':                u'Status: ',
-    'BOTTOM_IPV4':                  u'IP Address: ',
-    'BOTTOM_PORT':                  u'PORT: ',
-    'BOTTOM_SERVERS_TOTAL':         u'Clients Total: ',
+    'BOTTOM_LOGIN_STATUS':                  u'Not Authorized: ',
+    'BOTTOM_LOGIN_STATUS_ADMINISTRATOR':    u'Logged In As ADMINISTRATOR',
+    'BOTTOM_LOGIN_STATUS_MODERATOR':        u'Logged In As MODERATOR',
+    'BOTTOM_STATUS':                        u'Status: ',
+    'BOTTOM_IPV4':                          u'IP Address: ',
+    'BOTTOM_PORT':                          u'PORT: ',
+    'BOTTOM_SERVERS_TOTAL':                 u'Clients Total: ',
     # END BOTTOM
 
     # MENU

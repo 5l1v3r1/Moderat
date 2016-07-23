@@ -114,32 +114,32 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_activeWindowTitle = 10
 
         # initialize servers table columns width
-        self.serversTable.setColumnWidth(self.index_of_moderator, 100)
-        self.serversTable.setColumnWidth(self.index_of_ipAddress, 100)
-        self.serversTable.setColumnWidth(self.index_of_alias, 60)
-        self.serversTable.setColumnWidth(self.index_of_socket, 50)
-        self.serversTable.setColumnWidth(self.index_of_os, 90)
-        self.serversTable.setColumnWidth(self.index_of_user, 90)
-        self.serversTable.setColumnWidth(self.index_of_privs, 110)
-        self.serversTable.setColumnWidth(self.index_of_lock, 100)
-        self.serversTable.setColumnWidth(self.index_of_microphone, 80)
-        self.serversTable.setColumnWidth(self.index_of_webcamera, 80)
+        self.clientsTable.setColumnWidth(self.index_of_moderator, 100)
+        self.clientsTable.setColumnWidth(self.index_of_ipAddress, 100)
+        self.clientsTable.setColumnWidth(self.index_of_alias, 60)
+        self.clientsTable.setColumnWidth(self.index_of_socket, 50)
+        self.clientsTable.setColumnWidth(self.index_of_os, 90)
+        self.clientsTable.setColumnWidth(self.index_of_user, 90)
+        self.clientsTable.setColumnWidth(self.index_of_privs, 110)
+        self.clientsTable.setColumnWidth(self.index_of_lock, 100)
+        self.clientsTable.setColumnWidth(self.index_of_microphone, 80)
+        self.clientsTable.setColumnWidth(self.index_of_webcamera, 80)
 
         # Init Filter Widgets
         self.init_filters()
 
         # Hide Moderators Columns
-        self.serversTable.setColumnHidden(self.index_of_moderator, True)
-        self.offlineServersTable.setColumnHidden(0, True)
+        self.clientsTable.setColumnHidden(self.index_of_moderator, True)
+        self.offlineClientsTable.setColumnHidden(0, True)
 
         # servers table double click trigger
-        self.serversTable.doubleClicked.connect(self.unlock_client)
+        self.clientsTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu
-        self.serversTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self.serversTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
+        self.clientsTable.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.connect(self.clientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
                      self.server_right_click_menu)
 
-        # self.serversTable.clicked.connect(self.get_preview)
+        # self.clientsTable.clicked.connect(self.get_preview)
 
         # Triggers
         self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
@@ -195,7 +195,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'title': '',
         }
 
-        self.serversTable.setRowCount(1)
+        self.clientsTable.setRowCount(1)
 
         # Moderators
         self.filter_moderator_line = QLineEdit()
@@ -206,7 +206,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_moderator_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_moderator_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_moderator, self.filter_moderator_line)
+        self.clientsTable.setCellWidget(0, self.index_of_moderator, self.filter_moderator_line)
 
         # Ip Address
         self.filter_ipaddress_line = QLineEdit()
@@ -217,7 +217,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_ipaddress_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_ipaddress_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_ipAddress, self.filter_ipaddress_line)
+        self.clientsTable.setCellWidget(0, self.index_of_ipAddress, self.filter_ipaddress_line)
 
         # Alias
         self.filter_alias_line = QLineEdit()
@@ -228,7 +228,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_alias_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_alias_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_alias, self.filter_alias_line)
+        self.clientsTable.setCellWidget(0, self.index_of_alias, self.filter_alias_line)
 
         # Socket
         self.filter_socket_line = QLineEdit()
@@ -239,7 +239,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_socket_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_socket_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_socket, self.filter_socket_line)
+        self.clientsTable.setCellWidget(0, self.index_of_socket, self.filter_socket_line)
 
         # Os
         self.filter_os_line = QLineEdit()
@@ -250,7 +250,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_os_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_os_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_os, self.filter_os_line)
+        self.clientsTable.setCellWidget(0, self.index_of_os, self.filter_os_line)
 
         # User
         self.filter_user_line = QLineEdit()
@@ -261,7 +261,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_user_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_user_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_user, self.filter_user_line)
+        self.clientsTable.setCellWidget(0, self.index_of_user, self.filter_user_line)
 
         # privs
         self.filter_privs_combo = QComboBox()
@@ -275,7 +275,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-right: none;\n'
                                                  'border-color: #2c3e50;')
         self.filter_privs_combo.currentIndexChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_privs, self.filter_privs_combo)
+        self.clientsTable.setCellWidget(0, self.index_of_privs, self.filter_privs_combo)
 
         # protection
         self.filter_lock_combo = QComboBox()
@@ -289,7 +289,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-right: none;\n'
                                                  'border-color: #2c3e50;')
         self.filter_lock_combo.currentIndexChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_lock, self.filter_lock_combo)
+        self.clientsTable.setCellWidget(0, self.index_of_lock, self.filter_lock_combo)
 
         # Audio
         self.filter_audio_combo = QComboBox()
@@ -303,7 +303,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-right: none;\n'
                                                  'border-color: #2c3e50;')
         self.filter_audio_combo.currentIndexChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_microphone, self.filter_audio_combo)
+        self.clientsTable.setCellWidget(0, self.index_of_microphone, self.filter_audio_combo)
 
         # Camera
         self.filter_camera_combo = QComboBox()
@@ -317,7 +317,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-right: none;\n'
                                                  'border-color: #2c3e50;')
         self.filter_camera_combo.currentIndexChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_webcamera, self.filter_camera_combo)
+        self.clientsTable.setCellWidget(0, self.index_of_webcamera, self.filter_camera_combo)
 
         # Active Window Title
         self.filter_title_line = QLineEdit()
@@ -327,7 +327,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_title_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_title_line.textChanged.connect(self.filter_clients)
-        self.serversTable.setCellWidget(0, self.index_of_activeWindowTitle, self.filter_title_line)
+        self.clientsTable.setCellWidget(0, self.index_of_activeWindowTitle, self.filter_title_line)
 
     def filter_clients(self):
         self.filters = {
@@ -354,26 +354,27 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clientsTabs.setTabText(1, _('CLIENTS_TAB_OFFLINE'))
 
         # HEADERS
-        self.serversTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
-        self.serversTable.horizontalHeaderItem(1).setText(_('HEADER_IP_ADDRESS'))
-        self.serversTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
-        self.serversTable.horizontalHeaderItem(3).setText(_('HEADER_SOCKET'))
-        self.serversTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
-        self.serversTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
-        self.serversTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
-        self.serversTable.horizontalHeaderItem(7).setText(_('HEADER_LOCK'))
-        self.serversTable.horizontalHeaderItem(8).setText(_('HEADER_MIC'))
-        self.serversTable.horizontalHeaderItem(9).setText(_('HEADER_CAM'))
-        self.serversTable.horizontalHeaderItem(10).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
+        self.clientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
+        self.clientsTable.horizontalHeaderItem(1).setText(_('HEADER_IP_ADDRESS'))
+        self.clientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
+        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_SOCKET'))
+        self.clientsTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
+        self.clientsTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
+        self.clientsTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
+        self.clientsTable.horizontalHeaderItem(7).setText(_('HEADER_LOCK'))
+        self.clientsTable.horizontalHeaderItem(8).setText(_('HEADER_MIC'))
+        self.clientsTable.horizontalHeaderItem(9).setText(_('HEADER_CAM'))
+        self.clientsTable.horizontalHeaderItem(10).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
 
-        self.offlineServersTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
-        self.offlineServersTable.horizontalHeaderItem(1).setText(_('HEADER_ID'))
-        self.offlineServersTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
-        self.offlineServersTable.horizontalHeaderItem(3).setText(_('HEADER_IP_ADDRESS'))
-        self.offlineServersTable.horizontalHeaderItem(4).setText(_('HEADER_LAST_ONLINE'))
+        self.offlineClientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
+        self.offlineClientsTable.horizontalHeaderItem(1).setText(_('HEADER_ID'))
+        self.offlineClientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
+        self.offlineClientsTable.horizontalHeaderItem(3).setText(_('HEADER_IP_ADDRESS'))
+        self.offlineClientsTable.horizontalHeaderItem(4).setText(_('HEADER_LAST_ONLINE'))
         # END HEADERS
 
         # BOTTOM
+        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
         self.clientStatusLabel.setText(_('BOTTOM_STATUS'))
         self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
         self.portTextLabel.setText(_('BOTTOM_PORT'))
@@ -436,6 +437,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                         # Gui
                         self.actionStopListen_for_connections.setDisabled(False)
                         self.actionStartListen_for_connections.setDisabled(True)
+
                         # Status Change
                         self.statusLabel.setText('Online')
                         self.statusLabel.setStyleSheet('color: #1abc9c;')
@@ -449,19 +451,21 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             return
 
     def enable_administrator(self):
-        self.serversTable.showColumn(self.index_of_moderator)
-        self.offlineServersTable.showColumn(0)
+        self.clientsTable.showColumn(self.index_of_moderator)
+        self.offlineClientsTable.showColumn(0)
+        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_ADMINISTRATOR'))
 
     def disable_administrator(self):
-        self.serversTable.setColumnHidden(self.index_of_moderator, True)
-        self.offlineServersTable.setColumnHidden(0, True)
+        self.clientsTable.setColumnHidden(self.index_of_moderator, True)
+        self.offlineClientsTable.setColumnHidden(0, True)
+        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_MODERATOR'))
 
     def disconnect_from_server(self):
         # Clear Content
-        self.serversTable.clearContents()
-        self.serversTable.setRowCount(1)
-        self.offlineServersTable.clearContents()
-        self.offlineServersTable.setRowCount(0)
+        self.clientsTable.clearContents()
+        self.clientsTable.setRowCount(1)
+        self.offlineClientsTable.clearContents()
+        self.offlineClientsTable.setRowCount(0)
 
         self.acceptthreadState = False
 
@@ -480,6 +484,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Hide Moderator Column
         self.disable_administrator()
+
+        # Set Login Status to None
+        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
 
     def check_servers(self, session_id):
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -512,7 +519,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 pass
 
     def set_bg_preview(self, client):
-        self.serversTable.setToolTip(
+        self.clientsTable.setToolTip(
             '<p align="center" style="background-color: #2c3e50;color: #c9f5f7;">%s\'s Preview<br><img src="%s" width="400"></p>' % (
                 self.socks[client]['ip_address'], os.path.join(temp, 'bg.png')))
 
@@ -532,9 +539,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         client = self.current_client()
         if client:
             args = {
-                'sock': self.socks[client]['sock'],
-                'socket': self.socks[client]['socket'],
-                'ipAddress': self.socks[client]['ip_address'],
+                'sock': self.connection_socket,
+                'socket': self.streaming_socks[client]['socket'],
+                'ipAddress': self.streaming_socks[client]['ip_address'],
                 'assets': assets,
             }
             self.camera_preview_dialog = mwebcam.mainPopup(args)
@@ -569,7 +576,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
 
         # Arange Clients Table
-        self.serversTable.setRowCount(len(online_clients) + 1)
+        self.clientsTable.setRowCount(len(online_clients) + 1)
 
         try:
             for index, obj in enumerate(online_clients):
@@ -578,18 +585,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item = QTableWidgetItem(online_clients[obj]['moderator'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 item.setTextColor(QColor('#f1c40f'))
-                self.serversTable.setItem(index + 1, self.index_of_moderator, item)
+                self.clientsTable.setItem(index + 1, self.index_of_moderator, item)
 
                 # add ip address & county flag
                 ip_address = online_clients[obj]['ip_address']
                 item = QTableWidgetItem(ip_address)
                 item.setIcon(QIcon(get_ip_location(ip_address)))
-                self.serversTable.setItem(index + 1, self.index_of_ipAddress, item)
+                self.clientsTable.setItem(index + 1, self.index_of_ipAddress, item)
 
                 # add alias if avaiable
                 alias = online_clients[obj]['alias']
                 item = QTableWidgetItem(alias)
-                self.serversTable.setItem(index + 1, self.index_of_alias, item)
+                self.clientsTable.setItem(index + 1, self.index_of_alias, item)
 
                 # add socket number
                 socket_value = str(online_clients[obj]['socket'])
@@ -597,17 +604,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 if socket_value == 'OFFLINE':
                     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.serversTable.setItem(index + 1, self.index_of_socket, item)
+                self.clientsTable.setItem(index + 1, self.index_of_socket, item)
 
                 # add os version
                 item = QTableWidgetItem(online_clients[obj]['os'])
                 item.setIcon(QIcon(os.path.join(assets, 'windows.png')))
-                self.serversTable.setItem(index + 1, self.index_of_os, item)
+                self.clientsTable.setItem(index + 1, self.index_of_os, item)
 
                 # add server user
                 item = QTableWidgetItem(online_clients[obj]['user'])
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.serversTable.setItem(index + 1, self.index_of_user, item)
+                self.clientsTable.setItem(index + 1, self.index_of_user, item)
 
                 # add user privileges
                 try:
@@ -621,7 +628,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'user.png')))
                 item.setText(privs_status)
-                self.serversTable.setItem(index + 1, self.index_of_privs, item)
+                self.clientsTable.setItem(index + 1, self.index_of_privs, item)
 
                 # add server lock status
                 lock_status = _('INFO_LOCKED') if online_clients[obj]['protection'] == 'False' else _(
@@ -633,7 +640,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 else:
                     item.setTextColor(QColor('#2ecc71'))
                     item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
-                self.serversTable.setItem(index + 1, self.index_of_lock, item)
+                self.clientsTable.setItem(index + 1, self.index_of_lock, item)
 
                 # add input device
                 item = QTableWidgetItem()
@@ -643,7 +650,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'mic_yes.png')))
                     item.setText(_('INFO_YES'))
-                self.serversTable.setItem(index + 1, self.index_of_microphone, item)
+                self.clientsTable.setItem(index + 1, self.index_of_microphone, item)
 
                 # add webcam device
                 item = QTableWidgetItem()
@@ -653,40 +660,40 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 else:
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera.png')))
                     item.setText(_('INFO_YES'))
-                self.serversTable.setItem(index + 1, self.index_of_webcamera, item)
+                self.clientsTable.setItem(index + 1, self.index_of_webcamera, item)
 
                 # add active windows title
                 item = QTableWidgetItem(online_clients[obj]['activewindowtitle'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(QColor('#1abc9c'))
-                self.serversTable.setItem(index + 1, self.index_of_activeWindowTitle, item)
+                self.clientsTable.setItem(index + 1, self.index_of_activeWindowTitle, item)
 
         except RuntimeError:
             pass
 
-        self.offlineServersTable.setRowCount(len(offline_clients))
+        self.offlineClientsTable.setRowCount(len(offline_clients))
         try:
             for index, obj in enumerate(offline_clients):
                 item = QTableWidgetItem(offline_clients[obj]['moderator'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 item.setTextColor(QColor('#f1c40f'))
-                self.offlineServersTable.setItem(index, 0, item)
+                self.offlineClientsTable.setItem(index, 0, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['id'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineServersTable.setItem(index, 1, item)
+                self.offlineClientsTable.setItem(index, 1, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['alias'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineServersTable.setItem(index, 2, item)
+                self.offlineClientsTable.setItem(index, 2, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['ip_address'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineServersTable.setItem(index, 3, item)
+                self.offlineClientsTable.setItem(index, 3, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['last_online'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                self.offlineServersTable.setItem(index, 4, item)
+                self.offlineClientsTable.setItem(index, 4, item)
 
         except RuntimeError:
             pass
@@ -697,7 +704,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def unlock_client(self):
         while 1:
             try:
-                if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == _(
+                if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _(
                         'INFO_LOCKED'):
                     client = self.current_client()
                     if client:
@@ -727,7 +734,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def update_main_menu(self):
         try:
-            if self.serversTable.item(self.serversTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
+            if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
                 self.actionUnlock_Client.setDisabled(False)
                 self.actionSet_Alias.setDisabled(False)
                 self.actionRun_As_Admin.setDisabled(False)
@@ -791,19 +798,19 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             return False
 
     def server_right_click_menu(self, point):
-        server_index = self.serversTable.currentRow()
+        server_index = self.clientsTable.currentRow()
         server_menu = QMenu(self)
         server_options_menu = QMenu(_('RM_CLIENT_OPTIONS'), self)
         server_options_menu.setIcon(QIcon(os.path.join(assets, 'settings.png')))
 
-        if self.serversTable.selectedItems():
+        if self.clientsTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
             server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'),
                                   self.run_as_admin)
             server_menu.addSeparator()
 
-            if self.serversTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
+            if self.clientsTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _('RM_SHELL'),
                                       lambda: self.run_plugin('shellMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
@@ -847,12 +854,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 server_menu.addMenu(administrator_menu)
 
-            server_menu.exec_(self.serversTable.mapToGlobal(point))
+            server_menu.exec_(self.clientsTable.mapToGlobal(point))
 
     # get item
     def current_client(self):
         try:
-            return int(self.serversTable.item(self.serversTable.currentRow(), self.index_of_socket).text())
+            return int(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_socket).text())
         except AttributeError:
             return False
 

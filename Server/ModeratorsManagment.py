@@ -78,3 +78,4 @@ class ModeratorsManagment:
             priv = self.cur.execute('SELECT moderator_privs FROM Moderators WHERE moderator_id=?', (moderator_id,))
             self.conn.commit()
             return priv.fetchone()[0]
+

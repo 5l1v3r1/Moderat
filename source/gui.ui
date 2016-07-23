@@ -121,6 +121,13 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
          <number>2</number>
         </property>
         <item>
+         <widget class="QLabel" name="loginStatusLabel">
+          <property name="text">
+           <string>Not Authorized</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -344,7 +351,7 @@ QTabBar::tab:!selected {
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QTableWidget" name="serversTable">
+         <widget class="QTableWidget" name="clientsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
@@ -492,7 +499,7 @@ color: #cff7f8;
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QTableWidget" name="offlineServersTable">
+         <widget class="QTableWidget" name="offlineClientsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>

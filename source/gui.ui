@@ -369,7 +369,7 @@ QTabBar::tab:!selected {
 	border-color: #2c3e50;
 }
 
-QTableWidget#serversTable {
+QTableWidget#clientsTable {
 	background-position: center;
     border: 1px ridge;
     padding: 5px;
@@ -381,7 +381,7 @@ QTableWidget#serversTable {
 	background-image: url(assets/bg.png);
 }
 
-QTableWidget#serversTable:item:selected {
+QTableWidget#clientsTable:item:selected {
 background-color: #2c3e50;
 color: #cff7f8;
 }</string>
@@ -517,7 +517,7 @@ color: #cff7f8;
 	border-color: #2c3e50;
 }
 
-QTableWidget#offlineServersTable {
+QTableWidget#offlineClientsTable {
 	background-position: center;
     border: 1px ridge;
     padding: 5px;
@@ -529,7 +529,7 @@ QTableWidget#offlineServersTable {
 	background-image: url(assets/bg.png);
 }
 
-QTableWidget#offlineServersTable:item:selected {
+QTableWidget#offlineClientsTable:item:selected {
 background-color: #2c3e50;
 color: #cff7f8;
 }</string>

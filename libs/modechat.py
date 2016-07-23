@@ -31,7 +31,6 @@ def get(Sock, cmd, socket_id, splitter='%:::%', end='[ENDOFMESSAGE]'):
                     return ''
             else:
                 l = Sock.recv(1024)
-                continue
         return message[:-len(end)].decode('utf-8')
     except socket.error:
         return ''

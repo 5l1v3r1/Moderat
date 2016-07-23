@@ -200,7 +200,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'id': '',
             'alias': '',
             'ip_address': '',
-            'last_online': '',
         }
 
         self.clientsTable.setRowCount(1)
@@ -379,21 +378,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.filter_ipaddress_line_offline.setStyleSheet('background-color: #2c3e50;\n'
                                                  'border: 1px ridge;\n'
                                                  'border-top: none;\n'
-                                                 'border-right: none;\n'
                                                  'border-color: #2c3e50;')
         self.filter_ipaddress_line_offline.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_ipaddress_line_offline.textChanged.connect(self.filter_offline_clinets)
         self.offlineClientsTable.setCellWidget(0, 3, self.filter_ipaddress_line_offline)
-
-        # Offline Last Online
-        self.filter_lastonline_date = QDateEdit()
-        self.filter_lastonline_date.setStyleSheet('background-color: #2c3e50;\n'
-                                                 'border: 1px ridge;\n'
-                                                 'border-top: none;\n'
-                                                 'border-right: none;\n'
-                                                 'border-color: #2c3e50;')
-        #self.filter_lastonline_date.currentIndexChanged.connect(self.filter_clients)
-        self.offlineClientsTable.setCellWidget(0, 4, self.filter_lastonline_date)
 
     def filter_clients(self):
         self.filters = {
@@ -416,9 +404,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'id': str(self.filter_id_line_offline.text()),
             'alias': str(self.filter_alias_line_offline.text()),
             'ip_address': str(self.filter_ipaddress_line_offline.text()),
-            'last_online': str(self.filter_lastonline_date.date().toPyDate()),
         }
-        print self.offline_filters
 
     def set_language(self):
 
@@ -630,7 +616,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         print online_clients
         offline_clients = {}
 
-        # Split Clients#
+        # Split Clients
         for index, key in enumerate(self.streaming_socks):
             if self.streaming_socks[key]['status']:
                 if self.filters['moderator'] in self.streaming_socks[key]['moderator'] and \
@@ -646,7 +632,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.filters['title'] in self.streaming_socks[key]['activewindowtitle']:
                     online_clients[index] = self.streaming_socks[key]
             else:
-                offline_clients[index] = self.streaming_socks[key]
+                if self.offline_filters['moderator'] in self.streaming_socks[key]['moderator'] and \
+                                self.offline_filters['id'] in self.streaming_socks[key]['id'] and \
+                                self.offline_filters['alias'] in self.streaming_socks[key]['alias'] and \
+                                self.offline_filters['ip_address'] in self.streaming_socks[key]['ip_address']:
+                    offline_clients[index] = self.streaming_socks[key]
 
         print online_clients
 
@@ -747,29 +737,29 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except RuntimeError:
             pass
 
-        self.offlineClientsTable.setRowCount(len(offline_clients))
+        self.offlineClientsTable.setRowCount(len(offline_clients) + 1)
         try:
             for index, obj in enumerate(offline_clients):
                 item = QTableWidgetItem(offline_clients[obj]['moderator'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 item.setTextColor(QColor('#f1c40f'))
-                self.offlineClientsTable.setItem(index, 0, item)
+                self.offlineClientsTable.setItem(index + 1, 0, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['id'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineClientsTable.setItem(index, 1, item)
+                self.offlineClientsTable.setItem(index + 1, 1, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['alias'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineClientsTable.setItem(index, 2, item)
+                self.offlineClientsTable.setItem(index + 1, 2, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['ip_address'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.offlineClientsTable.setItem(index, 3, item)
+                self.offlineClientsTable.setItem(index + 1, 3, item)
 
                 item = QTableWidgetItem(offline_clients[obj]['last_online'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                self.offlineClientsTable.setItem(index, 4, item)
+                self.offlineClientsTable.setItem(index + 1, 4, item)
 
         except RuntimeError:
             pass
@@ -925,6 +915,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_menu.addSeparator()
 
                 administrator_menu = QMenu(_('ADMINISTRATOR_RM_ADMINISTRATOR'), self)
+                administrator_menu.setIcon(QIcon(os.path.join(assets, 'administration.png')))
+
                 administrator_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')),
                                              _('ADMINISTRATOR_RM_SET_MODERATOR'), self.administrator_set_moderator)
 
@@ -1023,7 +1015,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.builder_form.show()
 
     def administrator_set_moderator(self):
-        pass
+        client = self.current_client()
+        if client:
+            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME') + self.USERNAME, QLineEdit.Normal)
+            if ok:
+                get(self.connection_socket, 'setModerator ' + str(text), client)
 
     def closeEvent(self, event):
         self.acceptthreadState = False

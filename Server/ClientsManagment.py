@@ -40,6 +40,10 @@ class ClientsManagment:
         self.conn.commit()
         return 'Success'
 
+    def set_moderator(self, client_id, moderator_id):
+        self.cur.execute('UPDATE Clients SET moderator_id=? WHERE client_id=?', (moderator_id, client_id))
+        self.conn.commit()
+        return 'Success'
 
     def create_client(self, moderator_id, client_id, client_ip):
         check_clients = self.cur.execute('SELECT * FROM Clients WHERE client_id=?', (client_id,))

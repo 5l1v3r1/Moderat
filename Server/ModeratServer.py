@@ -230,11 +230,13 @@ class ModeratServer:
                                 output = ClientsManagment().set_alias(client_socket, data.split()[-1])
 
                             # Administrator Commands
+                            elif data.startswith('setModerator ') and privs == 1:
+                                moderator_id = data.split()[-1]
+                                output = ClientsManagment().set_moderator(self.socks[int(client_socket)]['id'], moderator_id)
                             elif data == 'getModerators' and privs == 1:
                                 print 'getModerators'
                             elif data == 'getActiveModeratorSessions' and privs == 1:
                                 print 'getActiveModeratorSessions'
-
                             else:
                                 if len(data) != 0:
                                     output = self.command_all(data, client_socket)

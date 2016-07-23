@@ -980,13 +980,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             get(self.connection_socket, 'runasadmin', client)
 
     def terminate_client(self):
-        server = self.current_client()
-        if server:
+        client = self.current_client()
+        if client:
             warn = QMessageBox(QMessageBox.Question, _('TERMINATE_CONFIRM'), _('TERMINATE_TEXT'))
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
-                send(self.socks[server]['sock'], 'terminateServer', 'terminateserver')
+                send(self.connection_socket, 'terminateServer', str(client))
 
     def run_plugin(self, mode):
         client = self.current_client()

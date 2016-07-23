@@ -195,7 +195,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'title': '',
         }
 
+        self.offline_filters = {
+            'moderator': '',
+            'id': '',
+            'alias': '',
+            'ip_address': '',
+            'last_online': '',
+        }
+
         self.clientsTable.setRowCount(1)
+
+        self.offlineClientsTable.setRowCount(1)
 
         # Moderators
         self.filter_moderator_line = QLineEdit()
@@ -329,6 +339,62 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.filter_title_line.textChanged.connect(self.filter_clients)
         self.clientsTable.setCellWidget(0, self.index_of_activeWindowTitle, self.filter_title_line)
 
+        # OFFLINE Clinets
+
+        # Offline Moderators
+        self.filter_moderator_line_offline = QLineEdit()
+        self.filter_moderator_line_offline.setStyleSheet('background-color: #2c3e50;\n'
+                                                 'border: 1px ridge;\n'
+                                                 'border-top: none;\n'
+                                                 'border-right: none;\n'
+                                                 'border-color: #2c3e50;')
+        self.filter_moderator_line_offline.setPlaceholderText(_('FILTER_FILTER'))
+        self.filter_moderator_line_offline.textChanged.connect(self.filter_offline_clinets)
+        self.offlineClientsTable.setCellWidget(0, 0, self.filter_moderator_line_offline)
+
+        # Offline ID
+        self.filter_id_line_offline = QLineEdit()
+        self.filter_id_line_offline.setStyleSheet('background-color: #2c3e50;\n'
+                                                 'border: 1px ridge;\n'
+                                                 'border-top: none;\n'
+                                                 'border-right: none;\n'
+                                                 'border-color: #2c3e50;')
+        self.filter_id_line_offline.setPlaceholderText(_('FILTER_FILTER'))
+        self.filter_id_line_offline.textChanged.connect(self.filter_offline_clinets)
+        self.offlineClientsTable.setCellWidget(0, 1, self.filter_id_line_offline)
+
+        # Offline ID
+        self.filter_alias_line_offline = QLineEdit()
+        self.filter_alias_line_offline.setStyleSheet('background-color: #2c3e50;\n'
+                                                 'border: 1px ridge;\n'
+                                                 'border-top: none;\n'
+                                                 'border-right: none;\n'
+                                                 'border-color: #2c3e50;')
+        self.filter_alias_line_offline.setPlaceholderText(_('FILTER_FILTER'))
+        self.filter_alias_line_offline.textChanged.connect(self.filter_offline_clinets)
+        self.offlineClientsTable.setCellWidget(0, 2, self.filter_alias_line_offline)
+
+        # Offline Ip Address
+        self.filter_ipaddress_line_offline = QLineEdit()
+        self.filter_ipaddress_line_offline.setStyleSheet('background-color: #2c3e50;\n'
+                                                 'border: 1px ridge;\n'
+                                                 'border-top: none;\n'
+                                                 'border-right: none;\n'
+                                                 'border-color: #2c3e50;')
+        self.filter_ipaddress_line_offline.setPlaceholderText(_('FILTER_FILTER'))
+        self.filter_ipaddress_line_offline.textChanged.connect(self.filter_offline_clinets)
+        self.offlineClientsTable.setCellWidget(0, 3, self.filter_ipaddress_line_offline)
+
+        # Offline Last Online
+        self.filter_lastonline_date = QDateEdit()
+        self.filter_lastonline_date.setStyleSheet('background-color: #2c3e50;\n'
+                                                 'border: 1px ridge;\n'
+                                                 'border-top: none;\n'
+                                                 'border-right: none;\n'
+                                                 'border-color: #2c3e50;')
+        #self.filter_lastonline_date.currentIndexChanged.connect(self.filter_clients)
+        self.offlineClientsTable.setCellWidget(0, 4, self.filter_lastonline_date)
+
     def filter_clients(self):
         self.filters = {
             'moderator': str(self.filter_moderator_line.text()),
@@ -343,6 +409,16 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'camera': str(self.filter_camera_combo.itemData(self.filter_camera_combo.currentIndex()).toPyObject()),
             'title': str(self.filter_title_line.text()),
         }
+
+    def filter_offline_clinets(self):
+        self.offline_filters = {
+            'moderator': str(self.filter_moderator_line_offline.text()),
+            'id': str(self.filter_id_line_offline.text()),
+            'alias': str(self.filter_alias_line_offline.text()),
+            'ip_address': str(self.filter_ipaddress_line_offline.text()),
+            'last_online': str(self.filter_lastonline_date.date().toPyDate()),
+        }
+        print self.offline_filters
 
     def set_language(self):
 

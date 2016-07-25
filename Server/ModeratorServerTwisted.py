@@ -1,5 +1,9 @@
 from twisted.internet.protocol import Protocol, ServerFactory
-from twisted.internet import reactor, task
+from twisted.internet import reactor
+
+from ClientsManagment import ClientsManagment
+from ModeratorsManagment import ModeratorsManagment
+from ModeratorsSessions import SessionsManagment
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -48,7 +52,7 @@ class ModeratServerProtocol(Protocol):
             self.client_commands(command['payload'], command['mode'])
         # Switch to moderator commands
         elif command['from'] == 'moderator':
-            self.moderator_commands(command['payload'], command['mode'])
+            self.moderator_commands(command)
 
     def client_commands(self, payload, mode):
 
@@ -57,20 +61,23 @@ class ModeratServerProtocol(Protocol):
 
             # If client has no key generate new one and send
             if payload == 'noKey':
-                key = id_generator()
-                # TODO: Write Client db
-                self.send_message_to_client(self, key, 'clientInitializing')
+                client_id = id_generator()
+
+                self.send_message_to_client(self, client_id, 'clientInitializing')
 
             # else get key from client
             else:
-                key = payload
-                # TODO: Check DB
-                self.send_message_to_client(self, key, 'clientInitializing')
+                client_id = payload
+                self.send_message_to_client(self, client_id, 'clientInitializing')
             self.factory.clients[payload] = {
-                'id': key,
+                'id': client_id,
                 'sock': self,
             }
             log.info('[*] New Client from %s' % self.transport.getHost())
+
+            # Create Client DB Entry
+            self.factory.ManageClients.create_client('admin', client_id, self.transport.getHost().host)
+            self.factory.ManageClients.set_client_online(client_id)
 
         # Clients Status Checker
         elif mode == 'infoChecker':
@@ -90,8 +97,39 @@ class ModeratServerProtocol(Protocol):
             else:
                 pass
 
-    def moderator_commands(self, payload, client_id):
-        print 'send'
+    def moderator_commands(self, data):
+
+        if data['mode'] == 'moderatorInitializing':
+
+            # Initializing Moderator
+            log.info('Initializing Moderator')
+            if data['payload'].startswith('auth '):
+                if len(data['payload'].split()) == 3:
+                    command, username, password = data['payload'].split()
+
+                    # If Login Success
+                    if self.factory.ManageModerators.login_user(username, password):
+
+                        privileges = self.factory.ManageModerators.get_privs(username)
+
+                        log.info('Moderator (%s) Login Success' % username)
+                        self.send_message_to_moderator(self, 'loginSuccess %s' % privileges, 'moderatorInitializing')
+
+                        # Create Session For Moderator and Save
+                        log.info('Create Session for Moderator (%s)' % data['session_id'])
+                        self.factory.moderators[data['session_id']] = {'username': username}
+
+                    # if Login Not Success
+                    else:
+                        log.warning('Moderator (%s) Login Error' % username)
+                        self.send_message_to_moderator(self, 'loginError', 'moderatorInitializing')
+
+            elif data['mode'] == 'getClients':
+                log.info('Get Clients For (%s)' % self.factory.moderators[data['session_id']]['username'])
+                if self.factory.moderators[data['session_id']] == data['session_id']:
+                    clients = self.factory.ManageClients.get_clients(self.factory.moderators[data['session_id']]['username'])
+                    print clients
+
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
         return ast.literal_eval(data[:-len(end)].decode('utf-8'))
@@ -106,8 +144,14 @@ class ModeratServerProtocol(Protocol):
         }
         client.transport.write(str(message)+end)
 
-    def send_message_to_moderator(self, moderator, message):
-        self.factory.clients[moderator]['sock'].transport.write(str(message))
+    def send_message_to_moderator(self, moderator, message, mode, _from='server', end='[ENDOFMESSAGE]'):
+        message = {
+            'payload': message,
+            'mode': mode,
+            'from': _from,
+            'to': '',
+        }
+        moderator.transport.write(str(message)+end)
 
 
 class ModeratServerFactory(ServerFactory):
@@ -116,8 +160,13 @@ class ModeratServerFactory(ServerFactory):
 
     protocol = ModeratServerProtocol
 
+    ManageClients = ClientsManagment()
+    ManageModerators = ModeratorsManagment()
+    ManageSessions = SessionsManagment()
+
     def __init__(self):
         self.clients = {}
+        self.moderators = {}
 
 
 reactor.listenTCP(CLIENTS_PORT, ModeratServerFactory())

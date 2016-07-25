@@ -76,7 +76,6 @@ class ModeratServerProtocol(Protocol):
             clients[client_id] = {
                 'sock': self,
             }
-            print 'INIT CLIENT ', clients
             log.info('[*] New Client from %s' % self.transport.getHost())
 
             # Create Client DB Entry
@@ -85,7 +84,6 @@ class ModeratServerProtocol(Protocol):
 
         # Clients Status Checker
         elif mode == 'infoChecker':
-            print 'CHECKER', clients
             if clients.has_key(payload['key']):
                 clients[payload['key']] = {
                     'ip_address':           self.transport.getHost().host,

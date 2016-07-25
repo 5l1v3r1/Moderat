@@ -35,6 +35,16 @@ class ClientsManagment:
         self.conn.commit()
         return alias.fetchone()[0]
 
+    def get_ip_address(self, client_id):
+        alias = self.cur.execute('SELECT client_ip FROM Clients WHERE client_id=?', (client_id,))
+        self.conn.commit()
+        return alias.fetchone()[0]
+
+    def get_last_online(self, client_id):
+        alias = self.cur.execute('SELECT last_connected FROM Clients WHERE client_id=?', (client_id,))
+        self.conn.commit()
+        return alias.fetchone()[0]
+
     def set_alias(self, client_id, client_alias):
         self.cur.execute('UPDATE Clients SET client_alias=? WHERE client_id=?', (client_alias, client_id))
         self.conn.commit()

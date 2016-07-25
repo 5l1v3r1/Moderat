@@ -1,9 +1,30 @@
 from twisted.internet.protocol import Protocol, ServerFactory
 from twisted.internet import reactor, task
 
+import logging
+from logging.handlers import RotatingFileHandler
+import sys
+
 import string
 import random
 import ast
+
+LOGFILE = 'server.log'
+CLIENTS_PORT = 4434
+MODERATORS_PORT = 1313
+
+# Initialize logger
+log = logging.getLogger('')
+log.setLevel(logging.DEBUG)
+format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setFormatter(format)
+log.addHandler(ch)
+
+fh = logging.handlers.RotatingFileHandler(LOGFILE, maxBytes=(1048576*5), backupCount=7)
+fh.setFormatter(format)
+log.addHandler(fh)
 
 
 def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
@@ -49,7 +70,7 @@ class ModeratServerProtocol(Protocol):
                 'id': key,
                 'sock': self,
             }
-            print '[*] New Client from %s' % self.transport.getHost()
+            log.info('[*] New Client from %s' % self.transport.getHost())
 
         # Clients Status Checker
         elif mode == 'infoChecker':
@@ -91,12 +112,16 @@ class ModeratServerProtocol(Protocol):
 
 class ModeratServerFactory(ServerFactory):
 
+    log.info('Moderat Server Started')
+
     protocol = ModeratServerProtocol
 
     def __init__(self):
         self.clients = {}
 
 
-reactor.listenTCP(4434, ModeratServerFactory())
-reactor.listenTCP(1313, ModeratServerFactory())
+reactor.listenTCP(CLIENTS_PORT, ModeratServerFactory())
+log.info('Set Clients Port to %s' % str(CLIENTS_PORT))
+reactor.listenTCP(MODERATORS_PORT, ModeratServerFactory())
+log.info('Set Moderators Port to %s' % str(MODERATORS_PORT))
 reactor.run()

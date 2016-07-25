@@ -680,7 +680,9 @@ def from_autostart():
 
         while 1:
             try:
-                mode, data = receive(s)
+                _data = receive(s)
+                print _data
+                mode, data = _data
                 print data, ' ', mode
                 if data == 'info':
                     send(s, pc_info(), mode)

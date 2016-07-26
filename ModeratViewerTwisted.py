@@ -772,7 +772,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def lock_client(self):
         client = self.current_client()
         if client:
-            send(self.connection_socket, 'lock', client)
+            data_send(self.connection_socket, 'lockClient', 'lockClient', self.session_id, client)
 
     def update_main_menu(self):
         try:
@@ -827,14 +827,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def has_microphone(self):
         client = self.current_client()
         if client:
-            if self.streaming_socks[client]['inputdevice'] != 'NoDevice':
+            if self.streaming_socks[client]['audio_device'] != 'NoDevice':
                 return True
             else:
                 return False
 
     def has_camera(self):
         client = self.current_client()
-        if self.streaming_socks[client]['webcamdevice'] != 'NoDevice':
+        if self.streaming_socks[client]['webcamera_device'] != 'NoDevice':
             return True
         else:
             return False

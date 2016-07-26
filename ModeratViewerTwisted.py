@@ -477,28 +477,25 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def connect_to_server(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            session_id = id_generator(size=24)
+            self.session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
             if data_receive(self.connection_socket)['payload'] == 'connectSuccess':
                 while 1:
                     text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD') + self.USERNAME,
                                                     QLineEdit.Password)
                     if ok:
-                        data = data_get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), 'moderatorInitializing', session_id)
-                        print data
+                        data = data_get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), 'moderatorInitializing', self.session_id)
                         if data['mode'] == 'moderatorInitializing' and data['payload'].startswith('loginSuccess '):
 
                             # Get Privileges
                             self.privs = int(data['payload'].split()[-1])
                             if self.privs == 1:
                                 self.enable_administrator()
-                                print 'admin enabled'
                             elif self.privs == 0:
-                                print 'admin disabled'
                                 self.disable_administrator()
 
                             self.acceptthreadState = True
-                            self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
+                            self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(self.session_id,))
                             self.servers_checker_thread.start()
 
                             # Gui
@@ -563,9 +560,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             while self.acceptthreadState:
                 try:
                     data = data_get(self.checker_socket, 'getClients', 'getClients', session_id)
-                    print data
                     self.streaming_socks = data['payload']
-                    print self.streaming_socks
                     self.emit(SIGNAL('updateTable()'))
                     time.sleep(3)
                 except socket.error:
@@ -575,24 +570,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.disconnect_from_server()
                     self.acceptthreadState = False
 
-    def get_preview(self):
-        client = self.current_client()
-        if client:
-            try:
-                screen_dict = get(self.streaming_socks[client]['sock'], 'getScreen', 'screenshot')
-                screen_info = ast.literal_eval(screen_dict)
-                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
-                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
-                screen_bits = im.convert('RGBA')
-                screen_bits.save(os.path.join(temp, 'bg.png'), 'png')
-                self.set_bg_preview(client)
-            except SyntaxError:
-                pass
-
-    def set_bg_preview(self, client):
-        self.clientsTable.setToolTip(
-            '<p align="center" style="background-color: #2c3e50;color: #c9f5f7;">%s\'s Preview<br><img src="%s" width="400"></p>' % (
-                self.socks[client]['ip_address'], os.path.join(temp, 'bg.png')))
 
     def get_desktop_preview(self):
         client = self.current_client()
@@ -775,29 +752,22 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def unlock_client(self):
         while 1:
-            try:
-                if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _(
-                        'INFO_LOCKED'):
-                    client = self.current_client()
-                    if client:
-                        text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'),
-                                                        QLineEdit.Password)
-                        if ok:
-                            _hash = hashlib.md5()
-                            try:
-                                _hash.update(str(text))
-                                answer = get(self.connection_socket, _hash.hexdigest(), client)
-                                if 'iamactive' in answer:
-                                    break
-                            except UnicodeEncodeError:
-                                pass
-
-                        else:
+            client = self.current_client()
+            if client:
+                text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
+                if ok:
+                    _hash = hashlib.md5()
+                    try:
+                        _hash.update(str(text))
+                        answer = data_get(self.connection_socket, 'unlockClient %s' % _hash.hexdigest(), 'unlockClient', self.session_id, client)
+                        if answer['mode'] == 'loginSuccess':
                             break
+                        elif answer['mode'] == 'notAuthorized':
+                            continue
+                    except UnicodeEncodeError:
+                        pass
                 else:
                     break
-            except AttributeError:
-                break
 
     def lock_client(self):
         client = self.current_client()
@@ -933,7 +903,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     # get item
     def current_client(self):
         try:
-            return int(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_socket).text())
+            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_socket).text())
         except AttributeError:
             return False
 

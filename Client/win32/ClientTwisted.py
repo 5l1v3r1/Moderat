@@ -65,7 +65,7 @@ def check_info():
 
 def get_key():
     if os.path.exists('info.nfo'):
-        key_output = open('about.nfo', 'r').read()
+        key_output = open('info.nfo', 'r').read()
         return key_output
     else:
         return ''
@@ -73,7 +73,7 @@ def get_key():
 
 def set_key(key):
     global ID
-    key_input_file = open('about.nfo', 'w')
+    key_input_file = open('info.nfo', 'w')
     key_input_file.write(key)
     key_input_file.close()
     ID = key
@@ -145,6 +145,8 @@ def send_info(sock):
 
 def reactor():
     global ACTIVE
+    global ID
+
     while 1:
         try:
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -162,11 +164,13 @@ def reactor():
                 if data['payload'] == 'connectSuccess':
                     key = get_key()
                     if len(key) != 0:
+                        ID = key
                         data_send(server_socket, key, 'clientInitializing')
                     else:
                         data_send(server_socket, 'noKey', 'clientInitializing')
                         new_key = data_receive(server_socket)
                         set_key(new_key['payload'])
+                        ID = new_key
 
                     info_sernder_thread = threading.Thread(target=send_info, args=(server_socket,))
                     info_sernder_thread.start()

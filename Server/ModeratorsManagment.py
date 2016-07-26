@@ -79,3 +79,6 @@ class ModeratorsManagment:
             self.conn.commit()
             return priv.fetchone()[0]
 
+
+ModeratorsManagment().create_user('admin', '1234', 1)
+

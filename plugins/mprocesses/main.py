@@ -6,7 +6,7 @@ import os
 import socket
 import time
 
-from libs.modechat import get, send
+from libs.data_transfer import data_get, data_send
 from libs.language import Translate
 
 # Multi Lang
@@ -20,8 +20,8 @@ class mainPopup(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.sock = args['sock']
-        self.socket = args['socket']
-        self.ipAddress = args['ipAddress']
+        self.client = args['client']
+        self.session_id = args['session_id']
         self.assets = args['assets']
 
         self.gui = QApplication.processEvents
@@ -46,8 +46,8 @@ class mainPopup(QWidget, Ui_Form):
     def get_processes_list(self):
         self.processesTable.clearContents()
         try:
-            processes = get(self.sock, 'getProcessesList', 'getProcesses')
-            processesDict = ast.literal_eval(processes)
+            processes = data_get(self.sock, 'getProcessesList', 'proccessMode', session_id=self.session_id, to=self.client)
+            processesDict = ast.literal_eval(processes['payload'])
             self.processesTable.setRowCount(len(processesDict))
             for index, pid in enumerate(processesDict):
 
@@ -70,7 +70,7 @@ class mainPopup(QWidget, Ui_Form):
     def terminate_process(self):
         try:
             pid = self.processesTable.item(self.processesTable.currentRow(), 0).text()
-            get(self.sock, 'terminateProcess %s' % pid, 'terminateProcess')
+            data_send(self.sock, 'terminateProcess %s' % pid, 'terminateProcess', session_id=self.session_id, to=self.client)
             time.sleep(1.0)
             self.get_processes_list()
         except AttributeError:

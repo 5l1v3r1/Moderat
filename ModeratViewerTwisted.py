@@ -177,6 +177,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
 
         self.set_language()
+        # disable administrator
+        self.disable_administrator()
 
     def init_filters(self):
 
@@ -513,22 +515,32 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except socket.error:
             return
 
+    # Enable Administrators Features
     def enable_administrator(self):
+        # Online Clients Moderators
         self.clientsTable.showColumn(self.index_of_moderator)
+        # Offline Clients Moderators
         self.offlineClientsTable.showColumn(0)
+        # Moderators Tab
+        self.clientsTabs.setTabEnabled(2, True)
+        # Set Status
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_ADMINISTRATOR'))
 
+    # Disable Administrators Features
     def disable_administrator(self):
+        # Online Clients Moderators
         self.clientsTable.setColumnHidden(self.index_of_moderator, True)
+        # Offline Clients Moderators
         self.offlineClientsTable.setColumnHidden(0, True)
+        # Moderators Tab
+        self.clientsTabs.setTabEnabled(2, False)
+        # Set Status
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_MODERATOR'))
 
     def disconnect_from_server(self):
         # Clear Content
-        self.clientsTable.clearContents()
         self.clientsTable.setRowCount(1)
-        self.offlineClientsTable.clearContents()
-        self.offlineClientsTable.setRowCount(0)
+        self.offlineClientsTable.setRowCount(1)
 
         self.acceptthreadState = False
 

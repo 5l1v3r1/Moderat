@@ -183,6 +183,12 @@ class ModeratServerProtocol(Protocol):
 
             self.send_message_to_moderator(self, shared_clients, 'getClients')
 
+        # Set Alias For Client
+        elif data['mode'] == 'setAlias':
+            alias_client, alias_value = data['payload'].split()
+            log.info('Set Alias %s For %s' % (alias_value, data['mode']))
+            manageClients.set_alias(alias_client, alias_value)
+
         # Send Commands To Clients
         else:
             log.info('Send Message to %s from %s' % (data['to'], data['from']))

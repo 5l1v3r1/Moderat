@@ -948,7 +948,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             text, ok = QInputDialog.getText(self, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
-                get(self.connection_socket, 'setAlias ' + str(text), self.streaming_socks[client]['key'])
+                data_send(self.connection_socket, '%s %s' % (client, str(text)), 'setAlias', self.session_id)
 
     def run_as_admin(self):
         client = self.current_client()

@@ -30,6 +30,7 @@ os_user = os.path.expanduser('~').split('\\')[-1]
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 try:
+    import vidcap
     cam = vidcap.new_Dev(0, 0)
     web_camera_input = str(cam.getdisplayname())
     del cam
@@ -37,6 +38,7 @@ except:
     web_camera_input = 'NoDevice'
 
 try:
+    import pyaudio
     p = pyaudio.PyAudio()
     device_name = p.get_default_input_device_info()
     del p

@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 "    border: 1px ridge;\n"
 "    border-bottom: none;\n"
 "    border-color: #2c3e50;\n"
-"    min-width: 24ex;\n"
+"    min-width: 30ex;\n"
 "    padding: 10px;\n"
 "    color: #c9f5f7;\n"
 "}\n"
@@ -665,7 +665,7 @@ class Ui_MainWindow(object):
         item = self.clientsTable.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Alias", None))
         item = self.clientsTable.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Socket", None))
+        item.setText(_translate("MainWindow", "ID", None))
         item = self.clientsTable.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "OS", None))
         item = self.clientsTable.horizontalHeaderItem(5)

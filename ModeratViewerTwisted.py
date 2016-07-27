@@ -104,7 +104,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_moderator = 0
         self.index_of_ipAddress = 1
         self.index_of_alias = 2
-        self.index_of_socket = 3
+        self.index_of_id = 3
         self.index_of_os = 4
         self.index_of_user = 5
         self.index_of_privs = 6
@@ -117,7 +117,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clientsTable.setColumnWidth(self.index_of_moderator, 100)
         self.clientsTable.setColumnWidth(self.index_of_ipAddress, 100)
         self.clientsTable.setColumnWidth(self.index_of_alias, 60)
-        self.clientsTable.setColumnWidth(self.index_of_socket, 50)
+        self.clientsTable.setColumnWidth(self.index_of_id, 50)
         self.clientsTable.setColumnWidth(self.index_of_os, 90)
         self.clientsTable.setColumnWidth(self.index_of_user, 90)
         self.clientsTable.setColumnWidth(self.index_of_privs, 110)
@@ -250,7 +250,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_socket_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_socket_line.textChanged.connect(self.filter_clients)
-        self.clientsTable.setCellWidget(0, self.index_of_socket, self.filter_socket_line)
+        self.clientsTable.setCellWidget(0, self.index_of_id, self.filter_socket_line)
 
         # Os
         self.filter_os_line = QLineEdit()
@@ -416,12 +416,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # TABS
         self.clientsTabs.setTabText(0, _('CLIENTS_TAB_ONLINE'))
         self.clientsTabs.setTabText(1, _('CLIENTS_TAB_OFFLINE'))
+        self.clientsTabs.setTabText(2, _('CLIENTS_TAB_MODERATORS'))
 
         # HEADERS
         self.clientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
         self.clientsTable.horizontalHeaderItem(1).setText(_('HEADER_IP_ADDRESS'))
         self.clientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
-        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_SOCKET'))
+        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_ID'))
         self.clientsTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
         self.clientsTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
         self.clientsTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
@@ -524,7 +525,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Moderators Tab
         self.clientsTabs.setTabEnabled(2, True)
         # Set Status
-        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_ADMINISTRATOR'))
+        self.loginStatusLabel.setText(_(self.session_id))
+        self.loginStatusLabel.setStyleSheet('color: #9b59b6')
 
     # Disable Administrators Features
     def disable_administrator(self):
@@ -535,7 +537,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Moderators Tab
         self.clientsTabs.setTabEnabled(2, False)
         # Set Status
-        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_MODERATOR'))
+        try:
+            self.loginStatusLabel.setText(_(self.session_id))
+            self.loginStatusLabel.setStyleSheet('color: #e67e22')
+        except AttributeError:
+            self.loginStatusLabel.setText('')
 
     def disconnect_from_server(self):
         # Clear Content
@@ -664,7 +670,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 if socket_value == 'OFFLINE':
                     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.clientsTable.setItem(index + 1, self.index_of_socket, item)
+                self.clientsTable.setItem(index + 1, self.index_of_id, item)
 
                 # add os version
                 item = QTableWidgetItem(online_clients[obj]['os'])
@@ -913,7 +919,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     # get item
     def current_client(self):
         try:
-            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_socket).text())
+            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_id).text())
         except AttributeError:
             return False
 

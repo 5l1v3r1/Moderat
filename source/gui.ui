@@ -312,7 +312,7 @@ QTabBar::tab {
     border: 1px ridge;
 	border-bottom: none;
 	border-color: #2c3e50;
-	min-width: 24ex;
+	min-width: 30ex;
     padding: 10px;
 	color: #c9f5f7;
 }
@@ -454,7 +454,7 @@ color: #cff7f8;
           </column>
           <column>
            <property name="text">
-            <string>Socket</string>
+            <string>ID</string>
            </property>
           </column>
           <column>

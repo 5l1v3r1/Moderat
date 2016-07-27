@@ -9,6 +9,7 @@ tr = {
     # CLIENTS TAB
     'CLIENTS_TAB_ONLINE':           u'Online',
     'CLIENTS_TAB_OFFLINE':          u'Offline',
+    'CLIENTS_TAB_MODERATORS':       u'Moderators',
     # END CLIENTS TAB
 
     # FILTERS
@@ -19,7 +20,7 @@ tr = {
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'IP Address',
     'HEADER_ALIAS':                 u'Alias',
-    'HEADER_SOCKET':                u'Socket',
+    'HEADER_ID':                    u'ID',
     'HEADER_OS':                    u'OS',
     'HEADER_USER':                  u'User',
     'HEADER_PRIVS':                 u'Privs',
@@ -28,7 +29,6 @@ tr = {
     'HEADER_CAM':                   u'Cam',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'Active Window Title',
     'HEADER_MODERATOR':             u'Moderator',
-    'HEADER_ID':                    u'ID',
     'HEADER_LAST_ONLINE':           u'Last Online',
     # END CLIENTS TABLE HEADER
 

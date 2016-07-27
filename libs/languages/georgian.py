@@ -9,6 +9,7 @@ tr = {
     # CLIENTS TAB
     'CLIENTS_TAB_ONLINE':           u'ჩართული',
     'CLIENTS_TAB_OFFLINE':          u'გამორთული',
+    'CLIENTS_TAB_MODERATORS':       u'მოდერატორები',
     # END CLIENTS TAB
 
     # FILTERS
@@ -19,7 +20,7 @@ tr = {
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'მისამართი',
     'HEADER_ALIAS':                 u'სახელი',
-    'HEADER_SOCKET':                u'სოკეტი',
+    'HEADER_ID':                    u'იდენტიფიკატორი',
     'HEADER_OS':                    u'სისტემა',
     'HEADER_USER':                  u'მომხმარებელი',
     'HEADER_PRIVS':                 u'უფლებები',
@@ -28,14 +29,11 @@ tr = {
     'HEADER_CAM':                   u'კამერა',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'აქტიური ფანჯრის სათაური',
     'HEADER_MODERATOR':             u'მოდერატორი',
-    'HEADER_ID':                    u'იდენტიფიკატორი',
     'HEADER_LAST_ONLINE':           u'ბოლო შემოსვლა',
     # END CLIENTS TABLE HEADER
 
     # BOTTOM
     'BOTTOM_LOGIN_STATUS':                  u'არა ავტორიზირებული',
-    'BOTTOM_LOGIN_STATUS_ADMINISTRATOR':    u'ავტორიზირებული როგორც ადმინისტრატორი',
-    'BOTTOM_LOGIN_STATUS_MODERATOR':        u'ავტორიზირებული როგორც მოდერატორი',
     'BOTTOM_STATUS':                        u'სტატუსი: ',
     'BOTTOM_IPV4':                          u'მისამართი: ',
     'BOTTOM_PORT':                          u'პორტი: ',

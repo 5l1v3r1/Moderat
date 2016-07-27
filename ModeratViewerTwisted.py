@@ -1089,6 +1089,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 privileges, ok = QInputDialog.getItem(self, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'), ('0', '1'), 0, False)
                 admin = str(privileges)
                 if ok and privileges:
+                    # If everything ok
                     data_send(self.connection_socket, '%s %s %s' % (username, password, admin), 'addModerator', session_id=self.session_id)
                     # Update Moderators Table
                     self.get_moderators()

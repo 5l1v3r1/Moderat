@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 "    border: 1px ridge;\n"
 "    border-bottom: none;\n"
 "    border-color: #2c3e50;\n"
-"    min-width: 6ex;\n"
+"    min-width: 24ex;\n"
 "    padding: 10px;\n"
 "    color: #c9f5f7;\n"
 "}\n"

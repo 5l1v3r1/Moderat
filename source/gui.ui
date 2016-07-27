@@ -312,7 +312,7 @@ QTabBar::tab {
     border: 1px ridge;
 	border-bottom: none;
 	border-color: #2c3e50;
-	min-width: 6ex;
+	min-width: 24ex;
     padding: 10px;
 	color: #c9f5f7;
 }

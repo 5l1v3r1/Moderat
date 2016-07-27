@@ -23,7 +23,7 @@ tr = {
     'HEADER_ID':                    u'იდენტიფიკატორი',
     'HEADER_OS':                    u'სისტემა',
     'HEADER_USER':                  u'მომხმარებელი',
-    'HEADER_PRIVS':                 u'უფლებები',
+    'HEADER_PRIVS':                 u'ჯგუფი',
     'HEADER_LOCK':                  u'ბლოკი',
     'HEADER_MIC':                   u'მიკროფონი',
     'HEADER_CAM':                   u'კამერა',
@@ -234,5 +234,20 @@ tr = {
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'მოდერატორზე მიბმა',
+
+    'MODERATORS_PRIVILEGES_ADMINISTRATOR':  u'ადმინისტრატორი',
+    'MODERATORS_PRIVILEGES_MODERATOR':      u'მოდერატორი',
+    'MODERATOR_ONLINE':                     u'ჩართული',
+    'MODERATOR_OFFLINE':                    u'გამორთული',
+
+    'MODERATOR_GET_MODERATORS':             u'განახლება',
+    'MODERATOR_ADD_MDOERATOR':              u'დამატება',
+
+    'MODERATORS_HEADER_ID':                 u'იდენტიფიკატორი',
+    'MODERATORS_HEADER_ONLINE':             u'ჩართული',
+    'MODERATORS_HEADER_OFFLINE':            u'გამორთული',
+    'MODERATORS_HEADER_PRIVILEGES':         u'ჯგუფი',
+    'MODERATORS_HEADER_STATUS':             u'სტატუსი',
+    'MODERATORS_HEADER_LASTONLINE':         u'ბოლო შემოსვლა',
     # END ADMINISTRATOR
 }

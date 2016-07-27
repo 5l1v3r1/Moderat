@@ -236,5 +236,20 @@ tr = {
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'Administration',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'Set Moderator',
+
+    'MODERATORS_PRIVILEGES_ADMINISTRATOR':  u'Administrator',
+    'MODERATORS_PRIVILEGES_MODERATOR':      u'Moderator',
+    'MODERATOR_ONLINE':                     u'Online',
+    'MODERATOR_OFFLINE':                    u'Offline',
+
+    'MODERATOR_GET_MODERATORS':             u'Refresh',
+    'MODERATOR_ADD_MDOERATOR':              u'Add',
+
+    'MODERATORS_HEADER_ID':                 u'ID',
+    'MODERATORS_HEADER_ONLINE':             u'Online',
+    'MODERATORS_HEADER_OFFLINE':            u'Offline',
+    'MODERATORS_HEADER_PRIVILEGES':         u'Privileges',
+    'MODERATORS_HEADER_STATUS':             u'Status',
+    'MODERATORS_HEADER_LASTONLINE':         u'Last Online',
     # END ADMINISTRATOR
 }

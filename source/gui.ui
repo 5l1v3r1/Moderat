@@ -764,6 +764,11 @@ color: #cff7f8;
             <string>Status</string>
            </property>
           </column>
+          <column>
+           <property name="text">
+            <string>Last Online</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item row="0" column="1">

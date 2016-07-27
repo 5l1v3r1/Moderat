@@ -113,17 +113,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_webcamera = 9
         self.index_of_activeWindowTitle = 10
 
-        # initialize servers table columns width
+        # initialize online clients table columns width
         self.clientsTable.setColumnWidth(self.index_of_moderator, 100)
         self.clientsTable.setColumnWidth(self.index_of_ipAddress, 100)
-        self.clientsTable.setColumnWidth(self.index_of_alias, 60)
-        self.clientsTable.setColumnWidth(self.index_of_id, 50)
-        self.clientsTable.setColumnWidth(self.index_of_os, 90)
-        self.clientsTable.setColumnWidth(self.index_of_user, 90)
-        self.clientsTable.setColumnWidth(self.index_of_privs, 110)
-        self.clientsTable.setColumnWidth(self.index_of_lock, 100)
-        self.clientsTable.setColumnWidth(self.index_of_microphone, 80)
-        self.clientsTable.setColumnWidth(self.index_of_webcamera, 80)
+        self.clientsTable.setColumnWidth(self.index_of_alias, 100)
+        self.clientsTable.setColumnWidth(self.index_of_id, 100)
+        self.clientsTable.setColumnWidth(self.index_of_os, 100)
+        self.clientsTable.setColumnWidth(self.index_of_user, 100)
+        self.clientsTable.setColumnWidth(self.index_of_privs, 40)
+        self.clientsTable.setColumnWidth(self.index_of_lock, 40)
+        self.clientsTable.setColumnWidth(self.index_of_microphone, 40)
+        self.clientsTable.setColumnWidth(self.index_of_webcamera, 40)
+
+        # initialize moderators table columns width
+        self.moderatorsTable.setColumnWidth(3, 120)
 
         # Init Filter Widgets
         self.init_filters()
@@ -478,6 +481,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.menuBuilder.setTitle(_('MENU_BUILDER'))
         self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
         # END BUILDER
+
+        # ADMINISTRATION
+        self.getModeratorsButton.setText(_('MODERATOR_GET_MODERATORS'))
+        self.addModeratorButton.setText(_('MODERATOR_ADD_MDOERATOR'))
+
+        self.moderatorsTable.horizontalHeaderItem(0).setText(_('MODERATORS_HEADER_ID'))
+        self.moderatorsTable.horizontalHeaderItem(1).setText(_('MODERATORS_HEADER_ONLINE'))
+        self.moderatorsTable.horizontalHeaderItem(2).setText(_('MODERATORS_HEADER_OFFLINE'))
+        self.moderatorsTable.horizontalHeaderItem(3).setText(_('MODERATORS_HEADER_PRIVILEGES'))
+        self.moderatorsTable.horizontalHeaderItem(4).setText(_('MODERATORS_HEADER_STATUS'))
+        self.moderatorsTable.horizontalHeaderItem(5).setText(_('MODERATORS_HEADER_LASTONLINE'))
+        # END ADMINISTRATION
 
     def connect_to_server(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1031,14 +1046,34 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add privileges
                 privileges = moderators[key]['privileges']
-                print privileges
                 if privileges == 1:
+                    color = '#9b59b6'
                     privileges = _('MODERATORS_PRIVILEGES_ADMINISTRATOR')
                 else:
+                    color = '#c9f5f7'
                     privileges = _('MODERATORS_PRIVILEGES_MODERATOR')
                 item = QTableWidgetItem(privileges)
+                item.setTextColor(QColor(color))
                 item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                 self.moderatorsTable.setItem(index, 3, item)
+
+                # add moderator status
+                status = moderators[key]['status']
+                if status == 1:
+                    style = '#1abc9c'
+                    text = _('MODERATOR_ONLINE')
+                else:
+                    style = '#e67e22'
+                    text = _('MODERATOR_OFFLINE')
+                item = QTableWidgetItem(text)
+                item.setTextColor(QColor(style))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 4, item)
+
+                # add moderator last online
+                item = QTableWidgetItem(str(moderators[key]['last_online']))
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 5, item)
 
 
 # Run Application

@@ -168,6 +168,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # ADMINISTRATOR BUTTONS
         self.getModeratorsButton.clicked.connect(self.get_moderators)
+        self.addModeratorButton.clicked.connect(self.add_moderator)
 
         # builder trigger
         self.actionWindows_Client_PyInstaller.triggered.connect(self.run_builder)
@@ -1074,6 +1075,38 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item = QTableWidgetItem(str(moderators[key]['last_online']))
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 self.moderatorsTable.setItem(index, 5, item)
+
+
+    # Add Moderator Entry
+    def add_moderator(self):
+        #text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
+        username, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_USERNAME'), _('ADMINISTRATION_USERNAME'), QLineEdit.Normal)
+        if ok and len(str(username)) > 0:
+            username = str(username)
+            password, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+            if ok and len(str(password)) > 4:
+                password = str(password)
+                privileges, ok = QInputDialog.getItem(self, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'), ('0', '1'), 0, False)
+                admin = str(privileges)
+                if ok and privileges:
+                    data_send(self.connection_socket, '%s %s %s' % (username, password, admin), 'addModerator', session_id=self.session_id)
+                    # Update Moderators Table
+                    self.get_moderators()
+                else:
+                    # If not privileges
+                    warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PRIVILEGES'), _('ADMINISTRATION_INCORRECT_PRIVILEGES'))
+                    ans = warn.exec_()
+                    return
+            # if not password
+            else:
+                warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
+                ans = warn.exec_()
+                return
+        # if not password
+        else:
+            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_USERNAME'), _('ADMINISTRATION_INCORRECT_USERNAME'))
+            ans = warn.exec_()
+            return
 
 
 # Run Application

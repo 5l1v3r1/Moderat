@@ -249,5 +249,15 @@ tr = {
     'MODERATORS_HEADER_PRIVILEGES':         u'ჯგუფი',
     'MODERATORS_HEADER_STATUS':             u'სტატუსი',
     'MODERATORS_HEADER_LASTONLINE':         u'ბოლო შემოსვლა',
+
+    'ADMINISTRATION_INPUT_USERNAME':        u'ახალი მომხმარებელი',
+    'ADMINISTRATION_USERNAME':              u'მომხმარებელი',
+    'ADMINISTRATION_INPUT_PASSWORD':        u'პაროლი',
+    'ADMINISTRATION_PASSWORD':              u'პაროლი',
+    'ADMINISTRATION_INPUT_PRIVS':           u'პრივილეგიები',
+    'ADMINISTRATION_PRIVS':                 u'არის ადმინისტრატორი (1=კი, 0=არა)',
+    'ADMINISTRATION_INCORRECT_PRIVILEGES':  u'პრივილეგიები არჩეული არ არის',
+    'ADMINISTRATION_INCORRECT_PASSWORD':    u'არასწორი პაროლი',
+    'ADMINISTRATION_INCORRECT_USERNAME':    u'არასწორი მომხმარებელი',
     # END ADMINISTRATOR
 }

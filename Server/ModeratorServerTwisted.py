@@ -232,6 +232,11 @@ class ModeratServerProtocol(Protocol):
                 }
             self.send_message_to_moderator(self, result, 'getModerators')
 
+        # Add Moderator
+        elif data['mode'] == 'addModerator' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
+            username, password, privileges = data['payload'].split()
+            manageModerators.create_user(username, password, int(privileges))
+
         # Send Commands To Clients
         else:
             log.info('Send Message to %s from %s' % (data['to'], data['from']))

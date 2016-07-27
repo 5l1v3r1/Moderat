@@ -251,5 +251,15 @@ tr = {
     'MODERATORS_HEADER_PRIVILEGES':         u'Privileges',
     'MODERATORS_HEADER_STATUS':             u'Status',
     'MODERATORS_HEADER_LASTONLINE':         u'Last Online',
+
+    'ADMINISTRATION_INPUT_USERNAME':        u'Enter Username',
+    'ADMINISTRATION_USERNAME':              u'Username',
+    'ADMINISTRATION_INPUT_PASSWORD':        u'Enter Password',
+    'ADMINISTRATION_PASSWORD':              u'Password',
+    'ADMINISTRATION_INPUT_PRIVS':           u'Administrator Privileges',
+    'ADMINISTRATION_PRIVS':                 u'Is Administrator (1=YES, 0=NO)',
+    'ADMINISTRATION_INCORRECT_PRIVILEGES':  u'Incorrect Privileges',
+    'ADMINISTRATION_INCORRECT_PASSWORD':    u'Incorrect Password',
+    'ADMINISTRATION_INCORRECT_USERNAME':    u'Incorrect Username',
     # END ADMINISTRATOR
 }

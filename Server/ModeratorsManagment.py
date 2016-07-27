@@ -79,6 +79,11 @@ class ModeratorsManagment:
             self.conn.commit()
             return priv.fetchone()[0]
 
+    def get_moderators(self):
+        moderators = self.cur.execute('SELECT * FROM Moderators')
+        self.conn.commit()
+        return moderators.fetchall()
+
 
 ModeratorsManagment().create_user('admin', '1234', 1)
 

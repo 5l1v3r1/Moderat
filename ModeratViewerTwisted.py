@@ -163,6 +163,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionDesktop_Preview.triggered.connect(self.get_desktop_preview)
         self.actionWebcam_Preview.triggered.connect(self.get_webcam_preview)
 
+        # ADMINISTRATOR BUTTONS
+        self.getModeratorsButton.clicked.connect(self.get_moderators)
+
         # builder trigger
         self.actionWindows_Client_PyInstaller.triggered.connect(self.run_builder)
 
@@ -541,7 +544,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.loginStatusLabel.setText(_(self.session_id))
             self.loginStatusLabel.setStyleSheet('color: #e67e22')
         except AttributeError:
-            self.loginStatusLabel.setText('')
+            self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
+            self.loginStatusLabel.setStyleSheet('color: #e74c3c')
 
     def disconnect_from_server(self):
         # Clear Content
@@ -568,6 +572,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Set Login Status to None
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
+        self.loginStatusLabel.setStyleSheet('color: #e74c3c')
 
     def check_servers(self, session_id):
         # Init Checker Socket
@@ -993,6 +998,46 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def closeEvent(self, event):
         self.acceptthreadState = False
         sys.exit(1)
+
+
+    # MODERATORS COMMANDS
+    def get_moderators(self):
+        if self.privs == 1:
+            try:
+                all_moderators = data_get(self.connection_socket, 'getModerators', 'getModerators', session_id=self.session_id)
+            except SyntaxError:
+                return
+
+            moderators = all_moderators['payload']
+            self.moderatorsTable.setRowCount(len(moderators))
+
+            for index, key in enumerate(moderators):
+
+                # add moderator id
+                item = QTableWidgetItem(key)
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 0, item)
+
+                # add online clients count
+                item = QTableWidgetItem(str(moderators[key]['online_clients']))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 1, item)
+
+                # add offline clients count
+                item = QTableWidgetItem(str(moderators[key]['offline_clients']))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 2, item)
+
+                # add privileges
+                privileges = moderators[key]['privileges']
+                print privileges
+                if privileges == 1:
+                    privileges = _('MODERATORS_PRIVILEGES_ADMINISTRATOR')
+                else:
+                    privileges = _('MODERATORS_PRIVILEGES_MODERATOR')
+                item = QTableWidgetItem(privileges)
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 3, item)
 
 
 # Run Application

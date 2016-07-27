@@ -11,6 +11,7 @@ import sys
 import string
 import random
 import ast
+import datetime
 
 LOGFILE = 'server.log'
 CLIENTS_PORT = 4434
@@ -33,6 +34,9 @@ log.addHandler(fh)
 manageClients = ClientsManagment()
 manageModerators = ModeratorsManagment()
 
+# Clear Clients Status
+manageClients.set_status_zero()
+
 
 def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -49,10 +53,17 @@ class ModeratServerProtocol(Protocol):
     def connectionLost(self, reason):
         global clients
 
+        print 'Connection Lost'
+
         # Delete Socket Entry
-        for key, value in clients.items():
-            if value['socket'] == self:
-                del clients[key]
+        try:
+            for key, value in clients.items():
+                if value['socket'] == self:
+                    # Set Client Online
+                    manageClients.set_client_offline(value['key'])
+                    del clients[key]
+        except KeyError:
+            pass
 
 
     def dataReceived(self, data):
@@ -136,6 +147,11 @@ class ModeratServerProtocol(Protocol):
                         log.info('Create Session for Moderator (%s)' % data['session_id'])
                         moderators[data['session_id']] = {'username': username, 'socket': self}
 
+                        # Set Moderator Last Online
+                        manageModerators.set_last_online(username, datetime.datetime.now())
+                        # Set Moderator Online Status
+                        manageModerators.set_status(username, 1)
+
                     # if Login Not Success
                     else:
                         log.warning('Moderator (%s) Login Error' % username)
@@ -154,7 +170,7 @@ class ModeratServerProtocol(Protocol):
             for client_id in clients_ids:
                 _id = client_id[0]
                 # Online Clients
-                if clients.has_key(_id):
+                if clients.has_key(_id) and clients[_id].has_key('os_type'):
                     shared_clients[_id] = {
                         'moderator':            manageClients.get_moderator(_id),
                         'alias':                manageClients.get_alias(_id),
@@ -195,13 +211,14 @@ class ModeratServerProtocol(Protocol):
             all_moderators = manageModerators.get_moderators()
             result = {}
             for moderator in all_moderators:
-                print moderator, ' ', moderators
                 all_clients_count = len(ClientsManagment().get_clients(moderator[0]))
                 offline_clients_count = len(ClientsManagment().get_offline_clients(moderator[0]))
                 result[moderator[0]] = {
                     'privileges': moderator[2],
                     'offline_clients': offline_clients_count,
                     'online_clients': all_clients_count - offline_clients_count,
+                    'status': moderator[3],
+                    'last_online': moderator[4],
                 }
             self.send_message_to_moderator(self, result, 'getModerators')
 
@@ -217,7 +234,14 @@ class ModeratServerProtocol(Protocol):
             return False
 
     def recieve_message(self, data, end='[ENDOFMESSAGE]'):
-        return ast.literal_eval(data[:-len(end)].decode('utf-8'))
+        try:
+            output = data[:-len(end)].decode('utf-8')
+            if end in output:
+                output = output.split(end)[0]
+            return ast.literal_eval(output)
+        except:
+            print data
+            sys.exit(1)
 
     def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
         # Send Data Function

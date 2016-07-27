@@ -1005,6 +1005,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.privs == 1:
             try:
                 all_moderators = data_get(self.connection_socket, 'getModerators', 'getModerators', session_id=self.session_id)
+                print all_moderators
             except SyntaxError:
                 return
 

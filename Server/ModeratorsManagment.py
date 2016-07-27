@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import hashlib
+import datetime
 
 
 class ModeratorsManagment:
@@ -17,7 +18,12 @@ class ModeratorsManagment:
             self.create_moderators_table()
 
     def create_moderators_table(self):
-        self.cur.execute('CREATE TABLE Moderators (moderator_id VARCHAR(100), moderator_password VARCHAR(100), moderator_privs INTEGER(10))')
+        self.cur.execute('''CREATE TABLE Moderators (
+                                moderator_id VARCHAR(100),
+                                 moderator_password VARCHAR(100),
+                                 moderator_privs INTEGER(10),
+                                 moderator_status INTEGER DEFAULT 0,
+                                 moderator_last_online DATETIME(100))''')
         self.conn.commit()
 
     def create_user(self, moderator_id, moderator_password, moderator_privs):
@@ -26,7 +32,7 @@ class ModeratorsManagment:
         check_moderators = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
         self.conn.commit()
         if len(check_moderators.fetchall()) == 0:
-            self.cur.execute('INSERT INTO Moderators VALUES (?,?,?)', (moderator_id, password_hash.hexdigest(), moderator_privs))
+            self.cur.execute('INSERT INTO Moderators VALUES (?,?,?,?,?)', (moderator_id, password_hash.hexdigest(), moderator_privs, 0, datetime.datetime.now()))
             self.conn.commit()
             return True
         else:
@@ -79,6 +85,15 @@ class ModeratorsManagment:
             self.conn.commit()
             return priv.fetchone()[0]
 
+    def set_last_online(self, moderator_id, date):
+        self.cur.execute('UPDATE Moderators SET moderator_last_online=? WHERE moderator_id=?', (date, moderator_id))
+        self.conn.commit()
+
+
+    def set_status(self, moderator_id, status):
+        self.cur.execute('UPDATE Moderators SET moderator_status=? WHERE moderator_id=?', (status, moderator_id))
+        self.conn.commit()
+
     def get_moderators(self):
         moderators = self.cur.execute('SELECT * FROM Moderators')
         self.conn.commit()
@@ -86,4 +101,5 @@ class ModeratorsManagment:
 
 
 ModeratorsManagment().create_user('admin', '1234', 1)
+ModeratorsManagment().create_user('user', '1234', 0)
 

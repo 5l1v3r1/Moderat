@@ -68,6 +68,22 @@ PROCESS_TERMINATE = 0x0001
 PROCESS_QUERY_INFORMATION = 0x0400
 
 
+def init():
+    if os.path.exists('info.nfo'):
+        variables = open('info.nfo', 'r').read()
+        return ast.literal_eval(variables)
+    else:
+        variables = {
+            'i': '',
+            'kt': 30,
+            'at': 30,
+            'st': 30,
+        }
+        open('info.nfo', 'w').write(str(variables))
+        return variables
+
+
+
 def check_info():
     return {
         'os_type':          os_type,
@@ -83,18 +99,17 @@ def check_info():
 
 
 def get_key():
-    if os.path.exists('info.nfo'):
-        key_output = open('info.nfo', 'r').read()
-        return key_output
-    else:
-        return ''
+    vars_dict = init()
+    return vars_dict['i']
 
 
 def set_key(key):
     global ID
-    key_input_file = open('info.nfo', 'w')
-    key_input_file.write(key)
-    key_input_file.close()
+    vars_dict = init()
+    vars_dict['i'] = key
+    input_file = open('info.nfo', 'w')
+    input_file.write(str(vars_dict))
+    input_file.close()
     ID = key
     return
 
@@ -219,7 +234,7 @@ def reactor():
                         data_send(server_socket, 'noKey', 'clientInitializing')
                         new_key = data_receive(server_socket)
                         set_key(new_key['payload'])
-                        ID = new_key
+                        ID = new_key['payload']
 
                     info_sernder_thread = threading.Thread(target=send_info, args=(server_socket,))
                     info_sernder_thread.start()

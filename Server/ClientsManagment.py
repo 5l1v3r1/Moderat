@@ -77,11 +77,8 @@ class ClientsManagment:
         return clients.fetchall()
 
     def set_client_online(self, client_id):
-        check_clients = self.cur.execute('SELECT * FROM Clients WHERE client_id=?', (client_id,))
+        self.cur.execute('UPDATE Clients SET client_status=1 WHERE client_id=?', (client_id,))
         self.conn.commit()
-        if len(check_clients.fetchall()) != 0:
-            self.cur.execute('UPDATE Clients SET client_status=1 WHERE client_id=?', (client_id,))
-            self.conn.commit()
 
     def set_client_offline(self, client_id):
         check_clients = self.cur.execute('SELECT * FROM Clients WHERE client_id=?', (client_id,))

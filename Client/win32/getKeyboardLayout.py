@@ -10,4 +10,3 @@ user32 = ctypes.windll.user32
 foregroundWindow = user32.GetForegroundWindow()
 tid = user32.GetWindowThreadProcessId(foregroundWindow, 0)
 print user32.GetKeyboardLayout(tid)
-print hex(257752039)

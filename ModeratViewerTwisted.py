@@ -1009,7 +1009,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME') + self.USERNAME, QLineEdit.Normal)
             if ok:
-                get(self.connection_socket, 'setModerator ' + str(text), client)
+                data_send(self.connection_socket, '%s %s' % (client, text), 'setModerator', session_id=self.session_id)
 
     def closeEvent(self, event):
         self.acceptthreadState = False

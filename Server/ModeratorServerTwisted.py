@@ -266,10 +266,20 @@ class ModeratServerProtocol(Protocol):
             username, password, privileges = data['payload'].split()
             manageModerators.create_user(username, password, int(privileges))
 
+        elif data['mode'] == 'setModerator' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
+            client_id, moderator_id = data['payload'].split()
+            manageClients.set_moderator(client_id, moderator_id)
+            log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
+
+
         # Send Commands To Clients
-        else:
+        elif data.has_key('mode'):
+            print data
             log.info('Send Message to %s from %s' % (data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+
+        else:
+            return
 
     def is_administrator(self, session_id):
         if manageModerators.get_privs(moderators[session_id]['username']) == 1:

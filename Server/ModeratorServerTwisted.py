@@ -46,6 +46,7 @@ def id_generator(size=12, chars=string.ascii_uppercase + string.digits):
 clients = {}
 moderators = {}
 
+
 class ModeratServerProtocol(Protocol):
 
     # New Connection Made
@@ -262,8 +263,8 @@ class ModeratServerProtocol(Protocol):
             if end in output:
                 output = output.split(end)[0]
             return ast.literal_eval(output)
-        except:
-            print data
+        except Exception as e:
+            print e, '\n', data
             sys.exit(1)
 
     def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):

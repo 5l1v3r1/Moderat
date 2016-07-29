@@ -7,7 +7,7 @@ class ClientsManagment:
 
     def __init__(self):
 
-        self.conn = sqlite3.connect('Moderators.db')
+        self.conn = sqlite3.connect('ModeratServer.db')
         self.cur = self.conn.cursor()
 
         check_table = self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Clients"')

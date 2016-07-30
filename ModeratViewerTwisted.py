@@ -19,6 +19,7 @@ from PyQt4.QtCore import *
 from libs import pygeoip
 from libs.language import Translate
 from ui import gui
+from libs.log_viewer import LogViewer
 from libs.settings import Config, Settings
 from libs.builder import Builder
 from libs.data_transfer import data_receive, data_send, data_get
@@ -83,6 +84,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # listen status
         self.acceptthreadState = False
+
+        # Log Viewers
+        self.log_viewers = {}
 
         # plugins bank
         self.pluginsBank = {}
@@ -609,6 +613,22 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     self.acceptthreadState = False
 
 
+    def view_logs(self):
+        client = self.current_client()
+        if client:
+            args = {
+                'sock': self.connection_socket,
+                'key': self.streaming_socks[client]['key'],
+                'alias': self.streaming_socks[client]['alias'],
+                'ip_address': self.streaming_socks[client]['ip_address'],
+                'os': self.streaming_socks[client]['os'],
+                'session_id': self.session_id,
+                'assets': assets,
+            }
+            temp_id = id_generator()
+            self.log_viewers[temp_id] = LogViewer(args)
+            self.log_viewers[temp_id].show()
+
     def get_desktop_preview(self):
         client = self.current_client()
         if client:
@@ -886,6 +906,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.clientsTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
+            server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_VIEW_LOGS'), self.view_logs)
             #server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
             server_menu.addSeparator()
 

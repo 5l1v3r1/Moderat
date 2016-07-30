@@ -79,6 +79,7 @@ tr = {
     # RIGHT CLICK MENU
     'RM_CLIENT_OPTIONS':            u'Client Settings',
     'RM_SET_ALIAS':                 u'Set Alias',
+    'RM_VIEW_LOGS':                 u'Log Viewer',
     'RM_RUN_AS_ADMIN':              u'Run As Admin',
     'RM_SHELL':                     u'Shell',
     'RM_EXPLORER':                  u'File Manager',

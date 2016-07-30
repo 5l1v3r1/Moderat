@@ -906,7 +906,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.clientsTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_VIEW_LOGS'), self.view_logs)
+            server_menu.addAction(QIcon(os.path.join(assets, 'unhide.png')), _('RM_VIEW_LOGS'), self.view_logs)
             #server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
             server_menu.addSeparator()
 

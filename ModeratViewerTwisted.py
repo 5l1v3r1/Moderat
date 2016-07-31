@@ -1136,8 +1136,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    form = MainDialog()
 
+    # Create and display the splash screen
+    splash_pix = QPixmap(os.path.join(assets, 'splash.png'))
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.setMask(splash_pix.mask())
+    splash.show()
+    app.processEvents()
+    time.sleep(3)
+
+    form = MainDialog()
+    splash.finish(form)
     form.show()
 
     sys.exit(app.exec_())

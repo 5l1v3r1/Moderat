@@ -106,6 +106,7 @@ QTableWidget#screenshotsTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#screenshotsTable:item:selected {
@@ -167,6 +168,7 @@ QTableWidget#keylogsTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#keylogsTable:item:selected {
@@ -228,6 +230,7 @@ QTableWidget#audioTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#audioTable:item:selected {

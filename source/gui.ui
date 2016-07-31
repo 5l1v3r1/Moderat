@@ -382,6 +382,7 @@ QTableWidget#clientsTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#clientsTable:item:selected {
@@ -530,6 +531,7 @@ QTableWidget#offlineClientsTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#offlineClientsTable:item:selected {
@@ -684,6 +686,7 @@ QTableWidget#moderatorsTable {
 	background-color: #34495e;
 
 	background-image: url(assets/bg.png);
+	background-repeat: no-repeat;
 }
 
 QTableWidget#moderatorsTable:item:selected {

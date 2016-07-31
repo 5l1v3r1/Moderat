@@ -33,6 +33,7 @@ class LogViewer(QWidget, logViewerUi):
 
         # Init
         self.init_ui()
+        self.set_language()
         self.check_data_counts()
 
     def init_ui(self):
@@ -44,6 +45,24 @@ class LogViewer(QWidget, logViewerUi):
         # Hide Progress Bar
         self.downloadProgress.setHidden(True)
         self.downloadedLabel.setHidden(True)
+
+    def set_language(self):
+        self.setWindowTitle(_('VIEWER_WINDOW_TITLE'))
+        self.logsTab.setTabText(0, _('VIEWER_SCREENSHOTS_TAB'))
+        self.logsTab.setTabText(1, _('VIEWER_KEYLOGS_TAB'))
+        self.logsTab.setTabText(2, _('VIEWER_AUDIO_TAB'))
+        self.screenshotsTable.horizontalHeaderItem(0).setText(_('VIEWER_SCREENSHOT_PREVIEW'))
+        self.screenshotsTable.horizontalHeaderItem(1).setText(_('VIEWER_SCREENSHOT_INFO'))
+        # Keylogger
+        # Audio
+        self.clientInformationGroup.setWindowTitle(_('VIEWER_CLIENT_GROUP_TITLE'))
+        self.clientIdLabel.setText(_('VIEWER_CLIENT_ID'))
+        self.clientAliasLabel.setText(_('VIEWER_CLIENT_ALIAS'))
+        self.clientIpLabel.setText(_('VIEWER_CLIENT_IP'))
+        self.clientOsLabel.setText(_('VIEWER_CLIENT_OS'))
+        self.downloadGroup.setWindowTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
+        self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
+        self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
 
     def update_date(self):
         self.date = str(self.timeCalendar.selectedDate().toPyDate())

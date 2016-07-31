@@ -1,22 +1,20 @@
-from twisted.internet.protocol import Protocol, ServerFactory
-from twisted.internet import reactor
-
-from ClientsManagment import ClientsManagment
-from ModeratorsManagment import ModeratorsManagment
-from ScreenshotsManager import ScreenshotsManager
-from KeyloggerManager import KeyloggerManager
-
-from PhotoFactory import save_image
-from KeyFactory import html_generator
-
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
-
 import string
 import random
 import ast
 import datetime
+
+from twisted.internet.protocol import Protocol, ServerFactory
+from twisted.internet import reactor
+
+from db.ClientsManagment import ClientsManagment
+from db.ModeratorsManagment import ModeratorsManagment
+from db.ScreenshotsManager import ScreenshotsManager
+from db.KeyloggerManager import KeyloggerManager
+from factory.PhotoFactory import save_image
+from factory.KeyFactory import html_generator
 
 LOGFILE = 'server.log'
 CLIENTS_PORT = 4434

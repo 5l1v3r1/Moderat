@@ -2,7 +2,7 @@ import os
 import sqlite3
 import hashlib
 import datetime
-
+import getpass
 
 class ModeratorsManagment:
 
@@ -16,6 +16,17 @@ class ModeratorsManagment:
         if len(check_table.fetchall()) == 0:
             print '[+] Creating Table Moderators'
             self.create_moderators_table()
+            ans = raw_input('[!] First Run, Create Administrator? [y/n]')
+            if ans == 'y' or ans == 'Y' or ans == 'yes':
+                while 1:
+                    username = raw_input('Username: ')
+                    password = getpass.getpass('Password: ')
+                    password2 = getpass.getpass('Repeat Password: ')
+                    if password == password2:
+                        ModeratorsManagment().create_user(username, password, 1)
+                        break
+                    else:
+                        print 'Passwords Doesn\t Match'
 
     def create_moderators_table(self):
         self.cur.execute('''CREATE TABLE Moderators (
@@ -98,8 +109,4 @@ class ModeratorsManagment:
         moderators = self.cur.execute('SELECT * FROM Moderators')
         self.conn.commit()
         return moderators.fetchall()
-
-
-ModeratorsManagment().create_user('admin', '1234', 1)
-ModeratorsManagment().create_user('user', '1234', 0)
 

@@ -81,6 +81,7 @@ class Ui_Form(object):
         self.gridLayout_2 = QtGui.QGridLayout(self.screenshotsTab)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.screenshotsTable = QtGui.QTableWidget(self.screenshotsTab)
+        self.screenshotsTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.screenshotsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
 "    padding: 2px;\n"
@@ -108,16 +109,25 @@ class Ui_Form(object):
 "background-color: #2c3e50;\n"
 "color: #cff7f8;\n"
 "}"))
+        self.screenshotsTable.setProperty("showDropIndicator", False)
+        self.screenshotsTable.setDragDropOverwriteMode(False)
+        self.screenshotsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.screenshotsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.screenshotsTable.setShowGrid(False)
+        self.screenshotsTable.setWordWrap(False)
+        self.screenshotsTable.setCornerButtonEnabled(False)
         self.screenshotsTable.setObjectName(_fromUtf8("screenshotsTable"))
-        self.screenshotsTable.setColumnCount(3)
+        self.screenshotsTable.setColumnCount(2)
         self.screenshotsTable.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.screenshotsTable.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
         self.screenshotsTable.setHorizontalHeaderItem(1, item)
-        item = QtGui.QTableWidgetItem()
-        self.screenshotsTable.setHorizontalHeaderItem(2, item)
         self.screenshotsTable.horizontalHeader().setStretchLastSection(True)
+        self.screenshotsTable.verticalHeader().setVisible(False)
+        self.screenshotsTable.verticalHeader().setCascadingSectionResizes(True)
+        self.screenshotsTable.verticalHeader().setDefaultSectionSize(120)
+        self.screenshotsTable.verticalHeader().setMinimumSectionSize(120)
         self.gridLayout_2.addWidget(self.screenshotsTable, 0, 0, 1, 1)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mdesktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -127,6 +137,7 @@ class Ui_Form(object):
         self.gridLayout_3 = QtGui.QGridLayout(self.keylogsTab)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.keylogsTable = QtGui.QTableWidget(self.keylogsTab)
+        self.keylogsTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.keylogsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
 "    padding: 2px;\n"
@@ -154,6 +165,13 @@ class Ui_Form(object):
 "background-color: #2c3e50;\n"
 "color: #cff7f8;\n"
 "}"))
+        self.keylogsTable.setProperty("showDropIndicator", False)
+        self.keylogsTable.setDragDropOverwriteMode(False)
+        self.keylogsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.keylogsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.keylogsTable.setShowGrid(False)
+        self.keylogsTable.setWordWrap(False)
+        self.keylogsTable.setCornerButtonEnabled(False)
         self.keylogsTable.setObjectName(_fromUtf8("keylogsTable"))
         self.keylogsTable.setColumnCount(3)
         self.keylogsTable.setRowCount(0)
@@ -164,6 +182,7 @@ class Ui_Form(object):
         item = QtGui.QTableWidgetItem()
         self.keylogsTable.setHorizontalHeaderItem(2, item)
         self.keylogsTable.horizontalHeader().setStretchLastSection(True)
+        self.keylogsTable.verticalHeader().setVisible(False)
         self.gridLayout_3.addWidget(self.keylogsTable, 0, 0, 1, 1)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -173,6 +192,7 @@ class Ui_Form(object):
         self.gridLayout_4 = QtGui.QGridLayout(self.audioTab)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.audioTable = QtGui.QTableWidget(self.audioTab)
+        self.audioTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.audioTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
 "    padding: 2px;\n"
@@ -200,6 +220,13 @@ class Ui_Form(object):
 "background-color: #2c3e50;\n"
 "color: #cff7f8;\n"
 "}"))
+        self.audioTable.setProperty("showDropIndicator", False)
+        self.audioTable.setDragDropOverwriteMode(False)
+        self.audioTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.audioTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.audioTable.setShowGrid(False)
+        self.audioTable.setWordWrap(False)
+        self.audioTable.setCornerButtonEnabled(False)
         self.audioTable.setObjectName(_fromUtf8("audioTable"))
         self.audioTable.setColumnCount(2)
         self.audioTable.setRowCount(0)
@@ -208,6 +235,7 @@ class Ui_Form(object):
         item = QtGui.QTableWidgetItem()
         self.audioTable.setHorizontalHeaderItem(1, item)
         self.audioTable.horizontalHeader().setStretchLastSection(True)
+        self.audioTable.verticalHeader().setVisible(False)
         self.gridLayout_4.addWidget(self.audioTable, 0, 0, 1, 1)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -349,12 +377,13 @@ class Ui_Form(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.screenshotCheckLayout = QtGui.QVBoxLayout()
-        self.screenshotCheckLayout.setSpacing(3)
+        self.screenshotCheckLayout.setSpacing(0)
         self.screenshotCheckLayout.setObjectName(_fromUtf8("screenshotCheckLayout"))
         self.screenshotsEnableButton = QtGui.QPushButton(self.downloadGroup)
         self.screenshotsEnableButton.setStyleSheet(_fromUtf8("QPushButton#screenshotsEnableButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-bottom: none;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -363,7 +392,10 @@ class Ui_Form(object):
 "            }\n"
 "\n"
 "QPushButton#screenshotsEnableButton:checked {\n"
-"            border-color: lime;\n"
+"            border: 3px ridge lime;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-radius: 3px;\n"
 "            background-color: #2c3e50;\n"
 "            }"))
         self.screenshotsEnableButton.setText(_fromUtf8(""))
@@ -373,22 +405,45 @@ class Ui_Form(object):
         self.screenshotsEnableButton.setChecked(False)
         self.screenshotsEnableButton.setObjectName(_fromUtf8("screenshotsEnableButton"))
         self.screenshotCheckLayout.addWidget(self.screenshotsEnableButton)
-        self.screenshotsCountLabel = QtGui.QLabel(self.downloadGroup)
-        self.screenshotsCountLabel.setMinimumSize(QtCore.QSize(0, 0))
-        self.screenshotsCountLabel.setMaximumSize(QtCore.QSize(16777215, 14))
-        self.screenshotsCountLabel.setStyleSheet(_fromUtf8("border: none;\n"
+        self.horizontalLayout_6 = QtGui.QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+        self.screenshotsCountNewLabel = QtGui.QLabel(self.downloadGroup)
+        self.screenshotsCountNewLabel.setMinimumSize(QtCore.QSize(0, 0))
+        self.screenshotsCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #2ecc71;"))
+        self.screenshotsCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.screenshotsCountNewLabel.setObjectName(_fromUtf8("screenshotsCountNewLabel"))
+        self.horizontalLayout_6.addWidget(self.screenshotsCountNewLabel)
+        self.screenshotsCountSplitterLabel = QtGui.QLabel(self.downloadGroup)
+        self.screenshotsCountSplitterLabel.setMinimumSize(QtCore.QSize(0, 0))
+        self.screenshotsCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;"))
-        self.screenshotsCountLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.screenshotsCountLabel.setObjectName(_fromUtf8("screenshotsCountLabel"))
-        self.screenshotCheckLayout.addWidget(self.screenshotsCountLabel)
+        self.screenshotsCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.screenshotsCountSplitterLabel.setObjectName(_fromUtf8("screenshotsCountSplitterLabel"))
+        self.horizontalLayout_6.addWidget(self.screenshotsCountSplitterLabel)
+        self.screenshotsCountOldLabel = QtGui.QLabel(self.downloadGroup)
+        self.screenshotsCountOldLabel.setMinimumSize(QtCore.QSize(0, 0))
+        self.screenshotsCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #e74c3c;"))
+        self.screenshotsCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.screenshotsCountOldLabel.setObjectName(_fromUtf8("screenshotsCountOldLabel"))
+        self.horizontalLayout_6.addWidget(self.screenshotsCountOldLabel)
+        self.screenshotCheckLayout.addLayout(self.horizontalLayout_6)
         self.horizontalLayout.addLayout(self.screenshotCheckLayout)
         self.keylogsCheckLayout = QtGui.QVBoxLayout()
-        self.keylogsCheckLayout.setSpacing(3)
+        self.keylogsCheckLayout.setSpacing(0)
         self.keylogsCheckLayout.setObjectName(_fromUtf8("keylogsCheckLayout"))
         self.keylogsEnableButton = QtGui.QPushButton(self.downloadGroup)
         self.keylogsEnableButton.setStyleSheet(_fromUtf8("QPushButton#keylogsEnableButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-bottom: none;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -397,7 +452,10 @@ class Ui_Form(object):
 "            }\n"
 "\n"
 "QPushButton#keylogsEnableButton:checked {\n"
-"            border-color: lime;\n"
+"            border: 3px ridge lime;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-radius: 3px;\n"
 "            background-color: #2c3e50;\n"
 "            }"))
         self.keylogsEnableButton.setText(_fromUtf8(""))
@@ -407,21 +465,42 @@ class Ui_Form(object):
         self.keylogsEnableButton.setChecked(False)
         self.keylogsEnableButton.setObjectName(_fromUtf8("keylogsEnableButton"))
         self.keylogsCheckLayout.addWidget(self.keylogsEnableButton)
-        self.keylogsCountLabel = QtGui.QLabel(self.downloadGroup)
-        self.keylogsCountLabel.setMaximumSize(QtCore.QSize(16777215, 14))
-        self.keylogsCountLabel.setStyleSheet(_fromUtf8("border: none;\n"
+        self.horizontalLayout_7 = QtGui.QHBoxLayout()
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
+        self.keylogsCountNewLabel = QtGui.QLabel(self.downloadGroup)
+        self.keylogsCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #2ecc71;"))
+        self.keylogsCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.keylogsCountNewLabel.setObjectName(_fromUtf8("keylogsCountNewLabel"))
+        self.horizontalLayout_7.addWidget(self.keylogsCountNewLabel)
+        self.keylogsCountSplitterLabel = QtGui.QLabel(self.downloadGroup)
+        self.keylogsCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;"))
-        self.keylogsCountLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.keylogsCountLabel.setObjectName(_fromUtf8("keylogsCountLabel"))
-        self.keylogsCheckLayout.addWidget(self.keylogsCountLabel)
+        self.keylogsCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.keylogsCountSplitterLabel.setObjectName(_fromUtf8("keylogsCountSplitterLabel"))
+        self.horizontalLayout_7.addWidget(self.keylogsCountSplitterLabel)
+        self.keylogsCountOldLabel = QtGui.QLabel(self.downloadGroup)
+        self.keylogsCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #e74c3c;"))
+        self.keylogsCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.keylogsCountOldLabel.setObjectName(_fromUtf8("keylogsCountOldLabel"))
+        self.horizontalLayout_7.addWidget(self.keylogsCountOldLabel)
+        self.keylogsCheckLayout.addLayout(self.horizontalLayout_7)
         self.horizontalLayout.addLayout(self.keylogsCheckLayout)
         self.audioCheckLayout = QtGui.QVBoxLayout()
-        self.audioCheckLayout.setSpacing(3)
+        self.audioCheckLayout.setSpacing(0)
         self.audioCheckLayout.setObjectName(_fromUtf8("audioCheckLayout"))
         self.audioEnableButton = QtGui.QPushButton(self.downloadGroup)
         self.audioEnableButton.setStyleSheet(_fromUtf8("QPushButton#audioEnableButton {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
+"            border-bottom: none;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -430,7 +509,10 @@ class Ui_Form(object):
 "            }\n"
 "\n"
 "QPushButton#audioEnableButton:checked {\n"
-"            border-color: lime;\n"
+"            border: 3px ridge lime;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-radius: 3px;\n"
 "            background-color: #2c3e50;\n"
 "            }"))
         self.audioEnableButton.setText(_fromUtf8(""))
@@ -440,13 +522,33 @@ class Ui_Form(object):
         self.audioEnableButton.setChecked(False)
         self.audioEnableButton.setObjectName(_fromUtf8("audioEnableButton"))
         self.audioCheckLayout.addWidget(self.audioEnableButton)
-        self.audioCountLabel = QtGui.QLabel(self.downloadGroup)
-        self.audioCountLabel.setMaximumSize(QtCore.QSize(16777215, 14))
-        self.audioCountLabel.setStyleSheet(_fromUtf8("border: none;\n"
+        self.horizontalLayout_8 = QtGui.QHBoxLayout()
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
+        self.audioCountNewLabel = QtGui.QLabel(self.downloadGroup)
+        self.audioCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #2ecc71;"))
+        self.audioCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.audioCountNewLabel.setObjectName(_fromUtf8("audioCountNewLabel"))
+        self.horizontalLayout_8.addWidget(self.audioCountNewLabel)
+        self.audioCountSplitterLabel = QtGui.QLabel(self.downloadGroup)
+        self.audioCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;"))
-        self.audioCountLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.audioCountLabel.setObjectName(_fromUtf8("audioCountLabel"))
-        self.audioCheckLayout.addWidget(self.audioCountLabel)
+        self.audioCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.audioCountSplitterLabel.setObjectName(_fromUtf8("audioCountSplitterLabel"))
+        self.horizontalLayout_8.addWidget(self.audioCountSplitterLabel)
+        self.audioCountOldLabel = QtGui.QLabel(self.downloadGroup)
+        self.audioCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
+"background: #2c3e50;\n"
+"color: #e74c3c;"))
+        self.audioCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.audioCountOldLabel.setObjectName(_fromUtf8("audioCountOldLabel"))
+        self.horizontalLayout_8.addWidget(self.audioCountOldLabel)
+        self.audioCheckLayout.addLayout(self.horizontalLayout_8)
         self.horizontalLayout.addLayout(self.audioCheckLayout)
         self.gridLayout_6.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.timeCalendar = QtGui.QCalendarWidget(self.downloadGroup)
@@ -528,8 +630,26 @@ class Ui_Form(object):
         self.downloadButton.setIconSize(QtCore.QSize(24, 24))
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.gridLayout_6.addWidget(self.downloadButton, 3, 0, 1, 1)
-        self.ignoreViewedCheck = QtGui.QCheckBox(self.downloadGroup)
-        self.ignoreViewedCheck.setStyleSheet(_fromUtf8("padding-left: 10px;"))
+        self.ignoreViewedCheck = QtGui.QPushButton(self.downloadGroup)
+        self.ignoreViewedCheck.setStyleSheet(_fromUtf8("QPushButton#ignoreViewedCheck {\n"
+"            border: 1px ridge;\n"
+"            border-color: #2c3e50;\n"
+"            border-bottom: none;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#ignoreViewedCheck:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }\n"
+"\n"
+"QPushButton#ignoreViewedCheck:checked {\n"
+"            border: 3px ridge lime;\n"
+"            border-top: none;\n"
+"            border-bottom: none;\n"
+"            border-radius: 3px;\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.ignoreViewedCheck.setCheckable(True)
         self.ignoreViewedCheck.setChecked(True)
         self.ignoreViewedCheck.setObjectName(_fromUtf8("ignoreViewedCheck"))
         self.gridLayout_6.addWidget(self.ignoreViewedCheck, 2, 0, 1, 1)
@@ -546,9 +666,7 @@ class Ui_Form(object):
         item = self.screenshotsTable.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Preview", None))
         item = self.screenshotsTable.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Window Title", None))
-        item = self.screenshotsTable.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Date Time", None))
+        item.setText(_translate("Form", "Info", None))
         self.logsTab.setTabText(self.logsTab.indexOf(self.screenshotsTab), _translate("Form", "Screenshots", None))
         item = self.keylogsTable.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Date", None))
@@ -569,9 +687,15 @@ class Ui_Form(object):
         self.clientIpLabel.setText(_translate("Form", "IP: ", None))
         self.clientOsLabel.setText(_translate("Form", "OS: ", None))
         self.downloadGroup.setTitle(_translate("Form", "Download Logs", None))
-        self.screenshotsCountLabel.setText(_translate("Form", "0/0", None))
-        self.keylogsCountLabel.setText(_translate("Form", "0/0", None))
-        self.audioCountLabel.setText(_translate("Form", "0/0", None))
+        self.screenshotsCountNewLabel.setText(_translate("Form", "0", None))
+        self.screenshotsCountSplitterLabel.setText(_translate("Form", "/", None))
+        self.screenshotsCountOldLabel.setText(_translate("Form", "0", None))
+        self.keylogsCountNewLabel.setText(_translate("Form", "0", None))
+        self.keylogsCountSplitterLabel.setText(_translate("Form", "/", None))
+        self.keylogsCountOldLabel.setText(_translate("Form", "0", None))
+        self.audioCountNewLabel.setText(_translate("Form", "0", None))
+        self.audioCountSplitterLabel.setText(_translate("Form", "/", None))
+        self.audioCountOldLabel.setText(_translate("Form", "0", None))
         self.downloadButton.setText(_translate("Form", "Download", None))
         self.ignoreViewedCheck.setText(_translate("Form", "Ignore Viewed", None))
 

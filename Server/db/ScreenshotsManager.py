@@ -37,7 +37,20 @@ class ScreenshotsManager:
         self.conn.commit()
         return screenshots.fetchone()[0]
 
-    def get_all_screenshots(self, client_id, date, filter):
-        screenshots = self.cur.execute('SELECT * FROM Screenshots WHERE screenshot_client_id=? AND screenshot_date=? AND screenshot_status=?', (client_id, date, filter))
+    def get_all_new_screenshots(self, client_id, date, filt=0):
+        screenshots = self.cur.execute('SELECT * FROM Screenshots WHERE screenshot_client_id=? AND screenshot_date=? AND screenshot_status=?', (client_id, date, filt))
         self.conn.commit()
-        return screenshots.fetchone()[0]
+        return screenshots.fetchall()
+
+    def get_all_screenshots(self, client_id, date):
+        screenshots = self.cur.execute('SELECT * FROM Screenshots WHERE screenshot_client_id=? AND screenshot_date=?', (client_id, date,))
+        self.conn.commit()
+        return screenshots.fetchall()
+
+    def delete_screenshot(self, datetime_stamp):
+        self.cur.execute('DELETE FROM Screenshots WHERE screenshot_name=?', (datetime_stamp,))
+        self.conn.commit()
+
+    def set_screenshot_viewed(self, datetime_stamp):
+        self.cur.execute('UPDATE Screenshots SET screenshot_status=1 WHERE screenshot_name=?', (datetime_stamp,))
+        self.conn.commit()

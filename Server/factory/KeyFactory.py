@@ -9,7 +9,7 @@ def get_date_time():
         month = '0'+str(month)
     day = now.day
     if len(str(day)) < 2:
-        month = '0'+str(day)
+        day = '0'+str(day)
     hour = now.hour
     minute = now.minute
     second = now.second

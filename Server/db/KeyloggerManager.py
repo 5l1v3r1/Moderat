@@ -35,3 +35,21 @@ class KeyloggerManager:
         keylogs = self.cur.execute('SELECT COUNT(*) FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=? AND keylogger_status=1', (client_id, date))
         self.conn.commit()
         return keylogs.fetchone()[0]
+
+    def get_all_new_keylogs(self, client_id, date):
+        keylogs = self.cur.execute('SELECT * FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=? AND keylogger_status=0', (client_id, date))
+        self.conn.commit()
+        return keylogs.fetchall()
+
+    def get_all_keylogs(self, client_id, date):
+        keylogs = self.cur.execute('SELECT * FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=?', (client_id, date,))
+        self.conn.commit()
+        return keylogs.fetchall()
+
+    def delete_keylog(self, datetime_stamp):
+        self.cur.execute('DELETE FROM Keylogger WHERE keylogger_datetime=?', (datetime_stamp,))
+        self.conn.commit()
+
+    def set_keylog_viewed(self, datetime_stamp):
+        self.cur.execute('UPDATE Keylogger SET keylogger_status=1 WHERE keylogger_datetime=?', (datetime_stamp,))
+        self.conn.commit()

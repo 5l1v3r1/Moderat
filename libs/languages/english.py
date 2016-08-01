@@ -234,6 +234,23 @@ tr = {
     'BUILDER_SAVE_FILE_NAME':               u'Select File To Save',
     # END BUILDER
 
+    # LOG VIEWER
+    'VIEWER_WINDOW_TITLE':          u'Moderat - Log Viewer',
+    'VIEWER_SCREENSHOTS_TAB':       u'Screenshots',
+    'VIEWER_KEYLOGS_TAB':           u'Keylogs',
+    'VIEWER_AUDIO_TAB':             u'Audio',
+    'VIEWER_SCREENSHOT_PREVIEW':    u'Preview',
+    'VIEWER_SCREENSHOT_INFO':       u'Info',
+    'VIEWER_CLIENT_GROUP_TITLE':    u'Client Information',
+    'VIEWER_CLIENT_ID':             u'ID',
+    'VIEWER_CLIENT_ALIAS':          u'ALIAS',
+    'VIEWER_CLIENT_IP':             u'IP',
+    'VIEWER_CLIENT_OS':             u'OS',
+    'VIEWER_DOWNLOAD_GROUP_TITLE':  u'Logs Download',
+    'VIEWER_IGNOR_VIEWED':          u'Ignore Viewed',
+    'VIEWER_DOWNLOAD':              u'Download',
+    # END LOG VIEWER
+
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'Administration',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'Set Moderator',

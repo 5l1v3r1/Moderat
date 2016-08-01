@@ -232,6 +232,23 @@ tr = {
     'BUILDER_SAVE_FILE_NAME':               u'მიუთითე სად შევინახო',
     # END BUILDER
 
+    # LOG VIEWER
+    'VIEWER_WINDOW_TITLE':          u'Moderat - ჩანაწერები',
+    'VIEWER_SCREENSHOTS_TAB':       u'სქრინები',
+    'VIEWER_KEYLOGS_TAB':           u'კლავიატურა',
+    'VIEWER_AUDIO_TAB':             u'მიკროფონი',
+    'VIEWER_SCREENSHOT_PREVIEW':    u'სქრინი',
+    'VIEWER_SCREENSHOT_INFO':       u'ინფორმაცია',
+    'VIEWER_CLIENT_GROUP_TITLE':    u'კლიენტის ინფორმაცია',
+    'VIEWER_CLIENT_ID':             u'იდ',
+    'VIEWER_CLIENT_ALIAS':          u'სახელი',
+    'VIEWER_CLIENT_IP':             u'მისამართი',
+    'VIEWER_CLIENT_OS':             u'სისტემა',
+    'VIEWER_DOWNLOAD_GROUP_TITLE':  u'ჩანაწერების გადმოწერა',
+    'VIEWER_IGNOR_VIEWED':          u'არ გადმოწერო ნანახი',
+    'VIEWER_DOWNLOAD':              u'გადმოწერა',
+    # END LOG VIEWER
+
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'მოდერატორზე მიბმა',

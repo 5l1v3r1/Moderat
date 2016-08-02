@@ -879,9 +879,7 @@ QPushButton#addModeratorButton:pressed {
     <addaction name="actionRemote_Shell"/>
     <addaction name="actionRemote_Explorer"/>
     <addaction name="actionRemote_Process_Manager"/>
-    <addaction name="actionRemote_Microphone"/>
     <addaction name="actionRemote_Scripting"/>
-    <addaction name="actionRemote_Keylogger"/>
     <addaction name="separator"/>
     <addaction name="actionDesktop_Preview"/>
     <addaction name="actionWebcam_Preview"/>
@@ -901,7 +899,6 @@ QPushButton#addModeratorButton:pressed {
     <addaction name="actionStop_Client"/>
     <addaction name="separator"/>
     <addaction name="actionSet_Alias"/>
-    <addaction name="actionRun_As_Admin"/>
    </widget>
    <widget class="QMenu" name="menuBuilder">
     <property name="title">

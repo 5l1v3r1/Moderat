@@ -10,8 +10,6 @@ import threading
 import hashlib
 import string
 import random
-from PIL import Image
-from threading import Thread
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -23,11 +21,8 @@ from libs.log_viewer import LogViewer
 from libs.settings import Config, Settings
 from libs.builder import Builder
 from libs.data_transfer import data_receive, data_send, data_get
-from libs.modechat import get, send
-from plugins.maudio import main as maudio
 from plugins.mexplorer import main as mexplorer
 from plugins.mshell import main as mshell
-from plugins.mkeylogger import main as mkeylogger
 from plugins.mprocesses import main as mprocesses
 from plugins.mscript import main as mscript
 from plugins.mdesktop import main as mdesktop
@@ -94,8 +89,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # disable panel buttons
         self.actionRemote_Shell.setDisabled(True)
         self.actionRemote_Explorer.setDisabled(True)
-        self.actionRemote_Microphone.setDisabled(True)
-        self.actionRemote_Keylogger.setDisabled(True)
         self.actionRemote_Process_Manager.setDisabled(True)
         self.actionRemote_Scripting.setDisabled(True)
         self.actionDesktop_Preview.setDisabled(True)
@@ -158,12 +151,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionLock_Client.triggered.connect(self.lock_client)
         self.actionStop_Client.triggered.connect(self.terminate_client)
         self.actionSet_Alias.triggered.connect(self.add_alias)
-        #self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
         ###
         self.actionRemote_Shell.triggered.connect(lambda: self.run_plugin('shellMode'))
         self.actionRemote_Explorer.triggered.connect(lambda: self.run_plugin('explorerMode'))
-        self.actionRemote_Microphone.triggered.connect(lambda: self.run_plugin('audioMode'))
-        self.actionRemote_Keylogger.triggered.connect(lambda: self.run_plugin('keyloggerMode'))
         self.actionRemote_Scripting.triggered.connect(lambda: self.run_plugin('scriptingMode'))
         self.actionRemote_Process_Manager.triggered.connect(lambda: self.run_plugin('processesMode'))
         ###
@@ -467,16 +457,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.actionLock_Client.setText(_('MENU_CLIENT_LOCK'))
         self.actionStop_Client.setText(_('MENU_CLIENT_STOP'))
         self.actionSet_Alias.setText(_('MENU_CLIENT_SET_ALIAS'))
-        self.actionRun_As_Admin.setText(_('MENU_CLIENT_RUN_AS_ADMIN'))
         # END MENU
 
         # PLUGINS
         self.menuAction.setTitle(_('MENU_PLUGIN'))
         self.actionRemote_Shell.setText(_('MENU_PLUGIN_SHELL'))
         self.actionRemote_Explorer.setText(_('MENU_PLUGIN_EXPLORER'))
-        self.actionRemote_Microphone.setText(_('MENU_PLUGIN_MICROPHONE'))
         self.actionRemote_Process_Manager.setText(_('MENU_PLUGIN_PROCESSES'))
-        self.actionRemote_Keylogger.setText(_('MENU_PLUGIN_KEYLOGGER'))
         self.actionRemote_Scripting.setText(_('MENU_PLUGIN_SCRIPTING'))
         self.actionDesktop_Preview.setText(_('MENU_PLUGIN_DESKTOP'))
         self.actionWebcam_Preview.setText(_('MENU_PLUGIN_WEBCAM'))
@@ -837,15 +824,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
                 self.actionUnlock_Client.setDisabled(False)
                 self.actionSet_Alias.setDisabled(False)
-                self.actionRun_As_Admin.setDisabled(False)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
                     self.actionWebcam_Preview.setDisabled(False)
                 self.actionRemote_Shell.setDisabled(True)
                 self.actionRemote_Explorer.setDisabled(True)
-                self.actionRemote_Microphone.setDisabled(True)
-                self.actionRemote_Keylogger.setDisabled(True)
                 self.actionRemote_Scripting.setDisabled(True)
                 self.actionRemote_Process_Manager.setDisabled(True)
                 self.actionLock_Client.setDisabled(True)
@@ -853,16 +837,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             else:
                 self.actionRemote_Shell.setDisabled(False)
                 self.actionRemote_Explorer.setDisabled(False)
-                if self.has_microphone():
-                    self.actionRemote_Microphone.setDisabled(False)
-                self.actionRemote_Keylogger.setDisabled(False)
                 self.actionRemote_Scripting.setDisabled(False)
                 self.actionRemote_Process_Manager.setDisabled(False)
                 self.actionLock_Client.setDisabled(False)
                 self.actionStop_Client.setDisabled(False)
                 self.actionUnlock_Client.setDisabled(True)
                 self.actionSet_Alias.setDisabled(False)
-                self.actionRun_As_Admin.setDisabled(False)
                 self.actionDesktop_Preview.setDisabled(False)
                 server = self.current_client()
                 if self.socks[server]['webcamdevice'] != 'NoDevice':
@@ -870,14 +850,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         except:
             self.actionRemote_Shell.setDisabled(True)
             self.actionRemote_Explorer.setDisabled(True)
-            self.actionRemote_Keylogger.setDisabled(True)
-            self.actionRemote_Microphone.setDisabled(True)
             self.actionRemote_Scripting.setDisabled(True)
             self.actionRemote_Process_Manager.setDisabled(True)
             self.actionLock_Client.setDisabled(True)
             self.actionStop_Client.setDisabled(True)
             self.actionSet_Alias.setDisabled(True)
-            self.actionRun_As_Admin.setDisabled(True)
             self.actionUnlock_Client.setDisabled(True)
             self.actionDesktop_Preview.setDisabled(True)
             self.actionWebcam_Preview.setDisabled(True)
@@ -907,7 +884,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
             server_menu.addAction(QIcon(os.path.join(assets, 'unhide.png')), _('RM_VIEW_LOGS'), self.view_logs)
-            #server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'), self.run_as_admin)
             server_menu.addSeparator()
 
             if self.clientsTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
@@ -917,14 +893,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                       lambda: self.run_plugin('explorerMode'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
                                       lambda: self.execute_plugin('processes'))
-                audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), _('RM_MICROPHONE'),
-                                                   lambda: self.run_plugin('audioMode'))
-                if not self.has_microphone():
-                    audio_menu.setEnabled(False)
                 server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _('RM_SCRIPTING'),
                                       lambda: self.run_plugin('scriptingMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), _('RM_KEYLOGGER'),
-                                      lambda: self.run_plugin('keyloggerMode'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
@@ -969,8 +939,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         plugins = {
             'shell': mshell,
             'explorer': mexplorer,
-            'audio': maudio,
-            'keylogger': mkeylogger,
             'scripting': mscript,
             'processes': mprocesses,
         }
@@ -1002,7 +970,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
-                send(self.connection_socket, 'terminateServer', str(client))
+                data_send(self.connection_socket, 'terminateClient', 'terminateClient', session_id=self.session_id, to=client)
 
     def update_settings(self):
         self.settings = Config()

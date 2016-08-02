@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 
 import main_ui
 
-from libs.modechat import get
+from libs.data_transfer import data_get
 from libs.language import Translate
 
 import ast
@@ -22,8 +22,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setupUi(self)
 
         self.sock = args['sock']
-        self.socket = args['socket']
-        self.ipAddress = args['ipAddress']
+        self.client = args['client']
+        self.session_id = args['session_id']
 
         self.setWindowTitle(_('MDESKTOP_TITLE'))
 
@@ -42,7 +42,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.screenshotLabel.setText(_('MDESKTOP_INFO'))
 
     def get_screenshot(self):
-        screen_dict = get(self.sock, 'getScreen', self.socket)
+        data = data_get(self.sock, 'getScreen', 'getScreen', session_id=self.session_id, to=self.client)
+        screen_dict = data['payload']
         try:
             screen_info = ast.literal_eval(screen_dict)
             im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),

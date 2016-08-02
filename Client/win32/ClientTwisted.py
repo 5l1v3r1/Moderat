@@ -386,6 +386,14 @@ def get_window_title():
     return buff.value
 
 
+def get_screenshot():
+    return str({
+        'width': width,
+        'height': height,
+        'screenshotbits': screen_bits()
+    })
+
+
 def data_receive(sock, end='[ENDOFMESSAGE]'):
     received_data = ''
     try:
@@ -562,10 +570,17 @@ def reactor():
 
                                     except socket.error:
                                         break
+                                    except KeyError:
+                                        break
 
                             else:
                                 data_send(server_socket, 'notAuthorized', 'notAuthorized')
 
+                        # Lock Client Functions
+                        # Desktop Screenshot
+                        elif data['mode'] == 'getScreen':
+                            data_send(server_socket, get_screenshot(), 'getScreen', session_id=data['session_id'])
+                            continue
 
                         else:
                             data_send(server_socket, 'notAuthorized', 'notAuthorized')

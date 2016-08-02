@@ -94,7 +94,9 @@ tr = {
 
     # UNLOCK CLIENT
     'UNLOCK_CLIENT':                u'კლიენტის განბლოკვა',
-    'ENTER_PASSWORD':               u'პაროლი - ',
+    'ENTER_USERNAME':               u'მომხმარებელი: ',
+    'ENTER_PASSWORD':               u'პაროლი: ',
+    'INCORRECT_CREDENTIALS':        u'არასწორი მომხმარებელი ან პაროლი',
     # END UNLOCK CLIENT
 
     # CLIENT INFO
@@ -252,6 +254,9 @@ tr = {
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'მოდერატორზე მიბმა',
+
+    'SET_MODERATOR_TITLE':              u'ადმინისტრატორზე მიბმა',
+    'SET_MODERATOR_USERNAME':           u'მოდერატორი: ',
 
     'MODERATORS_PRIVILEGES_ADMINISTRATOR':  u'ადმინისტრატორი',
     'MODERATORS_PRIVILEGES_MODERATOR':      u'მოდერატორი',

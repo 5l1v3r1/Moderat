@@ -25,7 +25,6 @@ class Config:
         try:
             self.ip_address = str(self.config.get('connection_settings', 'ip_address'))
             self.port = int(self.config.get('connection_settings', 'port'))
-            self.username = str(self.config.get('connection_settings', 'username'))
             self.language = str(self.config.get('interface', 'language'))
         except:
             self.set_default_settings()
@@ -43,7 +42,6 @@ class Config:
             pass
         self.config.set('connection_settings', 'ip_address', '192.168.1.2')
         self.config.set('connection_settings', 'port', 4434)
-        self.config.set('connection_settings', 'username', 'admin')
         try:
             self.config.add_section('interface')
         except ConfigParser.DuplicateSectionError:
@@ -89,7 +87,6 @@ class Settings(QWidget, settingsUi):
 
         self.ipAddressLine.setText(str(config.get('connection_settings', 'ip_address')))
         self.portLine.setText(str(config.get('connection_settings', 'port')))
-        self.usernameEntry.setText(str(config.get('connection_settings', 'username')))
 
     def check_settings(self):
         Config()
@@ -98,7 +95,6 @@ class Settings(QWidget, settingsUi):
         # Connection values
         ip_address = str(self.ipAddressLine.text())
         port = str(self.portLine.text())
-        username = str(self.usernameEntry.text())
         # Interface Values
 
         config = ConfigParser.ConfigParser()
@@ -107,7 +103,6 @@ class Settings(QWidget, settingsUi):
         # add connection settings
         config.set('connection_settings', 'ip_address', ip_address)
         config.set('connection_settings', 'port', port)
-        config.set('connection_settings', 'username', username)
         # add interface settings
 
         with open(self.config_file, 'wb') as config_file:

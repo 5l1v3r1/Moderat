@@ -80,13 +80,6 @@ background-position: center;
        <string>Connection Settings</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
@@ -141,32 +134,18 @@ border-color: #2c3e50;</string>
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="usernameLabel">
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Username:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="usernameEntry">
-           <property name="styleSheet">
-            <string notr="true">background-color: #34495e; 
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

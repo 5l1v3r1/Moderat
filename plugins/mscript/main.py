@@ -3,7 +3,7 @@ from PyQt4.QtGui import *
 import main_ui
 import linesnum
 
-from libs.modechat import get
+from libs.data_transfer import data_get
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -13,10 +13,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setupUi(self)
 
         self.sock = args['sock']
-        self.socket = args['socket']
-        self.ipAddress = args['ipAddress']
+        self.client = args['client']
+        self.session_id = args['session_id']
 
-        self.setWindowTitle('Remote Scripting in - %s - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle('Remote Scripting')
 
         # init idle with lines
         self.idle = linesnum.LineTextWidget()
@@ -30,9 +30,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
     def run_script(self):
         script = self.idle.getTextEdit()
-        output = get(self.sock, 'runscript %s' % script, 'getoutput')
+        output = data_get(self.sock, str(script), 'scriptingMode', session_id=self.session_id, to=self.client)
         self.outputText.setVisible(True)
-        self.outputText.setHtml(output)
+        self.outputText.setHtml(output['payload'])
 
     def close_output(self):
         self.outputText.setVisible(False)

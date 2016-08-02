@@ -96,6 +96,7 @@ tr = {
 
     # UNLOCK CLIENT
     'UNLOCK_CLIENT':                u'Unlock Client',
+    'ENTER_USERNAME':               u'Username: ',
     'ENTER_PASSWORD':               u'Password: ',
     # END UNLOCK CLIENT
 
@@ -254,6 +255,9 @@ tr = {
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'Administration',
     'ADMINISTRATOR_RM_SET_MODERATOR':   u'Set Moderator',
+
+    'SET_MODERATOR_TITLE':              u'Set Moderator',
+    'SET_MODERATOR_USERNAME':           u'Moderator: ',
 
     'MODERATORS_PRIVILEGES_ADMINISTRATOR':  u'Administrator',
     'MODERATORS_PRIVILEGES_MODERATOR':      u'Moderator',

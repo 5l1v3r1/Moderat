@@ -70,7 +70,7 @@ class mainPopup(QWidget, Ui_Form):
     def terminate_process(self):
         try:
             pid = self.processesTable.item(self.processesTable.currentRow(), 0).text()
-            data_send(self.sock, 'terminateProcess %s' % pid, 'terminateProcess', session_id=self.session_id, to=self.client)
+            data_send(self.sock, pid, 'proccessMode', session_id=self.session_id, to=self.client)
             time.sleep(1.0)
             self.get_processes_list()
         except AttributeError:

@@ -493,34 +493,41 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
             if data_receive(self.connection_socket)['payload'] == 'connectSuccess':
                 while 1:
-                    text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD') + self.USERNAME,
-                                                    QLineEdit.Password)
+                    username, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_USERNAME'),
+                                                    QLineEdit.Normal)
                     if ok:
-                        data = data_get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), 'moderatorInitializing', self.session_id)
-                        if data['mode'] == 'moderatorInitializing' and data['payload'].startswith('loginSuccess '):
+                        password, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'),
+                                                        QLineEdit.Password)
+                        if ok:
+                            data = data_get(self.connection_socket, 'auth %s %s' % (str(username), str(password)), 'moderatorInitializing', self.session_id)
+                            if data['mode'] == 'moderatorInitializing' and data['payload'].startswith('loginSuccess '):
 
-                            # Get Privileges
-                            self.privs = int(data['payload'].split()[-1])
-                            if self.privs == 1:
-                                self.enable_administrator()
-                            elif self.privs == 0:
-                                self.disable_administrator()
+                                # Get Privileges
+                                self.privs = int(data['payload'].split()[-1])
+                                if self.privs == 1:
+                                    self.enable_administrator()
+                                elif self.privs == 0:
+                                    self.disable_administrator()
 
-                            self.acceptthreadState = True
-                            self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(self.session_id,))
-                            self.servers_checker_thread.start()
+                                self.acceptthreadState = True
+                                self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(self.session_id,))
+                                self.servers_checker_thread.start()
 
-                            # Gui
-                            self.actionStopListen_for_connections.setDisabled(False)
-                            self.actionStartListen_for_connections.setDisabled(True)
+                                # Gui
+                                self.actionStopListen_for_connections.setDisabled(False)
+                                self.actionStartListen_for_connections.setDisabled(True)
 
-                            # Status Change
-                            self.statusLabel.setText('Online')
-                            self.statusLabel.setStyleSheet('color: #1abc9c;')
+                                # Status Change
+                                self.statusLabel.setText('Online')
+                                self.statusLabel.setStyleSheet('color: #1abc9c;')
 
+                                return
+                            elif data['payload'] == 'loginError':
+                                warn = QMessageBox(QMessageBox.Warning, _('INCORRECT_CREDENTIALS'), _('INCORRECT_CREDENTIALS'))
+                                ans = warn.exec_()
+                                continue
+                        else:
                             return
-                        elif data['payload'] == 'loginError':
-                            continue
                     else:
                         return
         except socket.error:
@@ -804,7 +811,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     _hash = hashlib.md5()
                     try:
                         _hash.update(str(text))
-                        answer = data_get(self.connection_socket, 'unlockClient %s' % _hash.hexdigest(), 'unlockClient', self.session_id, client)
+                        answer = data_get(self.connection_socket, _hash.hexdigest(), 'unlockClient', session_id=self.session_id, to=client)
                         if answer['mode'] == 'loginSuccess':
                             break
                         elif answer['mode'] == 'notAuthorized':
@@ -894,14 +901,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
                                       lambda: self.execute_plugin('processes'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _('RM_SCRIPTING'),
-                                      lambda: self.run_plugin('scriptingMode'))
+                                      lambda: self.execute_plugin('scripting'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), _('RM_LOCK'),
                                               self.lock_client)
-                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
-                                              self.terminate_client)
+                if self.privs == 1:
+                    server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
+                                                  self.terminate_client)
             else:
                 server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), _('RM_UNLOCK'), self.unlock_client)
 
@@ -976,7 +984,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings = Config()
         self.IPADDRESS = self.settings.ip_address
         self.PORT = self.settings.port
-        self.USERNAME = self.settings.username
         self.LANGUAGE = self.settings.language
 
     def run_settings(self):
@@ -996,14 +1003,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def administrator_set_moderator(self):
         client = self.current_client()
         if client:
-            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME') + self.USERNAME, QLineEdit.Normal)
+            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
             if ok:
                 data_send(self.connection_socket, '%s %s' % (client, text), 'setModerator', session_id=self.session_id)
 
     def closeEvent(self, event):
         self.acceptthreadState = False
         sys.exit(1)
-
 
     # MODERATORS COMMANDS
     def get_moderators(self):

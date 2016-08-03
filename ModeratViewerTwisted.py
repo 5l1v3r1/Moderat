@@ -640,8 +640,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             args = {
                 'sock': self.connection_socket,
-                'key': self.streaming_socks[client]['key'],
-                'ipAddress': self.streaming_socks[client]['ip_address'],
+                'client': client,
+                'session_id': self.session_id,
                 'assets': assets,
             }
             self.camera_preview_dialog = mwebcam.mainPopup(args)

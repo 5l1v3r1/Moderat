@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'logViewer.ui'
+# Form implementation generated from reading ui file 'log_viewer.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -27,7 +27,7 @@ class Ui_Form(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(1098, 643)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unhide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         Form.setStyleSheet(_fromUtf8("background-color: #2c3e50;\n"
 "color: #c9f5f7;"))
@@ -143,7 +143,10 @@ class Ui_Form(object):
         self.keylogsTab.setObjectName(_fromUtf8("keylogsTab"))
         self.gridLayout_3 = QtGui.QGridLayout(self.keylogsTab)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.keylogsTable = QtGui.QTableWidget(self.keylogsTab)
+        self.splitter = QtGui.QSplitter(self.keylogsTab)
+        self.splitter.setOrientation(QtCore.Qt.Vertical)
+        self.splitter.setObjectName(_fromUtf8("splitter"))
+        self.keylogsTable = QtGui.QTableWidget(self.splitter)
         self.keylogsTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.keylogsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
@@ -192,10 +195,79 @@ class Ui_Form(object):
         self.keylogsTable.setHorizontalHeaderItem(2, item)
         self.keylogsTable.horizontalHeader().setStretchLastSection(True)
         self.keylogsTable.verticalHeader().setVisible(False)
-        self.gridLayout_3.addWidget(self.keylogsTable, 0, 0, 1, 1)
+        self.widget = QtGui.QWidget(self.splitter)
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.widget)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
+        self.horizontalLayout_9 = QtGui.QHBoxLayout()
+        self.horizontalLayout_9.setSpacing(3)
+        self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
+        self.keylogViewerButton = QtGui.QPushButton(self.widget)
+        self.keylogViewerButton.setMinimumSize(QtCore.QSize(100, 30))
+        self.keylogViewerButton.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.keylogViewerButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"border-bottom: none;\n"
+"background-color: #34495e;"))
+        self.keylogViewerButton.setObjectName(_fromUtf8("keylogViewerButton"))
+        self.horizontalLayout_9.addWidget(self.keylogViewerButton)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem)
+        self.highlightLine = QtGui.QLineEdit(self.widget)
+        self.highlightLine.setMinimumSize(QtCore.QSize(0, 30))
+        self.highlightLine.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"border-bottom: none;\n"
+"background-color: #34495e;"))
+        self.highlightLine.setObjectName(_fromUtf8("highlightLine"))
+        self.horizontalLayout_9.addWidget(self.highlightLine)
+        self.keylogBackButton = QtGui.QPushButton(self.widget)
+        self.keylogBackButton.setMinimumSize(QtCore.QSize(0, 30))
+        self.keylogBackButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"border-bottom: none;\n"
+"background-color: #34495e;"))
+        self.keylogBackButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.logsTab.addTab(self.keylogsTab, icon2, _fromUtf8(""))
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/back.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.keylogBackButton.setIcon(icon2)
+        self.keylogBackButton.setIconSize(QtCore.QSize(24, 24))
+        self.keylogBackButton.setObjectName(_fromUtf8("keylogBackButton"))
+        self.horizontalLayout_9.addWidget(self.keylogBackButton)
+        self.keylogNextButton = QtGui.QPushButton(self.widget)
+        self.keylogNextButton.setMinimumSize(QtCore.QSize(0, 30))
+        self.keylogNextButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
+"border-color: #2c3e50;\n"
+"border-bottom: none;\n"
+"background-color: #34495e;"))
+        self.keylogNextButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/next.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.keylogNextButton.setIcon(icon3)
+        self.keylogNextButton.setIconSize(QtCore.QSize(24, 24))
+        self.keylogNextButton.setObjectName(_fromUtf8("keylogNextButton"))
+        self.horizontalLayout_9.addWidget(self.keylogNextButton)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_9)
+        self.keylogViewerText = QtGui.QTextEdit(self.widget)
+        self.keylogViewerText.setStyleSheet(_fromUtf8("background-position: center;\n"
+"border: 1px ridge;\n"
+"padding: 5px;\n"
+"color: #cff7f8;\n"
+"border-color: #2c3e50;\n"
+"font: 8pt \"MS Shell Dlg 2\";\n"
+"background-color: #34495e;\n"
+"\n"
+"background-image: url(assets/bg.png);\n"
+"background-repeat: no-repeat;"))
+        self.keylogViewerText.setReadOnly(True)
+        self.keylogViewerText.setAcceptRichText(True)
+        self.keylogViewerText.setObjectName(_fromUtf8("keylogViewerText"))
+        self.verticalLayout_4.addWidget(self.keylogViewerText)
+        self.gridLayout_3.addWidget(self.splitter, 0, 0, 1, 1)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.logsTab.addTab(self.keylogsTab, icon4, _fromUtf8(""))
         self.audioTab = QtGui.QWidget()
         self.audioTab.setObjectName(_fromUtf8("audioTab"))
         self.gridLayout_4 = QtGui.QGridLayout(self.audioTab)
@@ -252,9 +324,9 @@ class Ui_Form(object):
         self.audioTable.verticalHeader().setVisible(False)
         self.audioTable.verticalHeader().setDefaultSectionSize(80)
         self.gridLayout_4.addWidget(self.audioTable, 0, 0, 1, 1)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.logsTab.addTab(self.audioTab, icon3, _fromUtf8(""))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.logsTab.addTab(self.audioTab, icon5, _fromUtf8(""))
         self.verticalLayout_3.addWidget(self.logsTab)
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
@@ -293,14 +365,14 @@ class Ui_Form(object):
 "border: none;\n"
 "border: 1px ridge;\n"
 "border-color: #2c3e50;\n"
-"padding-top: 10px;"))
+"padding-top: 14px;"))
         self.clientInformationGroup.setObjectName(_fromUtf8("clientInformationGroup"))
         self.gridLayout = QtGui.QGridLayout(self.clientInformationGroup)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.clientAliasLabel = QtGui.QLabel(self.clientInformationGroup)
-        self.clientAliasLabel.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.clientAliasLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         self.clientAliasLabel.setStyleSheet(_fromUtf8("padding: 2px;\n"
 "border: none;"))
         self.clientAliasLabel.setObjectName(_fromUtf8("clientAliasLabel"))
@@ -319,7 +391,7 @@ class Ui_Form(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.clientIdLabel = QtGui.QLabel(self.clientInformationGroup)
-        self.clientIdLabel.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.clientIdLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         self.clientIdLabel.setStyleSheet(_fromUtf8("padding: 2px;\n"
 "border: none;"))
         self.clientIdLabel.setObjectName(_fromUtf8("clientIdLabel"))
@@ -338,7 +410,7 @@ class Ui_Form(object):
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.clientIpLabel = QtGui.QLabel(self.clientInformationGroup)
-        self.clientIpLabel.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.clientIpLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         self.clientIpLabel.setStyleSheet(_fromUtf8("padding: 2px;\n"
 "border: none;"))
         self.clientIpLabel.setObjectName(_fromUtf8("clientIpLabel"))
@@ -357,7 +429,7 @@ class Ui_Form(object):
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.clientOsLabel = QtGui.QLabel(self.clientInformationGroup)
-        self.clientOsLabel.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.clientOsLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         self.clientOsLabel.setStyleSheet(_fromUtf8("padding: 2px;\n"
 "border: none;"))
         self.clientOsLabel.setObjectName(_fromUtf8("clientOsLabel"))
@@ -374,8 +446,8 @@ class Ui_Form(object):
         self.horizontalLayout_5.addWidget(self.clientOsLine)
         self.gridLayout.addLayout(self.horizontalLayout_5, 3, 0, 1, 1)
         self.endTimeLayout.addWidget(self.clientInformationGroup)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.endTimeLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.endTimeLayout.addItem(spacerItem1)
         self.downloadGroup = QtGui.QGroupBox(Form)
         self.downloadGroup.setMaximumSize(QtCore.QSize(300, 16777215))
         self.downloadGroup.setStyleSheet(_fromUtf8("background-color: #34495e; \n"
@@ -474,7 +546,7 @@ class Ui_Form(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.keylogsEnableButton.setText(_fromUtf8(""))
-        self.keylogsEnableButton.setIcon(icon2)
+        self.keylogsEnableButton.setIcon(icon4)
         self.keylogsEnableButton.setIconSize(QtCore.QSize(24, 24))
         self.keylogsEnableButton.setCheckable(True)
         self.keylogsEnableButton.setChecked(False)
@@ -531,7 +603,7 @@ class Ui_Form(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.audioEnableButton.setText(_fromUtf8(""))
-        self.audioEnableButton.setIcon(icon3)
+        self.audioEnableButton.setIcon(icon5)
         self.audioEnableButton.setIconSize(QtCore.QSize(24, 24))
         self.audioEnableButton.setCheckable(True)
         self.audioEnableButton.setChecked(False)
@@ -639,9 +711,9 @@ class Ui_Form(object):
 "QPushButton#downloadButton::pressed {\n"
 "    border-bottom: 1px solid;\n"
 "}"))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.downloadButton.setIcon(icon4)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.downloadButton.setIcon(icon6)
         self.downloadButton.setIconSize(QtCore.QSize(24, 24))
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.gridLayout_6.addWidget(self.downloadButton, 3, 0, 1, 1)
@@ -649,7 +721,6 @@ class Ui_Form(object):
         self.ignoreViewedCheck.setStyleSheet(_fromUtf8("QPushButton#ignoreViewedCheck {\n"
 "            border: 1px ridge;\n"
 "            border-color: #2c3e50;\n"
-"            border-bottom: none;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
@@ -691,6 +762,8 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Logs", None))
         item = self.keylogsTable.horizontalHeaderItem(2)
         item.setText(_translate("Form", "path", None))
+        self.keylogViewerButton.setText(_translate("Form", "Viewer", None))
+        self.highlightLine.setPlaceholderText(_translate("Form", "Highlight", None))
         self.logsTab.setTabText(self.logsTab.indexOf(self.keylogsTab), _translate("Form", "Keylogs", None))
         item = self.audioTable.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Duration", None))

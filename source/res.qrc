@@ -1,11 +1,12 @@
 <RCC>
   <qresource prefix="icons">
     <file>../assets/other_settings.png</file>
+    <file>../assets/next.png</file>
     <file>../assets/info.png</file>
     <file>../assets/idle.png</file>
     <file>../assets/client_settings.png</file>
-    <file>../assets/back.png</file>
     <file>../assets/shuffle.png</file>
+    <file>../assets/back.png</file>
     <file>../assets/flags/ge.png</file>
     <file>../assets/run_as_admin.png</file>
     <file>../assets/add_alias.png</file>

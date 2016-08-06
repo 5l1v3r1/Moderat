@@ -16,7 +16,7 @@ def spectrum_analyzer_image(client_id, audio_path, audio_name, storage):
     plt.figure(num=None, figsize=(6, 1.07), dpi=80, facecolor='w', edgecolor='k')
     plt.axis('off')
     plt.plot(Time, signal, color='#2ecc71')
-    audio_spectrum_path = os.path.join(storage, audio_name+'.png')
+    audio_spectrum_path = os.path.join(check_client_storage(storage, client_id), audio_name+'.png')
     plt.savefig(audio_spectrum_path, transparent=True)
     plt.clf()
     return audio_spectrum_path
@@ -31,7 +31,7 @@ def audio_duration(audio_path):
 
 
 def check_client_storage(storage, client_id):
-    audio_path = os.path.join(storage, client_id, 'Cache')
+    audio_path = os.path.join(storage, client_id, 'Cache', 'Spectrum')
     if not os.path.exists(audio_path):
         os.makedirs(audio_path)
     return audio_path

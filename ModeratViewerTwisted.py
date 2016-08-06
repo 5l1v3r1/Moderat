@@ -131,6 +131,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clientsTable.setColumnHidden(self.index_of_moderator, True)
         self.offlineClientsTable.setColumnHidden(0, True)
 
+        # Shortcuts
+        # Set Alias
+        self.connect(QShortcut(QKeySequence(Qt.Key_F2), self), SIGNAL('activated()'), self.add_alias)
+
         # servers table double click trigger
         self.clientsTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu

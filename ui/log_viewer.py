@@ -144,7 +144,10 @@ class Ui_Form(object):
         self.gridLayout_3 = QtGui.QGridLayout(self.keylogsTab)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.splitter = QtGui.QSplitter(self.keylogsTab)
+        self.splitter.setLineWidth(5)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
+        self.splitter.setHandleWidth(5)
+        self.splitter.setChildrenCollapsible(False)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.keylogsTable = QtGui.QTableWidget(self.splitter)
         self.keylogsTable.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -169,6 +172,7 @@ class Ui_Form(object):
 "\n"
 "    background-image: url(assets/bg.png);\n"
 "    background-repeat: no-repeat;\n"
+"    border-bottom: 3px ridge #16a085;\n"
 "}\n"
 "\n"
 "QTableWidget#keylogsTable:item:selected {\n"
@@ -195,15 +199,15 @@ class Ui_Form(object):
         self.keylogsTable.setHorizontalHeaderItem(2, item)
         self.keylogsTable.horizontalHeader().setStretchLastSection(True)
         self.keylogsTable.verticalHeader().setVisible(False)
-        self.widget = QtGui.QWidget(self.splitter)
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.verticalLayout_4 = QtGui.QVBoxLayout(self.widget)
+        self.layoutWidget = QtGui.QWidget(self.splitter)
+        self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.horizontalLayout_9 = QtGui.QHBoxLayout()
         self.horizontalLayout_9.setSpacing(3)
         self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
-        self.keylogViewerButton = QtGui.QPushButton(self.widget)
+        self.keylogViewerButton = QtGui.QPushButton(self.layoutWidget)
         self.keylogViewerButton.setMinimumSize(QtCore.QSize(100, 30))
         self.keylogViewerButton.setMaximumSize(QtCore.QSize(100, 16777215))
         self.keylogViewerButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
@@ -214,7 +218,7 @@ class Ui_Form(object):
         self.horizontalLayout_9.addWidget(self.keylogViewerButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem)
-        self.highlightLine = QtGui.QLineEdit(self.widget)
+        self.highlightLine = QtGui.QLineEdit(self.layoutWidget)
         self.highlightLine.setMinimumSize(QtCore.QSize(0, 30))
         self.highlightLine.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
 "border-color: #2c3e50;\n"
@@ -222,7 +226,7 @@ class Ui_Form(object):
 "background-color: #34495e;"))
         self.highlightLine.setObjectName(_fromUtf8("highlightLine"))
         self.horizontalLayout_9.addWidget(self.highlightLine)
-        self.keylogBackButton = QtGui.QPushButton(self.widget)
+        self.keylogBackButton = QtGui.QPushButton(self.layoutWidget)
         self.keylogBackButton.setMinimumSize(QtCore.QSize(0, 30))
         self.keylogBackButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
 "border-color: #2c3e50;\n"
@@ -235,7 +239,7 @@ class Ui_Form(object):
         self.keylogBackButton.setIconSize(QtCore.QSize(24, 24))
         self.keylogBackButton.setObjectName(_fromUtf8("keylogBackButton"))
         self.horizontalLayout_9.addWidget(self.keylogBackButton)
-        self.keylogNextButton = QtGui.QPushButton(self.widget)
+        self.keylogNextButton = QtGui.QPushButton(self.layoutWidget)
         self.keylogNextButton.setMinimumSize(QtCore.QSize(0, 30))
         self.keylogNextButton.setStyleSheet(_fromUtf8("border: 1px ridge;\n"
 "border-color: #2c3e50;\n"
@@ -249,7 +253,12 @@ class Ui_Form(object):
         self.keylogNextButton.setObjectName(_fromUtf8("keylogNextButton"))
         self.horizontalLayout_9.addWidget(self.keylogNextButton)
         self.verticalLayout_4.addLayout(self.horizontalLayout_9)
-        self.keylogViewerText = QtGui.QTextEdit(self.widget)
+        self.keylogViewerText = QtGui.QTextEdit(self.layoutWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.keylogViewerText.sizePolicy().hasHeightForWidth())
+        self.keylogViewerText.setSizePolicy(sizePolicy)
         self.keylogViewerText.setStyleSheet(_fromUtf8("background-position: center;\n"
 "border: 1px ridge;\n"
 "padding: 5px;\n"
@@ -272,7 +281,10 @@ class Ui_Form(object):
         self.audioTab.setObjectName(_fromUtf8("audioTab"))
         self.gridLayout_4 = QtGui.QGridLayout(self.audioTab)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        self.audioTable = QtGui.QTableWidget(self.audioTab)
+        self.splitter_2 = QtGui.QSplitter(self.audioTab)
+        self.splitter_2.setOrientation(QtCore.Qt.Vertical)
+        self.splitter_2.setObjectName(_fromUtf8("splitter_2"))
+        self.audioTable = QtGui.QTableWidget(self.splitter_2)
         self.audioTable.setFocusPolicy(QtCore.Qt.NoFocus)
         self.audioTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
 "    background-color: #34495e;\n"
@@ -323,7 +335,7 @@ class Ui_Form(object):
         self.audioTable.horizontalHeader().setStretchLastSection(True)
         self.audioTable.verticalHeader().setVisible(False)
         self.audioTable.verticalHeader().setDefaultSectionSize(80)
-        self.gridLayout_4.addWidget(self.audioTable, 0, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.splitter_2, 0, 0, 1, 1)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.logsTab.addTab(self.audioTab, icon5, _fromUtf8(""))

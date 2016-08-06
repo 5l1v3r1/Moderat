@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import wave
 import contextlib
+import os
 
 
-def spectrum_analyzer_image(audio_path, audio_name):
+def spectrum_analyzer_image(client_id, audio_path, audio_name, storage):
     spf = wave.open(audio_path, 'r')
     signal = spf.readframes(-1)
     signal = np.fromstring(signal, 'Int16')
@@ -15,7 +16,7 @@ def spectrum_analyzer_image(audio_path, audio_name):
     plt.figure(num=None, figsize=(6, 1.07), dpi=80, facecolor='w', edgecolor='k')
     plt.axis('off')
     plt.plot(Time, signal, color='#2ecc71')
-    audio_spectrum_path = audio_name+'.png'
+    audio_spectrum_path = os.path.join(storage, audio_name+'.png')
     plt.savefig(audio_spectrum_path, transparent=True)
     plt.clf()
     return audio_spectrum_path
@@ -27,3 +28,10 @@ def audio_duration(audio_path):
         rate = f.getframerate()
         duration = frames / float(rate)
         return str(duration).replace('.', ':')
+
+
+def check_client_storage(storage, client_id):
+    audio_path = os.path.join(storage, client_id, 'Cache')
+    if not os.path.exists(audio_path):
+        os.makedirs(audio_path)
+    return audio_path

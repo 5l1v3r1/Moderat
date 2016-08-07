@@ -40,5 +40,4 @@ while 1:
             init_client.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
             time.sleep(60)
     except socket.error:
-        print 'error'
         time.sleep(5)

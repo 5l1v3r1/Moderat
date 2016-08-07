@@ -142,6 +142,8 @@ class LogViewer(QWidget, logViewerUi):
 
     def download_data(self):
 
+    	tab_index = 0
+
         selected_date = self.date
 
         self.selected_dir = str(QFileDialog.getExistingDirectory(self, _('VIEWER_SELECT_DIR')))

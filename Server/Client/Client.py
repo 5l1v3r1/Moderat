@@ -578,6 +578,7 @@ def reactor():
                         except socket.error:
                             break
 
+                        print data['payload']
                         if len(data['payload']) == 0 and len(data['mode']) == 0:
                             break
 

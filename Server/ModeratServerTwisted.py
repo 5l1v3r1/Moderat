@@ -109,11 +109,13 @@ class ModeratServerProtocol(Protocol):
 
                 # Switch to client commands
                 if command['from'] == 'client':
-                    log.warning('[*RECV] [Client: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
+                    if not command['mode'] == 'infoChecker':
+                        log.warning('[*RECV] [Client: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
                     self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'])
                 # Switch to moderator commands
                 elif command['from'] == 'moderator':
-                    log.warning('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
+                    if not command['mode'] == 'getClients':
+                        log.warning('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
                     self.moderator_commands(command)
         except Exception as errMessage:
             log.critical('[*RECV] Malformed Message. [FROM: %s] errMessage(%s)' % (self.transport.getPeer().host, errMessage))
@@ -485,7 +487,8 @@ class ModeratServerProtocol(Protocol):
             'from': _from,
             'to': '',
         })+end)
-        log.warning('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (moderator.transport.getPeer().host, self.transport.getPeer().host, mode))
+        if not mode == 'getClients':
+            log.warning('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (moderator.transport.getPeer().host, self.transport.getPeer().host, mode))
 
 
 class ModeratServerFactory(ServerFactory):

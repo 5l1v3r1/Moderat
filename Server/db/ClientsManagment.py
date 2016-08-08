@@ -13,7 +13,6 @@ class ClientsManagment:
         check_table = self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Clients"')
         self.conn.commit()
         if len(check_table.fetchall()) == 0:
-            print '[+] Creating Table Clients'
             self.create_clients_table()
 
     def set_status_zero(self):

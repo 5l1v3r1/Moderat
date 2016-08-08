@@ -14,9 +14,8 @@ class ModeratorsManagment:
         check_table = self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Moderators"')
         self.conn.commit()
         if len(check_table.fetchall()) == 0:
-            print '[+] Creating Table Moderators'
             self.create_moderators_table()
-            ans = raw_input('[!] First Run, Create Administrator? [y/n]')
+            ans = raw_input('[*SERVER] First Run, Create Administrator? [y/n]')
             if ans == 'y' or ans == 'Y' or ans == 'yes':
                 while 1:
                     username = raw_input('Username: ')

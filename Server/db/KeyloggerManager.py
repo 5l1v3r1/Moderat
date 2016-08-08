@@ -10,7 +10,6 @@ class KeyloggerManager:
         check_table = self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Keylogger"')
         self.conn.commit()
         if len(check_table.fetchall()) == 0:
-            print '[+] Creating Table Keylogger'
             self.create_keylogger_table()
 
     def create_keylogger_table(self):

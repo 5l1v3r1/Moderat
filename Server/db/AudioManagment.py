@@ -10,7 +10,6 @@ class AudioManager:
         check_table = self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Audio"')
         self.conn.commit()
         if len(check_table.fetchall()) == 0:
-            print '[+] Creating Table Audio'
             self.create_audio_table()
 
     def create_audio_table(self):

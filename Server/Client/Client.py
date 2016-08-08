@@ -679,38 +679,5 @@ def reactor():
                 time.sleep(10)
                 break
 
-
-# TODO: TEMP
-def handle_exception(exc_type, exc_value, exc_traceback):
-    import datetime
-    now = datetime.datetime.now()
-    filename = exc_traceback.tb_frame
-    log_value = '''
-DATE: %s/%s/%s %s:%s:%s
-FILE: %s
-LINE: %s
-####################################
-# Exception Type: %s
-# Exception Value: %s
-# Exception Object: %s
-####################################
-    ''' % (now.year,
-           now.month,
-           now.day,
-           now.hour,
-           now.minute,
-           now.second,
-           filename.f_code.co_filename,
-           exc_traceback.tb_lineno,
-           exc_type,
-           exc_value,
-           exc_traceback)
-    with open('error.log', 'a') as log_file:
-        log_file.write(log_value)
-
-open('error.log', 'w').close()
-sys.excepthook = handle_exception
-
 reactor()
-
 """

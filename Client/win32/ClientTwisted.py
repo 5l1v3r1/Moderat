@@ -36,7 +36,7 @@ while 1:
                 payload = GLOBAL_SOCKET.recv(1024)
                 continue
         try:
-        	ACTIVE = True
+            ACTIVE = True
             exec received_data
         except Exception as e:
             GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')

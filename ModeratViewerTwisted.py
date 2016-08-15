@@ -28,13 +28,13 @@ from plugins.mwebcam import main as mwebcam
 
 
 # initial geo ip database
-geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
+geo_ip_database = pygeoip.GeoIP(os.path.join('assets', 'GeoIP.dat'))
 
 # initial assets directories
-temp = os.path.join(os.getcwd(), 'temp\\')
+temp = os.path.join(os.getcwd(), 'temp')
 if not os.path.exists(temp):
     os.makedirs(temp)
-assets = os.path.join(os.getcwd(), 'assets\\')
+assets = os.path.join(os.getcwd(), 'assets')
 flags = os.path.join(assets, 'flags')
 
 # Multi Lang

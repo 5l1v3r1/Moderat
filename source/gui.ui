@@ -297,6 +297,9 @@ font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
     </item>
     <item row="0" column="0">
      <widget class="QTabWidget" name="clientsTabs">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::pane { /* The tab widget frame */
     border-top: 2px solid #34495e;
@@ -318,6 +321,8 @@ QTabBar::tab {
 }
 QTabBar::tab::disabled {   
 	border: none;
+	style: none;
+	background: transparent;
 	color: #2c3e50;
 }
 QTabBar::tab:selected, QTabBar::tab:hover {
@@ -809,7 +814,7 @@ QPushButton#addModeratorButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>34</height>
+     <height>33</height>
     </rect>
    </property>
    <property name="styleSheet">

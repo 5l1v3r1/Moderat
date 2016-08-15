@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created by: PyQt4 UI code generator 4.11.4
+# Created: Mon Aug 15 06:07:16 2016
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -193,6 +194,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_5)
         self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
         self.clientsTabs = QtGui.QTabWidget(self.centralwidget)
+        self.clientsTabs.setFocusPolicy(QtCore.Qt.NoFocus)
         self.clientsTabs.setStyleSheet(_fromUtf8("QTabWidget::pane { /* The tab widget frame */\n"
 "    border-top: 2px solid #34495e;\n"
 "}\n"
@@ -213,6 +215,8 @@ class Ui_MainWindow(object):
 "}\n"
 "QTabBar::tab::disabled {   \n"
 "    border: none;\n"
+"    style: none;\n"
+"    background: transparent;\n"
 "    color: #2c3e50;\n"
 "}\n"
 "QTabBar::tab:selected, QTabBar::tab:hover {\n"
@@ -477,7 +481,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.clientsTabs, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 34))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 33))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #34495e;\n"
 "            border: 1px ridge #000;\n"

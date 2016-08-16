@@ -110,192 +110,237 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <property name="spacing">
-       <number>50</number>
+    <item row="2" column="0">
+     <widget class="QGroupBox" name="bottomGroup">
+      <property name="styleSheet">
+       <string notr="true">background-color: #182733;
+border: 1px solid #2c3e50;
+</string>
       </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="loginStatusLabel">
-          <property name="text">
-           <string>Not Authorized</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="clientStatusLabel">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string>STATUS:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="statusLabel">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;
-color: #e74c3c;
+      <property name="title">
+       <string/>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>50</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>1</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="connectButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#connectButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            }
+
+QPushButton#connectButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/connect.png</normaloff>:/icons/assets/connect.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="disconnectButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#disconnectButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            }
+
+QPushButton#disconnectButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/disconnect.png</normaloff>:/icons/assets/disconnect.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="settingsButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#settingsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #182733;
+            }
+
+QPushButton#settingsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/client_settings.png</normaloff>:/icons/assets/client_settings.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="styleSheet">
+              <string notr="true">border: none;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/add_moderator.png</normaloff>:/icons/assets/add_moderator.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="loginStatusLabel">
+             <property name="styleSheet">
+              <string notr="true">border: none;</string>
+             </property>
+             <property name="text">
+              <string>Not Authorized</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="ipv4TextLabel">
+             <property name="styleSheet">
+              <string notr="true">border: none;</string>
+             </property>
+             <property name="text">
+              <string>IPv4:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="ipv4Label">
+             <property name="styleSheet">
+              <string notr="true">border: none;</string>
+             </property>
+             <property name="text">
+              <string>N/A</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="serversOnlineStatus">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border: none;</string>
+             </property>
+             <property name="text">
+              <string>CLIENTS TOTAL:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="onlineStatus">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border: none;
 font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-          </property>
-          <property name="text">
-           <string>Offline</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="ipv4TextLabel">
-          <property name="text">
-           <string>IPv4:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="ipv4Label">
-          <property name="text">
-           <string>N/A</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="portTextLabel">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string>PORT:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="portLabel">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-          </property>
-          <property name="text">
-           <string>N/A</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="serversOnlineStatus">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string>CLIENTS TOTAL:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="onlineStatus">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;
-font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QTabWidget" name="clientsTabs">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -344,6 +389,12 @@ QTabBar::tab:!selected {
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <property name="iconSize">
+       <size>
+        <width>18</width>
+        <height>18</height>
+       </size>
+      </property>
       <property name="documentMode">
        <bool>false</bool>
       </property>
@@ -354,11 +405,347 @@ QTabBar::tab:!selected {
        <bool>false</bool>
       </property>
       <widget class="QWidget" name="onlineClientsTab">
+       <attribute name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/icons/assets/online_clients.png</normaloff>:/icons/assets/online_clients.png</iconset>
+       </attribute>
        <attribute name="title">
         <string>Online</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
+         <widget class="QGroupBox" name="onlineGroup">
+          <property name="styleSheet">
+           <string notr="true">background-color: #34495e;
+border: 1px solid #2c3e50;
+border-radius: 5px;
+padding: -3px;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="12">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="viewLogsButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#viewLogsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#viewLogsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/log_viewer.png</normaloff>:/icons/assets/log_viewer.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="setAliasButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#setAliasButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#setAliasButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/set_alias.png</normaloff>:/icons/assets/set_alias.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="11">
+            <widget class="QPushButton" name="webcamButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#webcamButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#webcamButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/webcam.png</normaloff>:/icons/assets/webcam.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="5">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="10">
+            <widget class="QPushButton" name="screenshotButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#screenshotButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#screenshotButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/desktop.png</normaloff>:/icons/assets/desktop.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="6">
+            <widget class="QPushButton" name="shellButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#shellButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#shellButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/remote_shell.png</normaloff>:/icons/assets/remote_shell.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="7">
+            <widget class="QPushButton" name="explorerButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#explorerButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#explorerButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/remote_explorer.png</normaloff>:/icons/assets/remote_explorer.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="8">
+            <widget class="QPushButton" name="proccessesButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#proccessesButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#proccessesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/remote_proccesses.png</normaloff>:/icons/assets/remote_proccesses.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="9">
+            <widget class="QPushButton" name="scriptingButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#scriptingButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#scriptingButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/remote_scripting.png</normaloff>:/icons/assets/remote_scripting.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="lockedButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#lockedButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#lockedButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/locked.png</normaloff>:/icons/assets/locked.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QPushButton" name="unlockedButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#unlockedButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#unlockedButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/unlocked.png</normaloff>:/icons/assets/unlocked.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QTableWidget" name="clientsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
@@ -503,11 +890,101 @@ color: #cff7f8;
        </layout>
       </widget>
       <widget class="QWidget" name="offlineClientsTab">
+       <attribute name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/icons/assets/offline_clients.png</normaloff>:/icons/assets/offline_clients.png</iconset>
+       </attribute>
        <attribute name="title">
         <string>Offline</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
+         <widget class="QGroupBox" name="onlineGroup_2">
+          <property name="styleSheet">
+           <string notr="true">background-color: #34495e;
+border: 1px solid #2c3e50;
+border-radius: 5px;
+padding: -3px;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="3">
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="viewOfflineLogsButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#viewOfflineLogsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#viewOfflineLogsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/log_viewer.png</normaloff>:/icons/assets/log_viewer.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="setOfflineAliasButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#setOfflineAliasButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#setOfflineAliasButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/set_alias.png</normaloff>:/icons/assets/set_alias.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QTableWidget" name="offlineClientsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
@@ -622,47 +1099,15 @@ color: #cff7f8;
        </layout>
       </widget>
       <widget class="QWidget" name="moderatorsTab">
+       <attribute name="icon">
+        <iconset resource="res.qrc">
+         <normaloff>:/icons/assets/moderators.png</normaloff>:/icons/assets/moderators.png</iconset>
+       </attribute>
        <attribute name="title">
         <string>Moderators</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="getModeratorsButton">
-          <property name="styleSheet">
-           <string notr="true">QPushButton#getModeratorsButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 3px;
-            background-color: #34495e;
-            }
-
-QPushButton#getModeratorsButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-          </property>
-          <property name="text">
-           <string>Get Moderators</string>
-          </property>
-          <property name="icon">
-           <iconset resource="res.qrc">
-            <normaloff>:/icons/assets/update.png</normaloff>:/icons/assets/update.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0" colspan="3">
+        <item row="2" column="0" colspan="3">
          <widget class="QTableWidget" name="moderatorsTable">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
@@ -779,27 +1224,90 @@ color: #cff7f8;
           </column>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="addModeratorButton">
+        <item row="0" column="0" colspan="3">
+         <widget class="QGroupBox" name="moderatorsGroup">
           <property name="styleSheet">
-           <string notr="true">QPushButton#addModeratorButton {
-			border: 1px ridge;
-            border-color: #2c3e50;
-			padding: 3px;
+           <string notr="true">background-color: #34495e;
+border: 1px solid #2c3e50;
+border-radius: 5px;
+padding: -3px;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="1">
+            <widget class="QPushButton" name="addModeratorButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#addModeratorButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
             background-color: #34495e;
             }
 
 QPushButton#addModeratorButton:pressed {
             background-color: #2c3e50;
             }</string>
-          </property>
-          <property name="text">
-           <string>Add Moderator</string>
-          </property>
-          <property name="icon">
-           <iconset resource="res.qrc">
-            <normaloff>:/icons/assets/add_alias.png</normaloff>:/icons/assets/add_alias.png</iconset>
-          </property>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/add_moderator.png</normaloff>:/icons/assets/add_moderator.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="getModeratorsButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#getModeratorsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#getModeratorsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/get_moderators.png</normaloff>:/icons/assets/get_moderators.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -814,7 +1322,7 @@ QPushButton#addModeratorButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>33</height>
+     <height>34</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -859,62 +1367,6 @@ QPushButton#addModeratorButton:pressed {
    <property name="nativeMenuBar">
     <bool>true</bool>
    </property>
-   <widget class="QMenu" name="serverMenu">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>Server</string>
-    </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-    <addaction name="actionStartListen_for_connections"/>
-    <addaction name="actionStopListen_for_connections"/>
-    <addaction name="separator"/>
-    <addaction name="actionClient_Configuration"/>
-   </widget>
-   <widget class="QMenu" name="menuAction">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string comment="asd">Plugins</string>
-    </property>
-    <addaction name="actionRemote_Shell"/>
-    <addaction name="actionRemote_Explorer"/>
-    <addaction name="actionRemote_Process_Manager"/>
-    <addaction name="actionRemote_Scripting"/>
-    <addaction name="separator"/>
-    <addaction name="actionDesktop_Preview"/>
-    <addaction name="actionWebcam_Preview"/>
-   </widget>
-   <widget class="QMenu" name="menuServer">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>Client</string>
-    </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-    <addaction name="actionUnlock_Client"/>
-    <addaction name="actionLock_Client"/>
-    <addaction name="actionStop_Client"/>
-    <addaction name="separator"/>
-    <addaction name="actionSet_Alias"/>
-   </widget>
-   <widget class="QMenu" name="menuBuilder">
-    <property name="title">
-     <string>Builder</string>
-    </property>
-    <addaction name="actionWindows_Client_PyInstaller"/>
-   </widget>
-   <addaction name="serverMenu"/>
-   <addaction name="menuServer"/>
-   <addaction name="menuAction"/>
-   <addaction name="menuBuilder"/>
   </widget>
   <action name="actionStartListen_for_connections">
    <property name="checkable">
@@ -940,7 +1392,7 @@ QPushButton#addModeratorButton:pressed {
     <string>Disconnect</string>
    </property>
   </action>
-  <action name="actionClient_Configuration">
+  <action name="actionViewer_Configuration">
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/assets/settings.png</normaloff>:/icons/assets/settings.png</iconset>

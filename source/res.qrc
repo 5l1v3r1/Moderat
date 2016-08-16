@@ -1,5 +1,19 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/unlocked.png</file>
+    <file>../assets/locked.png</file>
+    <file>../assets/remote_proccesses.png</file>
+    <file>../assets/remote_explorer.png</file>
+    <file>../assets/remote_scripting.png</file>
+    <file>../assets/remote_shell.png</file>
+    <file>../assets/desktop.png</file>
+    <file>../assets/set_alias.png</file>
+    <file>../assets/moderators.png</file>
+    <file>../assets/log_viewer.png</file>
+    <file>../assets/offline_clients.png</file>
+    <file>../assets/online_clients.png</file>
+    <file>../assets/add_moderator.png</file>
+    <file>../assets/get_moderators.png</file>
     <file>../assets/other_settings.png</file>
     <file>../assets/next.png</file>
     <file>../assets/info.png</file>
@@ -11,8 +25,8 @@
     <file>../assets/run_as_admin.png</file>
     <file>../assets/add_alias.png</file>
     <file>../assets/save_as.png</file>
-    <file>../assets/webcam.png</file>
     <file>../assets/logo.png</file>
+    <file>../assets/webcam.png</file>
     <file>../assets/python.png</file>
     <file>../assets/script.png</file>
     <file>../assets/android.png</file>
@@ -22,9 +36,9 @@
     <file>../assets/bottom.png</file>
     <file>../assets/save.png</file>
     <file>../assets/always_top.png</file>
+    <file>../assets/download.png</file>
     <file>../assets/connect.png</file>
     <file>../assets/disconnect.png</file>
-    <file>../assets/download.png</file>
     <file>../assets/file.png</file>
     <file>../assets/folder.png</file>
     <file>../assets/hidden.png</file>

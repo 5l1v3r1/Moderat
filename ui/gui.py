@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Mon Aug 15 06:07:16 2016
-#      by: PyQt4 UI code generator 4.11.2
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -127,6 +126,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setSpacing(2)
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.preLoginStatus = QtGui.QLabel(self.centralwidget)
+        self.preLoginStatus.setObjectName(_fromUtf8("preLoginStatus"))
+        self.horizontalLayout_4.addWidget(self.preLoginStatus)
         self.loginStatusLabel = QtGui.QLabel(self.centralwidget)
         self.loginStatusLabel.setObjectName(_fromUtf8("loginStatusLabel"))
         self.horizontalLayout_4.addWidget(self.loginStatusLabel)
@@ -481,7 +483,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.clientsTabs, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 33))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 34))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #34495e;\n"
 "            border: 1px ridge #000;\n"
@@ -523,15 +525,6 @@ class Ui_MainWindow(object):
         self.serverMenu.setTearOffEnabled(False)
         self.serverMenu.setSeparatorsCollapsible(False)
         self.serverMenu.setObjectName(_fromUtf8("serverMenu"))
-        self.menuAction = QtGui.QMenu(self.menubar)
-        self.menuAction.setTearOffEnabled(False)
-        self.menuAction.setObjectName(_fromUtf8("menuAction"))
-        self.menuServer = QtGui.QMenu(self.menubar)
-        self.menuServer.setTearOffEnabled(False)
-        self.menuServer.setSeparatorsCollapsible(False)
-        self.menuServer.setObjectName(_fromUtf8("menuServer"))
-        self.menuBuilder = QtGui.QMenu(self.menubar)
-        self.menuBuilder.setObjectName(_fromUtf8("menuBuilder"))
         MainWindow.setMenuBar(self.menubar)
         self.actionStartListen_for_connections = QtGui.QAction(MainWindow)
         self.actionStartListen_for_connections.setCheckable(True)
@@ -545,11 +538,11 @@ class Ui_MainWindow(object):
         icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionStopListen_for_connections.setIcon(icon4)
         self.actionStopListen_for_connections.setObjectName(_fromUtf8("actionStopListen_for_connections"))
-        self.actionClient_Configuration = QtGui.QAction(MainWindow)
+        self.actionViewer_Configuration = QtGui.QAction(MainWindow)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionClient_Configuration.setIcon(icon5)
-        self.actionClient_Configuration.setObjectName(_fromUtf8("actionClient_Configuration"))
+        self.actionViewer_Configuration.setIcon(icon5)
+        self.actionViewer_Configuration.setObjectName(_fromUtf8("actionViewer_Configuration"))
         self.actionRemote_Shell = QtGui.QAction(MainWindow)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -629,24 +622,8 @@ class Ui_MainWindow(object):
         self.serverMenu.addAction(self.actionStartListen_for_connections)
         self.serverMenu.addAction(self.actionStopListen_for_connections)
         self.serverMenu.addSeparator()
-        self.serverMenu.addAction(self.actionClient_Configuration)
-        self.menuAction.addAction(self.actionRemote_Shell)
-        self.menuAction.addAction(self.actionRemote_Explorer)
-        self.menuAction.addAction(self.actionRemote_Process_Manager)
-        self.menuAction.addAction(self.actionRemote_Scripting)
-        self.menuAction.addSeparator()
-        self.menuAction.addAction(self.actionDesktop_Preview)
-        self.menuAction.addAction(self.actionWebcam_Preview)
-        self.menuServer.addAction(self.actionUnlock_Client)
-        self.menuServer.addAction(self.actionLock_Client)
-        self.menuServer.addAction(self.actionStop_Client)
-        self.menuServer.addSeparator()
-        self.menuServer.addAction(self.actionSet_Alias)
-        self.menuBuilder.addAction(self.actionWindows_Client_PyInstaller)
+        self.serverMenu.addAction(self.actionViewer_Configuration)
         self.menubar.addAction(self.serverMenu.menuAction())
-        self.menubar.addAction(self.menuServer.menuAction())
-        self.menubar.addAction(self.menuAction.menuAction())
-        self.menubar.addAction(self.menuBuilder.menuAction())
 
         self.retranslateUi(MainWindow)
         self.clientsTabs.setCurrentIndex(0)
@@ -654,6 +631,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Monitoring Server", None))
+        self.preLoginStatus.setText(_translate("MainWindow", "ID: ", None))
         self.loginStatusLabel.setText(_translate("MainWindow", "Not Authorized", None))
         self.clientStatusLabel.setText(_translate("MainWindow", "STATUS:", None))
         self.statusLabel.setText(_translate("MainWindow", "Offline", None))
@@ -716,12 +694,9 @@ class Ui_MainWindow(object):
         self.addModeratorButton.setText(_translate("MainWindow", "Add Moderator", None))
         self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.moderatorsTab), _translate("MainWindow", "Moderators", None))
         self.serverMenu.setTitle(_translate("MainWindow", "Server", None))
-        self.menuAction.setTitle(_translate("MainWindow", "Plugins", "asd"))
-        self.menuServer.setTitle(_translate("MainWindow", "Client", None))
-        self.menuBuilder.setTitle(_translate("MainWindow", "Builder", None))
         self.actionStartListen_for_connections.setText(_translate("MainWindow", "Connect", None))
         self.actionStopListen_for_connections.setText(_translate("MainWindow", "Disconnect", None))
-        self.actionClient_Configuration.setText(_translate("MainWindow", "Settings", None))
+        self.actionViewer_Configuration.setText(_translate("MainWindow", "Settings", None))
         self.actionRemote_Shell.setText(_translate("MainWindow", "Remote Shell", None))
         self.actionRemote_Explorer.setText(_translate("MainWindow", "Remote File Manager", None))
         self.actionRemote_Process_Manager.setText(_translate("MainWindow", "Remote Process Manager", None))

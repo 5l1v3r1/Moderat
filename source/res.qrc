@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/set_moderator.png</file>
+    <file>../assets/connection.png</file>
+    <file>../assets/no_connection.png</file>
+    <file>../assets/none.png</file>
     <file>../assets/unlocked.png</file>
     <file>../assets/locked.png</file>
     <file>../assets/remote_proccesses.png</file>
@@ -53,8 +57,8 @@
     <file>../assets/refresh.png</file>
     <file>../assets/remove.png</file>
     <file>../assets/server.png</file>
-    <file>../assets/settings.png</file>
     <file>../assets/terminate.png</file>
+    <file>../assets/settings.png</file>
     <file>../assets/start.png</file>
     <file>../assets/stop.png</file>
     <file>../assets/unhide.png</file>

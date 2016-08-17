@@ -445,7 +445,7 @@ padding: -3px;</string>
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_8">
-           <item row="0" column="13">
+           <item row="0" column="15">
             <spacer name="horizontalSpacer_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -458,39 +458,7 @@ padding: -3px;</string>
              </property>
             </spacer>
            </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="viewLogsButton">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#viewLogsButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#viewLogsButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/log_viewer.png</normaloff>:/icons/assets/log_viewer.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="12">
+           <item row="0" column="14">
             <widget class="QPushButton" name="webcamButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -554,7 +522,46 @@ QPushButton#setAliasButton:pressed {
              </property>
             </widget>
            </item>
-           <item row="0" column="11">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="viewLogsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#viewLogsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#viewLogsButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/log_viewer.png</normaloff>:/icons/assets/log_viewer.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="8">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="13">
             <widget class="QPushButton" name="screenshotButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -586,14 +593,7 @@ QPushButton#screenshotButton:pressed {
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="7">
+           <item row="0" column="9">
             <widget class="QPushButton" name="shellButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -625,46 +625,14 @@ QPushButton#shellButton:pressed {
              </property>
             </widget>
            </item>
-           <item row="0" column="6">
-            <widget class="Line" name="line">
+           <item row="0" column="2">
+            <widget class="Line" name="line_2">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="0" column="9">
-            <widget class="QPushButton" name="proccessesButton">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#proccessesButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#proccessesButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/assets/remote_proccesses.png</normaloff>:/icons/assets/remote_proccesses.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>18</width>
-               <height>18</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="8">
+           <item row="0" column="10">
             <widget class="QPushButton" name="explorerButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -687,6 +655,38 @@ QPushButton#explorerButton:pressed {
              <property name="icon">
               <iconset resource="res.qrc">
                <normaloff>:/icons/assets/remote_explorer.png</normaloff>:/icons/assets/remote_explorer.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="11">
+            <widget class="QPushButton" name="proccessesButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#proccessesButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#proccessesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/remote_proccesses.png</normaloff>:/icons/assets/remote_proccesses.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -760,7 +760,7 @@ QPushButton#unlockedButton:pressed {
              </property>
             </widget>
            </item>
-           <item row="0" column="10">
+           <item row="0" column="12">
             <widget class="QPushButton" name="scriptingButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -824,7 +824,7 @@ QPushButton#logSettingsButton:pressed {
              </property>
             </widget>
            </item>
-           <item row="0" column="14">
+           <item row="0" column="16">
             <widget class="QPushButton" name="setModeratorButton">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -847,6 +847,38 @@ QPushButton#setModeratorButton:pressed {
              <property name="icon">
               <iconset resource="res.qrc">
                <normaloff>:/icons/assets/set_moderator.png</normaloff>:/icons/assets/set_moderator.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="6">
+            <widget class="QPushButton" name="updateSourceButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#updateSourceButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#updateSourceButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/assets/update_source.png</normaloff>:/icons/assets/update_source.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1448,7 +1480,7 @@ QPushButton#getModeratorsButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>33</height>
+     <height>34</height>
     </rect>
    </property>
    <property name="styleSheet">

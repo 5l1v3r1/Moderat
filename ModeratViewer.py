@@ -137,6 +137,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.setAliasButton.clicked.connect(self.add_alias)
         self.lockedButton.clicked.connect(self.unlock_client)
         self.unlockedButton.clicked.connect(self.lock_client)
+        self.updateSourceButton.clicked.connect(self.update_source)
         self.shellButton.clicked.connect(lambda: self.execute_module(module='shell'))
         self.explorerButton.clicked.connect(lambda: self.execute_module(module='explorer'))
         self.proccessesButton.clicked.connect(lambda: self.execute_module(module='processes'))
@@ -518,6 +519,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.setAliasButton.setHidden(False)
                 self.unlockedButton.setHidden(True)
                 self.lockedButton.setHidden(False)
+                self.updateSourceButton.setHidden(False)
                 self.shellButton.setHidden(True)
                 self.explorerButton.setHidden(True)
                 self.proccessesButton.setHidden(True)
@@ -529,6 +531,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 self.setAliasButton.setHidden(False)
                 self.unlockedButton.setHidden(False)
                 self.lockedButton.setHidden(True)
+                self.updateSourceButton.setHidden(False)
                 self.shellButton.setHidden(False)
                 self.explorerButton.setHidden(False)
                 self.proccessesButton.setHidden(False)
@@ -565,9 +568,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.acceptthreadState = False
 
         try:
-        	del self.connection_socket
+            del self.connection_socket
         except AttributeError:
-        	pass
+            pass
         try:
             del self.checker_socket
         except AttributeError:
@@ -586,6 +589,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Buttons
         self.connectButton.setChecked(False)
+
+    def update_source(self):
+        client = self.current_client()
+        if client:
+            data_send(self.connection_socket, 'updateSource', 'updateSource', self.session_id, client)
 
     def check_servers(self, session_id):
         # Init Checker Socket

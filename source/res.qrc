@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/update_source.png</file>
     <file>../assets/set_moderator.png</file>
     <file>../assets/connection.png</file>
     <file>../assets/no_connection.png</file>

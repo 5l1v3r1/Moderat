@@ -133,6 +133,9 @@ border: 1px solid #2c3e50;
            </property>
            <item>
             <widget class="QPushButton" name="connectButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#connectButton {
 			border: none;
@@ -168,6 +171,9 @@ QPushButton#connectButton:checked {
            </item>
            <item>
             <widget class="QPushButton" name="disconnectButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#disconnectButton {
 			border: none;
@@ -202,6 +208,9 @@ QPushButton#disconnectButton:pressed {
            </item>
            <item>
             <widget class="QPushButton" name="settingsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#settingsButton {
 			border: none;
@@ -451,6 +460,9 @@ padding: -3px;</string>
            </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="viewLogsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#viewLogsButton {
 			border: none;
@@ -480,6 +492,9 @@ QPushButton#viewLogsButton:pressed {
            </item>
            <item row="0" column="12">
             <widget class="QPushButton" name="webcamButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#webcamButton {
 			border: none;
@@ -509,6 +524,9 @@ QPushButton#webcamButton:pressed {
            </item>
            <item row="0" column="3">
             <widget class="QPushButton" name="setAliasButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#setAliasButton {
 			border: none;
@@ -538,6 +556,9 @@ QPushButton#setAliasButton:pressed {
            </item>
            <item row="0" column="11">
             <widget class="QPushButton" name="screenshotButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#screenshotButton {
 			border: none;
@@ -574,6 +595,9 @@ QPushButton#screenshotButton:pressed {
            </item>
            <item row="0" column="7">
             <widget class="QPushButton" name="shellButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#shellButton {
 			border: none;
@@ -610,6 +634,9 @@ QPushButton#shellButton:pressed {
            </item>
            <item row="0" column="9">
             <widget class="QPushButton" name="proccessesButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#proccessesButton {
 			border: none;
@@ -639,6 +666,9 @@ QPushButton#proccessesButton:pressed {
            </item>
            <item row="0" column="8">
             <widget class="QPushButton" name="explorerButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#explorerButton {
 			border: none;
@@ -668,6 +698,9 @@ QPushButton#explorerButton:pressed {
            </item>
            <item row="0" column="4">
             <widget class="QPushButton" name="lockedButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#lockedButton {
 			border: none;
@@ -697,6 +730,9 @@ QPushButton#lockedButton:pressed {
            </item>
            <item row="0" column="5">
             <widget class="QPushButton" name="unlockedButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#unlockedButton {
 			border: none;
@@ -726,6 +762,9 @@ QPushButton#unlockedButton:pressed {
            </item>
            <item row="0" column="10">
             <widget class="QPushButton" name="scriptingButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#scriptingButton {
 			border: none;
@@ -755,6 +794,9 @@ QPushButton#scriptingButton:pressed {
            </item>
            <item row="0" column="1">
             <widget class="QPushButton" name="logSettingsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#logSettingsButton {
 			border: none;
@@ -784,6 +826,9 @@ QPushButton#logSettingsButton:pressed {
            </item>
            <item row="0" column="14">
             <widget class="QPushButton" name="setModeratorButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#setModeratorButton {
 			border: none;
@@ -994,6 +1039,9 @@ padding: -3px;</string>
            </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="viewOfflineLogsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#viewOfflineLogsButton {
 			border: none;
@@ -1023,6 +1071,9 @@ QPushButton#viewOfflineLogsButton:pressed {
            </item>
            <item row="0" column="1">
             <widget class="QPushButton" name="setOfflineAliasButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#setOfflineAliasButton {
 			border: none;
@@ -1307,6 +1358,9 @@ padding: -3px;</string>
           <layout class="QGridLayout" name="gridLayout_7">
            <item row="0" column="1">
             <widget class="QPushButton" name="addModeratorButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#addModeratorButton {
 			border: none;
@@ -1336,6 +1390,9 @@ QPushButton#addModeratorButton:pressed {
            </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="getModeratorsButton">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#getModeratorsButton {
 			border: none;
@@ -1391,7 +1448,7 @@ QPushButton#getModeratorsButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>34</height>
+     <height>33</height>
     </rect>
    </property>
    <property name="styleSheet">

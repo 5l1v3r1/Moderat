@@ -129,6 +129,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Connect & Disconnect triggers
         self.connectButton.clicked.connect(self.connect_to_server)
         self.disconnectButton.clicked.connect(self.disconnect_from_server)
+        self.settingsButton.clicked.connect(self.run_settings)
 
         # Menu Triggers
         self.viewLogsButton.clicked.connect(self.view_logs)
@@ -563,7 +564,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         self.acceptthreadState = False
 
-        del self.connection_socket
+        try:
+        	del self.connection_socket
+        except AttributeError:
+        	pass
         try:
             del self.checker_socket
         except AttributeError:
@@ -890,10 +894,17 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
             server_menu.exec_(self.clientsTable.mapToGlobal(point))
 
-    # get item
+    # get online client
     def current_client(self):
         try:
             return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_id).text())
+        except AttributeError:
+            return False
+
+    # get offline client
+    def current_offline_client(self):
+        try:
+            return str(self.offlineClientsTable.item(self.offlineClientsTable.currentRow(), 2).text())
         except AttributeError:
             return False
 

@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created by: PyQt4 UI code generator 4.11.4
+# Created: Wed Aug 17 02:59:17 2016
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -135,6 +136,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(1)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.connectButton = QtGui.QPushButton(self.bottomGroup)
+        self.connectButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.connectButton.setStyleSheet(_fromUtf8("QPushButton#connectButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -157,6 +159,7 @@ class Ui_MainWindow(object):
         self.connectButton.setObjectName(_fromUtf8("connectButton"))
         self.horizontalLayout.addWidget(self.connectButton)
         self.disconnectButton = QtGui.QPushButton(self.bottomGroup)
+        self.disconnectButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.disconnectButton.setStyleSheet(_fromUtf8("QPushButton#disconnectButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -176,6 +179,7 @@ class Ui_MainWindow(object):
         self.disconnectButton.setObjectName(_fromUtf8("disconnectButton"))
         self.horizontalLayout.addWidget(self.disconnectButton)
         self.settingsButton = QtGui.QPushButton(self.bottomGroup)
+        self.settingsButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.settingsButton.setStyleSheet(_fromUtf8("QPushButton#settingsButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -305,6 +309,7 @@ class Ui_MainWindow(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_8.addItem(spacerItem1, 0, 13, 1, 1)
         self.viewLogsButton = QtGui.QPushButton(self.onlineGroup)
+        self.viewLogsButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.viewLogsButton.setStyleSheet(_fromUtf8("QPushButton#viewLogsButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -323,6 +328,7 @@ class Ui_MainWindow(object):
         self.viewLogsButton.setObjectName(_fromUtf8("viewLogsButton"))
         self.gridLayout_8.addWidget(self.viewLogsButton, 0, 0, 1, 1)
         self.webcamButton = QtGui.QPushButton(self.onlineGroup)
+        self.webcamButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.webcamButton.setStyleSheet(_fromUtf8("QPushButton#webcamButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -341,6 +347,7 @@ class Ui_MainWindow(object):
         self.webcamButton.setObjectName(_fromUtf8("webcamButton"))
         self.gridLayout_8.addWidget(self.webcamButton, 0, 12, 1, 1)
         self.setAliasButton = QtGui.QPushButton(self.onlineGroup)
+        self.setAliasButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.setAliasButton.setStyleSheet(_fromUtf8("QPushButton#setAliasButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -359,6 +366,7 @@ class Ui_MainWindow(object):
         self.setAliasButton.setObjectName(_fromUtf8("setAliasButton"))
         self.gridLayout_8.addWidget(self.setAliasButton, 0, 3, 1, 1)
         self.screenshotButton = QtGui.QPushButton(self.onlineGroup)
+        self.screenshotButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.screenshotButton.setStyleSheet(_fromUtf8("QPushButton#screenshotButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -382,6 +390,7 @@ class Ui_MainWindow(object):
         self.line_2.setObjectName(_fromUtf8("line_2"))
         self.gridLayout_8.addWidget(self.line_2, 0, 2, 1, 1)
         self.shellButton = QtGui.QPushButton(self.onlineGroup)
+        self.shellButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.shellButton.setStyleSheet(_fromUtf8("QPushButton#shellButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -405,6 +414,7 @@ class Ui_MainWindow(object):
         self.line.setObjectName(_fromUtf8("line"))
         self.gridLayout_8.addWidget(self.line, 0, 6, 1, 1)
         self.proccessesButton = QtGui.QPushButton(self.onlineGroup)
+        self.proccessesButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.proccessesButton.setStyleSheet(_fromUtf8("QPushButton#proccessesButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -423,6 +433,7 @@ class Ui_MainWindow(object):
         self.proccessesButton.setObjectName(_fromUtf8("proccessesButton"))
         self.gridLayout_8.addWidget(self.proccessesButton, 0, 9, 1, 1)
         self.explorerButton = QtGui.QPushButton(self.onlineGroup)
+        self.explorerButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.explorerButton.setStyleSheet(_fromUtf8("QPushButton#explorerButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -441,6 +452,7 @@ class Ui_MainWindow(object):
         self.explorerButton.setObjectName(_fromUtf8("explorerButton"))
         self.gridLayout_8.addWidget(self.explorerButton, 0, 8, 1, 1)
         self.lockedButton = QtGui.QPushButton(self.onlineGroup)
+        self.lockedButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.lockedButton.setStyleSheet(_fromUtf8("QPushButton#lockedButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -459,6 +471,7 @@ class Ui_MainWindow(object):
         self.lockedButton.setObjectName(_fromUtf8("lockedButton"))
         self.gridLayout_8.addWidget(self.lockedButton, 0, 4, 1, 1)
         self.unlockedButton = QtGui.QPushButton(self.onlineGroup)
+        self.unlockedButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.unlockedButton.setStyleSheet(_fromUtf8("QPushButton#unlockedButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -477,6 +490,7 @@ class Ui_MainWindow(object):
         self.unlockedButton.setObjectName(_fromUtf8("unlockedButton"))
         self.gridLayout_8.addWidget(self.unlockedButton, 0, 5, 1, 1)
         self.scriptingButton = QtGui.QPushButton(self.onlineGroup)
+        self.scriptingButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scriptingButton.setStyleSheet(_fromUtf8("QPushButton#scriptingButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -495,6 +509,7 @@ class Ui_MainWindow(object):
         self.scriptingButton.setObjectName(_fromUtf8("scriptingButton"))
         self.gridLayout_8.addWidget(self.scriptingButton, 0, 10, 1, 1)
         self.logSettingsButton = QtGui.QPushButton(self.onlineGroup)
+        self.logSettingsButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.logSettingsButton.setStyleSheet(_fromUtf8("QPushButton#logSettingsButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -513,6 +528,7 @@ class Ui_MainWindow(object):
         self.logSettingsButton.setObjectName(_fromUtf8("logSettingsButton"))
         self.gridLayout_8.addWidget(self.logSettingsButton, 0, 1, 1, 1)
         self.setModeratorButton = QtGui.QPushButton(self.onlineGroup)
+        self.setModeratorButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.setModeratorButton.setStyleSheet(_fromUtf8("QPushButton#setModeratorButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -621,6 +637,7 @@ class Ui_MainWindow(object):
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_9.addItem(spacerItem2, 0, 3, 1, 1)
         self.viewOfflineLogsButton = QtGui.QPushButton(self.onlineGroup_2)
+        self.viewOfflineLogsButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.viewOfflineLogsButton.setStyleSheet(_fromUtf8("QPushButton#viewOfflineLogsButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -637,6 +654,7 @@ class Ui_MainWindow(object):
         self.viewOfflineLogsButton.setObjectName(_fromUtf8("viewOfflineLogsButton"))
         self.gridLayout_9.addWidget(self.viewOfflineLogsButton, 0, 0, 1, 1)
         self.setOfflineAliasButton = QtGui.QPushButton(self.onlineGroup_2)
+        self.setOfflineAliasButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.setOfflineAliasButton.setStyleSheet(_fromUtf8("QPushButton#setOfflineAliasButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -790,6 +808,7 @@ class Ui_MainWindow(object):
         self.gridLayout_7 = QtGui.QGridLayout(self.moderatorsGroup)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
         self.addModeratorButton = QtGui.QPushButton(self.moderatorsGroup)
+        self.addModeratorButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.addModeratorButton.setStyleSheet(_fromUtf8("QPushButton#addModeratorButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -808,6 +827,7 @@ class Ui_MainWindow(object):
         self.addModeratorButton.setObjectName(_fromUtf8("addModeratorButton"))
         self.gridLayout_7.addWidget(self.addModeratorButton, 0, 1, 1, 1)
         self.getModeratorsButton = QtGui.QPushButton(self.moderatorsGroup)
+        self.getModeratorsButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.getModeratorsButton.setStyleSheet(_fromUtf8("QPushButton#getModeratorsButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
@@ -834,7 +854,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.clientsTabs, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 34))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 33))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #34495e;\n"
 "            border: 1px ridge #000;\n"

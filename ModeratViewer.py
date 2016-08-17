@@ -16,6 +16,7 @@ from libs import pygeoip
 from libs.language import Translate
 from ui import gui
 from LogViewer import LogViewer
+from libs.log_settings import LogSettings
 from libs.settings import Config, Settings
 from libs.data_transfer import data_receive, data_send, data_get
 from modules.mexplorer import main as mexplorer
@@ -133,7 +134,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Menu Triggers
         self.viewLogsButton.clicked.connect(self.view_logs)
-        # TODO: log settings trigger
+        self.logSettingsButton.clicked.connect(self.set_logs_settings)
         self.setAliasButton.clicked.connect(self.add_alias)
         self.lockedButton.clicked.connect(self.unlock_client)
         self.unlockedButton.clicked.connect(self.lock_client)
@@ -629,6 +630,26 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             temp_id = id_generator()
             self.log_viewers[temp_id] = LogViewer(args)
             self.log_viewers[temp_id].show()
+
+    def set_logs_settings(self):
+        client = self.current_client()
+        if client:
+            args = {
+                'sock':         self.connection_socket,
+                'audio_device': self.streaming_socks[client]['audio_device'],
+                'key':          self.streaming_socks[client]['key'],
+                'kts':          self.streaming_socks[client]['kts'],
+                'kt':           self.streaming_socks[client]['kt'],
+                'ats':          self.streaming_socks[client]['ats'],
+                'at':           self.streaming_socks[client]['at'],
+                'sts':          self.streaming_socks[client]['sts'],
+                'std':          self.streaming_socks[client]['std'],
+                'st':           self.streaming_socks[client]['st'],
+                'session_id':   self.session_id,
+                'assets':       assets,
+            }
+            self.log_settings = LogSettings(args)
+            self.log_settings.show()
 
     def get_desktop_preview(self):
         client = self.current_client()

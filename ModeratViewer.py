@@ -126,6 +126,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Shortcuts
         # Set Alias
         self.connect(QShortcut(QKeySequence(Qt.Key_F2), self), SIGNAL('activated()'), self.add_alias)
+        self.connect(QShortcut(QKeySequence(Qt.Key_C), self), SIGNAL('activated()'), self.connect_to_server)
+        self.connect(QShortcut(QKeySequence(Qt.Key_D), self), SIGNAL('activated()'), self.disconnect_from_server)
 
         # Connect & Disconnect triggers
         self.connectButton.clicked.connect(self.connect_to_server)

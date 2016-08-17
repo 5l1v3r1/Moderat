@@ -11,11 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mirakuru - Remote Shell</string>
+   <string>Remote Shell</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../res.qrc">
-    <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
+    <normaloff>:/icons/assets/logo.png</normaloff>:/icons/assets/logo.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>0.900000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #2c3e50;

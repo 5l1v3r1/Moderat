@@ -1,14 +1,22 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+startup_message = r'''<font color="#c9f5f7" size=50>
+###M O D E R A T###S H E L L###
+</font><br>
+'''
+
 class Console(QTextEdit):
-    def __init__(self, prompt='Moderat@shell$>', startup_message='', parent=None):
+    def __init__(self, prompt='Moderat@shell$>', parent=None):
         QTextEdit.__init__(self, parent)
         self.setStyleSheet('''
         color: #2ecc71;
         border: 1px ridge;
         border-color: #34495e;
         background-color: #34495e;
+        background-image: url(assets/bg.png);
+        background-repeat: no-repeat;
+        background-position: center;
         padding: 5px;
         ''')
         self.prompt = prompt

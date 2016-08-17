@@ -38,7 +38,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
             data = data_get(self.sock, command, 'shellMode', session_id=self.session_id, to=self.client)
             data['payload'] = data['payload'].replace('\n', '<br>')
 
-            self.console.append('<br><font color=#3CFFFF>'+data['payload']+'</font>')
+            self.console.append('<br><font color=#c9f5f7>'+data['payload']+'</font>')
             self.console.newPrompt()
 
         except socket.error, socket.timeout:

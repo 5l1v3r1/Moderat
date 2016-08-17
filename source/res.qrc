@@ -1,5 +1,10 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/add_plugin.png</file>
+    <file>../assets/trash.png</file>
+    <file>../assets/hide_output.png</file>
+    <file>../assets/from_file.png</file>
+    <file>../assets/run_script.png</file>
     <file>../assets/update_source.png</file>
     <file>../assets/set_moderator.png</file>
     <file>../assets/connection.png</file>

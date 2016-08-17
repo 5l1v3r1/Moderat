@@ -84,7 +84,7 @@ class LineTextWidget(QFrame):
         self.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
 
         self.setStyleSheet('''
- padding: 2px;
+padding: 2px;
 color: #bdc3c7;
 font: 75 8pt "MS Shell Dlg 2";
 border: 1px ridge;
@@ -97,6 +97,9 @@ border-color: #2c3e50;''')
         self.edit.setTabStopWidth(20)
         self.edit.setStyleSheet('''
 background-color: #131E25;
+background-image: url(assets/bg.png);
+background-repeat: no-repeat;
+background-position: center;
 padding: 2px;
 color: #bdc3c7;
 font: 75 8pt "MS Shell Dlg 2";

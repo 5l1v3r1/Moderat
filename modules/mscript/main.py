@@ -1,4 +1,5 @@
 from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 
 import main_ui
 import linesnum
@@ -20,25 +21,30 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         # init idle with lines
         self.idle = linesnum.LineTextWidget()
-        self.horizontalLayout_2.addWidget(self.idle)
-
-        self.outputText.setVisible(False)
+        self.idleLayout.addWidget(self.idle)
 
         self.runButton.clicked.connect(self.run_script)
-        self.closeOutputButton.clicked.connect(self.close_output)
         self.fromFileButton.clicked.connect(self.from_file)
+        self.clearButton.clicked.connect(self.clear_script)
+
+        # Shortcuts
+        self.connect(QShortcut(QKeySequence('Ctrl+Return'), self), SIGNAL('activated()'), self.run_script)
+        self.connect(QShortcut(QKeySequence('Ctrl+P'), self.idle), SIGNAL('activated()'), self.insert_mprint)
 
     def run_script(self):
         script = self.idle.getTextEdit()
         output = data_get(self.sock, str(script), 'scriptingMode', session_id=self.session_id, to=self.client)
-        self.outputText.setVisible(True)
-        self.outputText.setHtml(output['payload'])
-
-    def close_output(self):
-        self.outputText.setVisible(False)
+        # TODO: OUTPUT
+        print output['payload']
 
     def from_file(self):
         filename = QFileDialog.getOpenFileName(self, 'Open Python File', '', 'Python Files (*.py)')
         if filename:
             with open(filename, 'r') as f_:
                 self.idle.setText(f_.read())
+
+    def clear_script(self):
+        self.idle.clearText()
+
+    def insert_mprint(self):
+        self.idle.appendText('mprint = ')

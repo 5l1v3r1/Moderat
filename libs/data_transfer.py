@@ -30,6 +30,7 @@ def data_send(sock, message, mode, session_id, to='', end='[ENDOFMESSAGE]'):
     }
     sock.sendall(str(message)+end)
 
-def data_get(sock, message, mode, session_id, to='', end='ENDOFMESSAGE'):
+
+def data_get(sock, message, mode, session_id, to=''):
     data_send(sock, message, mode, session_id, to)
     return data_receive(sock)

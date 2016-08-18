@@ -8,9 +8,9 @@ class DictionaryCompleter(QCompleter):
     def __init__(self, parent=None):
         words = []
         try:
+            words.append('moderat')
             words.append('kako')
             words.append('kako2')
-            words.append('moderat')
         except IOError:
             print "dictionary not in anticipated location"
         QCompleter.__init__(self, words, parent)

@@ -2,7 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 import main_ui
-import linesnum
+import idle
 
 from libs.data_transfer import data_get
 from libs.language import Translate
@@ -26,7 +26,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setWindowTitle('Remote Scripting')
 
         # init idle with lines
-        self.idle = linesnum.LineTextWidget()
+        self.idle = idle.LineTextWidget()
         self.idleLayout.addWidget(self.idle)
 
         self.runButton.clicked.connect(self.run_script)

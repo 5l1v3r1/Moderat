@@ -1,19 +1,13 @@
 from PyQt4.QtGui import *
 import autocompleter
+import keyword
 
 import py_syntax
 
 
 class DictionaryCompleter(QCompleter):
     def __init__(self, parent=None):
-        words = []
-        try:
-            words.append('moderat')
-            words.append('kako')
-            words.append('kako2')
-        except IOError:
-            print "dictionary not in anticipated location"
-        QCompleter.__init__(self, words, parent)
+        QCompleter.__init__(self, keyword.kwlist, parent)
 
 
 class LineTextWidget(QFrame):

@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 
 import main_ui
 import idle
+import os
 
 from libs.data_transfer import data_get
 from libs.language import Translate
@@ -21,6 +22,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.sock = args['sock']
         self.client = args['client']
         self.session_id = args['session_id']
+        self.assets = args['assets']
         self.plugins = args['plugins']
 
         self.setWindowTitle('Remote Scripting')

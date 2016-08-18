@@ -26,20 +26,23 @@ from modules.mscript import main as mscript
 from modules.mdesktop import main as mdesktop
 from modules.mwebcam import main as mwebcam
 
+# initial directories
+temp = os.path.join(os.path.dirname(sys.argv[0]), 'temp')
+if not os.path.exists(temp):
+    os.makedirs(temp)
+assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
+flags = os.path.join(assets, 'flags')
+plugins = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
 
 # initial geo ip database
 geo_ip_database = pygeoip.GeoIP(os.path.join('assets', 'GeoIP.dat'))
 
-# initial assets directories
-temp = os.path.join(os.getcwd(), 'temp')
-if not os.path.exists(temp):
-    os.makedirs(temp)
-assets = os.path.join(os.getcwd(), 'assets')
-flags = os.path.join(assets, 'flags')
-
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
+
+# INIT PLUGINS
+PLUGINS = {}
 
 
 def get_ip_location(ip):
@@ -954,6 +957,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 'client': client,
                 'session_id': self.session_id,
                 'assets': assets,
+                'plugins': PLUGINS,
             }
             module_id = id_generator()
             if module in modules:
@@ -1095,6 +1099,22 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             return
 
 
+def get_plugins_values(plugin):
+    plugin_name = None
+    plugin_description = None
+    plugin_source = None
+    if plugin.endswith('.py'):
+        plugin = plugin[:-3]
+        try:
+            exec 'from plugins import %s' % plugin
+            exec 'plugin_name = %s.plugin_name' % plugin
+            exec 'plugin_description = %s.plugin_description' % plugin
+            exec 'plugin_source = %s.plugin_source' % plugin
+        except:
+            pass
+    return plugin_name, plugin_description, plugin_source
+
+
 # Run Application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -1102,10 +1122,43 @@ if __name__ == '__main__':
     # Create and display the splash screen
     splash_pix = QPixmap(os.path.join(assets, 'splash.png'))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    # Add Progress Bar
+    progressBar = QProgressBar(splash)
+    progressBar.setGeometry(0, 320, 600, 10)
+    progressBar.setTextVisible(False)
+    progressBar.setStyleSheet('''
+QProgressBar:horizontal {
+border: 1px ridge;
+border-color: #2c3e50;
+background-color: #34495e;
+padding: 1px;
+text-align: bottom;
+color: #c9f5f7;
+}
+QProgressBar::chunk:horizontal {
+background: #c9f5f7;
+margin-right: 1px;
+width: 5px;
+color: #c9f5f7;
+}
+    ''')
     splash.setMask(splash_pix.mask())
     splash.show()
-    app.processEvents()
-    time.sleep(3)
+    # Init Plugins
+    init_plugins_dir = os.listdir(plugins)
+    plugins_count = len(init_plugins_dir)
+    for ind, plug in enumerate(init_plugins_dir):
+        if '__init__' in plug:
+            continue
+        name, desc, source = get_plugins_values(plug)
+        if name and desc and source:
+            PLUGINS[name] = {
+                'description':  desc,
+                'source':       source,
+            }
+        progressBar.setValue((ind+1)*100/plugins_count)
+        app.processEvents()
+        time.sleep(1)
 
     form = MainDialog()
     splash.finish(form)

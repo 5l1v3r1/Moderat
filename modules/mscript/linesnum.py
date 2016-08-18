@@ -135,5 +135,8 @@ border: none;''')
     def setText(self, string):
         self.edit.setPlainText(string)
 
+    def setHtml(self, string):
+        self.edit.setHtml(string)
+
     def appendText(self, string):
         self.edit.append(string)

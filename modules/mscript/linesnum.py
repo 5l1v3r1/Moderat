@@ -1,6 +1,19 @@
 from PyQt4.QtGui import *
+import autocompleter
 
 import py_syntax
+
+
+class DictionaryCompleter(QCompleter):
+    def __init__(self, parent=None):
+        words = []
+        try:
+            words.append('kako')
+            words.append('kako2')
+            words.append('moderat')
+        except IOError:
+            print "dictionary not in anticipated location"
+        QCompleter.__init__(self, words, parent)
 
 
 class LineTextWidget(QFrame):
@@ -90,7 +103,9 @@ font: 75 8pt "MS Shell Dlg 2";
 border: 1px ridge;
 border-color: #2c3e50;''')
 
-        self.edit = QTextEdit()
+        self.edit = autocompleter.CompletionTextEdit()
+        self.completer = DictionaryCompleter()
+        self.edit.setCompleter(self.completer)
         self.edit.setLineWrapMode(QTextEdit.NoWrap)
         self.edit.setFrameStyle(QFrame.NoFrame)
         self.edit.setAcceptRichText(False)

@@ -1041,6 +1041,12 @@ if __name__ == '__main__':
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     # Add Progress Bar
     progressBar = QProgressBar(splash)
+    status_label = QLabel(splash)
+    status_label.setGeometry(220, 300, 600, 20)
+    status_label.setStyleSheet('''
+color: #c9f5f7;
+    ''')
+    status_label.setText('Loading Plugin: ')
     progressBar.setGeometry(0, 320, 600, 10)
     progressBar.setTextVisible(False)
     progressBar.setStyleSheet('''
@@ -1062,11 +1068,13 @@ color: #c9f5f7;
     splash.setMask(splash_pix.mask())
     splash.show()
     # Init Plugins
+    status_label.setText('Initializing')
     init_plugins_dir = os.listdir(plugins)
     plugins_count = len(init_plugins_dir)
     for ind, plug in enumerate(init_plugins_dir):
-        if '__init__' in plug:
+        if '__init__' in plug or not plug.endswith('py'):
             continue
+        status_label.setText('Loading Plugin: %s' % plug)
         name, desc, source = get_plugins_values(plug)
         if name and desc and source:
             PLUGINS[name] = {

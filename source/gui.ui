@@ -1013,11 +1013,6 @@ color: #cff7f8;
           </column>
           <column>
            <property name="text">
-            <string>Lock</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
             <string>Mic</string>
            </property>
           </column>

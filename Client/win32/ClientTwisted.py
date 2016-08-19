@@ -40,7 +40,6 @@ destination_folder = os.path.join(path_buf.value, 'Intel')
 if not os.path.exists(destination_folder):
     os.makedirs(destination_folder)
 destination_path = os.path.join(os.path.join(destination_folder, 'IntelGFX.exe'))
-file_name = sys.argv[0]
 
 
 if not 'IntelGFX' in sys.argv[0]:

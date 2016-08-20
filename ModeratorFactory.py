@@ -32,15 +32,10 @@ class SocketModeratorProtocol(Protocol):
         except Exception as errMessage:
             self.factory.got_msg(errMessage)
 
-    # Send Message To Client
-    def send_message_to_server(self, client, message, mode, _from='server', session_id='', end='[ENDOFMESSAGE]'):
+    # Send Message To Server
+    def send_message_to_server(self, payload):
         # Send Data Function
-        self.transport.write(str({
-            'payload': message,
-            'mode': mode,
-            'from': _from,
-            'session_id': session_id,
-        })+end)
+        self.transport.write(payload)
 
 
 class SocketModeratorFactory(ClientFactory):
@@ -71,6 +66,12 @@ class SocketModeratorFactory(ClientFactory):
     def got_msg(self, data):
         self.recv_callback(data)
 
-    def send_msg(self, msg):
+    def send_msg(self, message, mode, _to, session_id='', end='[ENDOFMESSAGE]'):
         if self.moderator:
-            self.moderator.send_message_to_server(self.moderator, self.moderator, 'auth', 'auth')
+            payload = str({
+                'payload': message,
+                'mode': mode,
+                'from': 'moderator',
+                'session_id': session_id,
+            })+end
+            self.moderator.send_message_to_server(payload)

@@ -67,7 +67,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.send_to_server('auth')
 
     def send_to_server(self, message):
-        print 'send'
         self.moderator.send_msg(message)
 
 #-------------------------------------------------------------------------------

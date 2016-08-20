@@ -162,6 +162,58 @@ class updateClientsTable:
         # update servers online counter
         self.moderat.onlineStatus.setText(str(len(online_clients)))
 
+    def update_moderators(self, data):
+        moderators = data['payload']
+        self.moderat.moderatorsTable.setRowCount(len(moderators))
+
+        for index, key in enumerate(moderators):
+
+            # add moderator id
+            item = QTableWidgetItem(key)
+            item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 0, item)
+
+            # add online clients count
+            item = QTableWidgetItem(str(moderators[key]['online_clients']))
+            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 1, item)
+
+            # add offline clients count
+            item = QTableWidgetItem(str(moderators[key]['offline_clients']))
+            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 2, item)
+
+            # add privileges
+            privileges = moderators[key]['privileges']
+            if privileges == 1:
+                color = '#9b59b6'
+                privileges = _('MODERATORS_PRIVILEGES_ADMINISTRATOR')
+            else:
+                color = '#c9f5f7'
+                privileges = _('MODERATORS_PRIVILEGES_MODERATOR')
+            item = QTableWidgetItem(privileges)
+            item.setTextColor(QColor(color))
+            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 3, item)
+
+            # add moderator status
+            status = moderators[key]['status']
+            if status == 1:
+                style = '#1abc9c'
+                text = _('MODERATOR_ONLINE')
+            else:
+                style = '#e67e22'
+                text = _('MODERATOR_OFFLINE')
+            item = QTableWidgetItem(text)
+            item.setTextColor(QColor(style))
+            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 4, item)
+
+            # add moderator last online
+            item = QTableWidgetItem(str(moderators[key]['last_online']))
+            item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            self.moderat.moderatorsTable.setItem(index, 5, item)
+
     def get_ip_location(self, ip):
         try:
             country_flag = os.path.join(self.flags, geo_ip_database.country_code_by_addr(ip).lower() + '.png')

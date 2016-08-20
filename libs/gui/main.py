@@ -3,8 +3,6 @@ from PyQt4.QtCore import *
 import os
 from libs.language import Translate
 
-from libs.gui import triggers
-
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
@@ -14,9 +12,6 @@ class updateUi:
 
     def __init__(self, moderat):
         self.moderat = moderat
-
-        # Init Triggers
-        triggers.mainTriggers(self.moderat)
 
     def on_moderator_connected(self):
         """

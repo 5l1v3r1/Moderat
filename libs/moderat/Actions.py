@@ -38,3 +38,24 @@ class Actions:
                 self.ui.on_moderator_connected()
         else:
             self.ui.on_moderator_not_connected()
+
+    def set_alias(self):
+        client = self.current_client()
+        if client:
+            text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
+            if ok:
+                self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias', session_id=self.moderat.session_id)
+
+        # get online client
+    def current_client(self):
+        try:
+            return str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 3).text())
+        except AttributeError:
+            return False
+
+    # get offline client
+    def current_offline_client(self):
+        try:
+            return str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text())
+        except AttributeError:
+            return False

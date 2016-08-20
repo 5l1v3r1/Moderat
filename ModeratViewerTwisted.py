@@ -11,26 +11,17 @@ from PyQt4.QtCore import *
 from ModeratorFactory import *
 
 from libs.language import Translate
-from libs.gui import tables, main
+from libs.moderat.Actions import Actions
+from libs.moderat.Modes import Modes
 from ui import gui
 
 SERVER_HOST = '109.172.189.74'
 #SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 1313
 
-
-# Initial Folders
-assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
-flags = os.path.join(assets, 'flags')
-plugins = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
-
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
-
-
-def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
@@ -39,18 +30,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.reactor = reactor
         self.setupUi(self)
 
+        # Initial Folders
+        self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
+        self.flags = os.path.join(self.assets, 'flags')
+        self.plugins = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
+
+        # Session ID
+        self.session_id = None
+
         # Create Protocol
         self.create_moderator()
-        # Create Tables UI
-        self.tables = tables.updateClientsTable(self, assets)
-        # Create Main UI Functions
-        self.ui = main.updateUi(self)
-
-        # Init Modes
-        self.modes = {
-            'moderatorInitializing': self.moderatorInitializing,
-            'getClients': self.getClients,
-        }
+        # Create Actions Object
+        self.action = Actions(self)
+        # Create Modes Object
+        self.modes = Modes(self)
 
     def create_moderator(self):
         self.moderator = SocketModeratorFactory(
@@ -64,75 +57,18 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # Connected To Server
     def on_moderator_connect_success(self):
-        self.session_id = id_generator(size=24)
-        username, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_USERNAME'), QLineEdit.Normal)
-        if ok:
-            password, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
-            if ok:
-                self.moderator.send_msg('auth %s %s' % (username, password), 'moderatorInitializing', session_id=self.session_id)
-            else:
-                self.main.on_moderator_connected()
-        else:
-            self.main.on_moderator_not_connected()
+        self.action.login()
 
     # Disconnected From Server
     def on_moderator_connect_fail(self, reason):
-        self.connection.close()
         # reason is a twisted.python.failure.Failure  object
+        print 'disconnected'
         print 'cann\'t connect. reason: %s' % reason
 
     # Callbacks
     def on_moderator_receive(self, data):
-        if type(data) is dict:
-            if self.modes.has_key(data['mode']):
-                self.modes[data['mode']](data)
-            # TODO: DEBUG
-            else:
-                print 'UNKNOWN MODE [%s]' % data['mode']
+        self.modes.check_mode(data)
 
-    # CALLBACKS
-    # Moderator Login Callback
-    def moderatorInitializing(self, data):
-        """ Initializing Moderator """
-        if data['payload'].startswith('loginSuccess '):
-            # Get Privileges
-            self.privs = int(data['payload'].split()[-1])
-            if self.privs == 1: self.ui.enable_administrator()
-            else: self.ui.disable_administrator()
-            # Start Client Checker
-            self.clients_checker = QTimer()
-            self.clients_checker.timeout.connect(self.check_clients)
-            self.clients_checker.start(500)
-            # Update UI
-            self.ui.on_moderator_connected()
-        else:
-            # Update UI
-            self.ui.on_moderator_not_connected()
-            # Warn Message
-            warn = QMessageBox(QMessageBox.Warning, _('INCORRECT_CREDENTIALS'), _('INCORRECT_CREDENTIALS'))
-            ans = warn.exec_()
-
-    def getClients(self, data):
-        '''
-        Update Clients Information
-        :param data:
-        :return:
-        '''
-        self.tables.update_clients(data)
-
-    # get online client
-    def current_client(self):
-        try:
-            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_id).text())
-        except AttributeError:
-            return False
-
-    # get offline client
-    def current_offline_client(self):
-        try:
-            return str(self.offlineClientsTable.item(self.offlineClientsTable.currentRow(), 2).text())
-        except AttributeError:
-            return False
 
     # Check Clients For Updates
     def check_clients(self):

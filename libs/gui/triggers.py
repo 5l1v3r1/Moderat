@@ -1,0 +1,28 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+import os
+from libs.language import Translate
+
+class mainTriggers:
+
+    def __init__(self, moderat):
+
+        self.moderat = moderat
+
+        # Connect & Disconnect triggers
+        self.moderat.connectButton.clicked.connect(self.moderat.on_connect_to_server)
+        self.moderat.disconnectButton.clicked.connect(self.moderat.on_moderator_connect_fail)
+        #self.moderat.settingsButton.clicked.connect(self.moderat.run_settings)
+
+        # Menu Triggers
+        # self.moderat.viewLogsButton.clicked.connect(self.view_logs)
+        # self.moderat.logSettingsButton.clicked.connect(self.set_logs_settings)
+        # self.moderat.setAliasButton.clicked.connect(self.add_alias)
+        # self.moderat.updateSourceButton.clicked.connect(self.update_source)
+        # self.moderat.shellButton.clicked.connect(lambda: self.execute_module(module='shell'))
+        # self.moderat.explorerButton.clicked.connect(lambda: self.execute_module(module='explorer'))
+        # self.moderat.proccessesButton.clicked.connect(lambda: self.execute_module(module='processes'))
+        # self.moderat.scriptingButton.clicked.connect(lambda: self.execute_module(module='scripting'))
+        # self.moderat.screenshotButton.clicked.connect(self.get_desktop_preview)
+        # self.moderat.webcamButton.clicked.connect(self.get_webcam_preview)
+        # self.moderat.setModeratorButton.clicked.connect(self.administrator_set_moderator)

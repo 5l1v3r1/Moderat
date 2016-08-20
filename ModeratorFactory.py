@@ -73,5 +73,7 @@ class SocketModeratorFactory(ClientFactory):
                 'mode': mode,
                 'from': 'moderator',
                 'session_id': session_id,
+                'to': _to,
+                'id': id,
             })+end
             self.moderator.send_message_to_server(payload)

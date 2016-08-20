@@ -66,7 +66,7 @@ class SocketModeratorFactory(ClientFactory):
     def got_msg(self, data):
         self.recv_callback(data)
 
-    def send_msg(self, message, mode, _to, session_id='', end='[ENDOFMESSAGE]'):
+    def send_msg(self, message, mode, _to='', session_id='', id='', end='[ENDOFMESSAGE]'):
         if self.moderator:
             payload = str({
                 'payload': message,

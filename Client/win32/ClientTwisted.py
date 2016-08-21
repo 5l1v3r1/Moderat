@@ -15,6 +15,7 @@ import threading
 import subprocess
 import sched
 import datetime
+import zlib
 import shutil
 
 #HOST = '109.172.189.74'

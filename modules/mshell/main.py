@@ -33,6 +33,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.connect(self.console, SIGNAL("returnPressed"), self.runCommand)
 
     def signal(self, data):
+        print data
         self.callback(data)
 
     # run shell command

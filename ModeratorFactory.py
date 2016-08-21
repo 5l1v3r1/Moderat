@@ -8,7 +8,7 @@ class SocketModeratorProtocol(Protocol):
 
     def __init__(self):
 
-        self.__buffer__ = ''
+        pass
 
     # New Connection Made
     def connectionMade(self):
@@ -17,20 +17,8 @@ class SocketModeratorProtocol(Protocol):
     def connectionLost(self, reason):
         self.factory.clientConnectionFailed(self, reason)
 
-    def dataReceived(self, data, end='[ENDOFMESSAGE]'):
-        try:
-            # Data Received
-            self.__buffer__ += data
-            if self.__buffer__.endswith(end):
-                self.__buffer__ = self.__buffer__[:-len(end)]
-                if end in self.__buffer__:
-                    self.__buffer__ = self.__buffer__.split(end)[0]
-                command = ast.literal_eval(self.__buffer__)
-                self.__buffer__ = ''
-
-            self.factory.got_msg(command)
-        except Exception as errMessage:
-            self.factory.got_msg(errMessage)
+    def dataReceived(self, data):
+        self.factory.got_msg(data)
 
     # Send Message To Server
     def send_message_to_server(self, payload):
@@ -43,6 +31,7 @@ class SocketModeratorFactory(ClientFactory):
         send_msg can be used to send messages when connected.
     """
     protocol = SocketModeratorProtocol
+    __buffer__ = ''
 
     def __init__(
             self,
@@ -63,8 +52,20 @@ class SocketModeratorFactory(ClientFactory):
         self.moderator = moderator
         self.connect_success_callback()
 
-    def got_msg(self, data):
-        self.recv_callback(data)
+    def got_msg(self, data, end='[ENDOFMESSAGE]'):
+        try:
+            # Data Received
+            self.__buffer__ += data
+            if end in self.__buffer__:
+                commands = self.__buffer__.split(end)
+                command = ast.literal_eval(commands[0])
+                self.__buffer__ = self.__buffer__[len(commands[0]+end):]
+            else:
+                return
+        except Exception as errMessage:
+            self.recv_callback(errMessage)
+            return
+        self.recv_callback(command)
 
     def send_msg(self, message, mode, _to='', session_id='', module_id='', end='[ENDOFMESSAGE]'):
         if self.moderator:

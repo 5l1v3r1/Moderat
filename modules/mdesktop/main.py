@@ -21,9 +21,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.sock = args['sock']
+        self.moderator = args['moderator']
         self.client = args['client']
         self.session_id = args['session_id']
+        self.module_id = args['module_id']
 
         self.setWindowTitle(_('MDESKTOP_TITLE'))
 
@@ -41,8 +42,14 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.clearButton.setText(_('MDESKTOP_CLEAR'))
         self.screenshotLabel.setText(_('MDESKTOP_INFO'))
 
+    def signal(self, data):
+        self.callback(data)
+
     def get_screenshot(self):
-        data = data_get(self.sock, 'getScreen', 'getScreen', session_id=self.session_id, to=self.client)
+        self.moderator.send_msg('getScreen', 'getScreen', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.on_screenshot_received
+
+    def on_screenshot_received(self, data):
         screen_dict = data['payload']
         try:
             screen_info = ast.literal_eval(screen_dict)

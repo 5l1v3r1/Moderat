@@ -20,9 +20,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.sock = args['sock']
+        self.moderator = args['moderator']
         self.client = args['client']
         self.session_id = args['session_id']
+        self.module_id = args['module_id']
 
         self.setWindowTitle(_('MSHELL_TITLE'))
 
@@ -31,16 +32,16 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         self.connect(self.console, SIGNAL("returnPressed"), self.runCommand)
 
+    def signal(self, data):
+        self.callback(data)
+
     # run shell command
     def runCommand(self):
-        try:
-            command = self.console.command[1:] if self.console.command.startswith(' ') else self.console.command
-            data = data_get(self.sock, command, 'shellMode', session_id=self.session_id, to=self.client)
-            data['payload'] = data['payload'].replace('\n', '<br>')
+        command = self.console.command[1:] if self.console.command.startswith(' ') else self.console.command
+        self.moderator.send_msg(command, 'shellMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recvOutput
 
-            self.console.append('<br><font color=#c9f5f7>'+data['payload']+'</font>')
-            self.console.newPrompt()
-
-        except socket.error, socket.timeout:
-            # Error with connection
-            self.close()
+    def recvOutput(self, data):
+        data['payload'] = data['payload'].replace('\n', '<br>')
+        self.console.append('<br><font color=#c9f5f7>'+data['payload']+'</font>')
+        self.console.newPrompt()

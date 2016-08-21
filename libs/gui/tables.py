@@ -15,13 +15,18 @@ geo_ip_database = pygeoip.GeoIP(os.path.join('assets', 'GeoIP.dat'))
 
 class updateClientsTable:
 
-    def __init__(self, moderat, assets):
+    def __init__(self, moderat):
 
         self.moderat = moderat
-        self.assets = assets
+        self.assets = self.moderat.assets
         self.flags = os.path.join(self.assets, 'flags')
 
         self.filter = initFilters(self.moderat, self.assets)
+
+    def clean_tables(self):
+        self.moderat.clientsTable.setRowCount(1)
+        self.moderat.offlineClientsTable.setRowCount(1)
+        self.moderat.moderatorsTable.setRowCount(1)
 
     def update_clients(self, data):
         clients = data['payload']

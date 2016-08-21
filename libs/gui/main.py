@@ -2,6 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import os
 from libs.language import Translate
+from libs.gui import tables
 
 # Multi Lang
 translate = Translate()
@@ -13,6 +14,8 @@ class updateUi:
     def __init__(self, moderat):
         self.moderat = moderat
 
+        self.tables = tables.updateClientsTable(self.moderat)
+
     def on_moderator_connected(self):
         """
         If Moderator Connected To Server
@@ -22,6 +25,7 @@ class updateUi:
         self.moderat.loginStatusLabel.setStyleSheet('color: #2ecc71')
         self.moderat.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/connection.png")))
         self.moderat.connectButton.setChecked(True)
+        self.moderat.connectButton.setDisabled(True)
 
     # TODO: style
     def on_moderator_not_connected(self):
@@ -29,10 +33,19 @@ class updateUi:
         If Moderator Disconnected From Server
         :return:
         '''
+        self.moderat.connectButton.setDisabled(False)
         self.moderat.loginStatusLabel.setText('Not Connected')
-        self.moderat.loginStatusLabel.setStyleSheet('color: red')
+        self.moderat.loginStatusLabel.setStyleSheet('color: grey')
         self.moderat.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/no_connection.png")))
         self.moderat.connectButton.setChecked(False)
+
+    def clear_tables(self):
+        '''
+        Clear Tables
+        :return:
+        '''
+        self.tables.clean_tables()
+
 
     # Enable Administrators Features
     def enable_administrator(self):

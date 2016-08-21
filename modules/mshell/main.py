@@ -42,6 +42,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.callback = self.recvOutput
 
     def recvOutput(self, data):
-        data['payload'] = data['payload'].replace('\n', '<br>')
-        self.console.append('<br><font color=#c9f5f7>'+data['payload']+'</font>')
-        self.console.newPrompt()
+        if data['payload'] == 'endCommandExecute':
+            self.console.append('<br>')
+            self.console.newPrompt()
+        else:
+            self.console.append('<font color=#c9f5f7>'+data['payload']+'</font>')

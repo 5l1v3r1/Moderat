@@ -55,9 +55,9 @@ class Modes:
             self.moderat.clients_checker.timeout.connect(self.moderat.check_clients)
             self.moderat.clients_checker.start(500)
             # Start Moderator Checker
-            self.moderat.moderators_checker = QTimer()
-            self.moderat.moderators_checker.timeout.connect(self.moderat.check_moderators)
-            self.moderat.moderators_checker.start(500)
+            #self.moderat.moderators_checker = QTimer()
+            #self.moderat.moderators_checker.timeout.connect(self.moderat.check_moderators)
+            #self.moderat.moderators_checker.start(500)
 
             # Update UI
             self.ui.on_moderator_connected()
@@ -77,7 +77,6 @@ class Modes:
         self.moderat.send_signal(data)
 
     def getScreen(self, data):
-        print 'received'
         '''
         Get Desktop Screenshot
         :param data:

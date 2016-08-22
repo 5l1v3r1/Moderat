@@ -41,9 +41,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def runCommand(self):
         command = self.console.command[1:] if self.console.command.startswith(' ') else self.console.command
         self.moderator.send_msg(command, 'shellMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
-        self.callback = self.recvOutput
+        self.callback = self.recv_output
 
-    def recvOutput(self, data):
+    def recv_output(self, data):
         if data['payload'] == 'endCommandExecute':
             self.console.append('<br>')
             self.console.newPrompt()

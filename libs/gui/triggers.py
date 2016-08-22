@@ -24,5 +24,5 @@ class mainTriggers:
         # self.moderat.proccessesButton.clicked.connect(lambda: self.execute_module(module='processes'))
         # self.moderat.scriptingButton.clicked.connect(lambda: self.execute_module(module='scripting'))
         self.moderat.screenshotButton.clicked.connect(lambda: self.moderat.execute_module(module='desktop'))
-        #self.moderat.webcamButton.clicked.connect(self.moderat.get_webcam_preview)
+        self.moderat.webcamButton.clicked.connect(lambda: self.moderat.execute_module(module='webcam'))
         # self.moderat.setModeratorButton.clicked.connect(self.administrator_set_moderator)

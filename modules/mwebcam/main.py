@@ -21,9 +21,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.sock = args['sock']
+        self.moderator = args['moderator']
         self.client = args['client']
         self.session_id = args['session_id']
+        self.module_id = args['module_id']
 
         self.setWindowTitle(_('MWEBCAM_TITLE'))
 
@@ -35,8 +36,14 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.clearButton.clicked.connect(self.clear_preview)
         self.alwaysTopButton.clicked.connect(self.always_top)
 
+    def signal(self, data):
+        self.callback(data)
+
     def get_screenshot(self):
-        data = data_get(self.sock, 'getWebcam', 'getWebcam', session_id=self.session_id, to=self.client)
+        self.moderator.send_msg('getWebcam', 'getWebcam', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recv_screenshot
+
+    def recv_screenshot(self, data):
         webcam_dict = data['payload']
         try:
             camera_info = ast.literal_eval(webcam_dict)

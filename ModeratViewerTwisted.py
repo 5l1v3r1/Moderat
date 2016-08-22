@@ -210,7 +210,7 @@ color: #c9f5f7;
             }
         progressBar.setValue((ind+1)*100/plugins_count)
         app.processEvents()
-        time.sleep(1)
+        time.sleep(0.1)
 
     moderatWindow = MainDialog(reactor, plugins)
     splash.finish(moderatWindow)

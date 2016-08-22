@@ -28,6 +28,7 @@ class Modes:
             'getClients': self.getClients,
             'getModerators': self.getModerators,
             'shellMode': self.shellMode,
+            'explorerMode': self.explorerMode,
             'scriptingMode': self.scriptingMode,
             'getScreen': self.getScreen,
             'getWebcam': self.getWebcam,
@@ -73,6 +74,14 @@ class Modes:
     def shellMode(self, data):
         '''
         Remote Shell Commands
+        :param data:
+        :return:
+        '''
+        self.moderat.send_signal(data)
+
+    def explorerMode(self, data):
+        '''
+        Remote File Explorer
         :param data:
         :return:
         '''

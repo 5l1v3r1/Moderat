@@ -14,8 +14,8 @@ from libs.moderat.Modes import Modes
 from libs.gui import triggers
 from ui import gui
 
-SERVER_HOST = '109.172.189.74'
-#SERVER_HOST = '127.0.0.1'
+#SERVER_HOST = '109.172.189.74'
+SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 1313
 
 # Multi Lang

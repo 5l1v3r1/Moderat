@@ -9,7 +9,6 @@ from libs.gui import main
 
 from modules.mexplorer import main as mexplorer
 from modules.mshell import main as mshell
-from modules.mprocesses import main as mprocesses
 from modules.mscript import main as mscript
 from modules.mdesktop import main as mdesktop
 from modules.mwebcam import main as mwebcam

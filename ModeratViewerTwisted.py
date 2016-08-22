@@ -54,6 +54,55 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Create Modes Object
         self.modes = Modes(self)
 
+        self.set_language()
+
+    def set_language(self):
+
+        # MAIN
+        self.setWindowTitle(_('TITLE'))
+
+        # TABS
+        self.clientsTabs.setTabText(0, _('CLIENTS_TAB_ONLINE'))
+        self.clientsTabs.setTabText(1, _('CLIENTS_TAB_OFFLINE'))
+        self.clientsTabs.setTabText(2, _('CLIENTS_TAB_MODERATORS'))
+
+        # HEADERS
+        self.clientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
+        self.clientsTable.horizontalHeaderItem(1).setText(_('HEADER_IP_ADDRESS'))
+        self.clientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
+        self.clientsTable.horizontalHeaderItem(3).setText(_('HEADER_ID'))
+        self.clientsTable.horizontalHeaderItem(4).setText(_('HEADER_OS'))
+        self.clientsTable.horizontalHeaderItem(5).setText(_('HEADER_USER'))
+        self.clientsTable.horizontalHeaderItem(6).setText(_('HEADER_PRIVS'))
+        self.clientsTable.horizontalHeaderItem(7).setText(_('HEADER_MIC'))
+        self.clientsTable.horizontalHeaderItem(8).setText(_('HEADER_CAM'))
+        self.clientsTable.horizontalHeaderItem(9).setText(_('HEADER_ACTIVE_WINDOW_TITLE'))
+
+        self.offlineClientsTable.horizontalHeaderItem(0).setText(_('HEADER_MODERATOR'))
+        self.offlineClientsTable.horizontalHeaderItem(1).setText(_('HEADER_ID'))
+        self.offlineClientsTable.horizontalHeaderItem(2).setText(_('HEADER_ALIAS'))
+        self.offlineClientsTable.horizontalHeaderItem(3).setText(_('HEADER_IP_ADDRESS'))
+        self.offlineClientsTable.horizontalHeaderItem(4).setText(_('HEADER_LAST_ONLINE'))
+        # END HEADERS
+
+        # BOTTOM
+        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
+        self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
+        self.serversOnlineStatus.setText(_('BOTTOM_SERVERS_TOTAL'))
+        # END BOTTOM
+
+        # ADMINISTRATION
+        self.getModeratorsButton.setText(_('MODERATOR_GET_MODERATORS'))
+        self.addModeratorButton.setText(_('MODERATOR_ADD_MDOERATOR'))
+
+        self.moderatorsTable.horizontalHeaderItem(0).setText(_('MODERATORS_HEADER_ID'))
+        self.moderatorsTable.horizontalHeaderItem(1).setText(_('MODERATORS_HEADER_ONLINE'))
+        self.moderatorsTable.horizontalHeaderItem(2).setText(_('MODERATORS_HEADER_OFFLINE'))
+        self.moderatorsTable.horizontalHeaderItem(3).setText(_('MODERATORS_HEADER_PRIVILEGES'))
+        self.moderatorsTable.horizontalHeaderItem(4).setText(_('MODERATORS_HEADER_STATUS'))
+        self.moderatorsTable.horizontalHeaderItem(5).setText(_('MODERATORS_HEADER_LASTONLINE'))
+        # END ADMINISTRATION
+
     def create_moderator(self):
         self.moderator = SocketModeratorFactory(
             self.on_moderator_connect_success,

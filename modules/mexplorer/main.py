@@ -70,10 +70,6 @@ class mainPopup(QWidget, Ui_Form):
         self.callback(data)
 
     def set_language(self):
-        self.upButton.setText(_('MEXPLORER_UP'))
-        self.refreshButton.setText(_('MEXPLORER_REFRESH'))
-        self.downloadButton.setText(_('MEXPLORER_DOWNLOAD'))
-        self.uploadButton.setText(_('MEXPLORER_UPLOAD'))
         self.explorerTable.horizontalHeaderItem(0).setText(_('MEXPLORER_TYPE'))
         self.explorerTable.horizontalHeaderItem(1).setText(_('MEXPLORER_NAME'))
         self.explorerTable.horizontalHeaderItem(2).setText(_('MEXPLORER_DATE_MODIFIED'))

@@ -2,6 +2,7 @@
 
 import sys
 import os
+import time
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -22,10 +23,9 @@ SERVER_PORT = 1313
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
-
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
-    def __init__(self, reactor, parent=None):
+    def __init__(self, reactor, plugins, parent=None):
         super(MainDialog, self).__init__(parent)
         self.reactor = reactor
         self.setupUi(self)
@@ -33,7 +33,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Initial Folders
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
         self.flags = os.path.join(self.assets, 'flags')
-        self.plugins = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
+        self.plugins = plugins
 
         # Session ID
         self.session_id = None
@@ -134,10 +134,26 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.close_moderat()
 
+def get_plugins_values(plugin):
+    plugin_name = None
+    plugin_description = None
+    plugin_source = None
+    if plugin.endswith('.py'):
+        plugin = plugin[:-3]
+        try:
+            exec 'from plugins import %s' % plugin
+            exec 'plugin_name = %s.plugin_name' % plugin
+            exec 'plugin_description = %s.plugin_description' % plugin
+            exec 'plugin_source = %s.plugin_source' % plugin
+        except:
+            pass
+    return plugin_name, plugin_description, plugin_source
 
 # -------------------------------------------------------------------------------
-if __name__ == "__main__":
+# Run Application
+if __name__ == '__main__':
     app = QApplication(sys.argv)
+
     try:
         import qt4reactor
     except ImportError:
@@ -146,7 +162,59 @@ if __name__ == "__main__":
 
     from twisted.internet import reactor
 
-    moderatWindow = MainDialog(reactor)
+    # Create and display the splash screen
+    splash_pix = QPixmap(os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'splash.png'))
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    # Add Progress Bar
+    progressBar = QProgressBar(splash)
+    status_label = QLabel(splash)
+    status_label.setGeometry(220, 300, 600, 20)
+    status_label.setStyleSheet('''
+color: #c9f5f7;
+    ''')
+    status_label.setText('Loading Plugin: ')
+    progressBar.setGeometry(0, 320, 600, 10)
+    progressBar.setTextVisible(False)
+    progressBar.setStyleSheet('''
+QProgressBar:horizontal {
+border: 1px ridge;
+border-color: #2c3e50;
+background-color: #34495e;
+padding: 1px;
+text-align: bottom;
+color: #c9f5f7;
+}
+QProgressBar::chunk:horizontal {
+background: #c9f5f7;
+margin-right: 1px;
+width: 5px;
+color: #c9f5f7;
+}
+    ''')
+    splash.setMask(splash_pix.mask())
+    splash.show()
+    # Init Plugins
+    status_label.setText('Initializing')
+    init_plugins_dir = os.listdir(os.path.join(os.path.dirname(sys.argv[0]), 'plugins'))
+    plugins_count = len(init_plugins_dir)
+    plugins = {}
+    for ind, plug in enumerate(init_plugins_dir):
+        if '__init__' in plug or not plug.endswith('py'):
+            continue
+        status_label.setText('Loading Plugin: %s' % plug)
+        name, desc, source = get_plugins_values(plug)
+        if name and desc and source:
+            plugins[name] = {
+                'description':  desc,
+                'source':       source,
+            }
+        progressBar.setValue((ind+1)*100/plugins_count)
+        app.processEvents()
+        time.sleep(1)
+
+    moderatWindow = MainDialog(reactor, plugins)
+    splash.finish(moderatWindow)
     moderatWindow.show()
 
     reactor.run()
+

@@ -98,8 +98,8 @@ class Actions:
                 'client': client,
                 'session_id': self.moderat.session_id,
                 'assets': self.moderat.assets,
-                'module_id': module_id
-                #'plugins': PLUGINS,
+                'plugins': self.moderat.plugins,
+                'module_id': module_id,
             }
             if module in modules:
                 self.moderat.modulesBank[module_id] = modules[module].mainPopup(args)

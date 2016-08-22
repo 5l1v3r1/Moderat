@@ -19,13 +19,13 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.sock = args['sock']
+        self.moderator = args['moderator']
         self.client = args['client']
         self.session_id = args['session_id']
-        self.assets = args['assets']
+        self.module_id = args['module_id']
         self.plugins = args['plugins']
 
-        self.setWindowTitle('Remote Scripting')
+        self.setWindowTitle(_('MSCRIPTING_TITLE'))
 
         # init idle with lines
         self.idle = idle.LineTextWidget()
@@ -49,10 +49,16 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         completer.popup().setStyleSheet("background-color: #455F7A;\ncolor: #c9f5f7;")
         self.pluginSearchLine.setCompleter(completer)
 
+    def signal(self, data):
+        self.callback(data)
+
     def run_script(self):
         script = self.idle.getTextEdit()
-        output = data_get(self.sock, str(script), 'scriptingMode', session_id=self.session_id, to=self.client)
-        self.idle.setHtml(output['payload'].replace('\n', '<br>'))
+        self.moderator.send_msg(str(script), 'scriptingMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recv_script
+
+    def recv_script(self, data):
+        self.idle.setHtml(data['payload'].replace('\n', '<br>'))
 
     def insert_plugin(self):
         plugin_name = str(self.pluginSearchLine.text())

@@ -3,7 +3,6 @@ from PyQt4.QtCore import *
 
 import main_ui
 
-from libs.data_transfer import data_get
 from libs.language import Translate
 
 import ast

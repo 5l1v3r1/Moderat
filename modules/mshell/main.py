@@ -32,6 +32,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         self.connect(self.console, SIGNAL("returnPressed"), self.runCommand)
 
+        self.connect(QShortcut(QKeySequence(Qt.Key_Escape), self), SIGNAL('activated()'), self.canceled)
+
     def signal(self, data):
         self.callback(data)
 
@@ -47,6 +49,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
             self.console.newPrompt()
         else:
             self.console.append('<font color=#c9f5f7>'+data['payload']+'</font>')
+
+    def canceled(self):
+        print 'canceled'
+        self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)
 
     def closeEvent(self, QCloseEvent):
         self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)

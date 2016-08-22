@@ -51,7 +51,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
             self.console.append('<font color=#c9f5f7>'+data['payload']+'</font>')
 
     def canceled(self):
-        print 'canceled'
         self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)
 
     def closeEvent(self, QCloseEvent):

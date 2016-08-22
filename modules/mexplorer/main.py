@@ -217,7 +217,6 @@ class mainPopup(QWidget, Ui_Form):
         self.callback = self.recv_content
 
     def recv_content(self, data):
-        print data
         # set remote path entry
         try:
             content = ast.literal_eval(data['payload'])

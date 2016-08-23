@@ -2,9 +2,6 @@ from ui.log_settings import Ui_Form as LogSettingsUi
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import os
-
-from libs.data_transfer import data_get, data_send, data_receive
 from libs.language import Translate
 
 # Multi Lang
@@ -18,8 +15,8 @@ class LogSettings(QWidget, LogSettingsUi):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.socket = args['sock']
-        self.client_id = args['key']
+        self.moderator = args['moderator']
+        self.client = args['client']
         self.session_id = args['session_id']
         self.kts = args['kts']
         self.kt = args['kt']
@@ -28,7 +25,7 @@ class LogSettings(QWidget, LogSettingsUi):
         self.sts = args['sts']
         self.std = args['std']
         self.st = args['st']
-        if not args['audio_device'] == 'NoDevice':
+        if not args['audio'] == 'NoDevice':
             self.no_audio = False
         else:
             self.no_audio = True
@@ -87,5 +84,5 @@ class LogSettings(QWidget, LogSettingsUi):
         }
 
     def set_values(self):
-        data_send(self.socket, self.get_values(), 'setLogSettings', session_id=self.session_id, to=self.client_id)
+        self.moderator.send_msg(self.get_values(), 'setLogSettings', session_id=self.session_id, _to=self.client)
         self.close()

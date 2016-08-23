@@ -46,7 +46,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         webcam_dict = data['payload']
         try:
             camera_info = ast.literal_eval(webcam_dict)
-            im = Image.fromstring('RGB', (int(camera_info['width']), int(camera_info['height'])),
+            im = Image.frombytes('RGB', (int(camera_info['width']), int(camera_info['height'])),
                                       zlib.decompress(camera_info['webcambits']), 'raw', 'BGR', 0, -1)
             camera_bits = im.convert('RGBA')
             self.cameraLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(camera_bits)).scaled(

@@ -4,6 +4,7 @@ import os
 
 from libs.language import Translate
 from libs.gui import tables, main
+from libs.moderat import Clients
 
 
 # Multi Lang
@@ -15,6 +16,7 @@ class Modes:
 
     def __init__(self, moderat):
         self.moderat = moderat
+        self.clients = Clients.Clients(self.moderat)
 
         # Create Main UI Functions
         self.ui = main.updateUi(self.moderat)
@@ -117,6 +119,7 @@ class Modes:
         :param data:
         :return:
         '''
+        self.clients.store_clients(data['payload'])
         self.tables.update_clients(data)
 
     # Administrators Modes

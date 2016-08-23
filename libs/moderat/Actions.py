@@ -6,6 +6,8 @@ import random
 
 from libs.language import Translate
 from libs.gui import main
+from libs.moderat import Clients
+from libs.log_settings import LogSettings
 
 from modules.mexplorer import main as mexplorer
 from modules.mshell import main as mshell
@@ -26,6 +28,7 @@ def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
 class Actions:
     def __init__(self, moderat):
         self.moderat = moderat
+        self.clients = Clients.Clients(self.moderat)
 
         # Create Main UI Functions
         self.ui = main.updateUi(self.moderat)
@@ -79,6 +82,17 @@ class Actions:
             if ok:
                 self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias',
                                                 session_id=self.moderat.session_id)
+
+    def set_log_settings(self):
+        client = self.current_client()
+        if client:
+            client_config = self.clients.get_client(client)
+            client_config['moderator'] = self.moderat.moderator
+            client_config['client'] = client
+            client_config['session_id'] = self.moderat.assets
+            client_config['assets'] = self.moderat.assets
+            self.log_settings = LogSettings(client_config)
+            self.log_settings.show()
 
     def execute_module(self, module):
         modules = {

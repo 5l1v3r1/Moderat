@@ -15,7 +15,7 @@ class mainTriggers:
         #self.moderat.settingsButton.clicked.connect(self.moderat.run_settings)
 
         # Menu Triggers
-        # self.moderat.viewLogsButton.clicked.connect(self.view_logs)
+        self.moderat.viewLogsButton.clicked.connect(self.moderat.view_logs)
         self.moderat.logSettingsButton.clicked.connect(self.moderat.set_logs_settings)
         self.moderat.setAliasButton.clicked.connect(self.moderat.set_alias)
         # self.moderat.updateSourceButton.clicked.connect(self.update_source)

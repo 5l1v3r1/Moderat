@@ -8,6 +8,7 @@ from libs.language import Translate
 from libs.gui import main
 from libs.moderat import Clients
 from libs.log_settings import LogSettings
+from LogViewer import LogViewer
 
 from modules.mexplorer import main as mexplorer
 from modules.mshell import main as mshell
@@ -82,6 +83,19 @@ class Actions:
             if ok:
                 self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias',
                                                 session_id=self.moderat.session_id)
+
+    def log_viewer(self):
+        client = self.current_client()
+        if client:
+            client_config = self.clients.get_client(client)
+            client_config['moderator'] = self.moderat.moderator
+            client_config['client'] = client
+            client_config['session_id'] = self.moderat.session_id
+            client_config['assets'] = self.moderat.assets
+            module_id = id_generator()
+            client_config['module_id'] = module_id
+            self.moderat.logViewers[module_id] = LogViewer(client_config)
+            self.moderat.logViewers[module_id].show()
 
     def set_log_settings(self):
         client = self.current_client()

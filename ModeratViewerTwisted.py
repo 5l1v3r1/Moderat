@@ -188,14 +188,10 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.session_id)
 
     def send_signal(self, data):
-        if data['from'] == 'client':
-            if self.modulesBank.has_key(data['module_id']):
-                self.modulesBank[data['module_id']].signal(data)
-        elif data['from'] == 'server':
-            print 1
-            if self.logViewers.has_key(data['module_id']):
-                print 2
-                self.logViewers[data['module_id']].signal(data)
+        if self.modulesBank.has_key(data['module_id']):
+            self.modulesBank[data['module_id']].signal(data)
+        elif self.logViewers.has_key(data['module_id']):
+            self.logViewers[data['module_id']].signal(data)
 
     def closeEvent(self, *args, **kwargs):
         '''
@@ -205,6 +201,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.close_moderat()
+
 
 def get_plugins_values(plugin):
     plugin_name = None

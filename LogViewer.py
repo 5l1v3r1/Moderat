@@ -97,16 +97,25 @@ class LogViewer(QWidget, logViewerUi):
         self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
 
     def screenshot_button_checked(self):
+        '''
+        :return: Download Screenshots Button is Checked
+        '''
         if self.screenshotsEnableButton.isChecked():
             self.keylogsEnableButton.setChecked(False)
             self.audioEnableButton.setChecked(False)
 
     def keylogs_button_checked(self):
+        '''
+        :return: Download Keylogs Button is Checked
+        '''
         if self.keylogsEnableButton.isChecked():
             self.screenshotsEnableButton.setChecked(False)
             self.audioEnableButton.setChecked(False)
 
     def audio_button_checked(self):
+        '''
+        :return: Download Audio Button is Checked
+        '''
         if self.audioEnableButton.isChecked():
             self.screenshotsEnableButton.setChecked(False)
             self.keylogsEnableButton.setChecked(False)
@@ -163,6 +172,7 @@ class LogViewer(QWidget, logViewerUi):
         os.startfile(current_audio_path)
 
     def download_data(self):
+
 
         tab_index = 0
 

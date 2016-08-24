@@ -171,6 +171,13 @@ class LogViewer(QWidget, logViewerUi):
         current_audio_path = str(self.audioTable.item(self.audioTable.currentRow(), 3).text())
         os.startfile(current_audio_path)
 
+
+    def download_logs(self):
+        download_info = {
+            'filter': self.downl
+        }
+        self.moderator.send_msg()
+
     def download_data(self):
 
 

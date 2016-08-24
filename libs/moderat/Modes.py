@@ -36,6 +36,8 @@ class Modes:
             'getWebcam': self.getWebcam,
             # Moderators Modes
             'countData': self.countData,
+            'downloadLogs': self.downloadLogs,
+            'downloadLog': self.downloadLog,
         }
 
     def check_mode(self, data):
@@ -134,4 +136,10 @@ class Modes:
         self.tables.update_moderators(data)
 
     def countData(self, data):
+        self.moderat.send_signal(data)
+
+    def downloadLogs(self, data):
+        self.moderat.send_signal(data)
+
+    def downloadLog(self, data):
         self.moderat.send_signal(data)

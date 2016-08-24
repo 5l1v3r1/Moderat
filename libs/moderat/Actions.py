@@ -89,6 +89,7 @@ class Actions:
         if client:
             client_config = self.clients.get_client(client)
             client_config['moderator'] = self.moderat.moderator
+            client_config['moderat'] = self.moderat
             client_config['client'] = client
             client_config['session_id'] = self.moderat.session_id
             client_config['assets'] = self.moderat.assets

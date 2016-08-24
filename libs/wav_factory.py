@@ -5,7 +5,7 @@ import contextlib
 import os
 
 
-def spectrum_analyzer_image(client_id, audio_path, audio_name, storage):
+def spectrum_analyzer_image(audio_path, audio_name, storage):
     spf = wave.open(audio_path, 'r')
     signal = spf.readframes(-1)
     signal = np.fromstring(signal, 'Int16')

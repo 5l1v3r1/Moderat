@@ -1,13 +1,5 @@
 import ConfigParser
-import languages
 import os
-
-
-def _(tr, word):
-    if word in tr:
-        return tr[word]
-    else:
-        return word
 
 
 class Config:

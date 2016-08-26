@@ -12,12 +12,9 @@ from ModeratorFactory import *
 from libs.language import Translate
 from libs.moderat.Actions import Actions
 from libs.moderat.Modes import Modes
+from libs.moderat.Settings import Config
 from libs.gui import triggers, shortcuts
 from ui import gui
-
-SERVER_HOST = '109.172.189.74'
-#SERVER_HOST = '127.0.0.1'
-SERVER_PORT = 1313
 
 # Multi Lang
 translate = Translate()
@@ -41,6 +38,11 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
         self.flags = os.path.join(self.assets, 'flags')
         self.plugins = plugins
+
+        # Init Settings
+        self.config = Config()
+        self.SERVER_HOST = self.config.ip_address
+        self.SERVER_PORT = self.config.port
 
         # Session ID
         self.session_id = None
@@ -126,13 +128,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         Try Connect To Server
         :return:
         '''
-        self.connection = self.reactor.connectTCP(SERVER_HOST, SERVER_PORT, self.moderator)
+        self.connection = self.reactor.connectTCP(self.SERVER_HOST, self.SERVER_PORT, self.moderator)
 
     def on_moderator_connect_success(self):
         '''
         On Moderator Connected To Server
         :return:
         '''
+        self.ipv4Label.setText(self.SERVER_HOST+':'+str(self.SERVER_PORT))
         self.action.login()
 
     def on_moderator_connect_fail(self, reason):
@@ -141,6 +144,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :param reason:
         :return:
         '''
+        self.ipv4Label.setText('N/A')
         self.action.disconnect()
 
     # Callbacks

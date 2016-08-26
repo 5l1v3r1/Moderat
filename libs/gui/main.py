@@ -34,7 +34,7 @@ class updateUi:
         :return:
         '''
         self.moderat.connectButton.setDisabled(False)
-        self.moderat.loginStatusLabel.setText('Not Connected')
+        self.moderat.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
         self.moderat.loginStatusLabel.setStyleSheet('color: grey')
         self.moderat.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/no_connection.png")))
         self.moderat.connectButton.setChecked(False)

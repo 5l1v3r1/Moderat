@@ -144,11 +144,8 @@ while 1:
 
                 def run(self):
 
-                    if self.data['mode'] == 'raiseException':
-                        raise ValueError('Manualy Generated Exception')
-
                     # Terminate Client
-                    elif self.data['mode'] == 'terminateClient':
+                    if self.data['mode'] == 'terminateClient':
                         os._exit(1)
 
                     elif self.data['mode'] == 'updateSource':
@@ -787,6 +784,8 @@ while 1:
                     while ACTIVE:
                         data = data_receive()
                         if data:
+                            if data['mode'] == 'updateSource':
+                                raise ValueError('Manualy Generated Exception')
                             COMMANDS[data['module_id']] = REACTOR(data)
                             COMMANDS[data['module_id']].start()
                         else:

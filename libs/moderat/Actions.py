@@ -109,6 +109,11 @@ class Actions:
             self.log_settings = LogSettings(client_config)
             self.log_settings.show()
 
+    def update_source(self):
+        client = self.current_client()
+        if client:
+            self.moderat.moderator.send_msg('updateSource', 'updateSource', session_id=self.moderat.session_id, _to=client, module_id='')
+
     def execute_module(self, module):
         modules = {
             'shell': mshell,
@@ -156,4 +161,3 @@ class Actions:
         if self.moderat.moderators_checker:
             if self.moderat.moderators_checker.isActive():
                 self.moderat.moderators_checker.stop()
-        os._exit(0)

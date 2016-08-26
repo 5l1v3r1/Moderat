@@ -172,6 +172,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_log_settings()
 
+    def update_source(self):
+        '''
+        Update Clients Source
+        :return: Restart client
+        '''
+        self.action.update_source()
+
     def execute_module(self, module):
         '''
         execute module
@@ -208,6 +215,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.close_moderat()
+        os._exit(1)
 
 
 def get_plugins_values(plugin):

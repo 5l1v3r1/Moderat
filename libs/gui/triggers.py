@@ -1,9 +1,7 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-import os
-from libs.language import Translate
 
-class mainTriggers:
+class moderatTriggers:
 
     def __init__(self, moderat):
 

@@ -12,7 +12,7 @@ from ModeratorFactory import *
 from libs.language import Translate
 from libs.moderat.Actions import Actions
 from libs.moderat.Modes import Modes
-from libs.gui import triggers
+from libs.gui import triggers, shortcuts
 from ui import gui
 
 SERVER_HOST = '109.172.189.74'
@@ -57,7 +57,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Create Protocol
         self.create_moderator()
         # Init Triggers
-        triggers.mainTriggers(self)
+        triggers.moderatTriggers(self)
+        # Init Shortcuts
+        shortcuts.moderatShortcuts(self)
         # Create Actions Object
         self.action = Actions(self)
         # Create Modes Object
@@ -157,10 +159,9 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_alias()
 
-    def view_logs(self, data):
+    def view_logs(self):
         '''
         Client Log Viewer
-        :param data:
         :return:
         '''
         self.action.log_viewer()

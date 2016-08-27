@@ -33,6 +33,7 @@ class Actions:
 
         # Create Main UI Functions
         self.ui = main.updateUi(self.moderat)
+        self.ui.disable_administrator()
 
     def login(self):
         '''

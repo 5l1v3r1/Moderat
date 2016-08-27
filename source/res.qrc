@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/down.png</file>
+    <file>../assets/up.png</file>
+    <file>../assets/eye.png</file>
+    <file>../assets/mark.png</file>
+    <file>../assets/microphone.png</file>
+    <file>../assets/keyboard.png</file>
     <file>../assets/add_plugin.png</file>
     <file>../assets/trash.png</file>
     <file>../assets/hide_output.png</file>
@@ -46,8 +52,8 @@
     <file>../assets/bottom.png</file>
     <file>../assets/save.png</file>
     <file>../assets/always_top.png</file>
-    <file>../assets/download.png</file>
     <file>../assets/connect.png</file>
+    <file>../assets/download.png</file>
     <file>../assets/disconnect.png</file>
     <file>../assets/file.png</file>
     <file>../assets/folder.png</file>

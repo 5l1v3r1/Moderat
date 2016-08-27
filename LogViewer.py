@@ -49,9 +49,6 @@ class LogViewer(QWidget, logViewerUi):
         self.screenshotsTable.doubleClicked.connect(self.open_screenshot)
         self.keylogsTable.doubleClicked.connect(self.open_keylog)
         self.audioTable.doubleClicked.connect(self.open_audio)
-        self.screenshotsEnableButton.clicked.connect(self.screenshot_button_checked)
-        self.keylogsEnableButton.clicked.connect(self.keylogs_button_checked)
-        self.audioEnableButton.clicked.connect(self.audio_button_checked)
 
         # Init
         self.init_ui()
@@ -87,37 +84,12 @@ class LogViewer(QWidget, logViewerUi):
         self.audioTable.horizontalHeaderItem(0).setText(_('VIEWER_AUDIO_DURATION'))
         self.audioTable.horizontalHeaderItem(1).setText(_('VIEWER_AUDIO_SPECTRUM'))
         self.audioTable.horizontalHeaderItem(2).setText(_('VIEWER_AUDIO_DATETIME'))
-        self.clientInformationGroup.setTitle(_('VIEWER_CLIENT_GROUP_TITLE'))
         self.clientIdLabel.setText(_('VIEWER_CLIENT_ID'))
         self.clientAliasLabel.setText(_('VIEWER_CLIENT_ALIAS'))
         self.clientIpLabel.setText(_('VIEWER_CLIENT_IP'))
         self.downloadGroup.setTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
         self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
         self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
-
-    def screenshot_button_checked(self):
-        '''
-        :return: Download Screenshots Button is Checked
-        '''
-        if self.screenshotsEnableButton.isChecked():
-            self.keylogsEnableButton.setChecked(False)
-            self.audioEnableButton.setChecked(False)
-
-    def keylogs_button_checked(self):
-        '''
-        :return: Download Keylogs Button is Checked
-        '''
-        if self.keylogsEnableButton.isChecked():
-            self.screenshotsEnableButton.setChecked(False)
-            self.audioEnableButton.setChecked(False)
-
-    def audio_button_checked(self):
-        '''
-        :return: Download Audio Button is Checked
-        '''
-        if self.audioEnableButton.isChecked():
-            self.screenshotsEnableButton.setChecked(False)
-            self.keylogsEnableButton.setChecked(False)
 
     def check_data_counts(self):
         '''

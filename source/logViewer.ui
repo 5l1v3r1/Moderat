@@ -31,45 +31,46 @@ color: #c9f5f7;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QTabWidget::pane { /* The tab widget frame */
-    border-top: 2px solid #34495e;
+border: none;
+padding-top: -9px;
 }
 
 QTabWidget::tab-bar {
-    left: 5px; /* move to the right by 5px */
+left: 9px; /* move to the right by 5px */
 }
 
 /* Style the tab using the tab sub-control. Note that
     it reads QTabBar _not_ QTabWidget */
 QTabBar::tab {   
-    border: 1px ridge;
-  border-bottom: none;
-  border-color: #2c3e50;
-  min-width: 30ex;
-    padding: 10px;
-  color: #c9f5f7;
+border: none;
+min-width: 30ex;
+padding: 10px;
+color: #c9f5f7;
 }
 QTabBar::tab::disabled {   
   border: none;
   color: #2c3e50;
 }
 QTabBar::tab:selected, QTabBar::tab:hover {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #34495e, stop: 0.4 #34495e,
-                                stop: 0.5 #34495e, stop: 1.0 #34495e);
+background: #34495e;
 }
 
 QTabBar::tab:selected {
-    border: 1px ridge;
-  border-bottom: none;
-  border-color: #2c3e50;
+border: none;
 }
 
 QTabBar::tab:!selected {
-    margin-top: 2px; /* make non-selected tabs look smaller */
+margin-top: 2px; /* make non-selected tabs look smaller */
 }</string>
        </property>
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
        </property>
        <property name="movable">
         <bool>true</bool>
@@ -77,7 +78,7 @@ QTabBar::tab:!selected {
        <widget class="QWidget" name="screenshotsTab">
         <attribute name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
+          <normaloff>:/icons/assets/desktop.png</normaloff>:/icons/assets/desktop.png</iconset>
         </attribute>
         <attribute name="title">
          <string>Screenshots</string>
@@ -90,26 +91,27 @@ QTabBar::tab:!selected {
            </property>
            <property name="styleSheet">
             <string notr="true">QHeaderView::section {
-  background-color: #34495e;
-    padding: 2px;
-    color: #cff7f8;
-  font: 75 10px &quot;MS Shell Dlg 2&quot;;
-  border: 1px ridge;
-  border-right: none;
-  border-color: #2c3e50;
+background-color: #2c3e50;
+padding: 2px;
+color: #cff7f8;
+font: 75 10px &quot;MS Shell Dlg 2&quot;;
+border: 3px solid;
+border-right: none;
+border-top: none;
+border-bottom: none;
+border-color: #34495e;
 }
 
 QTableWidget#screenshotsTable {
-  background-position: center;
-    border: 1px ridge;
-    padding: 5px;
-  color: #cff7f8;
-    border-color: #2c3e50;
-    font: 8pt &quot;MS Shell Dlg 2&quot;;
-  background-color: #34495e;
+background-position: center;
+border:  none;
+padding: 5px;
+color: #cff7f8;
+font: 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: #34495e;
 
-  background-image: url(assets/bg.png);
-  background-repeat: no-repeat;
+background-image: url(assets/bg.png);
+background-repeat: no-repeat;
 }
 
 QTableWidget#screenshotsTable:item:selected {
@@ -190,7 +192,7 @@ color: #cff7f8;
        <widget class="QWidget" name="keylogsTab">
         <attribute name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
+          <normaloff>:/icons/assets/keyboard.png</normaloff>:/icons/assets/keyboard.png</iconset>
         </attribute>
         <attribute name="title">
          <string>Keylogs</string>
@@ -203,26 +205,27 @@ color: #cff7f8;
            </property>
            <property name="styleSheet">
             <string notr="true">QHeaderView::section {
-  background-color: #34495e;
-    padding: 2px;
-    color: #cff7f8;
-  font: 75 10px &quot;MS Shell Dlg 2&quot;;
-  border: 1px ridge;
-  border-right: none;
-  border-color: #2c3e50;
+background-color: #2c3e50;
+padding: 2px;
+color: #cff7f8;
+font: 75 10px &quot;MS Shell Dlg 2&quot;;
+border: 3px solid;
+border-right: none;
+border-top: none;
+border-bottom: none;
+border-color: #34495e;
 }
 
 QTableWidget#keylogsTable {
-  background-position: center;
-    border: 1px ridge;
-    padding: 5px;
-  color: #cff7f8;
-    border-color: #2c3e50;
-    font: 8pt &quot;MS Shell Dlg 2&quot;;
-  background-color: #34495e;
+background-position: center;
+border:  none;
+padding: 5px;
+color: #cff7f8;
+font: 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: #34495e;
 
-  background-image: url(assets/bg.png);
-  background-repeat: no-repeat;
+background-image: url(assets/bg.png);
+background-repeat: no-repeat;
 }
 
 QTableWidget#keylogsTable:item:selected {
@@ -285,7 +288,7 @@ color: #cff7f8;
        <widget class="QWidget" name="audioTab">
         <attribute name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
+          <normaloff>:/icons/assets/microphone.png</normaloff>:/icons/assets/microphone.png</iconset>
         </attribute>
         <attribute name="title">
          <string>Audio</string>
@@ -298,26 +301,27 @@ color: #cff7f8;
            </property>
            <property name="styleSheet">
             <string notr="true">QHeaderView::section {
-  background-color: #34495e;
-    padding: 2px;
-    color: #cff7f8;
-  font: 75 10px &quot;MS Shell Dlg 2&quot;;
-  border: 1px ridge;
-  border-right: none;
-  border-color: #2c3e50;
+background-color: #2c3e50;
+padding: 2px;
+color: #cff7f8;
+font: 75 10px &quot;MS Shell Dlg 2&quot;;
+border: 3px solid;
+border-right: none;
+border-top: none;
+border-bottom: none;
+border-color: #34495e;
 }
 
 QTableWidget#audioTable {
-  background-position: center;
-    border: 1px ridge;
-    padding: 5px;
-  color: #cff7f8;
-    border-color: #2c3e50;
-    font: 8pt &quot;MS Shell Dlg 2&quot;;
-  background-color: #34495e;
+background-position: center;
+border:  none;
+padding: 5px;
+color: #cff7f8;
+font: 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: #34495e;
 
-  background-image: url(assets/bg.png);
-  background-repeat: no-repeat;
+background-image: url(assets/bg.png);
+background-repeat: no-repeat;
 }
 
 QTableWidget#audioTable:item:selected {
@@ -388,11 +392,14 @@ color: #cff7f8;
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QProgressBar:horizontal {
-border: 1px ridge;
+border:  none;
 border-color: #2c3e50;
-background: #34495e;
+background: #2c3e50;
 padding: 1px;
 text-align: top;
 text-color: #d35400;
@@ -401,16 +408,20 @@ QProgressBar::chunk:horizontal {
 background: #2c3e50;
 margin-right: 1px;
 width: 5px;
-border-bottom: 8px ridge #16a085;
+border-bottom: 8px ridge #c9f5f7;
+border-top: none;
 }</string>
          </property>
          <property name="value">
-          <number>1</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="downloadedLabel">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="text">
           <string>Downloaded Na Na/Na</string>
          </property>
@@ -435,26 +446,35 @@ border-bottom: 8px ridge #16a085;
            <height>16777215</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: #34495e; 
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding-top: 10px;</string>
+border: none;</string>
          </property>
          <property name="title">
-          <string>Client Information</string>
+          <string/>
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="2" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
              <widget class="QLabel" name="clientIpLabel">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>120</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">padding: 2px;
@@ -472,6 +492,9 @@ border: none;</string>
                 <width>200</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">background: #2c3e50;
@@ -491,11 +514,20 @@ padding: 3px;</string>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QLabel" name="clientAliasLabel">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>120</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">padding: 2px;
@@ -513,6 +545,9 @@ border: none;</string>
                 <width>200</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">background: #2c3e50;
@@ -532,11 +567,20 @@ padding: 3px;</string>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QLabel" name="clientIdLabel">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>120</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">padding: 2px;
@@ -554,6 +598,9 @@ border: none;</string>
                 <width>200</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">background: #2c3e50;
@@ -574,6 +621,9 @@ padding: 3px;</string>
        </item>
        <item>
         <spacer name="verticalSpacer">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -593,16 +643,17 @@ padding: 3px;</string>
            <height>16777215</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: #34495e; 
 border: none;
-border: 1px ridge;
-border-color: #2c3e50;
 padding-top: 10px;
 padding-bottom: 10px;</string>
          </property>
          <property name="title">
-          <string>Download Logs</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -611,384 +662,44 @@ padding-bottom: 10px;</string>
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="1" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <layout class="QVBoxLayout" name="screenshotCheckLayout">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="screenshotsEnableButton">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton#screenshotsEnableButton {
-      border: 1px ridge;
-            border-color: #2c3e50;
-      border-bottom: none;
-            background-color: #34495e;
-            }
-
-QPushButton#screenshotsEnableButton:pressed {
-            background-color: #2c3e50;
-            }
-
-QPushButton#screenshotsEnableButton:checked {
-            border: 3px ridge lime;
-      border-top: none;
-      border-bottom: none;
-      border-radius: 3px;
-      background-color: #2c3e50;
-            }</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="res.qrc">
-                  <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="screenshotsCountNewLabel">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="screenshotsCountSplitterLabel">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;</string>
-                  </property>
-                  <property name="text">
-                   <string>/</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="screenshotsCountOldLabel">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="keylogsCheckLayout">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="keylogsEnableButton">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton#keylogsEnableButton {
-      border: 1px ridge;
-            border-color: #2c3e50;
-      border-bottom: none;
-            background-color: #34495e;
-            }
-
-QPushButton#keylogsEnableButton:pressed {
-            background-color: #2c3e50;
-            }
-
-QPushButton#keylogsEnableButton:checked {
-            border: 3px ridge lime;
-      border-top: none;
-      border-bottom: none;
-      border-radius: 3px;
-      background-color: #2c3e50;
-            }</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="res.qrc">
-                  <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="keylogsCountNewLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="keylogsCountSplitterLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;</string>
-                  </property>
-                  <property name="text">
-                   <string>/</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="keylogsCountOldLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="audioCheckLayout">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="audioEnableButton">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton#audioEnableButton {
-      border: 1px ridge;
-            border-color: #2c3e50;
-      border-bottom: none;
-            background-color: #34495e;
-            }
-
-QPushButton#audioEnableButton:pressed {
-            background-color: #2c3e50;
-            }
-
-QPushButton#audioEnableButton:checked {
-            border: 3px ridge lime;
-      border-top: none;
-      border-bottom: none;
-      border-radius: 3px;
-      background-color: #2c3e50;
-            }</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="res.qrc">
-                  <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="audioCountNewLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="audioCountSplitterLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;</string>
-                  </property>
-                  <property name="text">
-                   <string>/</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="audioCountOldLabel">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>14</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="downloadButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#downloadButton {
+position: relative;
+    padding: 10px 40px;
+    float: left;
+    border-radius: 4px;
+    font-size: 18px;
+    background-color: #2c3e50;
+    border-bottom: 5px solid #232a39; }
+QPushButton#downloadButton::pressed {
+  border-bottom: 1px solid;
+}</string>
+            </property>
+            <property name="text">
+             <string>Download</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
           </item>
           <item row="0" column="0">
            <widget class="QCalendarWidget" name="timeCalendar">
@@ -1003,6 +714,9 @@ color: #e74c3c;</string>
               <width>280</width>
               <height>200</height>
              </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="styleSheet">
              <string notr="true">/* navigation bar */
@@ -1045,7 +759,7 @@ QCalendarWidget QAbstractItemView:enabled
   font-size:12px;  
   color: #c9f5f7; 
   background-color: #2c3e50;
-  selection-background-color: #d35400; 
+  selection-background-color: #34495e; 
   selection-color: lime; 
 }
  
@@ -1072,76 +786,452 @@ QCalendarWidget QAbstractItemView:disabled { color: grey; }</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="downloadButton">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="checkersGroup">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="styleSheet">
-             <string notr="true">QPushButton#downloadButton {
-position: relative;
-    padding: 10px 40px;
-    margin: 10px 10px 10px 10px;
-    float: left;
-    border-radius: 4px;
-    font-family: 'Helvetica', cursive;
-    font-size: 18px;
-    text-decoration: none;  
-    background-color: #2c3e50;
-    border-bottom: 5px solid #232a39; }
-QPushButton#downloadButton::pressed {
-  border-bottom: 1px solid;
+             <string notr="true"/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="2">
+              <layout class="QVBoxLayout" name="keylogsCheckLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="keylogsEnableButton">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#keylogsEnableButton {
+border: none;
+background: #2c3e50;
+}
+
+QPushButton#keylogsEnableButton:pressed {
+background-color: #2c3e50;
+}
+
+QPushButton#keylogsEnableButton:checked {
+background-color: #2c3e50;
 }</string>
-            </property>
-            <property name="text">
-             <string>Download</string>
-            </property>
-            <property name="icon">
-             <iconset resource="res.qrc">
-              <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="ignoreViewedCheck">
-            <property name="styleSheet">
-             <string notr="true">QPushButton#ignoreViewedCheck {
-      border: 1px ridge;
-            border-color: #2c3e50;
-      border-bottom: none;
-            background-color: #34495e;
-            }
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/keyboard.png</normaloff>
+                   <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/keyboard.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="keylogsCountNewLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #2ecc71;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="keylogsCountSplitterLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;</string>
+                   </property>
+                   <property name="text">
+                    <string>/</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="keylogsCountOldLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #e74c3c;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="3">
+              <layout class="QVBoxLayout" name="audioCheckLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="audioEnableButton">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#audioEnableButton {
+border: none;
+background: #2c3e50;
+}
+
+QPushButton#audioEnableButton:pressed {
+background-color: #2c3e50;
+}
+
+QPushButton#audioEnableButton:checked {
+background-color: #2c3e50;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/microphone.png</normaloff>
+                   <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/microphone.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="audioCountNewLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #2ecc71;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="audioCountSplitterLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;</string>
+                   </property>
+                   <property name="text">
+                    <string>/</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="audioCountOldLabel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #e74c3c;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="1">
+              <layout class="QVBoxLayout" name="screenshotCheckLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="screenshotsEnableButton">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#screenshotsEnableButton {
+border: none;
+background: #2c3e50;
+}
+
+QPushButton#screenshotsEnableButton:pressed {
+background-color: #2c3e50;
+}
+
+QPushButton#screenshotsEnableButton:checked {
+background-color: #2c3e50;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/desktop.png</normaloff>
+                   <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/desktop.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="screenshotsCountNewLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #2ecc71;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="screenshotsCountSplitterLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;</string>
+                   </property>
+                   <property name="text">
+                    <string>/</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="screenshotsCountOldLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>14</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;
+background: #2c3e50;
+color: #e74c3c;</string>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="1" colspan="3">
+              <widget class="QPushButton" name="ignoreViewedCheck">
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton#ignoreViewedCheck {
+background-color: #2c3e50;
+}
 
 QPushButton#ignoreViewedCheck:pressed {
-            background-color: #2c3e50;
-            }
+background-color: #2c3e50;
+}
 
 QPushButton#ignoreViewedCheck:checked {
-            border: 3px ridge lime;
-      border-top: none;
-      border-bottom: none;
-      border-radius: 3px;
-      background-color: #2c3e50;
-            }</string>
-            </property>
-            <property name="text">
-             <string>Ignore Viewed</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
+background-color: #2c3e50;
+}</string>
+               </property>
+               <property name="text">
+                <string>Ignore Viewed</string>
+               </property>
+               <property name="icon">
+                <iconset resource="res.qrc">
+                 <normaloff>:/icons/assets/eye.png</normaloff>
+                 <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/eye.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>

@@ -21,9 +21,6 @@ class updateUi:
         If Moderator Connected To Server
         :return:
         """
-        self.moderat.loginStatusLabel.setText(self.moderat.session_id)
-        self.moderat.loginStatusLabel.setStyleSheet('color: #2ecc71')
-        self.moderat.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/connection.png")))
         self.moderat.connectButton.setChecked(True)
         self.moderat.connectButton.setDisabled(True)
 
@@ -34,9 +31,6 @@ class updateUi:
         :return:
         '''
         self.moderat.connectButton.setDisabled(False)
-        self.moderat.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
-        self.moderat.loginStatusLabel.setStyleSheet('color: grey')
-        self.moderat.connectionStatusButton.setIcon(QIcon(QPixmap(":/icons/assets/no_connection.png")))
         self.moderat.connectButton.setChecked(False)
 
     def clear_tables(self):

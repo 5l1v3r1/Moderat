@@ -96,12 +96,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.offlineClientsTable.horizontalHeaderItem(4).setText(_('HEADER_LAST_ONLINE'))
         # END HEADERS
 
-        # BOTTOM
-        self.loginStatusLabel.setText(_('BOTTOM_LOGIN_STATUS'))
-        self.ipv4TextLabel.setText(_('BOTTOM_IPV4'))
-        self.serversOnlineStatus.setText(_('BOTTOM_SERVERS_TOTAL'))
-        # END BOTTOM
-
         self.moderatorsTable.horizontalHeaderItem(0).setText(_('MODERATORS_HEADER_ID'))
         self.moderatorsTable.horizontalHeaderItem(1).setText(_('MODERATORS_HEADER_ONLINE'))
         self.moderatorsTable.horizontalHeaderItem(2).setText(_('MODERATORS_HEADER_OFFLINE'))
@@ -130,7 +124,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.connected = True
-        self.ipv4Label.setText(self.SERVER_HOST+':'+str(self.SERVER_PORT))
         self.action.login()
 
     def on_moderator_connect_fail(self, reason):
@@ -140,7 +133,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.connected = False
-        self.ipv4Label.setText('N/A')
         self.action.disconnect()
 
     # Callbacks

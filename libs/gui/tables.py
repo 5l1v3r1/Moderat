@@ -21,6 +21,17 @@ class updateClientsTable:
         self.assets = self.moderat.assets
         self.flags = os.path.join(self.assets, 'flags')
 
+        self.item_style = '''
+        padding: 2px;
+        color: #cff7f8;
+        font: 75 10px "MS Shell Dlg 2";
+        border: 3px solid;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        border-color: #34495e;
+        '''
+
         self.filter = initFilters(self.moderat, self.assets)
 
     def clean_tables(self):
@@ -163,9 +174,6 @@ class updateClientsTable:
 
         except RuntimeError:
             pass
-
-        # update servers online counter
-        self.moderat.onlineStatus.setText(str(len(online_clients)))
 
     def update_moderators(self, data):
         moderators = data['payload']

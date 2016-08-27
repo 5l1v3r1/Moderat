@@ -11,6 +11,7 @@ def connected_to_server(function):
             return function(moderat)
     return wrapper
 
+
 def is_administrator(function):
     '''
     Check If Moderator Privileges is highest
@@ -20,4 +21,18 @@ def is_administrator(function):
     def wrapper(moderat):
         if moderat.privs == 1:
             return function(moderat)
+    return wrapper
+
+
+def client_is_selected(function):
+    '''
+    Check If Client Is Selected
+    :param function:
+    :return:
+    '''
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except TypeError:
+            pass
     return wrapper

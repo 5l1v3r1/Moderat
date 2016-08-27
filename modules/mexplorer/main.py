@@ -2,9 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from main_ui import Ui_Form
 import ast
-import socket
 import os
-from libs.data_transfer import data_get, data_send
 from libs.language import Translate
 
 # Multi Lang

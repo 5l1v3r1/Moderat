@@ -7,6 +7,7 @@ import random
 from libs.language import Translate
 from libs.gui import main
 from libs.moderat import Clients
+from libs.moderat.Decorators import *
 from libs.log_settings import LogSettings
 from LogViewer import LogViewer
 
@@ -73,6 +74,7 @@ class Actions:
         self.ui.on_moderator_not_connected()
         self.ui.clear_tables()
 
+    @client_is_selected
     def set_alias(self):
         '''
         Set Alias For Client
@@ -85,6 +87,7 @@ class Actions:
                 self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias',
                                                 session_id=self.moderat.session_id)
 
+    @client_is_selected
     def log_viewer(self):
         client, alias, ip_address = self.current_client()
         if client:
@@ -103,6 +106,7 @@ class Actions:
             self.moderat.logViewers[module_id] = LogViewer(client_config)
             self.moderat.logViewers[module_id].show()
 
+    @client_is_selected
     def set_log_settings(self):
         client, alias, ip_address = self.current_client()
         if client:
@@ -114,11 +118,13 @@ class Actions:
             self.log_settings = LogSettings(client_config)
             self.log_settings.show()
 
+    @client_is_selected
     def update_source(self):
         client, alias, ip_address = self.current_client()
         if client:
             self.moderat.moderator.send_msg('updateSource', 'updateSource', session_id=self.moderat.session_id, _to=client, module_id='')
 
+    @client_is_selected
     def execute_module(self, module):
         modules = {
             'shell': mshell,

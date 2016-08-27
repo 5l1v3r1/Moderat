@@ -21,6 +21,7 @@ from ui import gui
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
+
 # Main Window
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
 

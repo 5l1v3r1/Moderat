@@ -3,9 +3,7 @@ from PyQt4.QtCore import *
 
 import main_ui
 import idle
-import os
 
-from libs.data_transfer import data_get
 from libs.language import Translate
 
 # Multi Lang

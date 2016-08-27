@@ -158,12 +158,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_alias()
 
-    def view_logs(self, tab=0):
+    def view_logs(self):
         '''
         Client Log Viewer
         :return:
         '''
-        self.action.log_viewer(tab)
+        self.action.log_viewer()
 
     def set_logs_settings(self):
         '''

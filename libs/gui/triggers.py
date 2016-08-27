@@ -25,7 +25,8 @@ class moderatTriggers:
         self.moderat.setModeratorButton.clicked.connect(self.moderat.set_moderator)
 
         # Offline Menu Triggers
-        self.moderat.viewOfflineLogsButton.clicked.connect(lambda: self.moderat.view_logs(tab=1))
+        self.moderat.viewOfflineLogsButton.clicked.connect(self.moderat.view_logs)
+        self.moderat.setOfflineAliasButton.clicked.connect(self.moderat.set_alias)
 
         # Moderators Menu Triggers
         self.moderat.getModeratorsButton.clicked.connect(self.moderat.get_moderators)

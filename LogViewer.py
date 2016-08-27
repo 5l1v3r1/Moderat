@@ -25,7 +25,6 @@ class LogViewer(QWidget, logViewerUi):
         self.client_id = args['client']
         self.client_alias = args['alias']
         self.client_ip_address = args['ip_address']
-        self.client_os = args['os']
         self.session_id = args['session_id']
         self.module_id = args['module_id']
 
@@ -66,7 +65,6 @@ class LogViewer(QWidget, logViewerUi):
         self.clientIdLine.setText(self.client_id)
         self.clientAliasLine.setText(self.client_alias)
         self.clientIpLine.setText(self.client_ip_address)
-        self.clientOsLine.setText(self.client_os)
 
         # Hide Progress Bar
         self.downloadProgress.setHidden(True)
@@ -93,7 +91,6 @@ class LogViewer(QWidget, logViewerUi):
         self.clientIdLabel.setText(_('VIEWER_CLIENT_ID'))
         self.clientAliasLabel.setText(_('VIEWER_CLIENT_ALIAS'))
         self.clientIpLabel.setText(_('VIEWER_CLIENT_IP'))
-        self.clientOsLabel.setText(_('VIEWER_CLIENT_OS'))
         self.downloadGroup.setTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
         self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
         self.downloadButton.setText(_('VIEWER_DOWNLOAD'))

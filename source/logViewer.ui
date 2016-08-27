@@ -357,6 +357,16 @@ color: #cff7f8;
            </attribute>
            <column>
             <property name="text">
+             <string>Duration</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Spectrum Analys</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
              <string>Date Time</string>
             </property>
            </column>
@@ -436,6 +446,47 @@ padding-top: 10px;</string>
           <string>Client Information</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="clientIpLabel">
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 2px;
+border: none;</string>
+              </property>
+              <property name="text">
+               <string>IP: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="clientIpLine">
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: #2c3e50;
+border: none;
+border: 1px ridge;
+border-color: #2c3e50;
+padding: 3px;</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
           <item row="1" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
@@ -498,88 +549,6 @@ border: none;</string>
             </item>
             <item>
              <widget class="QLineEdit" name="clientIdLine">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background: #2c3e50;
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding: 3px;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="2" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLabel" name="clientIpLabel">
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">padding: 2px;
-border: none;</string>
-              </property>
-              <property name="text">
-               <string>IP: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="clientIpLine">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background: #2c3e50;
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding: 3px;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="3" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QLabel" name="clientOsLabel">
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">padding: 2px;
-border: none;</string>
-              </property>
-              <property name="text">
-               <string>OS: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="clientOsLine">
               <property name="maximumSize">
                <size>
                 <width>200</width>

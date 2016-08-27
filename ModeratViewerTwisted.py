@@ -52,7 +52,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.moderators_checker = None
         self.clients_checker = None
         # Create Protocol
-        self.create_moderator()
+        self.create_moderator_protocol()
         # Init Triggers
         triggers.moderatTriggers(self)
         # Init Shortcuts
@@ -98,10 +98,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.serversOnlineStatus.setText(_('BOTTOM_SERVERS_TOTAL'))
         # END BOTTOM
 
-        # ADMINISTRATION
-        self.getModeratorsButton.setText(_('MODERATOR_GET_MODERATORS'))
-        self.addModeratorButton.setText(_('MODERATOR_ADD_MDOERATOR'))
-
         self.moderatorsTable.horizontalHeaderItem(0).setText(_('MODERATORS_HEADER_ID'))
         self.moderatorsTable.horizontalHeaderItem(1).setText(_('MODERATORS_HEADER_ONLINE'))
         self.moderatorsTable.horizontalHeaderItem(2).setText(_('MODERATORS_HEADER_OFFLINE'))
@@ -110,7 +106,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.moderatorsTable.horizontalHeaderItem(5).setText(_('MODERATORS_HEADER_LASTONLINE'))
         # END ADMINISTRATION
 
-    def create_moderator(self):
+    def create_moderator_protocol(self):
         self.moderator = SocketModeratorFactory(
             self.on_moderator_connect_success,
             self.on_moderator_connect_fail,
@@ -186,19 +182,33 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.execute_module(module)
 
+    def set_moderator(self):
+        '''
+        Set Moderator For Client
+        :retur:
+        '''
+        self.action.administrator_set_moderator()
+
+    def get_moderators(self):
+        '''
+        Get Moderators Information
+        :return:
+        '''
+        self.action.administrator_get_moderators()
+
+    def create_moderator(self):
+        '''
+        Create New Moderator
+        :return:
+        '''
+        self.action.administrator_create_moderator()
+
     def check_clients(self):
         '''
         Update Clients Information
         :return:
         '''
         self.moderator.send_msg(message='getClients', mode='getClients', session_id=self.session_id)
-
-    def check_moderators(self):
-        '''
-        Update Moderators Information
-        :return:
-        '''
-        self.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.session_id)
 
     def send_signal(self, data):
         if self.modulesBank.has_key(data['module_id']):

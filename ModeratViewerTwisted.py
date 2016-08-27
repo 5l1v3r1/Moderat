@@ -158,12 +158,12 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_alias()
 
-    def view_logs(self):
+    def view_logs(self, tab=0):
         '''
         Client Log Viewer
         :return:
         '''
-        self.action.log_viewer()
+        self.action.log_viewer(tab)
 
     def set_logs_settings(self):
         '''
@@ -222,7 +222,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.moderator.send_msg(message='getClients', mode='getClients', session_id=self.session_id)
 
-    @connected_to_server
     def send_signal(self, data):
         if self.modulesBank.has_key(data['module_id']):
             self.modulesBank[data['module_id']].signal(data)

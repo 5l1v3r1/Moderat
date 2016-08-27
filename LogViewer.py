@@ -22,7 +22,7 @@ class LogViewer(QWidget, logViewerUi):
 
         self.moderator = args['moderator']
         self.moderat = args['moderat']
-        self.client_id = args['key']
+        self.client_id = args['client']
         self.client_alias = args['alias']
         self.client_ip_address = args['ip_address']
         self.client_os = args['os']

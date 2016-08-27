@@ -24,6 +24,9 @@ class moderatTriggers:
         self.moderat.webcamButton.clicked.connect(lambda: self.moderat.execute_module(module='webcam'))
         self.moderat.setModeratorButton.clicked.connect(self.moderat.set_moderator)
 
+        # Offline Menu Triggers
+        self.moderat.viewOfflineLogsButton.clicked.connect(lambda: self.moderat.view_logs(tab=1))
+
         # Moderators Menu Triggers
         self.moderat.getModeratorsButton.clicked.connect(self.moderat.get_moderators)
         self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)

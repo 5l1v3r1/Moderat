@@ -24,6 +24,9 @@ _ = lambda _word: translate.word(_word)
 class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     DATA = os.path.join(os.path.dirname(sys.argv[0]), 'DATA')
+    modulesBank = {}
+    logViewers = {}
+    clients = {}
 
     def __init__(self, reactor, plugins, parent=None):
         super(MainDialog, self).__init__(parent)
@@ -33,17 +36,14 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Init Log Dir
         if not os.path.exists(self.DATA):
             os.makedirs(self.DATA)
-
         # Initial Folders
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
         self.flags = os.path.join(self.assets, 'flags')
         self.plugins = plugins
-
         # Init Settings
         self.config = Config()
         self.SERVER_HOST = self.config.ip_address
         self.SERVER_PORT = self.config.port
-
         # Session ID
         self.session_id = None
         # Privileges
@@ -51,11 +51,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Checkers
         self.moderators_checker = None
         self.clients_checker = None
-        # Modules Bank
-        self.modulesBank = {}
-        self.logViewers = {}
-        self.clients = {}
-
         # Create Protocol
         self.create_moderator()
         # Init Triggers
@@ -66,7 +61,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.action = Actions(self)
         # Create Modes Object
         self.modes = Modes(self)
-
         self.set_language()
 
     def set_language(self):

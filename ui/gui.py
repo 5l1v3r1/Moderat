@@ -168,7 +168,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.onlineGroup = QtGui.QGroupBox(self.onlineClientsTab)
         self.onlineGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
-"border: 1px solid #2c3e50;"))
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
         self.onlineGroup.setTitle(_fromUtf8(""))
         self.onlineGroup.setObjectName(_fromUtf8("onlineGroup"))
         self.gridLayout_6 = QtGui.QGridLayout(self.onlineGroup)
@@ -177,8 +179,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.connectButton = QtGui.QPushButton(self.onlineGroup)
-        self.connectButton.setMinimumSize(QtCore.QSize(28, 28))
-        self.connectButton.setMaximumSize(QtCore.QSize(28, 28))
+        self.connectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.connectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.connectButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.connectButton.setStyleSheet(_fromUtf8("QPushButton#connectButton {\n"
 "            border: none;\n"
@@ -202,8 +204,8 @@ class Ui_MainWindow(object):
         self.connectButton.setObjectName(_fromUtf8("connectButton"))
         self.horizontalLayout_6.addWidget(self.connectButton)
         self.disconnectButton = QtGui.QPushButton(self.onlineGroup)
-        self.disconnectButton.setMinimumSize(QtCore.QSize(28, 28))
-        self.disconnectButton.setMaximumSize(QtCore.QSize(28, 28))
+        self.disconnectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.disconnectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.disconnectButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.disconnectButton.setStyleSheet(_fromUtf8("QPushButton#disconnectButton {\n"
 "            border: none;\n"
@@ -224,6 +226,7 @@ class Ui_MainWindow(object):
         self.disconnectButton.setObjectName(_fromUtf8("disconnectButton"))
         self.horizontalLayout_6.addWidget(self.disconnectButton)
         self.line_3 = QtGui.QFrame(self.onlineGroup)
+        self.line_3.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
         self.line_3.setFrameShape(QtGui.QFrame.VLine)
         self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_3.setObjectName(_fromUtf8("line_3"))
@@ -267,6 +270,7 @@ class Ui_MainWindow(object):
         self.logSettingsButton.setObjectName(_fromUtf8("logSettingsButton"))
         self.horizontalLayout_6.addWidget(self.logSettingsButton)
         self.line_2 = QtGui.QFrame(self.onlineGroup)
+        self.line_2.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
         self.line_2.setFrameShape(QtGui.QFrame.VLine)
         self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
         self.line_2.setObjectName(_fromUtf8("line_2"))
@@ -310,6 +314,7 @@ class Ui_MainWindow(object):
         self.updateSourceButton.setObjectName(_fromUtf8("updateSourceButton"))
         self.horizontalLayout_6.addWidget(self.updateSourceButton)
         self.line = QtGui.QFrame(self.onlineGroup)
+        self.line.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
         self.line.setFrameShape(QtGui.QFrame.VLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
@@ -517,7 +522,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.offlineGroup = QtGui.QGroupBox(self.offlineClientsTab)
         self.offlineGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
-"border: 1px solid #2c3e50;"))
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
         self.offlineGroup.setTitle(_fromUtf8(""))
         self.offlineGroup.setObjectName(_fromUtf8("offlineGroup"))
         self.gridLayout_8 = QtGui.QGridLayout(self.offlineGroup)
@@ -656,7 +663,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.moderatorsGroup = QtGui.QGroupBox(self.moderatorsTab)
         self.moderatorsGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
-"border: 1px solid #2c3e50;"))
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
         self.moderatorsGroup.setTitle(_fromUtf8(""))
         self.moderatorsGroup.setObjectName(_fromUtf8("moderatorsGroup"))
         self.gridLayout_7 = QtGui.QGridLayout(self.moderatorsGroup)

@@ -185,7 +185,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
            <widget class="QGroupBox" name="onlineGroup">
             <property name="styleSheet">
              <string notr="true">background-color: #34495e;
-border: 1px solid #2c3e50;</string>
+border: none;
+margin-left: 1px;
+margin-right: 1px;</string>
             </property>
             <property name="title">
              <string/>
@@ -200,14 +202,14 @@ border: 1px solid #2c3e50;</string>
                 <widget class="QPushButton" name="connectButton">
                  <property name="minimumSize">
                   <size>
-                   <width>28</width>
-                   <height>28</height>
+                   <width>0</width>
+                   <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>28</width>
-                   <height>28</height>
+                   <width>16777215</width>
+                   <height>16777215</height>
                   </size>
                  </property>
                  <property name="focusPolicy">
@@ -250,14 +252,14 @@ QPushButton#connectButton:checked {
                 <widget class="QPushButton" name="disconnectButton">
                  <property name="minimumSize">
                   <size>
-                   <width>28</width>
-                   <height>28</height>
+                   <width>0</width>
+                   <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>28</width>
-                   <height>28</height>
+                   <width>16777215</width>
+                   <height>16777215</height>
                   </size>
                  </property>
                  <property name="focusPolicy">
@@ -297,6 +299,9 @@ QPushButton#disconnectButton:pressed {
                </item>
                <item>
                 <widget class="Line" name="line_3">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px ridge #2c3e50;</string>
+                 </property>
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
@@ -368,6 +373,9 @@ QPushButton#logSettingsButton:pressed {
                </item>
                <item>
                 <widget class="Line" name="line_2">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px ridge #2c3e50;</string>
+                 </property>
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
@@ -439,6 +447,9 @@ QPushButton#updateSourceButton:pressed {
                </item>
                <item>
                 <widget class="Line" name="line">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px ridge #2c3e50;</string>
+                 </property>
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
@@ -821,7 +832,9 @@ color: #cff7f8;
            <widget class="QGroupBox" name="offlineGroup">
             <property name="styleSheet">
              <string notr="true">background-color: #34495e;
-border: 1px solid #2c3e50;</string>
+border: none;
+margin-left: 1px;
+margin-right: 1px;</string>
             </property>
             <property name="title">
              <string/>
@@ -1082,7 +1095,9 @@ color: #cff7f8;
            <widget class="QGroupBox" name="moderatorsGroup">
             <property name="styleSheet">
              <string notr="true">background-color: #34495e;
-border: 1px solid #2c3e50;</string>
+border: none;
+margin-left: 1px;
+margin-right: 1px;</string>
             </property>
             <property name="title">
              <string/>

@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/add_folder.png</file>
+    <file>../assets/add_file.png</file>
     <file>../assets/down.png</file>
     <file>../assets/up.png</file>
     <file>../assets/eye.png</file>

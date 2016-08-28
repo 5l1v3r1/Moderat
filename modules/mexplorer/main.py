@@ -39,13 +39,6 @@ class mainPopup(QWidget, Ui_Form):
 
         self.set_language()
 
-        # hide progressbar
-        self.progressBar.setVisible(False)
-        self.cancelButton.setVisible(False)
-
-        # progress status
-        self.activeProgress = False
-
         # signals
         self.upButton.clicked.connect(self.parent_folder)
         self.explorerTable.doubleClicked.connect(self.open_folder)

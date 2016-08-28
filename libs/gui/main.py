@@ -43,20 +43,26 @@ class updateUi:
 
     # Enable Administrators Features
     def enable_administrator(self):
+        # Enable Buttons
+        self.moderat.setModeratorButton.setHidden(False)
         # Online Clients Moderators
         self.moderat.clientsTable.showColumn(0)
         # Offline Clients Moderators
         self.moderat.offlineClientsTable.showColumn(0)
         # Moderators Tab
         self.moderat.clientsTabs.setTabEnabled(2, True)
+        self.moderat.clientsTabs.setTabText(2, _('CLIENTS_TAB_MODERATORS'))
         self.moderat.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/moderators.png")))
 
     # Disable Administrators Features
     def disable_administrator(self):
+        # Disable Buttons
+        self.moderat.setModeratorButton.setHidden(True)
         # Online Clients Moderators
         self.moderat.clientsTable.setColumnHidden(0, True)
         # Offline Clients Moderators
         self.moderat.offlineClientsTable.setColumnHidden(0, True)
         # Moderators Tab
         self.moderat.clientsTabs.setTabEnabled(2, False)
+        self.moderat.clientsTabs.setTabText(2, '')
         self.moderat.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/none.png")))

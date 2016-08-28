@@ -74,6 +74,8 @@ class Actions:
         self.ui.on_moderator_not_connected()
         self.ui.clear_tables()
 
+        self.ui.disable_administrator()
+
     @client_is_selected
     def set_alias(self):
         '''

@@ -44,6 +44,8 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
         self.flags = os.path.join(self.assets, 'flags')
         self.plugins = plugins
+        # Setup Language
+        self.set_language()
         # Init Settings
         self.config = Config()
         self.SERVER_HOST = self.config.ip_address
@@ -65,7 +67,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.action = Actions(self)
         # Create Modes Object
         self.modes = Modes(self)
-        self.set_language()
 
     def set_language(self):
 

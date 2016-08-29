@@ -24,45 +24,12 @@ tr = {
     'HEADER_OS':                    u'სისტემა',
     'HEADER_USER':                  u'მომხმარებელი',
     'HEADER_PRIVS':                 u'ჯგუფი',
-    'HEADER_LOCK':                  u'ბლოკი',
     'HEADER_MIC':                   u'მიკროფონი',
     'HEADER_CAM':                   u'კამერა',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'აქტიური ფანჯრის სათაური',
     'HEADER_MODERATOR':             u'მოდერატორი',
     'HEADER_LAST_ONLINE':           u'ბოლო შემოსვლა',
     # END CLIENTS TABLE HEADER
-
-    # BOTTOM
-    'BOTTOM_LOGIN_STATUS':                  u'არა ავტორიზირებული',
-    'BOTTOM_STATUS':                        u'სტატუსი: ',
-    'BOTTOM_IPV4':                          u'მისამართი: ',
-    'BOTTOM_PORT':                          u'პორტი: ',
-    'BOTTOM_SERVERS_TOTAL':                 u'კლიენტების რაოდენობა: ',
-    # END BOTTOM
-
-    # MENU
-    'MENU_SERVER':                  u'სერვერი',
-    'MENU_SERVER_START':            u'ჩართვა',
-    'MENU_SERVER_STOP':             u'გამორთვა',
-    'MENU_SERVER_CONFIGURATION':    u'პარამეტრები',
-    'MENU_CLIENT':                  u'კლიენტი',
-    'MENU_CLIENT_UNLOCK':           u'განბლოკვა',
-    'MENU_CLIENT_LOCK':             u'დაბლოკვა',
-    'MENU_CLIENT_STOP':             u'გათიშვა',
-    'MENU_CLIENT_SET_ALIAS':        u'სახელის შექმნა',
-    'MENU_CLIENT_RUN_AS_ADMIN':     u'ადმინისტრატორით გაშვება',
-    'MENU_PLUGIN':                  u'მოქმედება',
-    'MENU_PLUGIN_SHELL':            u'ბრძანებები',
-    'MENU_PLUGIN_EXPLORER':         u'ფაილების მენეჯერი',
-    'MENU_PLUGIN_MICROPHONE':       u'მიკროფონი',
-    'MENU_PLUGIN_PROCESSES':        u'პროცესები',
-    'MENU_PLUGIN_KEYLOGGER':        u'კლავიატურის შპიონი',
-    'MENU_PLUGIN_SCRIPTING':        u'პროგრამირება',
-    'MENU_PLUGIN_DESKTOP':          u'ეკრანი',
-    'MENU_PLUGIN_WEBCAM':           u'ვებ კამერა',
-    'MENU_BUILDER':                 u'კლიენტის შექმნა',
-    'MENU_BUILDER_PYINSTALLER':     u'კლიენტის შექმნა (PyInstaller)',
-    # END MENU
 
     # STATUS
     'STATUS_ONLINE':                u'ჩართული',
@@ -75,33 +42,17 @@ tr = {
     # END MESSAGE BOX
 
     # RIGHT CLICK MENU
-    'RM_CLIENT_OPTIONS':            u'კლიენტის პარამეტრები',
     'RM_SET_ALIAS':                 u'სახელის შექმნა',
     'RM_VIEW_LOGS':                 u'ლოგები',
-    'RM_RUN_AS_ADMIN':              u'ადმინისტრატორით გაშვება',
     'RM_SHELL':                     u'ბრძანებები',
     'RM_EXPLORER':                  u'ფაილების მენეჯერი',
-    'RM_PROCESSES':                 u'პროცესები',
-    'RM_MICROPHONE':                u'მიკროფონი',
     'RM_SCRIPTING':                 u'პროგრამირება',
-    'RM_KEYLOGGER':                 u'კლავიატურის შპიონი',
-    'RM_LOCK':                      u'დაბლოკვა',
     'RM_TERMINATE':                 u'გათიშვა',
-    'RM_UNLOCK':                    u'განბლოკვა',
     'RM_DESKTOP':                   u'ეკრანი',
     'RM_CAMERA':                    u'ვებ კამერა',
     # END RIGHT CLICK MENU
 
-    # UNLOCK CLIENT
-    'UNLOCK_CLIENT':                u'კლიენტის განბლოკვა',
-    'ENTER_USERNAME':               u'მომხმარებელი: ',
-    'ENTER_PASSWORD':               u'პაროლი: ',
-    'INCORRECT_CREDENTIALS':        u'არასწორი მომხმარებელი ან პაროლი',
-    # END UNLOCK CLIENT
-
     # CLIENT INFO
-    'INFO_LOCKED':                  u'დაბლოკილი',
-    'INFO_UNLOCKED':                u'განბლოკილი',
     'INFO_YES':                     u'კი',
     'INFO_NO':                      u'არა',
     'INFO_USER':                    u'მომხმარებელი',
@@ -118,38 +69,9 @@ tr = {
     'ALIAS_NAME':                   u'სახელი: ',
     # END SET ALIAS
 
-    # SETTINGS
-    'TAB_CONNECTION_SETTINGS':      u'სერვერის პარამეტრები',
-    'INTERFACE':                    u'ინტერფეისი',
-    'SETTINGS_IP_ADDRESS':          u'მისამართი',
-    'SETTINGS_PORT':                u'პორტი',
-    'SETTINGS_TIMEOUT':             u'მოლოდინი',
-    'SETTINGS_MAX_CONNECTIONS':     u'კლიენტების რაოდენობა',
-    'SETTINGS_LANGUAGE':            u'ენა',
-    'SETTINGS_SAVE':                u'შენახვა',
-    'SETTINGS_MSG_INFO':            u'ინფორმაცია',
-    'SETTINGS_MSG_TEXT':            u'ზოგიერთი ცვლილების შესატანად საჭიროა სერვერის გადატვირთვა',
-    # END SETTINGS
-
     # SHELL
     'MSHELL_TITLE':                 u'ბრძანებები',
     # END SHELL
-
-    # MAUDIO
-    'MAUDIO_TITLE':                 u'მიკროფონი - %s - სოკეტის #%s',
-    'MAUDIO_MSG_TITLE':             u'შეცდომა',
-    'MAUDIO_MSG_TEXT':              u'მიკროფონი ვერ მოიძებნა',
-    'MAUDIO_NO_SOUND':              u'სიჩუმეა',
-    'MAUDIO_RECORDING':             u'იწერება',
-    'MAUDIO_NOT_RECORDING':         u'არ იწერება',
-    'MAUDIO_START':                 u'ჩართვა',
-    'MAUDIO_RECORD':                u'ჩაწერა',
-    'MAUDIO_STOP':                  u'გაჩერება',
-    'MAUDIO_AUDIO_DEVICE':          u'მიკროფონი: ',
-    'MAUDIO_RATE':                  u'ხარისხი',
-    'MAUDIO_AUTOMATIC_RECORD':      u'ავტომატური ჩაწერის პარამეტრები',
-    'MAUDIO_DETECT_SOUND':          u'ხმის დაფიქსირება \nდა ჩაწერა',
-    # END MAUDIO
 
     # MDESKTOP
     'MDESKTOP_TITLE':               u'ეკრანი',
@@ -170,8 +92,7 @@ tr = {
     'MEXPLORER_EXECUTE':            u'გაშვება',
     'MEXPLORER_OPEN_FOLDER':        u'ფოლდერის გახსნა',
     'MEXPLORER_RENAME':             u'სახელის გადარქმევა',
-    'MEXPLORER_HIDE':               u'დამალვა',
-    'MEXPLORER_SHOW':               u'ჩვენება',
+    'MEXPLORER_HIDDEN':             u'დამალვა/ჩვენება',
     'MEXPLORER_DELETE':             u'წაშლა',
     'MEXPLORER_MSG_CONFIRM':        u'დასტური',
     'MEXPLORER_MSG_DELETE':         u'დარწმუნებული ხართ წაშალოთ?',
@@ -197,42 +118,11 @@ tr = {
     'MEXPLORER_HIDDEN_FOLDER':      u'დამალული ფოლდერი',
     'MEXPLORER_SELECTED':           u'არჩეული',
     'MEXPLORER_FOLDERS_FILES':      u'ფოლდერი / ფაილი: ',
+    'MEXPLORER_CREATE_FILE':        u'ფაილის შექმნა',
+    'MEXPLORER_CREATE_FOLDER':      u'ფოლდერის შექმნა',
+    'MEXPLORER_MSG_NEW_FILE':       u'ახალი ფაილი',
+    'MEXPLORER_MSG_NEW_FOLDER':     u'ახალი ფოლდერი',
     # END MEXPLORER
-
-    # MKEYLOGGER
-    'MKEYLOGGER_TITLE':             u'კლავიატურის შპიონი',
-    'MKEYLOGGER_START':             u'ჩართვა',
-    'MKEYLOGGER_STOP':              u'გამორთვა',
-    'MKEYLOGGER_SAVE_AS':           u'შენახვა',
-    'MKEYLOGGER_AUTO_SAVE':         u'ავტომატური შენახვა',
-    'MKEYLOGGER_SAVE_TO':           u'შენახვა',
-    # END MKEYLOGGER
-
-    # MPROCESSES
-    'MPROCESSES_TITLE':             u'პროცესები',
-    'MPROCESSES_REFRESH':           u'განახლება',
-    'MPROCESSES_KILL':              u'გათიშვა',
-    'MPROCESSES_COUNT':             u'პროცესების რაოდენობა: ',
-    'MPROCESSES_PID':               u'PID',
-    'MPROCESSES_FILE_NAME':         u'ფაილის სახელი',
-    # END MPROCESSES
-
-    # BUILDER (PYINSTALLER)
-    'BUILDER_TITLE':                        u'კლიენტის შექმნა',
-    'BUILDER_SERVER_ADDRESS_LABEL':         u'სერვერის მისამართი',
-    'BUILDER_SERVER_PORT_LABEL':            u'პორტი',
-    'BUILDER_CHECK_CONNECTION_BUTTON':      u'შემოწმება',
-    'BUILDER_CLIENT_PASSWORD_LABEL':        u'პაროლი (სტანდარტულად: Moderat123)',
-    'BUILDER_TIMEOUT_LABEL':                u'ლოდინის ხანგძლივობა',
-    'BUILDER_FILE_NAME_LABEL':              u'ფაილის სახელი',
-    'BUILDER_WORKING_DIR_LABEL':            u'საქაღალდე',
-    'BUILDER_CURRENT_USER_LABEL':           u'/%მომხმარებელი%/',
-    'BUILDER_AUTOSTART_CHECK':              u'ავტომატური ჩართვა',
-    'BUILDER_USB_SPREADING_CHECK':          u'ბარათებზე ავტომატური ჩაწერა',
-    'BUILDER_FAKE_CHECK':                   u'პირველი ჩართვისას გახსნას ფაილი',
-    'BUILDER_FAKE_FILE_EXTENSION_LABEL':    u'ფაილის გაფართოება',
-    'BUILDER_SAVE_FILE_NAME':               u'მიუთითე სად შევინახო',
-    # END BUILDER
 
     # LOG VIEWER
     'VIEWER_WINDOW_TITLE':          u'Moderat - ჩანაწერები',
@@ -255,6 +145,12 @@ tr = {
     'VIEWER_IGNOR_VIEWED':          u'არ გადმოწერო ნანახი',
     'VIEWER_DOWNLOAD':              u'გადმოწერა',
     # END LOG VIEWER
+
+    # LOG IN
+    'LOG_IN_TITLE':         u'ავტორიზაცია',
+    'LOG_IN_USERNAME':      u'მომხმარებელი',
+    'LOG_IN_PASSWORD':      u'პაროლი',
+    # END LOG IN
 
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',

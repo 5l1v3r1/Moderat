@@ -42,9 +42,9 @@ class Actions:
         :return:
         '''
         self.moderat.session_id = id_generator(size=24)
-        username, ok = QInputDialog.getText(self.moderat, _('UNLOCK_CLIENT'), _('ENTER_USERNAME'), QLineEdit.Normal)
+        username, ok = QInputDialog.getText(self.moderat, _('LOG_IN_TITLE'), _('LOG_IN_USERNAME'), QLineEdit.Normal)
         if ok:
-            password, ok = QInputDialog.getText(self.moderat, _('UNLOCK_CLIENT'), _('ENTER_PASSWORD'),
+            password, ok = QInputDialog.getText(self.moderat, _('LOG_IN_TITLE'), _('LOG_IN_PASSWORD'),
                                                 QLineEdit.Password)
             if ok:
                 self.moderat.moderator.send_msg('auth %s %s' % (username, password), 'moderatorInitializing',

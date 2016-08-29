@@ -1,10 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-startup_message = r'''<font color="#c9f5f7" size=50>
-###M O D E R A T###S H E L L###
-</font><br>
-'''
+startup_message = r''' '''
 
 class Console(QTextEdit):
     def __init__(self, prompt='Moderat@shell$>', parent=None):

@@ -115,7 +115,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
       <widget class="QGroupBox" name="groupBox">
        <property name="styleSheet">
         <string notr="true">background-color: #34495e;
-padding: -3px;
 border: none;
 margin-left: 1px;
 margin-right: 1px;</string>
@@ -125,317 +124,6 @@ margin-right: 1px;</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QGroupBox" name="onlineGroup">
-          <property name="styleSheet">
-           <string notr="true">background-color: #34495e;
-border: none;</string>
-          </property>
-          <property name="title">
-           <string/>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="addFileButton">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#addFileButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            }
-
-QPushButton#addFileButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/add_file.png</normaloff>:/icons/assets/add_file.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>18</width>
-                 <height>18</height>
-                </size>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="addFolderButton">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#addFolderButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            }
-
-QPushButton#addFolderButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/add_folder.png</normaloff>:/icons/assets/add_folder.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>18</width>
-                 <height>18</height>
-                </size>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_3">
-               <property name="styleSheet">
-                <string notr="true">border: 1px ridge #2c3e50;</string>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="renameButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#renameButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#renameButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/set_alias.png</normaloff>:/icons/assets/set_alias.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>18</width>
-                 <height>18</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="hiddenButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#hiddenButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#hiddenButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/eye.png</normaloff>:/icons/assets/eye.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>18</width>
-                 <height>18</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="removeButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#removeButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#removeButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/trash.png</normaloff>:/icons/assets/trash.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>18</width>
-                 <height>18</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_5">
-               <property name="styleSheet">
-                <string notr="true">border: 1px ridge #2c3e50;</string>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="downloadButton">
-               <property name="styleSheet">
-                <string notr="true">QPushButton#downloadButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#downloadButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/down.png</normaloff>:/icons/assets/down.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="uploadButton">
-               <property name="styleSheet">
-                <string notr="true">QPushButton#uploadButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            background-color: #34495e;
-            }
-
-QPushButton#uploadButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../res.qrc">
-                 <normaloff>:/icons/assets/up.png</normaloff>:/icons/assets/up.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
            <number>0</number>
@@ -673,7 +361,7 @@ color: #cff7f8;
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <property name="spacing">
       <number>10</number>
@@ -745,7 +433,8 @@ color: #cff7f8;
      <item>
       <widget class="QLabel" name="selectedLabel">
        <property name="styleSheet">
-        <string notr="true">color: #f1c40f;</string>
+        <string notr="true">background-color: #2c3e50;
+color: #c9f5f7;</string>
        </property>
        <property name="text">
         <string>Selected</string>
@@ -780,6 +469,33 @@ color: #cff7f8;
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="styleSheet">
+      <string notr="true">QProgressBar:horizontal {
+border:  none;
+border-color: #2c3e50;
+background: #2c3e50;
+padding: 1px;
+text-align: top;
+text-color: #d35400;
+}
+QProgressBar::chunk:horizontal {
+background: #2c3e50;
+margin-right: 1px;
+width: 5px;
+border-bottom: 8px ridge #c9f5f7;
+border-top: none;
+}</string>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="textVisible">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

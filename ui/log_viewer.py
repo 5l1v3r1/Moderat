@@ -249,6 +249,7 @@ class Ui_Form(object):
         self.audioTable.setHorizontalHeaderItem(3, item)
         self.audioTable.horizontalHeader().setStretchLastSection(True)
         self.audioTable.verticalHeader().setVisible(False)
+        self.audioTable.verticalHeader().setDefaultSectionSize(80)
         self.gridLayout_4.addWidget(self.audioTable, 0, 0, 1, 1)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/microphone.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

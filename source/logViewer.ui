@@ -359,6 +359,9 @@ color: #cff7f8;
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>80</number>
+           </attribute>
            <column>
             <property name="text">
              <string>Duration</string>

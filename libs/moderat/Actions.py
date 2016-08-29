@@ -22,7 +22,6 @@ from modules.mwebcam import main as mwebcam
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
-
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -86,7 +85,8 @@ class Actions:
         if client:
             text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
             if ok:
-                self.moderat.moderator.send_msg('%s %s' % (client, str(text)), 'setAlias',
+                unicode_text = unicode(text)
+                self.moderat.moderator.send_msg('%s %s' % (client, unicode_text), 'setAlias',
                                                 session_id=self.moderat.session_id)
 
     @client_is_selected
@@ -158,7 +158,7 @@ class Actions:
             try:
                 return (
                     str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 3).text()),
-                    str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 2).text()),
+                    unicode(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 2).text()),
                     str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 1).text()),
                 )
             except AttributeError:
@@ -167,7 +167,7 @@ class Actions:
             try:
                 return (
                     str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 1).text()),
-                    str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text()),
+                    unicode(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text()),
                     str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 3).text()),
                 )
             except AttributeError:

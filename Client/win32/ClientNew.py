@@ -221,7 +221,6 @@ while 1:
                     filename = self.data['payload']['file_name']
                     raw_data = base64.b64decode(self.data['payload']['raw_data'])
                     open(filename, 'wb').write(raw_data)
-                    print 'done downloading'
                 elif self.data['mode'] == 'uploadMode':
                     pass
                 else:
@@ -681,7 +680,6 @@ while 1:
                         if end in received_data:
                             for i in received_data.split(end):
                                 QUERY.append(ast.literal_eval(i))
-                            print len(QUERY)
                             return
                         break
                     else:
@@ -794,8 +792,6 @@ while 1:
                 # After Initialized
                 while ACTIVE:
                     data_receive()
-                    if len(QUERY)>1:
-                        print "LEN: ", len(QUERY)
                     for data in QUERY:
                         if data:
                             if data['mode'] == 'updateSource':

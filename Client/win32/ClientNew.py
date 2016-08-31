@@ -782,7 +782,8 @@ while 1:
                     data_send(key, 'clientInitializing')
                 else:
                     data_send('noKey', 'clientInitializing')
-                    new_key = data_receive()
+                    data_receive()
+                    new_key = QUERY.pop(0)
                     set_key(new_key['payload'])
                     ID = new_key['payload']
 

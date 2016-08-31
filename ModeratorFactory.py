@@ -1,10 +1,14 @@
 import struct
 import ast
 
-from twisted.internet.protocol import Protocol, ClientFactory
+from twisted.internet.protocol import ClientFactory
+from twisted.protocols.basic import LineReceiver
 
 
-class SocketModeratorProtocol(Protocol):
+class SocketModeratorProtocol(LineReceiver):
+
+    delimiter = '[ENDOFMESSAGE]'
+    MAX_LENGTH = 1024*1024*10 # 10MB
 
     def __init__(self):
 
@@ -17,8 +21,8 @@ class SocketModeratorProtocol(Protocol):
     def connectionLost(self, reason):
         self.factory.clientConnectionFailed(self, reason)
 
-    def dataReceived(self, data):
-        self.factory.got_msg(data)
+    def lineReceived(self, line):
+        self.factory.got_msg(line)
 
     # Send Message To Server
     def send_message_to_server(self, payload):
@@ -52,20 +56,8 @@ class SocketModeratorFactory(ClientFactory):
         self.moderator = moderator
         self.connect_success_callback()
 
-    def got_msg(self, data, end='[ENDOFMESSAGE]'):
-        try:
-            # Data Received
-            self.__buffer__ += data
-            if end in self.__buffer__:
-                commands = self.__buffer__.split(end)
-                command = ast.literal_eval(commands[0])
-                self.__buffer__ = self.__buffer__[len(commands[0]+end):]
-            else:
-                return
-        except Exception as errMessage:
-            self.recv_callback(errMessage)
-            return
-        self.recv_callback(command)
+    def got_msg(self, data):
+        self.recv_callback(ast.literal_eval(command))
 
     def send_msg(self, message, mode, _to='', session_id='', module_id='', end='[ENDOFMESSAGE]'):
         if self.moderator:

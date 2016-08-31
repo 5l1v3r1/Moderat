@@ -28,6 +28,7 @@ class SocketModeratorProtocol(LineReceiver):
     def send_message_to_server(self, payload):
         # Send Data Function
         self.transport.write(payload)
+        self.transport.doWrite()
 
 
 class SocketModeratorFactory(ClientFactory):

@@ -27,7 +27,16 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         # init idle with lines
         self.idle = idle.LineTextWidget()
-        self.idleLayout.addWidget(self.idle)
+        self.lidle = idle.LineTextWidget()
+        self.splitter = QSplitter()
+        self.idleLayout.addWidget(self.splitter)
+        self.splitter.addWidget(self.idle)
+        self.splitter.addWidget(self.lidle)
+
+        # add local html reader
+        self.output = QTextEdit()
+        self.splitter.addWidget(self.output)
+        self.output.setHidden(True)
 
         self.runButton.clicked.connect(self.run_script)
         self.fromFileButton.clicked.connect(self.from_file)
@@ -39,6 +48,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.connect(QShortcut(QKeySequence('Ctrl+Return'), self), SIGNAL('activated()'), self.run_script)
         self.connect(QShortcut(QKeySequence('Ctrl+P'), self.idle), SIGNAL('activated()'), self.insert_mprint)
         self.connect(QShortcut(QKeySequence('Ctrl+F'), self), SIGNAL('activated()'), self.set_search_focus)
+        self.connect(QShortcut(QKeySequence('Ctrl+1'), self), SIGNAL('activated()'), self.set_remote_focus)
+        self.connect(QShortcut(QKeySequence('Ctrl+2'), self), SIGNAL('activated()'), self.set_local_focus)
+        self.connect(QShortcut(QKeySequence('Ctrl+N'), self), SIGNAL('activated()'), self.setRemoteMode)
+        self.connect(QShortcut(QKeySequence('Ctrl+B'), self), SIGNAL('activated()'), self.setLocalMode)
 
         # Autocompleter
         completer = QCompleter(self.plugins.keys())
@@ -55,10 +68,31 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.moderator.send_msg(str(script), 'scriptingMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
         self.callback = self.recv_script
 
+    def setRemoteMode(self):
+        self.idle.setHidden(False)
+        self.lidle.setHidden(False)
+        self.output.setHidden(True)
+
+    def setLocalMode(self):
+        self.idle.setHidden(True)
+        self.lidle.setHidden(True)
+        self.output.setHidden(False)
+
     def recv_script(self, data):
-        self.idle.setHtml(data['payload'].replace('\n', '<br>'))
+        mprint = data['payload']
+        local_script = str(self.lidle.getTextEdit())
+        self.setLocalMode()
+        if len(local_script) > 0:
+            try:
+                exec local_script
+            except Exception as e:
+                self.setRemoteMode()
+                self.lidle.setText(str(e))
+        else:
+            self.output.setHtml(mprint)
 
     def insert_plugin(self):
+        self.setRemoteMode()
         plugin_name = str(self.pluginSearchLine.text())
         if self.plugins.has_key(plugin_name):
             self.idle.setText(self.plugins[plugin_name]['source'])
@@ -80,3 +114,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
     def set_search_focus(self):
         self.pluginSearchLine.setFocus()
+
+    def set_remote_focus(self):
+        self.idle.setFocus()
+
+    def set_local_focus(self):
+        self.lidle.setFocus()

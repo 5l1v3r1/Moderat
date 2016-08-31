@@ -185,7 +185,7 @@ class Actions:
 
     # Administrators
     def administrator_set_moderator(self):
-        client, alias, ip_address, os = self.current_client()
+        client, alias, ip_address = self.current_client()
         if client:
             text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
             if ok:

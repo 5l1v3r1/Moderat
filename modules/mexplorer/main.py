@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 from main_ui import Ui_Form
 import ast
 import os
+import base64
 import string
 import random
 from libs.language import Translate
@@ -135,27 +136,15 @@ class mainPopup(QWidget, Ui_Form):
     def upload(self):
         file_name = str(QFileDialog.getOpenFileName(self, _('MEXPLORER_CHOOSE_FILE'), ''))
         name_of_file = str(file_name).split('\\')[-1].split('/')[-1]
-        session = id_generator()
 
         if file_name and os.path.exists(file_name):
-            payload = {
-                    'file_name': name_of_file,
-                    'session': session,
-                }
-            bin = open(file_name, 'rb')
-            print 'open file for read'
-            while 1:
-                data = bin.read(1024)
-                if not data:
-                    payload['raw_data'] = 'downloadFinished'
-                    print 'upload finished'
-                    break
-                else:
-                    payload['raw_data'] = data
+            with open(file_name, 'rb') as _f:
+                payload = {
+                        'file_name': name_of_file,
+                        'raw_data': base64.b64encode(_f.read())
+                    }
                 self.moderator.send_msg(payload, 'downloadMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
-                print 'sent data'
-                self.callback = self.empty
-            self.callback=self.recv_content
+                self.get_content()
 
 
     def create_file(self):

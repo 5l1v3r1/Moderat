@@ -127,6 +127,10 @@ tr = {
     'MEXPLORER_MSG_NEW_FOLDER':     u'ახალი ფოლდერი',
     # END MEXPLORER
 
+        # MSCRIPTING
+    'MSCRIPTING_TITLE':     u'დისტანციური პროგრამირება',
+    # END MSCIRPTING
+
     # LOG VIEWER
     'VIEWER_WINDOW_TITLE':          u'Moderat - ჩანაწერები',
     'VIEWER_SCREENSHOTS_TAB':       u'სქრინები',

@@ -127,6 +127,10 @@ tr = {
     'MEXPLORER_MSG_NEW_FOLDER':     u'New Folder',
     # END MEXPLORER
 
+    # MSCRIPTING
+    'MSCRIPTING_TITLE':     u'Remote Scripting',
+    # END MSCIRPTING
+
     # LOG VIEWER
     'VIEWER_WINDOW_TITLE':          u'Moderat - Log Viewer',
     'VIEWER_SCREENSHOTS_TAB':       u'Screenshots',

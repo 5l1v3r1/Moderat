@@ -35,6 +35,15 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         # add local html reader
         self.output = QTextEdit()
+        self.output.setStyleSheet('''
+background-color: #131E25;
+background-image: url(assets/bg.png);
+background-repeat: no-repeat;
+background-position: center;
+padding: 2px;
+color: #bdc3c7;
+font: 75 8pt "MS Shell Dlg 2";
+border: none;''')
         self.splitter.addWidget(self.output)
         self.output.setHidden(True)
 

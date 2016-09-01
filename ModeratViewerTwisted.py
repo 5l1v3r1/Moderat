@@ -236,17 +236,20 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 def get_plugins_values(plugin):
     plugin_name = None
     plugin_description = None
-    plugin_source = None
+    remote_source = None
+    local_source = None
     if plugin.endswith('.py'):
         plugin = plugin[:-3]
         try:
             exec 'from plugins import %s' % plugin
             exec 'plugin_name = %s.plugin_name' % plugin
             exec 'plugin_description = %s.plugin_description' % plugin
-            exec 'plugin_source = %s.plugin_source' % plugin
+            exec 'remote_source = %s.r_source' % plugin
+            exec 'local_source = %s.l_source' % plugin
         except:
             pass
-    return plugin_name, plugin_description, plugin_source
+    if local_source == None: local_source = r""
+    return plugin_name, plugin_description, remote_source, local_source
 
 # -------------------------------------------------------------------------------
 # Run Application
@@ -271,7 +274,7 @@ if __name__ == '__main__':
     status_label.setStyleSheet('''
 color: #c9f5f7;
     ''')
-    status_label.setText('Loading Plugin: ')
+    status_label.setText(_('LOADING_PLUGINS'))
     progressBar.setGeometry(0, 320, 600, 10)
     progressBar.setTextVisible(False)
     progressBar.setStyleSheet('''
@@ -293,19 +296,20 @@ color: #c9f5f7;
     splash.setMask(splash_pix.mask())
     splash.show()
     # Init Plugins
-    status_label.setText('Initializing')
+    status_label.setText(_('INITIALIZING'))
     init_plugins_dir = os.listdir(os.path.join(os.path.dirname(sys.argv[0]), 'plugins'))
     plugins_count = len(init_plugins_dir)
     plugins = {}
     for ind, plug in enumerate(init_plugins_dir):
         if '__init__' in plug or not plug.endswith('py'):
             continue
-        status_label.setText('Loading Plugin: %s' % plug)
-        name, desc, source = get_plugins_values(plug)
-        if name and desc and source:
+        status_label.setText(_('LOADING_PLUGIN') + plug)
+        name, desc, r_source, l_source = get_plugins_values(plug)
+        if name and desc and r_source or l_source:
             plugins[name] = {
                 'description':  desc,
-                'source':       source,
+                'r_source':     r_source,
+                'l_source':     l_source,
             }
         progressBar.setValue((ind+1)*100/plugins_count)
         app.processEvents()

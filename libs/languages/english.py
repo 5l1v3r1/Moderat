@@ -2,9 +2,12 @@
 
 tr = {
 
-    # TITLE
+    # MAIN
     'TITLE':                        u'ModeRat - Monitoring Server',
-    # END TITLE
+    'LOADING_PLUGINS':              u'Loading Plugins: ',
+    'LOADING_PLUGIN':               u'Loading Plugin: ',
+    'INITIALIZING':                 u'Initializing',
+    # END MAIN
 
     # CLIENTS TAB
     'CLIENTS_TAB_ONLINE':           u'Online',

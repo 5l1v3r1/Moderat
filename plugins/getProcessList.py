@@ -2,7 +2,7 @@ plugin_name = 'getProcessList'
 
 plugin_description = 'Get Process List'
 
-plugin_source = '''
+r_source = '''
 
 EnumProcesses = Psapi.EnumProcesses
 EnumProcesses.restype = ctypes.wintypes.BOOL
@@ -36,6 +36,7 @@ def get_processes_list():
             CloseHandle(hProcess)
     return PROCESSES
 
+l_source = ''
 
 def terminateProcess(PID):
     hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)

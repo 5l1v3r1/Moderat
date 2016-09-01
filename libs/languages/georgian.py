@@ -2,9 +2,12 @@
 
 tr = {
 
-    # TITLE
+    # MAIN
     'TITLE':                        u'ModeRat - მონიტორინგი',
-    # END TITLE
+    'LOADING_PLUGINS':              u'დამეტებების ჩატვირთვა: ',
+    'LOADING_PLUGIN':               u'იტვირთება: ',
+    'INITIALIZING':                 u'მომზადება',
+    # END MAIN
 
     # CLIENTS TAB
     'CLIENTS_TAB_ONLINE':           u'ჩართული',

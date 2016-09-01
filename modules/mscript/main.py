@@ -95,7 +95,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setRemoteMode()
         plugin_name = str(self.pluginSearchLine.text())
         if self.plugins.has_key(plugin_name):
-            self.idle.setText(self.plugins[plugin_name]['source'])
+            self.idle.setText(self.plugins[plugin_name]['r_source'])
+            if self.plugins[plugin_name].has_key('l_source'):
+                self.lidle.setText(self.plugins[plugin_name]['l_source'])
         else:
             warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_NO_PLUGIN'), _('SCRIPTING_NO_PLUGIN_TEXT'))
             warn.exec_()

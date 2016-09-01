@@ -2,7 +2,7 @@ plugin_name = 'getWebcamName'
 
 plugin_description = 'Get Name of Webcamera'
 
-plugin_source = '''
+r_source = '''
 
 try:
     import vidcap
@@ -13,3 +13,5 @@ except:
     mprint = 'NoDevice'
 
 '''
+
+l_source = ''

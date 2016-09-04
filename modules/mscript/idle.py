@@ -92,7 +92,7 @@ class LineTextWidget(QFrame):
 
         self.setStyleSheet('''
 padding: 2px;
-color: #bdc3c7;
+color: #2ecc71;
 font: 75 8pt "MS Shell Dlg 2";
 border: 1px ridge;
 border-color: #2c3e50;''')
@@ -105,14 +105,15 @@ border-color: #2c3e50;''')
         self.edit.setAcceptRichText(False)
         self.edit.setTabStopWidth(20)
         self.edit.setStyleSheet('''
-background-color: #131E25;
-background-image: url(assets/bg.png);
-background-repeat: no-repeat;
-background-position: center;
-padding: 2px;
-color: #bdc3c7;
-font: 75 8pt "MS Shell Dlg 2";
-border: none;''')
+        color: #c9f5f7;
+        border: none;
+        background-color: #34495e;
+        background-image: url(assets/bg.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 5px;
+        padding-top: 1px;
+        ''')
         highlight = py_syntax.MyHighlighter(self.edit, 'Classic')
  
         self.number_bar = self.NumberBar()

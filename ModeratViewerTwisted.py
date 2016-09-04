@@ -32,7 +32,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     logViewers = {}
     clients = {}
 
-    def __init__(self, reactor, plugins, parent=None):
+    def __init__(self, reactor, plugins, plugins_dir, parent=None):
         super(MainDialog, self).__init__(parent)
         self.reactor = reactor
         self.setupUi(self)
@@ -44,6 +44,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.assets = os.path.join(os.path.dirname(sys.argv[0]), 'assets')
         self.flags = os.path.join(self.assets, 'flags')
         self.plugins = plugins
+        self.plugins_dir = plugins_dir
         # Setup Language
         self.set_language()
         # Init Settings
@@ -297,7 +298,8 @@ color: #c9f5f7;
     splash.show()
     # Init Plugins
     status_label.setText(_('INITIALIZING'))
-    init_plugins_dir = os.listdir(os.path.join(os.path.dirname(sys.argv[0]), 'plugins'))
+    plugins_dir = os.path.join(os.path.dirname(sys.argv[0]), 'plugins')
+    init_plugins_dir = os.listdir(plugins_dir)
     plugins_count = len(init_plugins_dir)
     plugins = {}
     for ind, plug in enumerate(init_plugins_dir):
@@ -315,7 +317,7 @@ color: #c9f5f7;
         app.processEvents()
         time.sleep(0.1)
 
-    moderatWindow = MainDialog(reactor, plugins)
+    moderatWindow = MainDialog(reactor, plugins, plugins_dir)
     splash.finish(moderatWindow)
     moderatWindow.show()
 

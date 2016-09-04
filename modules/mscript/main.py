@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 
 import main_ui
 import idle
+import os
 
 from libs.language import Translate
 
@@ -22,6 +23,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.session_id = args['session_id']
         self.module_id = args['module_id']
         self.plugins = args['plugins']
+        self.plugins_dir = args['plugins_dir']
 
         self.setWindowTitle(_('MSCRIPTING_TITLE'))
 
@@ -36,21 +38,20 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         # add local html reader
         self.output = QTextEdit()
         self.output.setStyleSheet('''
-background-color: #131E25;
-background-image: url(assets/bg.png);
-background-repeat: no-repeat;
-background-position: center;
-padding: 2px;
-color: #bdc3c7;
-font: 75 8pt "MS Shell Dlg 2";
-border: none;''')
+        color: #c9f5f7;
+        border: none;
+        background-color: #34495e;
+        background-image: url(assets/bg.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 5px;
+        padding-top: 1px;''')
         self.splitter.addWidget(self.output)
         self.output.setHidden(True)
 
         self.runButton.clicked.connect(self.run_script)
-        self.fromFileButton.clicked.connect(self.from_file)
-        self.clearButton.clicked.connect(self.clear_script)
         self.addPluginButton.clicked.connect(self.insert_plugin)
+        self.saveButton.clicked.connect(self.save_plugin)
         self.pluginSearchLine.returnPressed.connect(self.insert_plugin)
 
         # Shortcuts
@@ -111,11 +112,24 @@ border: none;''')
             warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_NO_PLUGIN'), _('SCRIPTING_NO_PLUGIN_TEXT'))
             warn.exec_()
 
-    def from_file(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open Python File', '', 'Python Files (*.py)')
-        if filename:
-            with open(filename, 'r') as f_:
-                self.idle.setText(f_.read())
+    def save_plugin(self):
+        script_name, ok = QInputDialog.getText(self, _('SCRIPTING_PLUGIN_NAME'), _('SCRIPTING_PLUGIN_NAME'), QLineEdit.Normal)
+        if ok:
+            script_description, ok = QInputDialog.getText(self, _('SCRIPTING_PLUGIN_DESC'), _('SCRIPTING_PLUGIN_DESC'), QLineEdit.Normal)
+            if ok:
+                # Check if script_name exists
+                if script_name in self.plugins.keys():
+                    warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_PLUGIN_EXISTS'), _('SCRIPTING_PLUGIN_EXISTS'))
+                    ans = warn.exec_()
+                    return
+                with open(os.path.join(self.plugins_dir, str(script_name)+'.py'), 'w') as plugin_file:
+                    payload = 'plugin_name = r"""%s"""\n' % script_name
+                    payload += 'plugin_description = r"""%s"""\n' % script_description
+                    payload += 'r_source = r"""%s"""\n' % self.idle.getTextEdit()
+                    payload += 'l_source = r"""%s"""\n' % self.lidle.getTextEdit()
+                    plugin_file.write(payload)
+                    warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_PLUGIN_SAVED'), _('SCRIPTING_PLUGIN_SAVED'))
+                    ans = warn.exec_()
 
     def clear_script(self):
         self.idle.clearText()

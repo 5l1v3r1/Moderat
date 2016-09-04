@@ -141,69 +141,27 @@ class Ui_Form(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/run_script.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.runButton.setIcon(icon1)
-        self.runButton.setIconSize(QtCore.QSize(20, 20))
+        self.runButton.setIconSize(QtCore.QSize(24, 24))
         self.runButton.setObjectName(_fromUtf8("runButton"))
         self.horizontalLayout_3.addWidget(self.runButton)
-        self.fromFileButton = QtGui.QPushButton(self.groupBox)
-        self.fromFileButton.setMinimumSize(QtCore.QSize(28, 28))
-        self.fromFileButton.setMaximumSize(QtCore.QSize(28, 28))
-        self.fromFileButton.setStyleSheet(_fromUtf8("QPushButton#fromFileButton {\n"
+        self.saveButton = QtGui.QPushButton(self.groupBox)
+        self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
 "            border: none;\n"
 "            border-radius: none;\n"
 "            padding: 5px;\n"
 "            background-color: #34495e;\n"
 "            }\n"
 "\n"
-"QPushButton#fromFileButton:pressed {\n"
+"QPushButton#saveButton:pressed {\n"
 "            background-color: #2c3e50;\n"
 "            }"))
-        self.fromFileButton.setText(_fromUtf8(""))
+        self.saveButton.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/from_file.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.fromFileButton.setIcon(icon2)
-        self.fromFileButton.setIconSize(QtCore.QSize(20, 20))
-        self.fromFileButton.setObjectName(_fromUtf8("fromFileButton"))
-        self.horizontalLayout_3.addWidget(self.fromFileButton)
-        self.closeOutputButton = QtGui.QPushButton(self.groupBox)
-        self.closeOutputButton.setMinimumSize(QtCore.QSize(28, 28))
-        self.closeOutputButton.setMaximumSize(QtCore.QSize(28, 28))
-        self.closeOutputButton.setStyleSheet(_fromUtf8("QPushButton#closeOutputButton {\n"
-"            border: none;\n"
-"            border-radius: none;\n"
-"            padding: 5px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#closeOutputButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.closeOutputButton.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/hide_output.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.closeOutputButton.setIcon(icon3)
-        self.closeOutputButton.setIconSize(QtCore.QSize(20, 20))
-        self.closeOutputButton.setObjectName(_fromUtf8("closeOutputButton"))
-        self.horizontalLayout_3.addWidget(self.closeOutputButton)
-        self.clearButton = QtGui.QPushButton(self.groupBox)
-        self.clearButton.setMinimumSize(QtCore.QSize(28, 28))
-        self.clearButton.setMaximumSize(QtCore.QSize(28, 28))
-        self.clearButton.setStyleSheet(_fromUtf8("QPushButton#clearButton {\n"
-"            border: none;\n"
-"            border-radius: none;\n"
-"            padding: 5px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#clearButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.clearButton.setText(_fromUtf8(""))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/trash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clearButton.setIcon(icon4)
-        self.clearButton.setIconSize(QtCore.QSize(20, 20))
-        self.clearButton.setObjectName(_fromUtf8("clearButton"))
-        self.horizontalLayout_3.addWidget(self.clearButton)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/save_as.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.saveButton.setIcon(icon2)
+        self.saveButton.setIconSize(QtCore.QSize(20, 20))
+        self.saveButton.setObjectName(_fromUtf8("saveButton"))
+        self.horizontalLayout_3.addWidget(self.saveButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
@@ -227,9 +185,9 @@ class Ui_Form(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.addPluginButton.setText(_fromUtf8(""))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_plugin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.addPluginButton.setIcon(icon5)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_plugin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addPluginButton.setIcon(icon3)
         self.addPluginButton.setIconSize(QtCore.QSize(20, 20))
         self.addPluginButton.setObjectName(_fromUtf8("addPluginButton"))
         self.horizontalLayout_2.addWidget(self.addPluginButton)

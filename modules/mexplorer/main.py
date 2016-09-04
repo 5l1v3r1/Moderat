@@ -12,8 +12,10 @@ from libs.language import Translate
 translate = Translate()
 _ = lambda _word: translate.word(_word)
 
+
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
 
 def sizeof_fmt(num, suffix=_('MEXPLORER_B')):
             for unit in ['', _('MEXPLORER_K'),
@@ -330,3 +332,6 @@ class mainPopup(QWidget, Ui_Form):
 
         # set folders & files count
         self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
+
+    def closeEvent(self, QCloseEvent):
+        self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)

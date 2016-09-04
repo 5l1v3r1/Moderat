@@ -145,3 +145,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
     def set_local_focus(self):
         self.lidle.setFocus()
+
+    def closeEvent(self, QCloseEvent):
+        self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)

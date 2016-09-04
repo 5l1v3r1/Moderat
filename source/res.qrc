@@ -11,13 +11,9 @@
     <file>../assets/keyboard.png</file>
     <file>../assets/add_plugin.png</file>
     <file>../assets/trash.png</file>
-    <file>../assets/hide_output.png</file>
-    <file>../assets/from_file.png</file>
     <file>../assets/run_script.png</file>
     <file>../assets/update_source.png</file>
     <file>../assets/set_moderator.png</file>
-    <file>../assets/connection.png</file>
-    <file>../assets/no_connection.png</file>
     <file>../assets/none.png</file>
     <file>../assets/unlocked.png</file>
     <file>../assets/locked.png</file>
@@ -32,55 +28,21 @@
     <file>../assets/offline_clients.png</file>
     <file>../assets/online_clients.png</file>
     <file>../assets/add_moderator.png</file>
-    <file>../assets/get_moderators.png</file>
     <file>../assets/other_settings.png</file>
-    <file>../assets/next.png</file>
     <file>../assets/info.png</file>
     <file>../assets/idle.png</file>
-    <file>../assets/client_settings.png</file>
-    <file>../assets/shuffle.png</file>
-    <file>../assets/back.png</file>
-    <file>../assets/flags/ge.png</file>
-    <file>../assets/run_as_admin.png</file>
-    <file>../assets/add_alias.png</file>
     <file>../assets/save_as.png</file>
     <file>../assets/logo.png</file>
     <file>../assets/webcam.png</file>
-    <file>../assets/python.png</file>
-    <file>../assets/script.png</file>
-    <file>../assets/android.png</file>
-    <file>../assets/rename.png</file>
-    <file>../assets/mprocesses.png</file>
     <file>../assets/execute.png</file>
-    <file>../assets/bottom.png</file>
-    <file>../assets/save.png</file>
     <file>../assets/always_top.png</file>
     <file>../assets/connect.png</file>
     <file>../assets/download.png</file>
     <file>../assets/disconnect.png</file>
     <file>../assets/file.png</file>
     <file>../assets/folder.png</file>
-    <file>../assets/hidden.png</file>
-    <file>../assets/lock.png</file>
-    <file>../assets/maudio.png</file>
-    <file>../assets/mdesktop.png</file>
-    <file>../assets/mexplorer.png</file>
-    <file>../assets/mkeylogger.png</file>
-    <file>../assets/mshell.png</file>
-    <file>../assets/open.png</file>
-    <file>../assets/record.png</file>
-    <file>../assets/refresh.png</file>
-    <file>../assets/remove.png</file>
-    <file>../assets/server.png</file>
-    <file>../assets/terminate.png</file>
     <file>../assets/settings.png</file>
-    <file>../assets/start.png</file>
-    <file>../assets/stop.png</file>
-    <file>../assets/unhide.png</file>
-    <file>../assets/unlock.png</file>
-    <file>../assets/upload.png</file>
     <file>../assets/up.png</file>
     <file>../assets/windows.png</file>
-    <file>../assets/update.png</file>
   </qresource>
 </RCC>

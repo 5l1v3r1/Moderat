@@ -1372,7 +1372,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Shell">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/mshell.png</normaloff>:/icons/assets/mshell.png</iconset>
    </property>
    <property name="text">
@@ -1381,7 +1381,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Explorer">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/mexplorer.png</normaloff>:/icons/assets/mexplorer.png</iconset>
    </property>
    <property name="text">
@@ -1390,7 +1390,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Process_Manager">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/mprocesses.png</normaloff>:/icons/assets/mprocesses.png</iconset>
    </property>
    <property name="text">
@@ -1399,7 +1399,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Microphone">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/maudio.png</normaloff>:/icons/assets/maudio.png</iconset>
    </property>
    <property name="text">
@@ -1408,7 +1408,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Scripting">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/script.png</normaloff>:/icons/assets/script.png</iconset>
    </property>
    <property name="text">
@@ -1417,7 +1417,7 @@ color: #cff7f8;
   </action>
   <action name="actionRemote_Keylogger">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/mkeylogger.png</normaloff>:/icons/assets/mkeylogger.png</iconset>
    </property>
    <property name="text">
@@ -1426,7 +1426,7 @@ color: #cff7f8;
   </action>
   <action name="actionDesktop_Preview">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/mdesktop.png</normaloff>:/icons/assets/mdesktop.png</iconset>
    </property>
    <property name="text">
@@ -1444,7 +1444,7 @@ color: #cff7f8;
   </action>
   <action name="actionStop_Client">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/terminate.png</normaloff>:/icons/assets/terminate.png</iconset>
    </property>
    <property name="text">
@@ -1453,7 +1453,7 @@ color: #cff7f8;
   </action>
   <action name="actionLock_Client">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/lock.png</normaloff>:/icons/assets/lock.png</iconset>
    </property>
    <property name="text">
@@ -1477,7 +1477,7 @@ color: #cff7f8;
   </action>
   <action name="actionUnlock_Client">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/unlock.png</normaloff>:/icons/assets/unlock.png</iconset>
    </property>
    <property name="text">
@@ -1486,7 +1486,7 @@ color: #cff7f8;
   </action>
   <action name="actionSet_Alias">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/add_alias.png</normaloff>:/icons/assets/add_alias.png</iconset>
    </property>
    <property name="text">
@@ -1495,7 +1495,7 @@ color: #cff7f8;
   </action>
   <action name="actionRun_As_Admin">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/run_as_admin.png</normaloff>:/icons/assets/run_as_admin.png</iconset>
    </property>
    <property name="text">
@@ -1504,7 +1504,7 @@ color: #cff7f8;
   </action>
   <action name="actionTerminate_Client">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/icons/assets/stop.png</normaloff>:/icons/assets/stop.png</iconset>
    </property>
    <property name="text">

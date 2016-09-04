@@ -192,7 +192,7 @@ class Actions:
     def administrator_set_moderator(self):
         client, alias, ip_address = self.current_client()
         if client:
-            text, ok = QInputDialog.getText(self, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
+            text, ok = QInputDialog.getText(self.moderat, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
             if ok:
                 self.moderat.moderator.send_msg('%s %s' % (client, text), 'setModerator', session_id=self.moderat.session_id, _to=client)
 

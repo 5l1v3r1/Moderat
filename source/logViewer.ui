@@ -853,8 +853,8 @@ background-color: #2c3e50;
                   <widget class="QLabel" name="keylogsCountNewLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -863,7 +863,8 @@ background-color: #2c3e50;
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #2ecc71;</string>
+color: #2ecc71;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -877,8 +878,8 @@ color: #2ecc71;</string>
                   <widget class="QLabel" name="keylogsCountSplitterLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -886,7 +887,8 @@ color: #2ecc71;</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">border: none;
-background: #2c3e50;</string>
+background: #2c3e50;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>/</string>
@@ -900,8 +902,8 @@ background: #2c3e50;</string>
                   <widget class="QLabel" name="keylogsCountOldLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -910,7 +912,8 @@ background: #2c3e50;</string>
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #e74c3c;</string>
+color: #e74c3c;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -979,8 +982,8 @@ background-color: #2c3e50;
                   <widget class="QLabel" name="audioCountNewLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -989,7 +992,8 @@ background-color: #2c3e50;
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #2ecc71;</string>
+color: #2ecc71;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -1003,8 +1007,8 @@ color: #2ecc71;</string>
                   <widget class="QLabel" name="audioCountSplitterLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -1012,7 +1016,8 @@ color: #2ecc71;</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">border: none;
-background: #2c3e50;</string>
+background: #2c3e50;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>/</string>
@@ -1026,8 +1031,8 @@ background: #2c3e50;</string>
                   <widget class="QLabel" name="audioCountOldLabel">
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -1036,7 +1041,8 @@ background: #2c3e50;</string>
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #e74c3c;</string>
+color: #e74c3c;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -1111,8 +1117,8 @@ background-color: #2c3e50;
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -1121,7 +1127,8 @@ background-color: #2c3e50;
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #2ecc71;</string>
+color: #2ecc71;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -1141,8 +1148,8 @@ color: #2ecc71;</string>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -1150,7 +1157,8 @@ color: #2ecc71;</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">border: none;
-background: #2c3e50;</string>
+background: #2c3e50;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>/</string>
@@ -1170,8 +1178,8 @@ background: #2c3e50;</string>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>16777215</width>
-                     <height>14</height>
+                     <width>24</width>
+                     <height>24</height>
                     </size>
                    </property>
                    <property name="focusPolicy">
@@ -1180,7 +1188,8 @@ background: #2c3e50;</string>
                    <property name="styleSheet">
                     <string notr="true">border: none;
 background: #2c3e50;
-color: #e74c3c;</string>
+color: #e74c3c;
+padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>

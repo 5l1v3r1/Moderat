@@ -495,28 +495,31 @@ class Ui_Form(object):
         self.horizontalLayout_7.setSpacing(0)
         self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
         self.keylogsCountNewLabel = QtGui.QLabel(self.checkersGroup)
-        self.keylogsCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountNewLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.keylogsCountNewLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.keylogsCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #2ecc71;"))
+"color: #2ecc71;\n"
+"padding: none;"))
         self.keylogsCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.keylogsCountNewLabel.setObjectName(_fromUtf8("keylogsCountNewLabel"))
         self.horizontalLayout_7.addWidget(self.keylogsCountNewLabel)
         self.keylogsCountSplitterLabel = QtGui.QLabel(self.checkersGroup)
-        self.keylogsCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountSplitterLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.keylogsCountSplitterLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.keylogsCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"background: #2c3e50;"))
+"background: #2c3e50;\n"
+"padding: none;"))
         self.keylogsCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.keylogsCountSplitterLabel.setObjectName(_fromUtf8("keylogsCountSplitterLabel"))
         self.horizontalLayout_7.addWidget(self.keylogsCountSplitterLabel)
         self.keylogsCountOldLabel = QtGui.QLabel(self.checkersGroup)
-        self.keylogsCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.keylogsCountOldLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.keylogsCountOldLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.keylogsCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #e74c3c;"))
+"color: #e74c3c;\n"
+"padding: none;"))
         self.keylogsCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.keylogsCountOldLabel.setObjectName(_fromUtf8("keylogsCountOldLabel"))
         self.horizontalLayout_7.addWidget(self.keylogsCountOldLabel)
@@ -553,28 +556,31 @@ class Ui_Form(object):
         self.horizontalLayout_8.setSpacing(0)
         self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
         self.audioCountNewLabel = QtGui.QLabel(self.checkersGroup)
-        self.audioCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountNewLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.audioCountNewLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.audioCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #2ecc71;"))
+"color: #2ecc71;\n"
+"padding: none;"))
         self.audioCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.audioCountNewLabel.setObjectName(_fromUtf8("audioCountNewLabel"))
         self.horizontalLayout_8.addWidget(self.audioCountNewLabel)
         self.audioCountSplitterLabel = QtGui.QLabel(self.checkersGroup)
-        self.audioCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountSplitterLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.audioCountSplitterLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.audioCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"background: #2c3e50;"))
+"background: #2c3e50;\n"
+"padding: none;"))
         self.audioCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.audioCountSplitterLabel.setObjectName(_fromUtf8("audioCountSplitterLabel"))
         self.horizontalLayout_8.addWidget(self.audioCountSplitterLabel)
         self.audioCountOldLabel = QtGui.QLabel(self.checkersGroup)
-        self.audioCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.audioCountOldLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.audioCountOldLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.audioCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #e74c3c;"))
+"color: #e74c3c;\n"
+"padding: none;"))
         self.audioCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.audioCountOldLabel.setObjectName(_fromUtf8("audioCountOldLabel"))
         self.horizontalLayout_8.addWidget(self.audioCountOldLabel)
@@ -612,30 +618,33 @@ class Ui_Form(object):
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.screenshotsCountNewLabel = QtGui.QLabel(self.checkersGroup)
         self.screenshotsCountNewLabel.setMinimumSize(QtCore.QSize(0, 0))
-        self.screenshotsCountNewLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountNewLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.screenshotsCountNewLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.screenshotsCountNewLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #2ecc71;"))
+"color: #2ecc71;\n"
+"padding: none;"))
         self.screenshotsCountNewLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.screenshotsCountNewLabel.setObjectName(_fromUtf8("screenshotsCountNewLabel"))
         self.horizontalLayout_6.addWidget(self.screenshotsCountNewLabel)
         self.screenshotsCountSplitterLabel = QtGui.QLabel(self.checkersGroup)
         self.screenshotsCountSplitterLabel.setMinimumSize(QtCore.QSize(0, 0))
-        self.screenshotsCountSplitterLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountSplitterLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.screenshotsCountSplitterLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.screenshotsCountSplitterLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"background: #2c3e50;"))
+"background: #2c3e50;\n"
+"padding: none;"))
         self.screenshotsCountSplitterLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.screenshotsCountSplitterLabel.setObjectName(_fromUtf8("screenshotsCountSplitterLabel"))
         self.horizontalLayout_6.addWidget(self.screenshotsCountSplitterLabel)
         self.screenshotsCountOldLabel = QtGui.QLabel(self.checkersGroup)
         self.screenshotsCountOldLabel.setMinimumSize(QtCore.QSize(0, 0))
-        self.screenshotsCountOldLabel.setMaximumSize(QtCore.QSize(16777215, 14))
+        self.screenshotsCountOldLabel.setMaximumSize(QtCore.QSize(24, 24))
         self.screenshotsCountOldLabel.setFocusPolicy(QtCore.Qt.NoFocus)
         self.screenshotsCountOldLabel.setStyleSheet(_fromUtf8("border: none;\n"
 "background: #2c3e50;\n"
-"color: #e74c3c;"))
+"color: #e74c3c;\n"
+"padding: none;"))
         self.screenshotsCountOldLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.screenshotsCountOldLabel.setObjectName(_fromUtf8("screenshotsCountOldLabel"))
         self.horizontalLayout_6.addWidget(self.screenshotsCountOldLabel)

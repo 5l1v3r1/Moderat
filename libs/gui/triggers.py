@@ -10,7 +10,6 @@ class moderatTriggers:
         # Connect & Disconnect triggers
         self.moderat.connectButton.clicked.connect(self.moderat.on_connect_to_server)
         self.moderat.disconnectButton.clicked.connect(self.moderat.on_moderator_connect_fail)
-        #self.moderat.settingsButton.clicked.connect(self.moderat.run_settings)
 
         # Online Menu Triggers
         self.moderat.viewLogsButton.clicked.connect(self.moderat.view_logs)
@@ -29,5 +28,4 @@ class moderatTriggers:
         self.moderat.setOfflineAliasButton.clicked.connect(self.moderat.set_alias)
 
         # Moderators Menu Triggers
-        self.moderat.getModeratorsButton.clicked.connect(self.moderat.get_moderators)
         self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)

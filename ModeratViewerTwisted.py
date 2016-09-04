@@ -214,7 +214,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         Update Clients Information
         :return:
         '''
-        self.moderator.send_msg(message='getClients', mode='getClients', session_id=self.session_id)
+        self.action.get_clients()
 
     def send_signal(self, data):
         if self.modulesBank.has_key(data['module_id']):

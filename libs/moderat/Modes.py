@@ -65,10 +65,10 @@ class Modes:
             self.moderat.clients_checker = QTimer()
             self.moderat.clients_checker.timeout.connect(self.moderat.check_clients)
             self.moderat.clients_checker.start(500)
-            # Start Moderator Checker
-            #self.moderat.moderators_checker = QTimer()
-            #self.moderat.moderators_checker.timeout.connect(self.moderat.check_moderators)
-            #self.moderat.moderators_checker.start(500)
+            if self.moderat.privs:
+                self.moderat.moderators_checker = QTimer()
+                self.moderat.moderators_checker.timeout.connect(self.moderat.get_moderators)
+                self.moderat.moderators_checker.start(500)
 
             # Update UI
             self.ui.on_moderator_connected()

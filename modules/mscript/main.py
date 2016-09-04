@@ -109,17 +109,17 @@ class mainPopup(QWidget, main_ui.Ui_Form):
             if self.plugins[plugin_name].has_key('l_source'):
                 self.lidle.setText(self.plugins[plugin_name]['l_source'])
         else:
-            warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_NO_PLUGIN'), _('SCRIPTING_NO_PLUGIN_TEXT'))
+            warn = QMessageBox(QMessageBox.Warning, _('MSCRIPTING_NO_PLUGIN'), _('MSCRIPTING_NO_PLUGIN'))
             warn.exec_()
 
     def save_plugin(self):
-        script_name, ok = QInputDialog.getText(self, _('SCRIPTING_PLUGIN_NAME'), _('SCRIPTING_PLUGIN_NAME'), QLineEdit.Normal)
+        script_name, ok = QInputDialog.getText(self, _('MSCRIPTING_PLUGIN_NAME'), _('MSCRIPTING_PLUGIN_NAME'), QLineEdit.Normal)
         if ok:
-            script_description, ok = QInputDialog.getText(self, _('SCRIPTING_PLUGIN_DESC'), _('SCRIPTING_PLUGIN_DESC'), QLineEdit.Normal)
+            script_description, ok = QInputDialog.getText(self, _('MSCRIPTING_PLUGIN_DESC'), _('MSCRIPTING_PLUGIN_DESC'), QLineEdit.Normal)
             if ok:
                 # Check if script_name exists
                 if script_name in self.plugins.keys():
-                    warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_PLUGIN_EXISTS'), _('SCRIPTING_PLUGIN_EXISTS'))
+                    warn = QMessageBox(QMessageBox.Warning, _('MSCRIPTING_PLUGIN_EXISTS'), _('MSCRIPTING_PLUGIN_EXISTS'))
                     ans = warn.exec_()
                     return
                 with open(os.path.join(self.plugins_dir, str(script_name)+'.py'), 'w') as plugin_file:
@@ -128,7 +128,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
                     payload += 'r_source = r"""%s"""\n' % self.idle.getTextEdit()
                     payload += 'l_source = r"""%s"""\n' % self.lidle.getTextEdit()
                     plugin_file.write(payload)
-                    warn = QMessageBox(QMessageBox.Warning, _('SCRIPTING_PLUGIN_SAVED'), _('SCRIPTING_PLUGIN_SAVED'))
+                    warn = QMessageBox(QMessageBox.Warning, _('MSCRIPTING_PLUGIN_SAVED'), _('MSCRIPTING_PLUGIN_SAVED'))
                     ans = warn.exec_()
 
     def clear_script(self):

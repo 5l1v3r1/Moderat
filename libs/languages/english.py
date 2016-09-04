@@ -128,7 +128,12 @@ tr = {
     # END MEXPLORER
 
     # MSCRIPTING
-    'MSCRIPTING_TITLE':     u'Remote Scripting',
+    'MSCRIPTING_TITLE':             u'Remote Scripting',
+    'MSCRIPTING_NO_PLUGIN':         u'Plugin Not Found',
+    'MSCRIPTING_PLUGIN_NAME':       u'Plugin Name',
+    'MSCRIPTING_PLUGIN_DESC':       u'Plugin Description',
+    'MSCRIPTING_PLUGIN_EXISTS':     u'Plugin Already Exists',
+    'MSCRIPTING_PLUGIN_SAVED':      u'Plugin Saved',
     # END MSCIRPTING
 
     # LOG VIEWER

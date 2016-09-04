@@ -4,7 +4,7 @@ tr = {
 
     # MAIN
     'TITLE':                        u'ModeRat - მონიტორინგი',
-    'LOADING_PLUGINS':              u'დამეტებების ჩატვირთვა: ',
+    'LOADING_PLUGINS':              u'დამატებითი ფუნქციების ჩატვირთვა: ',
     'LOADING_PLUGIN':               u'იტვირთება: ',
     'INITIALIZING':                 u'მომზადება',
     # END MAIN
@@ -127,8 +127,13 @@ tr = {
     'MEXPLORER_MSG_NEW_FOLDER':     u'ახალი ფოლდერი',
     # END MEXPLORER
 
-        # MSCRIPTING
-    'MSCRIPTING_TITLE':     u'დისტანციური პროგრამირება',
+    # MSCRIPTING
+    'MSCRIPTING_TITLE':             u'დამატებითი ფუნქციები',
+    'MSCRIPTING_NO_PLUGIN':         u'ფუნქცია ვერ მოიძებნა',
+    'MSCRIPTING_PLUGIN_NAME':       u'ფუნქციის სახელი',
+    'MSCRIPTING_PLUGIN_DESC':       u'ფუნქციის მოკლე აღწერა',
+    'MSCRIPTING_PLUGIN_EXISTS':     u'ფუნქცია ესეთი სახელით უკვე არსებობს',
+    'MSCRIPTING_PLUGIN_SAVED':      u'ფუნქცია გენერირებულია',
     # END MSCIRPTING
 
     # LOG VIEWER

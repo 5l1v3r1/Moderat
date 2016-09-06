@@ -1,5 +1,5 @@
 import languages
-from settings import Config
+from libs.moderat.Settings import Config
 
 
 class Translate:

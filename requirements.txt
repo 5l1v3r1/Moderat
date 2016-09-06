@@ -1,0 +1,6 @@
+coloredlogs
+twisted
+pyaudio
+pillow
+matplotlib
+qt4reactor

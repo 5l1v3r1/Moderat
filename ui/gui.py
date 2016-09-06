@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(794, 361)
+        MainWindow.resize(765, 361)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -120,167 +120,653 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.serversTable = QtGui.QTableWidget(self.centralwidget)
-        self.serversTable.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.serversTable.setAutoFillBackground(False)
-        self.serversTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
-"    background-color: #34495e;\n"
-"    padding: 2px;\n"
-"    color: #cff7f8;\n"
-"    font: 75 10px \"MS Shell Dlg 2\";\n"
-"    border: 1px ridge;\n"
-"    border-right: none;\n"
-"    border-color: #2c3e50;\n"
+        self.clientsTabs = QtGui.QTabWidget(self.centralwidget)
+        self.clientsTabs.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.clientsTabs.setStyleSheet(_fromUtf8("QTabWidget::pane { /* The tab widget frame */\n"
+"border: none;\n"
+"padding-top: -10px;\n"
 "}\n"
 "\n"
-"QTableWidget#serversTable {\n"
-"    background-position: center;\n"
-"    border: 1px ridge;\n"
-"    padding: 5px;\n"
-"    color: #cff7f8;\n"
-"    border-color: #2c3e50;\n"
-"    font: 8pt \"MS Shell Dlg 2\";\n"
-"    background-color: #34495e;\n"
-"\n"
-"    background-image: url(assets/bg.png);\n"
+"QTabWidget::tab-bar {\n"
+"left: 10px; /* move to the right by 5px */\n"
 "}\n"
 "\n"
-"QTableWidget#serversTable:item:selected {\n"
+"/* Style the tab using the tab sub-control. Note that\n"
+"    it reads QTabBar _not_ QTabWidget */\n"
+"QTabBar::tab {   \n"
+"border: none;\n"
+"min-width: 30ex;\n"
+"padding: 10px;\n"
+"color: #c9f5f7;\n"
+"}\n"
+"QTabBar::tab::disabled {   \n"
+"  border: none;\n"
+"  color: #2c3e50;\n"
+"}\n"
+"QTabBar::tab:selected, QTabBar::tab:hover {\n"
+"background: #34495e;\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"border: none;\n"
+"}\n"
+"\n"
+"QTabBar::tab:!selected {\n"
+"margin-top: 2px; /* make non-selected tabs look smaller */\n"
+"}"))
+        self.clientsTabs.setIconSize(QtCore.QSize(18, 18))
+        self.clientsTabs.setDocumentMode(False)
+        self.clientsTabs.setTabsClosable(False)
+        self.clientsTabs.setMovable(False)
+        self.clientsTabs.setObjectName(_fromUtf8("clientsTabs"))
+        self.onlineClientsTab = QtGui.QWidget()
+        self.onlineClientsTab.setObjectName(_fromUtf8("onlineClientsTab"))
+        self.gridLayout_2 = QtGui.QGridLayout(self.onlineClientsTab)
+        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
+        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.onlineGroup = QtGui.QGroupBox(self.onlineClientsTab)
+        self.onlineGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
+        self.onlineGroup.setTitle(_fromUtf8(""))
+        self.onlineGroup.setObjectName(_fromUtf8("onlineGroup"))
+        self.gridLayout_6 = QtGui.QGridLayout(self.onlineGroup)
+        self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
+        self.horizontalLayout_6 = QtGui.QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+        self.connectButton = QtGui.QPushButton(self.onlineGroup)
+        self.connectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.connectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.connectButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.connectButton.setStyleSheet(_fromUtf8("QPushButton#connectButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            }\n"
+"\n"
+"QPushButton#connectButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }\n"
+"\n"
+"QPushButton#connectButton:checked {\n"
+"            border: 1px ridge #cff7f8;\n"
+"            }"))
+        self.connectButton.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.connectButton.setIcon(icon1)
+        self.connectButton.setIconSize(QtCore.QSize(18, 18))
+        self.connectButton.setCheckable(True)
+        self.connectButton.setObjectName(_fromUtf8("connectButton"))
+        self.horizontalLayout_6.addWidget(self.connectButton)
+        self.disconnectButton = QtGui.QPushButton(self.onlineGroup)
+        self.disconnectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.disconnectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.disconnectButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.disconnectButton.setStyleSheet(_fromUtf8("QPushButton#disconnectButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            }\n"
+"\n"
+"QPushButton#disconnectButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.disconnectButton.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.disconnectButton.setIcon(icon2)
+        self.disconnectButton.setIconSize(QtCore.QSize(18, 18))
+        self.disconnectButton.setCheckable(False)
+        self.disconnectButton.setChecked(False)
+        self.disconnectButton.setObjectName(_fromUtf8("disconnectButton"))
+        self.horizontalLayout_6.addWidget(self.disconnectButton)
+        self.line_3 = QtGui.QFrame(self.onlineGroup)
+        self.line_3.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
+        self.line_3.setFrameShape(QtGui.QFrame.VLine)
+        self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_3.setObjectName(_fromUtf8("line_3"))
+        self.horizontalLayout_6.addWidget(self.line_3)
+        self.viewLogsButton = QtGui.QPushButton(self.onlineGroup)
+        self.viewLogsButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.viewLogsButton.setStyleSheet(_fromUtf8("QPushButton#viewLogsButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#viewLogsButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.viewLogsButton.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/log_viewer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.viewLogsButton.setIcon(icon3)
+        self.viewLogsButton.setIconSize(QtCore.QSize(18, 18))
+        self.viewLogsButton.setObjectName(_fromUtf8("viewLogsButton"))
+        self.horizontalLayout_6.addWidget(self.viewLogsButton)
+        self.logSettingsButton = QtGui.QPushButton(self.onlineGroup)
+        self.logSettingsButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.logSettingsButton.setStyleSheet(_fromUtf8("QPushButton#logSettingsButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#logSettingsButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.logSettingsButton.setText(_fromUtf8(""))
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/other_settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.logSettingsButton.setIcon(icon4)
+        self.logSettingsButton.setIconSize(QtCore.QSize(18, 18))
+        self.logSettingsButton.setObjectName(_fromUtf8("logSettingsButton"))
+        self.horizontalLayout_6.addWidget(self.logSettingsButton)
+        self.line_2 = QtGui.QFrame(self.onlineGroup)
+        self.line_2.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
+        self.line_2.setFrameShape(QtGui.QFrame.VLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName(_fromUtf8("line_2"))
+        self.horizontalLayout_6.addWidget(self.line_2)
+        self.setAliasButton = QtGui.QPushButton(self.onlineGroup)
+        self.setAliasButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.setAliasButton.setStyleSheet(_fromUtf8("QPushButton#setAliasButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#setAliasButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.setAliasButton.setText(_fromUtf8(""))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_alias.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setAliasButton.setIcon(icon5)
+        self.setAliasButton.setIconSize(QtCore.QSize(18, 18))
+        self.setAliasButton.setObjectName(_fromUtf8("setAliasButton"))
+        self.horizontalLayout_6.addWidget(self.setAliasButton)
+        self.updateSourceButton = QtGui.QPushButton(self.onlineGroup)
+        self.updateSourceButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.updateSourceButton.setStyleSheet(_fromUtf8("QPushButton#updateSourceButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#updateSourceButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.updateSourceButton.setText(_fromUtf8(""))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update_source.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updateSourceButton.setIcon(icon6)
+        self.updateSourceButton.setIconSize(QtCore.QSize(18, 18))
+        self.updateSourceButton.setObjectName(_fromUtf8("updateSourceButton"))
+        self.horizontalLayout_6.addWidget(self.updateSourceButton)
+        self.line = QtGui.QFrame(self.onlineGroup)
+        self.line.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
+        self.line.setFrameShape(QtGui.QFrame.VLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.horizontalLayout_6.addWidget(self.line)
+        self.shellButton = QtGui.QPushButton(self.onlineGroup)
+        self.shellButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.shellButton.setStyleSheet(_fromUtf8("QPushButton#shellButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#shellButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.shellButton.setText(_fromUtf8(""))
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_shell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.shellButton.setIcon(icon7)
+        self.shellButton.setIconSize(QtCore.QSize(18, 18))
+        self.shellButton.setObjectName(_fromUtf8("shellButton"))
+        self.horizontalLayout_6.addWidget(self.shellButton)
+        self.explorerButton = QtGui.QPushButton(self.onlineGroup)
+        self.explorerButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.explorerButton.setStyleSheet(_fromUtf8("QPushButton#explorerButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#explorerButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.explorerButton.setText(_fromUtf8(""))
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_explorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.explorerButton.setIcon(icon8)
+        self.explorerButton.setIconSize(QtCore.QSize(18, 18))
+        self.explorerButton.setObjectName(_fromUtf8("explorerButton"))
+        self.horizontalLayout_6.addWidget(self.explorerButton)
+        self.scriptingButton = QtGui.QPushButton(self.onlineGroup)
+        self.scriptingButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.scriptingButton.setStyleSheet(_fromUtf8("QPushButton#scriptingButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#scriptingButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.scriptingButton.setText(_fromUtf8(""))
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_scripting.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.scriptingButton.setIcon(icon9)
+        self.scriptingButton.setIconSize(QtCore.QSize(18, 18))
+        self.scriptingButton.setObjectName(_fromUtf8("scriptingButton"))
+        self.horizontalLayout_6.addWidget(self.scriptingButton)
+        self.screenshotButton = QtGui.QPushButton(self.onlineGroup)
+        self.screenshotButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.screenshotButton.setStyleSheet(_fromUtf8("QPushButton#screenshotButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#screenshotButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.screenshotButton.setText(_fromUtf8(""))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/desktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.screenshotButton.setIcon(icon10)
+        self.screenshotButton.setIconSize(QtCore.QSize(18, 18))
+        self.screenshotButton.setObjectName(_fromUtf8("screenshotButton"))
+        self.horizontalLayout_6.addWidget(self.screenshotButton)
+        self.webcamButton = QtGui.QPushButton(self.onlineGroup)
+        self.webcamButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.webcamButton.setStyleSheet(_fromUtf8("QPushButton#webcamButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#webcamButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.webcamButton.setText(_fromUtf8(""))
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/webcam.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.webcamButton.setIcon(icon11)
+        self.webcamButton.setIconSize(QtCore.QSize(18, 18))
+        self.webcamButton.setObjectName(_fromUtf8("webcamButton"))
+        self.horizontalLayout_6.addWidget(self.webcamButton)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
+        self.setModeratorButton = QtGui.QPushButton(self.onlineGroup)
+        self.setModeratorButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.setModeratorButton.setStyleSheet(_fromUtf8("QPushButton#setModeratorButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#setModeratorButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.setModeratorButton.setText(_fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setModeratorButton.setIcon(icon12)
+        self.setModeratorButton.setIconSize(QtCore.QSize(18, 18))
+        self.setModeratorButton.setObjectName(_fromUtf8("setModeratorButton"))
+        self.horizontalLayout_6.addWidget(self.setModeratorButton)
+        self.gridLayout_6.addLayout(self.horizontalLayout_6, 0, 0, 1, 1)
+        self.verticalLayout.addWidget(self.onlineGroup)
+        self.clientsTable = QtGui.QTableWidget(self.onlineClientsTab)
+        self.clientsTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.clientsTable.setAutoFillBackground(False)
+        self.clientsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
+"background-color: #2c3e50;\n"
+"padding: 2px;\n"
+"color: #cff7f8;\n"
+"font: 75 10px \"MS Shell Dlg 2\";\n"
+"border: 1px solid;\n"
+"border-top: none;\n"
+"border-bottom: none;\n"
+"border-color: #34495e;\n"
+"}\n"
+"\n"
+"QTableWidget#clientsTable {\n"
+"background-position: center;\n"
+"border:  none;\n"
+"padding: 5px;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;\n"
+"color: #cff7f8;\n"
+"font: 8pt \"MS Shell Dlg 2\";\n"
+"background-color: #34495e;\n"
+"\n"
+"background-image: url(assets/bg.png);\n"
+"background-repeat: no-repeat;\n"
+"}\n"
+"\n"
+"QTableWidget#clientsTable:item:selected {\n"
 "background-color: #2c3e50;\n"
 "color: #cff7f8;\n"
 "}"))
-        self.serversTable.setFrameShadow(QtGui.QFrame.Plain)
-        self.serversTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.serversTable.setDragDropOverwriteMode(False)
-        self.serversTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.serversTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.serversTable.setTextElideMode(QtCore.Qt.ElideMiddle)
-        self.serversTable.setShowGrid(False)
-        self.serversTable.setGridStyle(QtCore.Qt.NoPen)
-        self.serversTable.setWordWrap(False)
-        self.serversTable.setCornerButtonEnabled(False)
-        self.serversTable.setObjectName(_fromUtf8("serversTable"))
-        self.serversTable.setColumnCount(10)
-        self.serversTable.setRowCount(0)
+        self.clientsTable.setFrameShadow(QtGui.QFrame.Plain)
+        self.clientsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.clientsTable.setDragDropOverwriteMode(False)
+        self.clientsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.clientsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.clientsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
+        self.clientsTable.setShowGrid(False)
+        self.clientsTable.setGridStyle(QtCore.Qt.NoPen)
+        self.clientsTable.setWordWrap(False)
+        self.clientsTable.setCornerButtonEnabled(False)
+        self.clientsTable.setObjectName(_fromUtf8("clientsTable"))
+        self.clientsTable.setColumnCount(10)
+        self.clientsTable.setRowCount(0)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(0, item)
+        self.clientsTable.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(1, item)
+        self.clientsTable.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(2, item)
+        self.clientsTable.setHorizontalHeaderItem(2, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(3, item)
+        self.clientsTable.setHorizontalHeaderItem(3, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(4, item)
+        self.clientsTable.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(5, item)
+        self.clientsTable.setHorizontalHeaderItem(5, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(6, item)
+        self.clientsTable.setHorizontalHeaderItem(6, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(7, item)
+        self.clientsTable.setHorizontalHeaderItem(7, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(8, item)
+        self.clientsTable.setHorizontalHeaderItem(8, item)
         item = QtGui.QTableWidgetItem()
-        self.serversTable.setHorizontalHeaderItem(9, item)
-        self.serversTable.horizontalHeader().setCascadingSectionResizes(True)
-        self.serversTable.horizontalHeader().setDefaultSectionSize(100)
-        self.serversTable.horizontalHeader().setSortIndicatorShown(False)
-        self.serversTable.horizontalHeader().setStretchLastSection(True)
-        self.serversTable.verticalHeader().setVisible(False)
-        self.gridLayout.addWidget(self.serversTable, 0, 0, 1, 1)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setSpacing(50)
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.horizontalLayout_4 = QtGui.QHBoxLayout()
-        self.horizontalLayout_4.setSpacing(2)
-        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.madeByLabel = QtGui.QLabel(self.centralwidget)
-        self.madeByLabel.setObjectName(_fromUtf8("madeByLabel"))
-        self.horizontalLayout_4.addWidget(self.madeByLabel)
-        self.creditFlagLabel = QtGui.QLabel(self.centralwidget)
-        self.creditFlagLabel.setText(_fromUtf8(""))
-        self.creditFlagLabel.setPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/flags/ge.png")))
-        self.creditFlagLabel.setObjectName(_fromUtf8("creditFlagLabel"))
-        self.horizontalLayout_4.addWidget(self.creditFlagLabel)
-        self.creditLabel = QtGui.QLabel(self.centralwidget)
-        self.creditLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("MS Shell Dlg 2"))
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.creditLabel.setFont(font)
-        self.creditLabel.setStyleSheet(_fromUtf8("font: 8pt \"MS Shell Dlg 2\";"))
-        self.creditLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.creditLabel.setObjectName(_fromUtf8("creditLabel"))
-        self.horizontalLayout_4.addWidget(self.creditLabel)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_4)
-        self.horizontalLayout_6 = QtGui.QHBoxLayout()
-        self.horizontalLayout_6.setSpacing(2)
-        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
-        self.clientStatusLabel = QtGui.QLabel(self.centralwidget)
-        self.clientStatusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.clientStatusLabel.setStyleSheet(_fromUtf8("border: none;"))
-        self.clientStatusLabel.setObjectName(_fromUtf8("clientStatusLabel"))
-        self.horizontalLayout_6.addWidget(self.clientStatusLabel)
-        self.statusLabel = QtGui.QLabel(self.centralwidget)
-        self.statusLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.statusLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"color: #e74c3c;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.statusLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
-        self.horizontalLayout_6.addWidget(self.statusLabel)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_6)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setSpacing(2)
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.ipv4TextLabel = QtGui.QLabel(self.centralwidget)
-        self.ipv4TextLabel.setObjectName(_fromUtf8("ipv4TextLabel"))
-        self.horizontalLayout_2.addWidget(self.ipv4TextLabel)
-        self.ipv4Label = QtGui.QLabel(self.centralwidget)
-        self.ipv4Label.setObjectName(_fromUtf8("ipv4Label"))
-        self.horizontalLayout_2.addWidget(self.ipv4Label)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setSpacing(2)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.portTextLabel = QtGui.QLabel(self.centralwidget)
-        self.portTextLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.portTextLabel.setStyleSheet(_fromUtf8("border: none;"))
-        self.portTextLabel.setObjectName(_fromUtf8("portTextLabel"))
-        self.horizontalLayout.addWidget(self.portTextLabel)
-        self.portLabel = QtGui.QLabel(self.centralwidget)
-        self.portLabel.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.portLabel.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.portLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.portLabel.setObjectName(_fromUtf8("portLabel"))
-        self.horizontalLayout.addWidget(self.portLabel)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout)
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setSpacing(2)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.serversOnlineStatus = QtGui.QLabel(self.centralwidget)
-        self.serversOnlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.serversOnlineStatus.setStyleSheet(_fromUtf8("border: none;"))
-        self.serversOnlineStatus.setObjectName(_fromUtf8("serversOnlineStatus"))
-        self.horizontalLayout_5.addWidget(self.serversOnlineStatus)
-        self.onlineStatus = QtGui.QLabel(self.centralwidget)
-        self.onlineStatus.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.onlineStatus.setStyleSheet(_fromUtf8("border: none;\n"
-"font: 8pt \"MS Shell Dlg 2\";"))
-        self.onlineStatus.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.onlineStatus.setObjectName(_fromUtf8("onlineStatus"))
-        self.horizontalLayout_5.addWidget(self.onlineStatus)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_5)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
+        self.clientsTable.setHorizontalHeaderItem(9, item)
+        self.clientsTable.horizontalHeader().setCascadingSectionResizes(True)
+        self.clientsTable.horizontalHeader().setDefaultSectionSize(100)
+        self.clientsTable.horizontalHeader().setSortIndicatorShown(False)
+        self.clientsTable.horizontalHeader().setStretchLastSection(True)
+        self.clientsTable.verticalHeader().setVisible(False)
+        self.verticalLayout.addWidget(self.clientsTable)
+        self.gridLayout_2.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/online_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.onlineClientsTab, icon13, _fromUtf8(""))
+        self.offlineClientsTab = QtGui.QWidget()
+        self.offlineClientsTab.setObjectName(_fromUtf8("offlineClientsTab"))
+        self.gridLayout_3 = QtGui.QGridLayout(self.offlineClientsTab)
+        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout()
+        self.verticalLayout_2.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.offlineGroup = QtGui.QGroupBox(self.offlineClientsTab)
+        self.offlineGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
+        self.offlineGroup.setTitle(_fromUtf8(""))
+        self.offlineGroup.setObjectName(_fromUtf8("offlineGroup"))
+        self.gridLayout_8 = QtGui.QGridLayout(self.offlineGroup)
+        self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+        self.horizontalLayout_7 = QtGui.QHBoxLayout()
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
+        self.viewOfflineLogsButton = QtGui.QPushButton(self.offlineGroup)
+        self.viewOfflineLogsButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.viewOfflineLogsButton.setStyleSheet(_fromUtf8("QPushButton#viewOfflineLogsButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#viewOfflineLogsButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.viewOfflineLogsButton.setText(_fromUtf8(""))
+        self.viewOfflineLogsButton.setIcon(icon3)
+        self.viewOfflineLogsButton.setIconSize(QtCore.QSize(18, 18))
+        self.viewOfflineLogsButton.setObjectName(_fromUtf8("viewOfflineLogsButton"))
+        self.horizontalLayout_7.addWidget(self.viewOfflineLogsButton)
+        self.setOfflineAliasButton = QtGui.QPushButton(self.offlineGroup)
+        self.setOfflineAliasButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.setOfflineAliasButton.setStyleSheet(_fromUtf8("QPushButton#setOfflineAliasButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#setOfflineAliasButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.setOfflineAliasButton.setText(_fromUtf8(""))
+        self.setOfflineAliasButton.setIcon(icon5)
+        self.setOfflineAliasButton.setIconSize(QtCore.QSize(18, 18))
+        self.setOfflineAliasButton.setObjectName(_fromUtf8("setOfflineAliasButton"))
+        self.horizontalLayout_7.addWidget(self.setOfflineAliasButton)
+        self.removeModeratorButton = QtGui.QPushButton(self.offlineGroup)
+        self.removeModeratorButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.removeModeratorButton.setStyleSheet(_fromUtf8("QPushButton#removeModeratorButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#removeModeratorButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.removeModeratorButton.setText(_fromUtf8(""))
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/trash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.removeModeratorButton.setIcon(icon14)
+        self.removeModeratorButton.setIconSize(QtCore.QSize(18, 18))
+        self.removeModeratorButton.setObjectName(_fromUtf8("removeModeratorButton"))
+        self.horizontalLayout_7.addWidget(self.removeModeratorButton)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem1)
+        self.gridLayout_8.addLayout(self.horizontalLayout_7, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.offlineGroup)
+        self.offlineClientsTable = QtGui.QTableWidget(self.offlineClientsTab)
+        self.offlineClientsTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.offlineClientsTable.setAutoFillBackground(False)
+        self.offlineClientsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
+"background-color: #2c3e50;\n"
+"padding: 2px;\n"
+"color: #cff7f8;\n"
+"font: 75 10px \"MS Shell Dlg 2\";\n"
+"border: 1px solid;\n"
+"border-top: none;\n"
+"border-bottom: none;\n"
+"border-color: #34495e;\n"
+"}\n"
+"\n"
+"QTableWidget#offlineClientsTable {\n"
+"background-position: center;\n"
+"border:  none;\n"
+"padding: 5px;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;\n"
+"color: #cff7f8;\n"
+"font: 8pt \"MS Shell Dlg 2\";\n"
+"background-color: #34495e;\n"
+"\n"
+"background-image: url(assets/bg.png);\n"
+"background-repeat: no-repeat;\n"
+"}\n"
+"\n"
+"QTableWidget#offlineClientsTable:item:selected {\n"
+"background-color: #2c3e50;\n"
+"color: #cff7f8;\n"
+"}"))
+        self.offlineClientsTable.setFrameShadow(QtGui.QFrame.Plain)
+        self.offlineClientsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.offlineClientsTable.setDragDropOverwriteMode(False)
+        self.offlineClientsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.offlineClientsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.offlineClientsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
+        self.offlineClientsTable.setShowGrid(False)
+        self.offlineClientsTable.setGridStyle(QtCore.Qt.NoPen)
+        self.offlineClientsTable.setWordWrap(False)
+        self.offlineClientsTable.setCornerButtonEnabled(False)
+        self.offlineClientsTable.setObjectName(_fromUtf8("offlineClientsTable"))
+        self.offlineClientsTable.setColumnCount(5)
+        self.offlineClientsTable.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.offlineClientsTable.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineClientsTable.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineClientsTable.setHorizontalHeaderItem(2, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineClientsTable.setHorizontalHeaderItem(3, item)
+        item = QtGui.QTableWidgetItem()
+        self.offlineClientsTable.setHorizontalHeaderItem(4, item)
+        self.offlineClientsTable.horizontalHeader().setCascadingSectionResizes(True)
+        self.offlineClientsTable.horizontalHeader().setDefaultSectionSize(100)
+        self.offlineClientsTable.horizontalHeader().setSortIndicatorShown(False)
+        self.offlineClientsTable.horizontalHeader().setStretchLastSection(True)
+        self.offlineClientsTable.verticalHeader().setVisible(False)
+        self.verticalLayout_2.addWidget(self.offlineClientsTable)
+        self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
+        icon15 = QtGui.QIcon()
+        icon15.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/offline_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.offlineClientsTab, icon15, _fromUtf8(""))
+        self.moderatorsTab = QtGui.QWidget()
+        self.moderatorsTab.setObjectName(_fromUtf8("moderatorsTab"))
+        self.gridLayout_4 = QtGui.QGridLayout(self.moderatorsTab)
+        self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout()
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        self.moderatorsGroup = QtGui.QGroupBox(self.moderatorsTab)
+        self.moderatorsGroup.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
+"border: none;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;"))
+        self.moderatorsGroup.setTitle(_fromUtf8(""))
+        self.moderatorsGroup.setObjectName(_fromUtf8("moderatorsGroup"))
+        self.gridLayout_7 = QtGui.QGridLayout(self.moderatorsGroup)
+        self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
+        self.horizontalLayout_8 = QtGui.QHBoxLayout()
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
+        self.addModeratorButton = QtGui.QPushButton(self.moderatorsGroup)
+        self.addModeratorButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.addModeratorButton.setStyleSheet(_fromUtf8("QPushButton#addModeratorButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            background-color: #34495e;\n"
+"            }\n"
+"\n"
+"QPushButton#addModeratorButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.addModeratorButton.setText(_fromUtf8(""))
+        icon16 = QtGui.QIcon()
+        icon16.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addModeratorButton.setIcon(icon16)
+        self.addModeratorButton.setIconSize(QtCore.QSize(18, 18))
+        self.addModeratorButton.setObjectName(_fromUtf8("addModeratorButton"))
+        self.horizontalLayout_8.addWidget(self.addModeratorButton)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem2)
+        self.gridLayout_7.addLayout(self.horizontalLayout_8, 0, 0, 1, 1)
+        self.verticalLayout_3.addWidget(self.moderatorsGroup)
+        self.moderatorsTable = QtGui.QTableWidget(self.moderatorsTab)
+        self.moderatorsTable.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.moderatorsTable.setAutoFillBackground(False)
+        self.moderatorsTable.setStyleSheet(_fromUtf8("QHeaderView::section {\n"
+"background-color: #2c3e50;\n"
+"padding: 2px;\n"
+"color: #cff7f8;\n"
+"font: 75 10px \"MS Shell Dlg 2\";\n"
+"border: 1px solid;\n"
+"border-top: none;\n"
+"border-bottom: none;\n"
+"border-color: #34495e;\n"
+"}\n"
+"\n"
+"QTableWidget#moderatorsTable {\n"
+"background-position: center;\n"
+"border:  none;\n"
+"padding: 5px;\n"
+"margin-left: 1px;\n"
+"margin-right: 1px;\n"
+"color: #cff7f8;\n"
+"font: 8pt \"MS Shell Dlg 2\";\n"
+"background-color: #34495e;\n"
+"\n"
+"background-image: url(assets/bg.png);\n"
+"background-repeat: no-repeat;\n"
+"}\n"
+"\n"
+"QTableWidget#moderatorsTable:item:selected {\n"
+"background-color: #2c3e50;\n"
+"color: #cff7f8;\n"
+"}"))
+        self.moderatorsTable.setFrameShadow(QtGui.QFrame.Plain)
+        self.moderatorsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.moderatorsTable.setDragDropOverwriteMode(False)
+        self.moderatorsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.moderatorsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.moderatorsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
+        self.moderatorsTable.setShowGrid(False)
+        self.moderatorsTable.setGridStyle(QtCore.Qt.NoPen)
+        self.moderatorsTable.setWordWrap(False)
+        self.moderatorsTable.setCornerButtonEnabled(False)
+        self.moderatorsTable.setObjectName(_fromUtf8("moderatorsTable"))
+        self.moderatorsTable.setColumnCount(6)
+        self.moderatorsTable.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(2, item)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(3, item)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.moderatorsTable.setHorizontalHeaderItem(5, item)
+        self.moderatorsTable.horizontalHeader().setCascadingSectionResizes(True)
+        self.moderatorsTable.horizontalHeader().setDefaultSectionSize(100)
+        self.moderatorsTable.horizontalHeader().setSortIndicatorShown(False)
+        self.moderatorsTable.horizontalHeader().setStretchLastSection(True)
+        self.moderatorsTable.verticalHeader().setVisible(False)
+        self.verticalLayout_3.addWidget(self.moderatorsTable)
+        self.gridLayout_4.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
+        icon17 = QtGui.QIcon()
+        icon17.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/moderators.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.moderatorsTab, icon17, _fromUtf8(""))
+        self.gridLayout.addWidget(self.clientsTabs, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 794, 34))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 765, 34))
         self.menubar.setStyleSheet(_fromUtf8("QMenuBar {\n"
 "            background-color: #34495e;\n"
 "            border: 1px ridge #000;\n"
@@ -314,94 +800,71 @@ class Ui_MainWindow(object):
 "        QMenu::item::selected {\n"
 "            background-color: #2c3e50;\n"
 "            color: #ecf0f1;\n"
-"        }\n"
-"        QMenu::item::checked {\n"
-"            border: 1px ridge;\n"
-"            border-color: #27ae60;\n"
 "        }"))
         self.menubar.setDefaultUp(False)
         self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName(_fromUtf8("menubar"))
-        self.serverMenu = QtGui.QMenu(self.menubar)
-        self.serverMenu.setTearOffEnabled(False)
-        self.serverMenu.setSeparatorsCollapsible(False)
-        self.serverMenu.setObjectName(_fromUtf8("serverMenu"))
-        self.menuAction = QtGui.QMenu(self.menubar)
-        self.menuAction.setTearOffEnabled(False)
-        self.menuAction.setObjectName(_fromUtf8("menuAction"))
-        self.menuServer = QtGui.QMenu(self.menubar)
-        self.menuServer.setTearOffEnabled(False)
-        self.menuServer.setSeparatorsCollapsible(False)
-        self.menuServer.setObjectName(_fromUtf8("menuServer"))
-        self.menuBuilder = QtGui.QMenu(self.menubar)
-        self.menuBuilder.setObjectName(_fromUtf8("menuBuilder"))
         MainWindow.setMenuBar(self.menubar)
         self.actionStartListen_for_connections = QtGui.QAction(MainWindow)
         self.actionStartListen_for_connections.setCheckable(True)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionStartListen_for_connections.setIcon(icon1)
         self.actionStartListen_for_connections.setObjectName(_fromUtf8("actionStartListen_for_connections"))
         self.actionStopListen_for_connections = QtGui.QAction(MainWindow)
         self.actionStopListen_for_connections.setCheckable(True)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionStopListen_for_connections.setIcon(icon2)
         self.actionStopListen_for_connections.setObjectName(_fromUtf8("actionStopListen_for_connections"))
-        self.actionClient_Configuration = QtGui.QAction(MainWindow)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionClient_Configuration.setIcon(icon3)
-        self.actionClient_Configuration.setObjectName(_fromUtf8("actionClient_Configuration"))
+        self.actionViewer_Configuration = QtGui.QAction(MainWindow)
+        icon18 = QtGui.QIcon()
+        icon18.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionViewer_Configuration.setIcon(icon18)
+        self.actionViewer_Configuration.setObjectName(_fromUtf8("actionViewer_Configuration"))
         self.actionRemote_Shell = QtGui.QAction(MainWindow)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Shell.setIcon(icon4)
+        icon19 = QtGui.QIcon()
+        icon19.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mshell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Shell.setIcon(icon19)
         self.actionRemote_Shell.setObjectName(_fromUtf8("actionRemote_Shell"))
         self.actionRemote_Explorer = QtGui.QAction(MainWindow)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Explorer.setIcon(icon5)
+        icon20 = QtGui.QIcon()
+        icon20.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Explorer.setIcon(icon20)
         self.actionRemote_Explorer.setObjectName(_fromUtf8("actionRemote_Explorer"))
         self.actionRemote_Process_Manager = QtGui.QAction(MainWindow)
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Process_Manager.setIcon(icon6)
+        icon21 = QtGui.QIcon()
+        icon21.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mprocesses.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Process_Manager.setIcon(icon21)
         self.actionRemote_Process_Manager.setObjectName(_fromUtf8("actionRemote_Process_Manager"))
         self.actionRemote_Microphone = QtGui.QAction(MainWindow)
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Microphone.setIcon(icon7)
+        icon22 = QtGui.QIcon()
+        icon22.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/maudio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Microphone.setIcon(icon22)
         self.actionRemote_Microphone.setObjectName(_fromUtf8("actionRemote_Microphone"))
         self.actionRemote_Scripting = QtGui.QAction(MainWindow)
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/script.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Scripting.setIcon(icon8)
+        icon23 = QtGui.QIcon()
+        icon23.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/script.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Scripting.setIcon(icon23)
         self.actionRemote_Scripting.setObjectName(_fromUtf8("actionRemote_Scripting"))
         self.actionRemote_Keylogger = QtGui.QAction(MainWindow)
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRemote_Keylogger.setIcon(icon9)
+        icon24 = QtGui.QIcon()
+        icon24.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mkeylogger.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRemote_Keylogger.setIcon(icon24)
         self.actionRemote_Keylogger.setObjectName(_fromUtf8("actionRemote_Keylogger"))
         self.actionDesktop_Preview = QtGui.QAction(MainWindow)
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mdesktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionDesktop_Preview.setIcon(icon10)
+        icon25 = QtGui.QIcon()
+        icon25.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mdesktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionDesktop_Preview.setIcon(icon25)
         self.actionDesktop_Preview.setObjectName(_fromUtf8("actionDesktop_Preview"))
         self.actionWebcam_Preview = QtGui.QAction(MainWindow)
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/webcam.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionWebcam_Preview.setIcon(icon11)
         self.actionWebcam_Preview.setObjectName(_fromUtf8("actionWebcam_Preview"))
         self.actionStop_Client = QtGui.QAction(MainWindow)
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/terminate.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionStop_Client.setIcon(icon12)
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/terminate.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionStop_Client.setIcon(icon26)
         self.actionStop_Client.setObjectName(_fromUtf8("actionStop_Client"))
         self.actionLock_Client = QtGui.QAction(MainWindow)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/lock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionLock_Client.setIcon(icon13)
+        icon27 = QtGui.QIcon()
+        icon27.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/lock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLock_Client.setIcon(icon27)
         self.actionLock_Client.setObjectName(_fromUtf8("actionLock_Client"))
         self.actionLog_off = QtGui.QAction(MainWindow)
         self.actionLog_off.setObjectName(_fromUtf8("actionLog_off"))
@@ -410,95 +873,85 @@ class Ui_MainWindow(object):
         self.actionShutdown = QtGui.QAction(MainWindow)
         self.actionShutdown.setObjectName(_fromUtf8("actionShutdown"))
         self.actionUnlock_Client = QtGui.QAction(MainWindow)
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unlock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionUnlock_Client.setIcon(icon14)
+        icon28 = QtGui.QIcon()
+        icon28.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/unlock.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionUnlock_Client.setIcon(icon28)
         self.actionUnlock_Client.setObjectName(_fromUtf8("actionUnlock_Client"))
         self.actionSet_Alias = QtGui.QAction(MainWindow)
-        icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_alias.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionSet_Alias.setIcon(icon15)
+        icon29 = QtGui.QIcon()
+        icon29.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_alias.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSet_Alias.setIcon(icon29)
         self.actionSet_Alias.setObjectName(_fromUtf8("actionSet_Alias"))
         self.actionRun_As_Admin = QtGui.QAction(MainWindow)
-        icon16 = QtGui.QIcon()
-        icon16.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/run_as_admin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionRun_As_Admin.setIcon(icon16)
+        icon30 = QtGui.QIcon()
+        icon30.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/run_as_admin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRun_As_Admin.setIcon(icon30)
         self.actionRun_As_Admin.setObjectName(_fromUtf8("actionRun_As_Admin"))
         self.actionTerminate_Client = QtGui.QAction(MainWindow)
-        icon17 = QtGui.QIcon()
-        icon17.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionTerminate_Client.setIcon(icon17)
+        icon31 = QtGui.QIcon()
+        icon31.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionTerminate_Client.setIcon(icon31)
         self.actionTerminate_Client.setObjectName(_fromUtf8("actionTerminate_Client"))
         self.actionWindows_Client_PyInstaller = QtGui.QAction(MainWindow)
         self.actionWindows_Client_PyInstaller.setObjectName(_fromUtf8("actionWindows_Client_PyInstaller"))
-        self.serverMenu.addAction(self.actionStartListen_for_connections)
-        self.serverMenu.addAction(self.actionStopListen_for_connections)
-        self.serverMenu.addSeparator()
-        self.serverMenu.addAction(self.actionClient_Configuration)
-        self.menuAction.addAction(self.actionRemote_Shell)
-        self.menuAction.addAction(self.actionRemote_Explorer)
-        self.menuAction.addAction(self.actionRemote_Process_Manager)
-        self.menuAction.addAction(self.actionRemote_Microphone)
-        self.menuAction.addAction(self.actionRemote_Scripting)
-        self.menuAction.addAction(self.actionRemote_Keylogger)
-        self.menuAction.addSeparator()
-        self.menuAction.addAction(self.actionDesktop_Preview)
-        self.menuAction.addAction(self.actionWebcam_Preview)
-        self.menuServer.addAction(self.actionUnlock_Client)
-        self.menuServer.addAction(self.actionLock_Client)
-        self.menuServer.addAction(self.actionStop_Client)
-        self.menuServer.addSeparator()
-        self.menuServer.addAction(self.actionSet_Alias)
-        self.menuServer.addAction(self.actionRun_As_Admin)
-        self.menuBuilder.addAction(self.actionWindows_Client_PyInstaller)
-        self.menubar.addAction(self.serverMenu.menuAction())
-        self.menubar.addAction(self.menuServer.menuAction())
-        self.menubar.addAction(self.menuAction.menuAction())
-        self.menubar.addAction(self.menuBuilder.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.clientsTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Monitoring Server", None))
-        self.serversTable.setSortingEnabled(False)
-        item = self.serversTable.horizontalHeaderItem(0)
+        MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Viewer", None))
+        self.clientsTable.setSortingEnabled(False)
+        item = self.clientsTable.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Moderator", None))
+        item = self.clientsTable.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Ip Address", None))
-        item = self.serversTable.horizontalHeaderItem(1)
+        item = self.clientsTable.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Alias", None))
-        item = self.serversTable.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Socket", None))
-        item = self.serversTable.horizontalHeaderItem(3)
+        item = self.clientsTable.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "ID", None))
+        item = self.clientsTable.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "OS", None))
-        item = self.serversTable.horizontalHeaderItem(4)
+        item = self.clientsTable.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "User", None))
-        item = self.serversTable.horizontalHeaderItem(5)
+        item = self.clientsTable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Privs", None))
-        item = self.serversTable.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Lock", None))
-        item = self.serversTable.horizontalHeaderItem(7)
+        item = self.clientsTable.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "Mic", None))
-        item = self.serversTable.horizontalHeaderItem(8)
+        item = self.clientsTable.horizontalHeaderItem(8)
         item.setText(_translate("MainWindow", "Cam", None))
-        item = self.serversTable.horizontalHeaderItem(9)
+        item = self.clientsTable.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Active Window Title", None))
-        self.madeByLabel.setText(_translate("MainWindow", "Made By ", None))
-        self.creditLabel.setText(_translate("MainWindow", " Uri Patton", None))
-        self.clientStatusLabel.setText(_translate("MainWindow", "STATUS:", None))
-        self.statusLabel.setText(_translate("MainWindow", "Offline", None))
-        self.ipv4TextLabel.setText(_translate("MainWindow", "IPv4:", None))
-        self.ipv4Label.setText(_translate("MainWindow", "N/A", None))
-        self.portTextLabel.setText(_translate("MainWindow", "PORT:", None))
-        self.portLabel.setText(_translate("MainWindow", "N/A", None))
-        self.serversOnlineStatus.setText(_translate("MainWindow", "SERVERS TOTAL:", None))
-        self.onlineStatus.setText(_translate("MainWindow", "0", None))
-        self.serverMenu.setTitle(_translate("MainWindow", "Server", None))
-        self.menuAction.setTitle(_translate("MainWindow", "Plugins", "asd"))
-        self.menuServer.setTitle(_translate("MainWindow", "Client", None))
-        self.menuBuilder.setTitle(_translate("MainWindow", "Builder", None))
-        self.actionStartListen_for_connections.setText(_translate("MainWindow", "Start Server", None))
-        self.actionStopListen_for_connections.setText(_translate("MainWindow", "Stop Server", None))
-        self.actionClient_Configuration.setText(_translate("MainWindow", "Server Configuration", None))
+        self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.onlineClientsTab), _translate("MainWindow", "Online", None))
+        self.offlineClientsTable.setSortingEnabled(False)
+        item = self.offlineClientsTable.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Moderator", None))
+        item = self.offlineClientsTable.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "ID", None))
+        item = self.offlineClientsTable.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Alias", None))
+        item = self.offlineClientsTable.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "Ip Address", None))
+        item = self.offlineClientsTable.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Last Online", None))
+        self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.offlineClientsTab), _translate("MainWindow", "Offline", None))
+        self.moderatorsTable.setSortingEnabled(False)
+        item = self.moderatorsTable.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "ID", None))
+        item = self.moderatorsTable.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Online Clients", None))
+        item = self.moderatorsTable.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Offline Clients", None))
+        item = self.moderatorsTable.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "Privileges", None))
+        item = self.moderatorsTable.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Status", None))
+        item = self.moderatorsTable.horizontalHeaderItem(5)
+        item.setText(_translate("MainWindow", "Last Online", None))
+        self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.moderatorsTab), _translate("MainWindow", "Moderators", None))
+        self.actionStartListen_for_connections.setText(_translate("MainWindow", "Connect", None))
+        self.actionStopListen_for_connections.setText(_translate("MainWindow", "Disconnect", None))
+        self.actionViewer_Configuration.setText(_translate("MainWindow", "Settings", None))
         self.actionRemote_Shell.setText(_translate("MainWindow", "Remote Shell", None))
         self.actionRemote_Explorer.setText(_translate("MainWindow", "Remote File Manager", None))
         self.actionRemote_Process_Manager.setText(_translate("MainWindow", "Remote Process Manager", None))

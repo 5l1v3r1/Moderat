@@ -1,94 +1,42 @@
 # ModeRat
 
+(UNDER DEVELOPMENT)
+Experimental Remote Administration Tool & Spy Tool
 
-Fun Made Windows Remote Administration Tool in Python
+###### Supports
+Server and Viewer:  Windows 7,8,10 (x86/x64), Kali linux 2 (x64)
+Client (Build with PyInstaller 3.2): Windows 7, 9, 10 (x86/x64)
 
-###### Requirements
+Server Features
+ * Clients / Moderators Managment System With Database
+ * Clients Recorded Audios, Desktop Screenshots, Keylogs Database
+ * The Server Generates a Source and Sends To The Client For Execution
+ * Client Source Can Be Changed Dynamically
 
-* Windows (x86, x64)
-* Python 2.7
-* PyQt4
-* PIL
-* PyAudio
-
-
-
-###### Features list
-
-Client Features:
- * No Installed Python Required On Target Machine
- * Silent Installation
- * Auto Run
- * Fake Message
- * Password Protection
- * Usb Flash Drive Spreading
- * Multi Threading
- * Client Size 3.4~3.5 MB 
- * Execute Cmd Commands
- * File Explorer
- * Audio Spy
- * Live Keylogger With Active Window Titles
- * Execute Python Scripts
- * Desktop Grabber
- * Web Camera Grabber
- * Processes List
- * Upload
- * Download
- * Hide
-
-Server Features:
+Viewer Features:
  * User Friendly Gui
+ * Online/Offline Clients & Moderators Management System
+ * Online/Offline Clients & Moderators Information Live Update
  * Identify Ip Address Country
- * Custom Alias
- * Desktop Preview & Desktop Preview in Popup
- * Web Camera Preview
- * Save Preview
- * Active Window Title Preview
- * Servers Status Live Update
- * Catch Errors and Save In Log File
+ * Alias System
+ * LOG VIEWER: Download Client Logs From Server
 
-Remote Shell:
- *  Interactive Console
- *  Commands History
-
-File Manager:
- * Navigation
- * Execute Remote File
- * Hide/Show
- * Delete Content
- * Drag & Drop File Upload
- * File Download
-
-Remote Microphone:
- * Remote Microphone Streaming
- * Automatic Sound Detector & Recorder (*.wav)
-
-Live Keylogger:
- * Live Keyboard Activity Viewer With Active Window Title
- * Automatic Save Keystrokes (*.html)
-
-Remote Scripting:
- * Python Idle
- * Output With HTML Support
- * Insert Script From Python Files
-
-Process Manager:
- * Kill Process
- 
- 
-Client Builder (Under Development):
- * Remote Audio On/Off
- * Remote Webcam On/Off
- * Use Usb Spreading On/Off
- * Use Autostart On/Off
- * Use Fake File On/Off
- * Set Custom IP Address, Port, Password, File Name, Destination Dir
- * Obfuscating Source Code (using https://github.com/astrand/pyobfuscate)
- * To Be Continued...
- 
+Modules:
+ *  Interactive Remote Shell
+ *  Remote File Management With Basic Commands
+ *  Remote Desktop Screen Capture
+ *  Remote Webcam Capture
+ *  Execute Python Scripts Remotely (Plugins System)
 
 
 
 ###### Screenshots
 
-![Moderat Connections](http://s014.radikal.ru/i328/1603/0b/b0c376ab81ad.png)
+* Server
+![Moderat Connections](http://s020.radikal.ru/i700/1609/c4/2189023024d3.png)
+* Viewer
+![Moderat Connections](http://s13.radikal.ru/i186/1609/ab/a6d1e4c9c135.png)
+* Log Viewer
+![Moderat Connections](http://s017.radikal.ru/i440/1609/bd/2252b31bf9bc.png)
+* Modules
+![Moderat Connections](http://s020.radikal.ru/i716/1609/2f/6ac08ed5a75f.png)

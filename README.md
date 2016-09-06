@@ -1,7 +1,7 @@
 # ModeRat
 
 (UNDER DEVELOPMENT)
-Experimental Remote Administration Tool & Spy Tool
+Experimental Remote Administration & Spy Tool
 
 ###### Supports
 Server and Viewer:  Windows 7,8,10 (x86/x64), Kali linux 2 (x64)

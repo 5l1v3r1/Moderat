@@ -15,6 +15,7 @@ Server Features
 
 Viewer Features:
  * User Friendly Gui
+ * Multilanguag Support
  * Online/Offline Clients & Moderators Management System
  * Online/Offline Clients & Moderators Information Live Update
  * Identify Ip Address Country

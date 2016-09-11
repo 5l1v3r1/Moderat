@@ -1,6 +1,5 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-import os
 
 from libs.language import Translate
 from libs.gui import tables, main
@@ -26,6 +25,7 @@ class Modes:
 
         # Init Modes
         self.modes = {
+            'connectSuccess': self.onViewerConnected,
             'moderatorInitializing': self.moderatorInitializing,
             'getClients': self.getClients,
             'getModerators': self.getModerators,
@@ -48,6 +48,14 @@ class Modes:
                 self.modes[data['mode']](data)
             else:
                 print 'UNKNOWN MODE [%s]' % data['mode']
+
+    def onViewerConnected(self, data):
+        '''
+        On Viewer Connected
+        :param data:
+        :return:
+        '''
+        pass
 
     # Moderator Login Callback
     def moderatorInitializing(self, data):

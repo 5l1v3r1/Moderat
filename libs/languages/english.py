@@ -159,9 +159,10 @@ tr = {
     # END LOG VIEWER
 
     # LOG IN
-    'LOG_IN_TITLE':         u'Loggin',
-    'LOG_IN_USERNAME':      u'Username',
-    'LOG_IN_PASSWORD':      u'Password',
+    'LOG_IN_TITLE':             u'Loggin',
+    'LOG_IN_USERNAME':          u'Username',
+    'LOG_IN_PASSWORD':          u'Password',
+    'INCORRECT_CREDENTIALS':    u'Incorrect Credentials',
     # END LOG IN
 
     # ADMINISTRATOR

@@ -159,9 +159,10 @@ tr = {
     # END LOG VIEWER
 
     # LOG IN
-    'LOG_IN_TITLE':         u'ავტორიზაცია',
-    'LOG_IN_USERNAME':      u'მომხმარებელი',
-    'LOG_IN_PASSWORD':      u'პაროლი',
+    'LOG_IN_TITLE':             u'ავტორიზაცია',
+    'LOG_IN_USERNAME':          u'მომხმარებელი',
+    'LOG_IN_PASSWORD':          u'პაროლი',
+    'INCORRECT_CREDENTIALS':    u'არასწორი მომხმარებელი ან პაროლი',
     # END LOG IN
 
     # ADMINISTRATOR

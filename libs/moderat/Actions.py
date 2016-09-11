@@ -189,6 +189,7 @@ class Actions:
                 self.moderat.moderators_checker.stop()
 
     # Administrators
+    @client_is_selected
     def administrator_set_moderator(self):
         client, alias, ip_address = self.current_client()
         if client:

@@ -21,7 +21,7 @@ import urllib
 import shutil
 
 
-HOST = '109.172.189.74'
+HOST = '127.0.0.1'
 PORT = 4434
 
 ACTIVE = False

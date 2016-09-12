@@ -5,6 +5,7 @@ Experimental Remote Administration & Spy Tool
 
 ###### Supports
 Server and Viewer:  Windows 7,8,10 (x86/x64), Kali linux 2 (x64)
+
 Client (Build with PyInstaller 3.2): Windows 7, 9, 10 (x86/x64)
 
 Server Features

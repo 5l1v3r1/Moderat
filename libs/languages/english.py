@@ -3,7 +3,7 @@
 tr = {
 
     # MAIN
-    'TITLE':                        u'ModeRat - Monitoring Server',
+    'TITLE':                        u'ModeRat - Viewer',
     'LOADING_PLUGINS':              u'Loading Plugins: ',
     'LOADING_PLUGIN':               u'Loading Plugin: ',
     'INITIALIZING':                 u'Initializing',

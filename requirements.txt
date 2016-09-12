@@ -4,3 +4,4 @@ pyaudio
 pillow
 matplotlib
 qt4reactor
+pycrypto

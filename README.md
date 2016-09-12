@@ -22,8 +22,8 @@ Viewer Features:
  * Identify Ip Address Country
  * Alias System
  * LOG VIEWER: Download and View Clients Recorded Audios, Desktop Screenshots, Keylogs From Server
- ** Screenshots and Keylogs Preview
- ** Audio Spectrum Analyzer
+ * Screenshots and Keylogs Preview
+ * Audio Spectrum Analyzer
 
 Modules:
  *  Interactive Remote Shell

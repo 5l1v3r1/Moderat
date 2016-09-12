@@ -28,8 +28,8 @@ Viewer Features:
 Modules:
  *  Interactive Remote Shell
  *  Remote File Management With Basic Commands
- *  Remote Desktop Screen Capture
- *  Remote Webcam Capture
+ *  Remote Desktop Screen Capture and Save
+ *  Remote Webcam Capture and Save
  *  Execute Python Scripts Remotely (Plugins System)
 
 

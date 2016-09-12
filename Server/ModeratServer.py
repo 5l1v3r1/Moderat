@@ -262,7 +262,12 @@ class ModeratServerProtocol(LineReceiver):
         elif data['mode'] == 'getClients' and data['session_id'] in moderators:
 
             if self.is_administrator(data['session_id']):
-                clients_ids = manageClients.get_all_clients()
+                clients_ids = []
+                temp_clients_ids = manageClients.get_all_clients()
+                for client_id in temp_clients_ids:
+                    _id = client_id[0]
+                    if manageModerators.get_privs(manageClients.get_moderator(_id)) == 0 or moderators[data['session_id']]['username'] == manageClients.get_moderator(_id):
+                        clients_ids.append(client_id)
             else:
                 clients_ids = manageClients.get_clients(moderators[data['session_id']]['username'])
             shared_clients = {}

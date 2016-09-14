@@ -5,3 +5,4 @@ pillow
 matplotlib
 qt4reactor
 pycrypto
+selenium

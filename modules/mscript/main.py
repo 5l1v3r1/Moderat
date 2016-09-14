@@ -24,6 +24,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.module_id = args['module_id']
         self.plugins = args['plugins']
         self.plugins_dir = args['plugins_dir']
+        self.assets = args['assets']
 
         self.setWindowTitle(_('MSCRIPTING_TITLE'))
 
@@ -94,6 +95,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
         log = self._write
         client_id = self.client
+        assets = self.assets
 
         mprint = data['payload']
         local_script = str(self.lidle.getTextEdit())

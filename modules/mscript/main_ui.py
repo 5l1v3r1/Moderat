@@ -118,7 +118,6 @@ class Ui_Form(object):
         self.groupBox = QtGui.QGroupBox(Form)
         self.groupBox.setStyleSheet(_fromUtf8("background-color: #34495e;\n"
 "border: 1px solid #2c3e50;\n"
-"border-radius: 5px;\n"
 "padding: -3px;"))
         self.groupBox.setTitle(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -144,6 +143,11 @@ class Ui_Form(object):
         self.runButton.setIconSize(QtCore.QSize(24, 24))
         self.runButton.setObjectName(_fromUtf8("runButton"))
         self.horizontalLayout_3.addWidget(self.runButton)
+        self.line = QtGui.QFrame(self.groupBox)
+        self.line.setFrameShape(QtGui.QFrame.VLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.horizontalLayout_3.addWidget(self.line)
         self.saveButton = QtGui.QPushButton(self.groupBox)
         self.saveButton.setStyleSheet(_fromUtf8("QPushButton#saveButton {\n"
 "            border: none;\n"
@@ -170,20 +174,14 @@ class Ui_Form(object):
         self.pluginSearchLine = QtGui.QLineEdit(self.groupBox)
         self.pluginSearchLine.setStyleSheet(_fromUtf8("background-color: #455F7A;\n"
 "padding: 5px;\n"
-"border-radius: 3px;"))
+"border-right: none;"))
         self.pluginSearchLine.setObjectName(_fromUtf8("pluginSearchLine"))
         self.horizontalLayout_2.addWidget(self.pluginSearchLine)
         self.addPluginButton = QtGui.QPushButton(self.groupBox)
-        self.addPluginButton.setStyleSheet(_fromUtf8("QPushButton#addPluginButton {\n"
-"            border: none;\n"
-"            border-radius: none;\n"
-"            padding: 5px;\n"
-"            background-color: #34495e;\n"
-"            }\n"
-"\n"
-"QPushButton#addPluginButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
+        self.addPluginButton.setMaximumSize(QtCore.QSize(16777215, 28))
+        self.addPluginButton.setStyleSheet(_fromUtf8("background-color: #455F7A;\n"
+"padding: 5px;\n"
+"border-left: none;"))
         self.addPluginButton.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_plugin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

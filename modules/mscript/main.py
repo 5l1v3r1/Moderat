@@ -28,8 +28,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.setWindowTitle(_('MSCRIPTING_TITLE'))
 
         # init idle with lines
-        self.idle = idle.LineTextWidget()
-        self.lidle = idle.LineTextWidget()
+        self.idle = idle.LineTextWidget(title=_('MSCRIPTING_REMOTE'))
+        self.lidle = idle.LineTextWidget(title=_('MSCRIPTING_LOCAL'))
         self.splitter = QSplitter()
         self.idleLayout.addWidget(self.splitter)
         self.splitter.addWidget(self.idle)
@@ -41,7 +41,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         color: #c9f5f7;
         border: none;
         background-color: #34495e;
-        background-image: url(assets/bg.png);
         background-repeat: no-repeat;
         background-position: center;
         padding: 5px;
@@ -67,7 +66,10 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         completer = QCompleter(self.plugins.keys())
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        completer.popup().setStyleSheet("background-color: #455F7A;\ncolor: #c9f5f7;")
+        completer.popup().setStyleSheet("background-color: #455F7A;"
+                                        "color: #c9f5f7;"
+                                        "border: 1px solid #2c3e50;"
+                                        "border-top: none;")
         self.pluginSearchLine.setCompleter(completer)
 
     def signal(self, data):

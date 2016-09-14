@@ -134,6 +134,8 @@ tr = {
     'MSCRIPTING_PLUGIN_DESC':       u'ფუნქციის მოკლე აღწერა',
     'MSCRIPTING_PLUGIN_EXISTS':     u'ფუნქცია ესეთი სახელით უკვე არსებობს',
     'MSCRIPTING_PLUGIN_SAVED':      u'ფუნქცია გენერირებულია',
+    'MSCRIPTING_REMOTE':            u'კლიენტი',
+    'MSCRIPTING_LOCAL':             u'ლოკალური',
     # END MSCIRPTING
 
     # LOG VIEWER

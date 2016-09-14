@@ -1,4 +1,5 @@
 from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 import autocompleter
 import keyword
 
@@ -85,8 +86,10 @@ class LineTextWidget(QFrame):
             QWidget.paintEvent(self, event)
  
  
-    def __init__(self, *args):
+    def __init__(self, title='idle', *args):
         QFrame.__init__(self, *args)
+
+        idleTitle = title
  
         self.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
 
@@ -108,7 +111,6 @@ border-color: #2c3e50;''')
         color: #c9f5f7;
         border: none;
         background-color: #34495e;
-        background-image: url(assets/bg.png);
         background-repeat: no-repeat;
         background-position: center;
         padding: 5px;
@@ -118,12 +120,21 @@ border-color: #2c3e50;''')
  
         self.number_bar = self.NumberBar()
         self.number_bar.setTextEdit(self.edit)
- 
-        hbox = QHBoxLayout(self)
+
+        vbox = QVBoxLayout(self)
+        vbox.setSpacing(0)
+        vbox.setMargin(0)
+        self.box_title = QLabel(idleTitle)
+        self.box_title.setAlignment(Qt.AlignCenter)
+        self.box_title.setStyleSheet('border: none; align: center;')
+        vbox.addWidget(self.box_title)
+        hbox = QHBoxLayout()
         hbox.setSpacing(0)
         hbox.setMargin(0)
         hbox.addWidget(self.number_bar)
         hbox.addWidget(self.edit)
+        vbox.addLayout(hbox)
+
  
         self.edit.installEventFilter(self)
         self.edit.viewport().installEventFilter(self)

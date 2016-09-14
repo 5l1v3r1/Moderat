@@ -134,6 +134,8 @@ tr = {
     'MSCRIPTING_PLUGIN_DESC':       u'Plugin Description',
     'MSCRIPTING_PLUGIN_EXISTS':     u'Plugin Already Exists',
     'MSCRIPTING_PLUGIN_SAVED':      u'Plugin Saved',
+    'MSCRIPTING_REMOTE':            u'Remote',
+    'MSCRIPTING_LOCAL':             u'Local',
     # END MSCIRPTING
 
     # LOG VIEWER

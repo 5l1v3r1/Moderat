@@ -91,6 +91,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.output.setHidden(False)
 
     def recv_script(self, data):
+
+        log = self._write
+
         mprint = data['payload']
         local_script = str(self.lidle.getTextEdit())
         self.setLocalMode()
@@ -150,3 +153,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
 
     def closeEvent(self, QCloseEvent):
         self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)
+
+
+    # Local Helpers
+    def _write(self, msg):
+        self.output.append(msg)

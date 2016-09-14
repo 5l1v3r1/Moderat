@@ -93,6 +93,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def recv_script(self, data):
 
         log = self._write
+        client_id = self.client
 
         mprint = data['payload']
         local_script = str(self.lidle.getTextEdit())

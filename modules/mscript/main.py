@@ -37,7 +37,8 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.splitter.addWidget(self.lidle)
 
         # add local html reader
-        self.output = QTextEdit()
+        self.output = QTextBrowser()
+        self.output.setOpenExternalLinks(True)
         self.output.setStyleSheet('''
         color: #c9f5f7;
         border: none;

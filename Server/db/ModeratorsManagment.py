@@ -65,6 +65,16 @@ class ModeratorsManagment:
             self.conn.commit()
             return True
 
+    def change_privileges(self, moderator_id, status):
+        check_user = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
+        self.conn.commit()
+        if len(check_user.fetchall()) == 0:
+            return False
+        else:
+            self.cur.execute('UPDATE Moderators SET moderator_privs=? WHERE moderator_id=?', (status, moderator_id))
+            self.conn.commit()
+            return True
+
     def delete_user(self, moderator_id):
         check_moderator_id = self.cur.execute('SELECT * FROM Moderators WHERE moderator_id=?', (moderator_id,))
         self.conn.commit()

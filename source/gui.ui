@@ -910,7 +910,7 @@ QPushButton#setOfflineAliasButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="removeModeratorButton">
+                <widget class="QPushButton" name="removeClientButton">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
                  </property>
@@ -1131,6 +1131,93 @@ QPushButton#addModeratorButton:pressed {
                  <property name="icon">
                   <iconset resource="res.qrc">
                    <normaloff>:/icons/assets/add_moderator.png</normaloff>:/icons/assets/add_moderator.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="changePasswordButton">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#changePasswordButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#changePasswordButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/password.png</normaloff>:/icons/assets/password.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="changePrivilegesButton">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#changePrivilegesButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#changePrivilegesButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/privileges.png</normaloff>:/icons/assets/privileges.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="removeModeratorButton">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#remoteModerator {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+            background-color: #34495e;
+            }
+
+QPushButton#remoteModerator:pressed {
+            background-color: #2c3e50;
+            }</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="res.qrc">
+                   <normaloff>:/icons/assets/trash.png</normaloff>:/icons/assets/trash.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>

@@ -29,3 +29,6 @@ class moderatTriggers:
 
         # Moderators Menu Triggers
         self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)
+        self.moderat.changePasswordButton.clicked.connect(self.moderat.change_moderator_password)
+        self.moderat.changePrivilegesButton.clicked.connect(self.moderat.change_moderator_privilege)
+        self.moderat.removeModeratorButton.clicked.connect(self.moderat.remove_moderator)

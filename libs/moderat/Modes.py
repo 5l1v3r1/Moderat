@@ -36,7 +36,6 @@ class Modes:
             'uploadMode': self.uploadMode,
             'getScreen': self.getScreen,
             'getWebcam': self.getWebcam,
-            # Moderators Modes
             'countData': self.countData,
             'downloadLogs': self.downloadLogs,
             'downloadLog': self.downloadLog,

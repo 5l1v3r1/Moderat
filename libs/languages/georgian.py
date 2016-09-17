@@ -198,5 +198,7 @@ tr = {
     'ADMINISTRATION_INCORRECT_PRIVILEGES':  u'პრივილეგიები არჩეული არ არის',
     'ADMINISTRATION_INCORRECT_PASSWORD':    u'არასწორი პაროლი',
     'ADMINISTRATION_INCORRECT_USERNAME':    u'არასწორი მომხმარებელი',
+    'ADMINISTRATION_QUESTION_REMOVE':       u'დარწმუნებული ხარ წაშალო?',
+    'ADMINISTRATION_PASSWORD_NOT_MATCH':    u"პაროლები არ ემთხვევა",
     # END ADMINISTRATOR
 }

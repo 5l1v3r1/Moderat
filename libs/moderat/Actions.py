@@ -178,6 +178,12 @@ class Actions:
             except AttributeError:
                 return False
 
+        elif tab_index == 2:
+            try:
+                return str(self.moderat.moderatorsTable.item(self.moderat.moderatorsTable.currentRow(), 0).text())
+            except AttributeError:
+                return False
+
     def close_moderat(self):
         # Stop Clients Checker
         if self.moderat.clients_checker:
@@ -213,13 +219,33 @@ class Actions:
                 privileges, ok = QInputDialog.getItem(self.moderat, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'), ('0', '1'), 0, False)
                 admin = str(privileges)
                 if ok and privileges:
-                    # If everything ok
                     self.moderat.moderator.send_msg('%s %s %s' % (username, password, admin), 'addModerator', session_id=self.moderat.session_id)
-                    # Update Moderators Table
-                    self.administrator_get_moderators()
                 else:
-                    # If not privileges
                     warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PRIVILEGES'), _('ADMINISTRATION_INCORRECT_PRIVILEGES'))
+                    ans = warn.exec_()
+                    return
+            else:
+                warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
+                ans = warn.exec_()
+                return
+        else:
+            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_USERNAME'), _('ADMINISTRATION_INCORRECT_USERNAME'))
+            ans = warn.exec_()
+            return
+
+    def administrator_change_moderator_password(self):
+        moderator = self.current_client()
+        password, ok = QInputDialog.getText(self.moderat, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+        if ok and len(str(password)) > 3:
+            password1 = str(password)
+            password, ok = QInputDialog.getText(self.moderat, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+            if ok and len(str(password)) > 3:
+                password2 = str(password)
+
+                if password1 == password2:
+                    self.moderat.moderator.send_msg('%s %s' % (moderator, password1), 'changePassword', session_id=self.moderat.session_id)
+                else:
+                    warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_PASSWORD_NOT_MATCH'), _('ADMINISTRATION_PASSWORD_NOT_MATCH'))
                     ans = warn.exec_()
                     return
             # if not password
@@ -227,8 +253,24 @@ class Actions:
                 warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
                 ans = warn.exec_()
                 return
-        # if not password
         else:
-            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_USERNAME'), _('ADMINISTRATION_INCORRECT_USERNAME'))
+            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
             ans = warn.exec_()
             return
+
+    def administrator_change_moderator_privilege(self):
+        moderator = self.current_client()
+        privileges, ok = QInputDialog.getItem(self.moderat, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'),
+                                              ('0', '1'), 0, False)
+        admin = str(privileges)
+        if ok and privileges:
+            self.moderat.moderator.send_msg('%s %s' % (moderator, admin), 'changePrivilege',
+                                            session_id=self.moderat.session_id)
+
+    def administrator_remove_moderator(self):
+        moderator = self.current_client()
+        reply = QMessageBox.question(self.moderat, _('ADMINISTRATION_QUESTION_REMOVE'), _('ADMINISTRATION_QUESTION_REMOVE'),
+                                      QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            self.moderat.moderator.send_msg('%s' % moderator, 'removeModerator',
+                                            session_id=self.moderat.session_id)

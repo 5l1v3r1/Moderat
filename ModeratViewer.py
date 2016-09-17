@@ -187,7 +187,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def set_moderator(self):
         '''
         Set Moderator For Client
-        :retur:
+        :return:
         '''
         self.action.administrator_set_moderator()
 
@@ -208,6 +208,33 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.administrator_create_moderator()
+
+    @connected_to_server
+    @is_administrator
+    def change_moderator_password(self):
+        '''
+        Change Moderator Password
+        :return:
+        '''
+        self.action.administrator_change_moderator_password()
+
+    @connected_to_server
+    @is_administrator
+    def change_moderator_privilege(self):
+        '''
+        Change Moderator Privileges
+        :return:
+        '''
+        self.action.administrator_change_moderator_privilege()
+
+    @connected_to_server
+    @is_administrator
+    def remove_moderator(self):
+        '''
+        Remove Moderator
+        :return:
+        '''
+        self.action.administrator_remove_moderator()
 
     @connected_to_server
     def check_clients(self):

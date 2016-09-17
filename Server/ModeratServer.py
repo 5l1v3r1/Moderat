@@ -325,10 +325,10 @@ class ModeratServerProtocol(LineReceiver):
                 alias_data = payload.split()
                 if len(alias_data) == 2:
                     alias_client, alias_value = alias_data
-                    log.debug('[*SERVER] Set Alias (%s) For (%s)' % (alias_value, self.transport.getPeer().host))
+                    log.debug('[*MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator_username, alias_value, self.transport.getPeer().host))
                     manageClients.set_alias(alias_client, alias_value)
                 else:
-                    log.critical('[*MALFORMED] [MODE: %s]' % mode)
+                    log.critical('[*MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
 
             elif mode == 'countData':
                 screen_data = payload.split()
@@ -351,7 +351,7 @@ class ModeratServerProtocol(LineReceiver):
 
                     self.send_message_to_moderator(self, counted_data, mode, module_id=module_id)
                 else:
-                    log.critical('[*MALFORMED] [MODE: %s]' % mode)
+                    log.critical('[*MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
 
             elif mode == 'downloadLogs':
                 if type(payload) == dict:
@@ -449,19 +449,43 @@ class ModeratServerProtocol(LineReceiver):
 
             # Add Moderator
             elif mode == 'addModerator' and manageModerators.get_privs(moderator_username) == 1:
-                credentials_list = payload.split()
-                if len(credentials_list) == 3:
-                    username, password, privileges = credentials_list
+                credentials = payload.split()
+                if len(credentials) == 3:
+                    username, password, privileges = credentials
                     manageModerators.create_user(username, password, int(privileges))
-                    log.info('Moderator ({0}) Created With Password: ({1}), Privileges: ({2})'.format(username, password.replace(password[3:], '*'), privileges))
+                    log.debug('[*MODERATOR][{0}] ({1}) Created With Password: ({2}), Privileges: ({3})'.format(
+                        moderator_username, username, password.replace(password[3:], '***'), privileges))
 
             elif mode == 'setModerator' and manageModerators.get_privs(moderator_username) == 1:
-
-                ids_list = payload.split()
-                if len(ids_list) == 3:
-                    client_id, moderator_id = ids_list
+                credentials = payload.split()
+                if len(credentials) == 2:
+                    client_id, moderator_id = credentials
                     manageClients.set_moderator(client_id, moderator_id)
-                    log.info('Moderator Changed For Client (%s) to (%s)' % (client_id, moderator_id))
+                    log.debug('[*MODERATOR][{0}] Moderator Changed For Client ({1}) to ({2})'.format(
+                        moderator_username, client_id, moderator_id))
+
+            elif mode == 'changePassword' and manageModerators.get_privs(moderator_username) == 1:
+                credentials = payload.split()
+                if len(credentials) == 2:
+                    moderator_id, new_password = credentials
+                    manageModerators.change_password(moderator_id, new_password)
+                    log.debug('[*MODERATOR][{0}] Moderator ({1}) Password Changed to ({2})'.format(
+                        moderator_username, moderator_id, new_password.replace(new_password[3:], '***')))
+
+            elif mode == 'changePrivilege' and manageModerators.get_privs(moderator_username) == 1:
+                credentials = payload.split()
+                if len(credentials) == 2:
+                    moderator_id, new_privilege = credentials
+                    manageModerators.change_privileges(moderator_id, new_privilege)
+                    log.debug('[*MODERATOR][{0}] Moderator ({1}) Privilege Changed to ({2})'.format(
+                        moderator_username, moderator_id, new_privilege))
+
+            elif mode == 'removeModerator' and manageModerators.get_privs(moderator_username) == 1:
+                print 'aq'
+                moderator_id = payload
+                manageModerators.delete_user(moderator_id)
+                log.debug('[*MODERATOR][{0}] Moderator ({1}) Removed'.format(
+                    moderator_username, moderator_id))
 
             # FILTERS
             # For Only Administrators
@@ -477,7 +501,7 @@ class ModeratServerProtocol(LineReceiver):
                 except KeyError:
                     pass
             else:
-                log.critical('[*MALFORMED] [MODE: %s]' % mode)
+                log.critical('[*MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
 
     # Send Message To Client
     def send_message_to_client(self, client, message, mode, _from='server', session_id='', module_id='', end='[ENDOFMESSAGE]'):

@@ -198,5 +198,7 @@ tr = {
     'ADMINISTRATION_INCORRECT_PRIVILEGES':  u'Incorrect Privileges',
     'ADMINISTRATION_INCORRECT_PASSWORD':    u'Incorrect Password',
     'ADMINISTRATION_INCORRECT_USERNAME':    u'Incorrect Username',
+    'ADMINISTRATION_QUESTION_REMOVE':       u'Are You Sure To Remove?',
+    'ADMINISTRATION_PASSWORD_NOT_MATCH':    u"Passwords Doesn't Match",
     # END ADMINISTRATOR
 }

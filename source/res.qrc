@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>../assets/privileges.png</file>
+    <file>../assets/password.png</file>
     <file>../assets/save_as.png</file>
     <file>../assets/add_folder.png</file>
     <file>../assets/add_file.png</file>

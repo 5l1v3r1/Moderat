@@ -94,6 +94,14 @@ class Actions:
                                                 session_id=self.moderat.session_id)
 
     @client_is_selected
+    def remove_client(self):
+        client, alias, ip_address = self.current_client()
+        if client:
+            reply = QMessageBox.question(self.moderat, _('ALIAS_SET'), _('ALIAS_SET'), QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.moderat.moderator.send_msg('%s' % client, 'removeClient', session_id=self.moderat.session_id)
+
+    @client_is_selected
     def log_viewer(self):
         client, alias, ip_address = self.current_client()
         if client:

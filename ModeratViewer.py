@@ -153,6 +153,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.set_alias()
 
+    def remove_client(self):
+        '''
+        Remove Client
+        :return:
+        '''
+        self.action.remove_client()
+
     def view_logs(self):
         '''
         Client Log Viewer

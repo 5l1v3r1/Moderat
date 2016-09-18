@@ -330,6 +330,11 @@ class ModeratServerProtocol(LineReceiver):
                 else:
                     log.critical('[*MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
 
+            elif mode == 'removeClient':
+                client = payload
+                manageClients.delete_client(client)
+                log.debug('[*MODERATOR][{0}] Client ({1}) Removed'.format(moderator_username, client))
+
             elif mode == 'countData':
                 screen_data = payload.split()
                 if len(screen_data) == 2:

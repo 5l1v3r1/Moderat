@@ -592,23 +592,20 @@ def data_receive(end='[ENDOFMESSAGE]'):
     global GLOBAL_SOCKET
     global QUERY
     received_data = ''
-    try:
-        payload = GLOBAL_SOCKET.recv(1024)
-        while payload:
-            received_data = received_data + payload
-            if received_data.endswith(end):
-                received_data = received_data[:-len(end)]
-                if end in received_data:
-                    for i in received_data.split(end):
-                        QUERY.append(ast.literal_eval(i))
-                    return
-                break
-            else:
-                payload = GLOBAL_SOCKET.recv(1024)
-                continue
-        QUERY.append(ast.literal_eval(received_data))
-    except socket.error:
-        pass
+    payload = GLOBAL_SOCKET.recv(1024)
+    while payload:
+        received_data = received_data + payload
+        if received_data.endswith(end):
+            received_data = received_data[:-len(end)]
+            if end in received_data:
+                for i in received_data.split(end):
+                    QUERY.append(ast.literal_eval(i))
+                return
+            break
+        else:
+            payload = GLOBAL_SOCKET.recv(1024)
+            continue
+    QUERY.append(ast.literal_eval(received_data))
 
 
 # Send Data Function
@@ -696,7 +693,6 @@ def reactor():
     global QUERY
 
     while 1:
-
         key = get_key()
         if len(key) != 0:
             ID = key

@@ -7,6 +7,8 @@ tr = {
     'LOADING_PLUGINS':              u'Loading Plugins: ',
     'LOADING_PLUGIN':               u'Loading Plugin: ',
     'INITIALIZING':                 u'Initializing',
+    'MODERAT_SETTINGS':             u'Settings',
+    'RESTART_PROMPT':               u'Restart Moderat?',
     # END MAIN
 
     # CLIENTS TAB

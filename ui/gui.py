@@ -139,7 +139,11 @@ class Ui_MainWindow(object):
 "padding: 10px;\n"
 "color: #c9f5f7;\n"
 "}\n"
-"QTabBar::tab::disabled {   \n"
+"QTabBar::tab::disabled { \n"
+"  width: 0; \n"
+"  height: 0; \n"
+"  margin: 0; \n"
+"  padding: 0;\n"
 "  border: none;\n"
 "  color: #2c3e50;\n"
 "}\n"
@@ -178,53 +182,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
-        self.connectButton = QtGui.QPushButton(self.onlineGroup)
-        self.connectButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.connectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.connectButton.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.connectButton.setStyleSheet(_fromUtf8("QPushButton#connectButton {\n"
-"            border: none;\n"
-"            border-radius: none;\n"
-"            padding: 5px;\n"
-"            }\n"
-"\n"
-"QPushButton#connectButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }\n"
-"\n"
-"QPushButton#connectButton:checked {\n"
-"            border: 1px ridge #cff7f8;\n"
-"            }"))
-        self.connectButton.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.connectButton.setIcon(icon1)
-        self.connectButton.setIconSize(QtCore.QSize(18, 18))
-        self.connectButton.setCheckable(True)
-        self.connectButton.setObjectName(_fromUtf8("connectButton"))
-        self.horizontalLayout_6.addWidget(self.connectButton)
-        self.disconnectButton = QtGui.QPushButton(self.onlineGroup)
-        self.disconnectButton.setMinimumSize(QtCore.QSize(0, 0))
-        self.disconnectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.disconnectButton.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.disconnectButton.setStyleSheet(_fromUtf8("QPushButton#disconnectButton {\n"
-"            border: none;\n"
-"            border-radius: none;\n"
-"            padding: 5px;\n"
-"            }\n"
-"\n"
-"QPushButton#disconnectButton:pressed {\n"
-"            background-color: #2c3e50;\n"
-"            }"))
-        self.disconnectButton.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.disconnectButton.setIcon(icon2)
-        self.disconnectButton.setIconSize(QtCore.QSize(18, 18))
-        self.disconnectButton.setCheckable(False)
-        self.disconnectButton.setChecked(False)
-        self.disconnectButton.setObjectName(_fromUtf8("disconnectButton"))
-        self.horizontalLayout_6.addWidget(self.disconnectButton)
         self.line_3 = QtGui.QFrame(self.onlineGroup)
         self.line_3.setStyleSheet(_fromUtf8("border: 1px ridge #2c3e50;"))
         self.line_3.setFrameShape(QtGui.QFrame.VLine)
@@ -244,9 +201,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.viewLogsButton.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/log_viewer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.viewLogsButton.setIcon(icon3)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/log_viewer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.viewLogsButton.setIcon(icon1)
         self.viewLogsButton.setIconSize(QtCore.QSize(18, 18))
         self.viewLogsButton.setObjectName(_fromUtf8("viewLogsButton"))
         self.horizontalLayout_6.addWidget(self.viewLogsButton)
@@ -263,9 +220,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.logSettingsButton.setText(_fromUtf8(""))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/other_settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.logSettingsButton.setIcon(icon4)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/other_settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.logSettingsButton.setIcon(icon2)
         self.logSettingsButton.setIconSize(QtCore.QSize(18, 18))
         self.logSettingsButton.setObjectName(_fromUtf8("logSettingsButton"))
         self.horizontalLayout_6.addWidget(self.logSettingsButton)
@@ -288,9 +245,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.setAliasButton.setText(_fromUtf8(""))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_alias.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setAliasButton.setIcon(icon5)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_alias.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setAliasButton.setIcon(icon3)
         self.setAliasButton.setIconSize(QtCore.QSize(18, 18))
         self.setAliasButton.setObjectName(_fromUtf8("setAliasButton"))
         self.horizontalLayout_6.addWidget(self.setAliasButton)
@@ -307,9 +264,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.updateSourceButton.setText(_fromUtf8(""))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update_source.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.updateSourceButton.setIcon(icon6)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/update_source.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.updateSourceButton.setIcon(icon4)
         self.updateSourceButton.setIconSize(QtCore.QSize(18, 18))
         self.updateSourceButton.setObjectName(_fromUtf8("updateSourceButton"))
         self.horizontalLayout_6.addWidget(self.updateSourceButton)
@@ -332,9 +289,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.shellButton.setText(_fromUtf8(""))
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_shell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.shellButton.setIcon(icon7)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_shell.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.shellButton.setIcon(icon5)
         self.shellButton.setIconSize(QtCore.QSize(18, 18))
         self.shellButton.setObjectName(_fromUtf8("shellButton"))
         self.horizontalLayout_6.addWidget(self.shellButton)
@@ -351,9 +308,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.explorerButton.setText(_fromUtf8(""))
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_explorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.explorerButton.setIcon(icon8)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_explorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.explorerButton.setIcon(icon6)
         self.explorerButton.setIconSize(QtCore.QSize(18, 18))
         self.explorerButton.setObjectName(_fromUtf8("explorerButton"))
         self.horizontalLayout_6.addWidget(self.explorerButton)
@@ -370,9 +327,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.scriptingButton.setText(_fromUtf8(""))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_scripting.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.scriptingButton.setIcon(icon9)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/remote_scripting.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.scriptingButton.setIcon(icon7)
         self.scriptingButton.setIconSize(QtCore.QSize(18, 18))
         self.scriptingButton.setObjectName(_fromUtf8("scriptingButton"))
         self.horizontalLayout_6.addWidget(self.scriptingButton)
@@ -389,9 +346,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.screenshotButton.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/desktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.screenshotButton.setIcon(icon10)
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/desktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.screenshotButton.setIcon(icon8)
         self.screenshotButton.setIconSize(QtCore.QSize(18, 18))
         self.screenshotButton.setObjectName(_fromUtf8("screenshotButton"))
         self.horizontalLayout_6.addWidget(self.screenshotButton)
@@ -408,9 +365,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.webcamButton.setText(_fromUtf8(""))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/webcam.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.webcamButton.setIcon(icon11)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/webcam.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.webcamButton.setIcon(icon9)
         self.webcamButton.setIconSize(QtCore.QSize(18, 18))
         self.webcamButton.setObjectName(_fromUtf8("webcamButton"))
         self.horizontalLayout_6.addWidget(self.webcamButton)
@@ -429,9 +386,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.setModeratorButton.setText(_fromUtf8(""))
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setModeratorButton.setIcon(icon12)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/set_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setModeratorButton.setIcon(icon10)
         self.setModeratorButton.setIconSize(QtCore.QSize(18, 18))
         self.setModeratorButton.setObjectName(_fromUtf8("setModeratorButton"))
         self.horizontalLayout_6.addWidget(self.setModeratorButton)
@@ -509,9 +466,9 @@ class Ui_MainWindow(object):
         self.clientsTable.verticalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.clientsTable)
         self.gridLayout_2.addLayout(self.verticalLayout, 0, 0, 1, 1)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/online_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientsTabs.addTab(self.onlineClientsTab, icon13, _fromUtf8(""))
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/online_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.onlineClientsTab, icon11, _fromUtf8(""))
         self.offlineClientsTab = QtGui.QWidget()
         self.offlineClientsTab.setObjectName(_fromUtf8("offlineClientsTab"))
         self.gridLayout_3 = QtGui.QGridLayout(self.offlineClientsTab)
@@ -545,7 +502,7 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.viewOfflineLogsButton.setText(_fromUtf8(""))
-        self.viewOfflineLogsButton.setIcon(icon3)
+        self.viewOfflineLogsButton.setIcon(icon1)
         self.viewOfflineLogsButton.setIconSize(QtCore.QSize(18, 18))
         self.viewOfflineLogsButton.setObjectName(_fromUtf8("viewOfflineLogsButton"))
         self.horizontalLayout_7.addWidget(self.viewOfflineLogsButton)
@@ -562,7 +519,7 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.setOfflineAliasButton.setText(_fromUtf8(""))
-        self.setOfflineAliasButton.setIcon(icon5)
+        self.setOfflineAliasButton.setIcon(icon3)
         self.setOfflineAliasButton.setIconSize(QtCore.QSize(18, 18))
         self.setOfflineAliasButton.setObjectName(_fromUtf8("setOfflineAliasButton"))
         self.horizontalLayout_7.addWidget(self.setOfflineAliasButton)
@@ -579,9 +536,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.removeClientButton.setText(_fromUtf8(""))
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/trash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.removeClientButton.setIcon(icon14)
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/trash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.removeClientButton.setIcon(icon12)
         self.removeClientButton.setIconSize(QtCore.QSize(18, 18))
         self.removeClientButton.setObjectName(_fromUtf8("removeClientButton"))
         self.horizontalLayout_7.addWidget(self.removeClientButton)
@@ -651,9 +608,9 @@ class Ui_MainWindow(object):
         self.offlineClientsTable.verticalHeader().setVisible(False)
         self.verticalLayout_2.addWidget(self.offlineClientsTable)
         self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
-        icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/offline_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientsTabs.addTab(self.offlineClientsTab, icon15, _fromUtf8(""))
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/offline_clients.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.offlineClientsTab, icon13, _fromUtf8(""))
         self.moderatorsTab = QtGui.QWidget()
         self.moderatorsTab.setObjectName(_fromUtf8("moderatorsTab"))
         self.gridLayout_4 = QtGui.QGridLayout(self.moderatorsTab)
@@ -686,9 +643,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.addModeratorButton.setText(_fromUtf8(""))
-        icon16 = QtGui.QIcon()
-        icon16.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.addModeratorButton.setIcon(icon16)
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/add_moderator.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addModeratorButton.setIcon(icon14)
         self.addModeratorButton.setIconSize(QtCore.QSize(18, 18))
         self.addModeratorButton.setObjectName(_fromUtf8("addModeratorButton"))
         self.horizontalLayout_8.addWidget(self.addModeratorButton)
@@ -704,9 +661,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.changePasswordButton.setText(_fromUtf8(""))
-        icon17 = QtGui.QIcon()
-        icon17.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/password.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.changePasswordButton.setIcon(icon17)
+        icon15 = QtGui.QIcon()
+        icon15.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/password.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.changePasswordButton.setIcon(icon15)
         self.changePasswordButton.setIconSize(QtCore.QSize(18, 18))
         self.changePasswordButton.setObjectName(_fromUtf8("changePasswordButton"))
         self.horizontalLayout_8.addWidget(self.changePasswordButton)
@@ -722,9 +679,9 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.changePrivilegesButton.setText(_fromUtf8(""))
-        icon18 = QtGui.QIcon()
-        icon18.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/privileges.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.changePrivilegesButton.setIcon(icon18)
+        icon16 = QtGui.QIcon()
+        icon16.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/privileges.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.changePrivilegesButton.setIcon(icon16)
         self.changePrivilegesButton.setIconSize(QtCore.QSize(18, 18))
         self.changePrivilegesButton.setObjectName(_fromUtf8("changePrivilegesButton"))
         self.horizontalLayout_8.addWidget(self.changePrivilegesButton)
@@ -740,7 +697,7 @@ class Ui_MainWindow(object):
 "            background-color: #2c3e50;\n"
 "            }"))
         self.removeModeratorButton.setText(_fromUtf8(""))
-        self.removeModeratorButton.setIcon(icon14)
+        self.removeModeratorButton.setIcon(icon12)
         self.removeModeratorButton.setIconSize(QtCore.QSize(18, 18))
         self.removeModeratorButton.setObjectName(_fromUtf8("removeModeratorButton"))
         self.horizontalLayout_8.addWidget(self.removeModeratorButton)
@@ -812,10 +769,98 @@ class Ui_MainWindow(object):
         self.moderatorsTable.verticalHeader().setVisible(False)
         self.verticalLayout_3.addWidget(self.moderatorsTable)
         self.gridLayout_4.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
+        icon17 = QtGui.QIcon()
+        icon17.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/moderators.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.clientsTabs.addTab(self.moderatorsTab, icon17, _fromUtf8(""))
+        self.gridLayout.addWidget(self.clientsTabs, 1, 0, 1, 1)
+        self.groupBox = QtGui.QGroupBox(self.centralwidget)
+        self.groupBox.setStyleSheet(_fromUtf8("background-color: #34495e; \n"
+"border: none;\n"
+"margin-left: 10px;\n"
+"margin-right: 10px;"))
+        self.groupBox.setTitle(_fromUtf8(""))
+        self.groupBox.setObjectName(_fromUtf8("groupBox"))
+        self.gridLayout_5 = QtGui.QGridLayout(self.groupBox)
+        self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.connectButton = QtGui.QPushButton(self.groupBox)
+        self.connectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.connectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.connectButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.connectButton.setStyleSheet(_fromUtf8("QPushButton#connectButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            margin: 0px;\n"
+"            }\n"
+"\n"
+"QPushButton#connectButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }\n"
+"\n"
+"QPushButton#connectButton:checked {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.connectButton.setText(_fromUtf8(""))
+        icon18 = QtGui.QIcon()
+        icon18.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.connectButton.setIcon(icon18)
+        self.connectButton.setIconSize(QtCore.QSize(18, 18))
+        self.connectButton.setCheckable(True)
+        self.connectButton.setObjectName(_fromUtf8("connectButton"))
+        self.horizontalLayout.addWidget(self.connectButton)
+        self.disconnectButton = QtGui.QPushButton(self.groupBox)
+        self.disconnectButton.setMinimumSize(QtCore.QSize(0, 0))
+        self.disconnectButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.disconnectButton.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.disconnectButton.setStyleSheet(_fromUtf8("QPushButton#disconnectButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            margin: 0px;\n"
+"            }\n"
+"\n"
+"QPushButton#disconnectButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }"))
+        self.disconnectButton.setText(_fromUtf8(""))
         icon19 = QtGui.QIcon()
-        icon19.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/moderators.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.clientsTabs.addTab(self.moderatorsTab, icon19, _fromUtf8(""))
-        self.gridLayout.addWidget(self.clientsTabs, 0, 0, 1, 1)
+        icon19.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/disconnect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.disconnectButton.setIcon(icon19)
+        self.disconnectButton.setIconSize(QtCore.QSize(18, 18))
+        self.disconnectButton.setCheckable(False)
+        self.disconnectButton.setChecked(False)
+        self.disconnectButton.setObjectName(_fromUtf8("disconnectButton"))
+        self.horizontalLayout.addWidget(self.disconnectButton)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem3)
+        self.settingsButton = QtGui.QPushButton(self.groupBox)
+        self.settingsButton.setStyleSheet(_fromUtf8("QPushButton#settingsButton {\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 5px;\n"
+"            margin: 0px;\n"
+"            }\n"
+"\n"
+"QPushButton#settingsButton:pressed {\n"
+"            background-color: #2c3e50;\n"
+"            }\n"
+"\n"
+"QPushButton#settingsButton:checked {\n"
+"            border: 1px ridge #c9f5f7;\n"
+"            }"))
+        self.settingsButton.setText(_fromUtf8(""))
+        icon20 = QtGui.QIcon()
+        icon20.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.settingsButton.setIcon(icon20)
+        self.settingsButton.setCheckable(True)
+        self.settingsButton.setChecked(False)
+        self.settingsButton.setObjectName(_fromUtf8("settingsButton"))
+        self.horizontalLayout.addWidget(self.settingsButton)
+        self.gridLayout_5.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 765, 34))
@@ -859,15 +904,13 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
         self.actionStartListen_for_connections = QtGui.QAction(MainWindow)
         self.actionStartListen_for_connections.setCheckable(True)
-        self.actionStartListen_for_connections.setIcon(icon1)
+        self.actionStartListen_for_connections.setIcon(icon18)
         self.actionStartListen_for_connections.setObjectName(_fromUtf8("actionStartListen_for_connections"))
         self.actionStopListen_for_connections = QtGui.QAction(MainWindow)
         self.actionStopListen_for_connections.setCheckable(True)
-        self.actionStopListen_for_connections.setIcon(icon2)
+        self.actionStopListen_for_connections.setIcon(icon19)
         self.actionStopListen_for_connections.setObjectName(_fromUtf8("actionStopListen_for_connections"))
         self.actionViewer_Configuration = QtGui.QAction(MainWindow)
-        icon20 = QtGui.QIcon()
-        icon20.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionViewer_Configuration.setIcon(icon20)
         self.actionViewer_Configuration.setObjectName(_fromUtf8("actionViewer_Configuration"))
         self.actionRemote_Shell = QtGui.QAction(MainWindow)
@@ -906,7 +949,7 @@ class Ui_MainWindow(object):
         self.actionDesktop_Preview.setIcon(icon27)
         self.actionDesktop_Preview.setObjectName(_fromUtf8("actionDesktop_Preview"))
         self.actionWebcam_Preview = QtGui.QAction(MainWindow)
-        self.actionWebcam_Preview.setIcon(icon11)
+        self.actionWebcam_Preview.setIcon(icon9)
         self.actionWebcam_Preview.setObjectName(_fromUtf8("actionWebcam_Preview"))
         self.actionStop_Client = QtGui.QAction(MainWindow)
         icon28 = QtGui.QIcon()

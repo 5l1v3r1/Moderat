@@ -7,6 +7,8 @@ tr = {
     'LOADING_PLUGINS':              u'დამატებითი ფუნქციების ჩატვირთვა: ',
     'LOADING_PLUGIN':               u'იტვირთება: ',
     'INITIALIZING':                 u'მომზადება',
+    'MODERAT_SETTINGS':             u'კონფიგურაცია',
+    'RESTART_PROMPT':               u'გადავტვირთო?',
     # END MAIN
 
     # CLIENTS TAB

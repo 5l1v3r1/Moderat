@@ -24,7 +24,6 @@ class updateUi:
         self.moderat.connectButton.setChecked(True)
         self.moderat.connectButton.setDisabled(True)
 
-    # TODO: style
     def on_moderator_not_connected(self):
         '''
         If Moderator Disconnected From Server
@@ -63,6 +62,6 @@ class updateUi:
         # Offline Clients Moderators
         self.moderat.offlineClientsTable.setColumnHidden(0, True)
         # Moderators Tab
-        self.moderat.clientsTabs.setTabEnabled(2, False)
         self.moderat.clientsTabs.setTabText(2, '')
+        self.moderat.clientsTabs.setTabEnabled(2, False)
         self.moderat.clientsTabs.setTabIcon(2, QIcon(QPixmap(":/icons/assets/none.png")))

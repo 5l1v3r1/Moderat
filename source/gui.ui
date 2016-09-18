@@ -110,7 +110,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QTabWidget" name="clientsTabs">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -133,7 +133,11 @@ min-width: 30ex;
 padding: 10px;
 color: #c9f5f7;
 }
-QTabBar::tab::disabled {   
+QTabBar::tab::disabled { 
+  width: 0; 
+  height: 0; 
+  margin: 0; 
+  padding: 0;
   border: none;
   color: #2c3e50;
 }
@@ -198,105 +202,6 @@ margin-right: 1px;</string>
                <property name="spacing">
                 <number>0</number>
                </property>
-               <item>
-                <widget class="QPushButton" name="connectButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton#connectButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            }
-
-QPushButton#connectButton:pressed {
-            background-color: #2c3e50;
-            }
-
-QPushButton#connectButton:checked {
-            border: 1px ridge #cff7f8;
-            }</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="res.qrc">
-                   <normaloff>:/icons/assets/connect.png</normaloff>:/icons/assets/connect.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>18</width>
-                   <height>18</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="disconnectButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton#disconnectButton {
-			border: none;
-			border-radius: none;
-			padding: 5px;
-            }
-
-QPushButton#disconnectButton:pressed {
-            background-color: #2c3e50;
-            }</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="res.qrc">
-                   <normaloff>:/icons/assets/disconnect.png</normaloff>:/icons/assets/disconnect.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>18</width>
-                   <height>18</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>false</bool>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="Line" name="line_3">
                  <property name="styleSheet">
@@ -1368,6 +1273,175 @@ color: #cff7f8;
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="styleSheet">
+       <string notr="true">background-color: #34495e; 
+border: none;
+margin-left: 10px;
+margin-right: 10px;</string>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="connectButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#connectButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+			margin: 0px;
+            }
+
+QPushButton#connectButton:pressed {
+            background-color: #2c3e50;
+            }
+
+QPushButton#connectButton:checked {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/connect.png</normaloff>:/icons/assets/connect.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="disconnectButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#disconnectButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+			margin: 0px;
+            }
+
+QPushButton#disconnectButton:pressed {
+            background-color: #2c3e50;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/disconnect.png</normaloff>:/icons/assets/disconnect.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="settingsButton">
+           <property name="styleSheet">
+            <string notr="true">QPushButton#settingsButton {
+			border: none;
+			border-radius: none;
+			padding: 5px;
+			margin: 0px;
+            }
+
+QPushButton#settingsButton:pressed {
+            background-color: #2c3e50;
+            }
+
+QPushButton#settingsButton:checked {
+            border: 1px ridge #c9f5f7;
+            }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/icons/assets/settings.png</normaloff>:/icons/assets/settings.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

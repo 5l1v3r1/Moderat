@@ -146,6 +146,13 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.modes.check_mode(data)
 
+    def run_settings(self):
+        '''
+        Run Settings
+        :return:
+        '''
+        self.action.set_settings()
+
     def set_alias(self):
         '''
         Set Alias For Client

@@ -36,9 +36,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.alwaysTopButton.clicked.connect(self.always_top)
 
         # Translate
-        self.screenshotButton.setText(_('MDESKTOP_CAPTURE'))
-        self.saveButton.setText(_('MDESKTOP_SAVE'))
-        self.clearButton.setText(_('MDESKTOP_CLEAR'))
         self.screenshotLabel.setText(_('MDESKTOP_INFO'))
 
     def signal(self, data):

@@ -203,16 +203,6 @@ margin-right: 1px;</string>
                 <number>0</number>
                </property>
                <item>
-                <widget class="Line" name="line_3">
-                 <property name="styleSheet">
-                  <string notr="true">border: 1px ridge #2c3e50;</string>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="viewLogsButton">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
@@ -221,7 +211,7 @@ margin-right: 1px;</string>
                   <string notr="true">QPushButton#viewLogsButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -238,8 +228,8 @@ QPushButton#viewLogsButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -253,7 +243,7 @@ QPushButton#viewLogsButton:pressed {
                   <string notr="true">QPushButton#logSettingsButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -270,8 +260,8 @@ QPushButton#logSettingsButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -312,8 +302,8 @@ QPushButton#setAliasButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -327,7 +317,7 @@ QPushButton#setAliasButton:pressed {
                   <string notr="true">QPushButton#updateSourceButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -344,8 +334,8 @@ QPushButton#updateSourceButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -369,7 +359,7 @@ QPushButton#updateSourceButton:pressed {
                   <string notr="true">QPushButton#shellButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -386,8 +376,8 @@ QPushButton#shellButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -401,7 +391,7 @@ QPushButton#shellButton:pressed {
                   <string notr="true">QPushButton#explorerButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -418,8 +408,8 @@ QPushButton#explorerButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -433,7 +423,7 @@ QPushButton#explorerButton:pressed {
                   <string notr="true">QPushButton#scriptingButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -450,8 +440,8 @@ QPushButton#scriptingButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -465,7 +455,7 @@ QPushButton#scriptingButton:pressed {
                   <string notr="true">QPushButton#screenshotButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -482,8 +472,8 @@ QPushButton#screenshotButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -497,7 +487,7 @@ QPushButton#screenshotButton:pressed {
                   <string notr="true">QPushButton#webcamButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -514,8 +504,8 @@ QPushButton#webcamButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -542,7 +532,7 @@ QPushButton#webcamButton:pressed {
                   <string notr="true">QPushButton#setModeratorButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -559,8 +549,8 @@ QPushButton#setModeratorButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -759,7 +749,7 @@ margin-right: 1px;</string>
                   <string notr="true">QPushButton#viewOfflineLogsButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -776,8 +766,8 @@ QPushButton#viewOfflineLogsButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -791,7 +781,7 @@ QPushButton#viewOfflineLogsButton:pressed {
                   <string notr="true">QPushButton#setOfflineAliasButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -808,8 +798,8 @@ QPushButton#setOfflineAliasButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -823,7 +813,7 @@ QPushButton#setOfflineAliasButton:pressed {
                   <string notr="true">QPushButton#removeModeratorButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -840,8 +830,8 @@ QPushButton#removeModeratorButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -1022,7 +1012,7 @@ margin-right: 1px;</string>
                   <string notr="true">QPushButton#addModeratorButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -1039,8 +1029,8 @@ QPushButton#addModeratorButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -1051,7 +1041,7 @@ QPushButton#addModeratorButton:pressed {
                   <string notr="true">QPushButton#changePasswordButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -1068,8 +1058,8 @@ QPushButton#changePasswordButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -1080,7 +1070,7 @@ QPushButton#changePasswordButton:pressed {
                   <string notr="true">QPushButton#changePrivilegesButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
@@ -1097,8 +1087,8 @@ QPushButton#changePrivilegesButton:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -1106,14 +1096,14 @@ QPushButton#changePrivilegesButton:pressed {
                <item>
                 <widget class="QPushButton" name="removeModeratorButton">
                  <property name="styleSheet">
-                  <string notr="true">QPushButton#remoteModerator {
+                  <string notr="true">QPushButton#removeModeratorButton {
 			border: none;
 			border-radius: none;
-			padding: 5px;
+			padding: 3px;
             background-color: #34495e;
             }
 
-QPushButton#remoteModerator:pressed {
+QPushButton#removeModeratorButton:pressed {
             background-color: #2c3e50;
             }</string>
                  </property>
@@ -1126,8 +1116,8 @@ QPushButton#remoteModerator:pressed {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>18</width>
-                   <height>18</height>
+                   <width>16</width>
+                   <height>16</height>
                   </size>
                  </property>
                 </widget>
@@ -1278,10 +1268,13 @@ color: #cff7f8;
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox">
       <property name="styleSheet">
-       <string notr="true">background-color: #34495e; 
+       <string notr="true">background-color: #2c3e50; 
 border: none;
-margin-left: 10px;
-margin-right: 10px;</string>
+margin-left: 6px;
+margin-right: 6px;
+padding: -5px;
+padding-top: -7px;
+padding-bottom: -7px;</string>
       </property>
       <property name="title">
        <string/>
@@ -1309,8 +1302,12 @@ margin-right: 10px;</string>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
+           <property name="toolTip">
+            <string/>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#connectButton {
+			background-color: #34495e;
 			border: none;
 			border-radius: none;
 			padding: 5px;
@@ -1334,8 +1331,8 @@ QPushButton#connectButton:checked {
            </property>
            <property name="iconSize">
             <size>
-             <width>18</width>
-             <height>18</height>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
            <property name="checkable">
@@ -1362,6 +1359,7 @@ QPushButton#connectButton:checked {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#disconnectButton {
+			background-color: #34495e;
 			border: none;
 			border-radius: none;
 			padding: 5px;
@@ -1381,8 +1379,8 @@ QPushButton#disconnectButton:pressed {
            </property>
            <property name="iconSize">
             <size>
-             <width>18</width>
-             <height>18</height>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
            <property name="checkable">
@@ -1410,6 +1408,7 @@ QPushButton#disconnectButton:pressed {
           <widget class="QPushButton" name="settingsButton">
            <property name="styleSheet">
             <string notr="true">QPushButton#settingsButton {
+			background-color: #34495e;
 			border: none;
 			border-radius: none;
 			padding: 5px;
@@ -1430,6 +1429,12 @@ QPushButton#settingsButton:checked {
            <property name="icon">
             <iconset resource="res.qrc">
              <normaloff>:/icons/assets/settings.png</normaloff>:/icons/assets/settings.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
            </property>
            <property name="checkable">
             <bool>true</bool>

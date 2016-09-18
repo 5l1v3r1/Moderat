@@ -12,7 +12,8 @@ from libs.moderat_factory import *
 from libs.language import Translate
 from libs.moderat.Actions import Actions
 from libs.moderat.Modes import Modes
-from libs.moderat.Settings import Config
+from libs.moderat.Config import Config
+from libs.moderat.Settings import Settings
 from libs.moderat.Decorators import *
 from libs.gui import triggers, shortcuts
 from ui import gui
@@ -49,6 +50,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.set_language()
         # Init Settings
         self.config = Config()
+        self.settings = Settings(self)
         self.SERVER_HOST = self.config.ip_address
         self.SERVER_PORT = self.config.port
         # Session ID
@@ -151,7 +153,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         Run Settings
         :return:
         '''
-        self.action.set_settings()
+        self.settings.set_settings()
 
     def set_alias(self):
         '''

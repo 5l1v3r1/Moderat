@@ -325,7 +325,7 @@ class ModeratServerProtocol(LineReceiver):
                 alias_data = payload.split()
                 try:
                     alias_client = alias_data[0]
-                    alias_value = u''.join(alias_data[1:])
+                    alias_value = u' '.join(alias_data[1:])
                     log.debug('[*MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator_username, alias_value, self.transport.getPeer().host))
                     manageClients.set_alias(alias_client, alias_value)
                 except:

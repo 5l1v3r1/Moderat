@@ -127,7 +127,7 @@ class ModeratServerProtocol(LineReceiver):
             if command['mode'] == 'buildClient':
                 self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'], '')
             else:
-                self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'], '')
+                self.client_commands(command['payload'], command['mode'], command['session_id'], command['key'], command['module_id'])
         # Switch to moderator commands
         elif command['from'] == 'moderator':
             if not command['mode'] == 'getModerators' and not command['mode'] == 'getClients':

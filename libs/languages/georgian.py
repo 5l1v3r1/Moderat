@@ -140,6 +140,10 @@ tr = {
     'MSCRIPTING_LOCAL':             u'ლოკალური',
     # END MSCIRPTING
 
+    # MWEBCAM
+    'MWEBCAM_TITLE':        u'ვებ კამერა',
+    # END MWEBCAM
+
     # LOG VIEWER
     'VIEWER_WINDOW_TITLE':          u'Moderat - ჩანაწერები',
     'VIEWER_SCREENSHOTS_TAB':       u'სქრინები',

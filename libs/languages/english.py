@@ -140,6 +140,10 @@ tr = {
     'MSCRIPTING_LOCAL':             u'Local',
     # END MSCIRPTING
 
+    # MWEBCAM
+    'MWEBCAM_TITLE':        u'Webcamera',
+    # END MWEBCAM
+
     # LOG VIEWER
     'VIEWER_WINDOW_TITLE':          u'Moderat - Log Viewer',
     'VIEWER_SCREENSHOTS_TAB':       u'Screenshots',

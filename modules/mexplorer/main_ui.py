@@ -27,7 +27,7 @@ class Ui_Form(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(766, 479)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mexplorer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         Form.setStyleSheet(_fromUtf8("QWidget {\n"
 "background-color: #2c3e50;\n"
@@ -324,4 +324,3 @@ class Ui_Form(object):
         self.selectedLabel.setText(_translate("Form", "Selected", None))
         self.dirfilesLabel.setText(_translate("Form", "Directories / Files:", None))
         self.dirfilesCountLabel.setText(_translate("Form", "0", None))
-

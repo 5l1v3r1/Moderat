@@ -127,6 +127,7 @@ tr = {
     'MEXPLORER_CREATE_FOLDER':      u'Create Folder',
     'MEXPLORER_MSG_NEW_FILE':       u'New File',
     'MEXPLORER_MSG_NEW_FOLDER':     u'New Folder',
+    'MEXPLORER_OPEN_FOLDER_ERROR':  u'Cann\'t Open Folder',
     # END MEXPLORER
 
     # MSCRIPTING

@@ -100,10 +100,9 @@ class mainPopup(QWidget, Ui_Form):
     #         event.ignore()
 
     def right_click_menu(self, point):
+        self.emenu = QMenu(self)
         try:
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
-            self.emenu = QMenu(self)
-
             # File commands
             if '<FILE>' in _type:
                 pass
@@ -120,18 +119,18 @@ class mainPopup(QWidget, Ui_Form):
             self.emenu.addAction(QIcon(os.path.join(self.assets, 'eye.png')), _('MEXPLORER_HIDDEN'), self.hidden)
             self.emenu.addAction(QIcon(os.path.join(self.assets, 'trash.png')), _('MEXPLORER_DELETE'), self.remove)
             self.emenu.addSeparator()
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'update_source.png')), _('MEXPLORER_REFRESH'), self.refresh)
-            self.emenu.addSeparator()
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_file.png')), _('MEXPLORER_CREATE_FILE'), self.create_file)
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_folder.png')), _('MEXPLORER_CREATE_FOLDER'), self.create_dir)
-            self.emenu.addSeparator()
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'up.png')), _('MEXPLORER_UPLOAD'), self.upload)
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'down.png')), _('MEXPLORER_DOWNLOAD'), self.upload)
-
-            self.emenu.exec_(self.explorerTable.mapToGlobal(point))
-
         except AttributeError:
             pass
+
+        # Commands for all
+        self.emenu.addAction(QIcon(os.path.join(self.assets, 'update_source.png')), _('MEXPLORER_REFRESH'), self.refresh)
+        self.emenu.addSeparator()
+        self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_file.png')), _('MEXPLORER_CREATE_FILE'), self.create_file)
+        self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_folder.png')), _('MEXPLORER_CREATE_FOLDER'), self.create_dir)
+        self.emenu.addSeparator()
+        self.emenu.addAction(QIcon(os.path.join(self.assets, 'up.png')), _('MEXPLORER_UPLOAD'), self.upload)
+        self.emenu.addAction(QIcon(os.path.join(self.assets, 'down.png')), _('MEXPLORER_DOWNLOAD'), self.upload)
+        self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
     def refresh(self):
         self.get_content()
@@ -156,13 +155,13 @@ class mainPopup(QWidget, Ui_Form):
     def create_file(self):
         text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_NEW_FILE'), _('MEXPLORER_MSG_NEW_FILE'), QLineEdit.Normal)
         if ok:
-            self.moderator.send_msg('type Nul > %s' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.moderator.send_msg('type Nul > "%s"' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
             self.callback = self.recv_content
 
     def create_dir(self):
         text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_NEW_FOLDER'), _('MEXPLORER_MSG_NEW_FOLDER'), QLineEdit.Normal)
         if ok:
-            self.moderator.send_msg('mkdir %s' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.moderator.send_msg('mkdir "%s"' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
             self.callback = self.recv_content
 
     def rename(self):

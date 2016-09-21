@@ -127,6 +127,7 @@ tr = {
     'MEXPLORER_CREATE_FOLDER':      u'ფოლდერის შექმნა',
     'MEXPLORER_MSG_NEW_FILE':       u'ახალი ფაილი',
     'MEXPLORER_MSG_NEW_FOLDER':     u'ახალი ფოლდერი',
+    'MEXPLORER_OPEN_FOLDER_ERROR':  u'ფოლდერის გახსნა ვერ ხერხდება',
     # END MEXPLORER
 
     # MSCRIPTING

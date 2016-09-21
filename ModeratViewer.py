@@ -37,7 +37,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         super(MainDialog, self).__init__(parent)
         self.reactor = reactor
         self.setupUi(self)
-
         # Init Log Dir
         if not os.path.exists(self.DATA):
             os.makedirs(self.DATA)

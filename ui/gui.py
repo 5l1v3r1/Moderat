@@ -411,6 +411,7 @@ class Ui_MainWindow(object):
 "color: #cff7f8;\n"
 "font: 8pt \"MS Shell Dlg 2\";\n"
 "background-color: #34495e;\n"
+"alternate-background-color: #384E63;\n"
 "\n"
 "background-image: url(assets/bg.png);\n"
 "background-repeat: no-repeat;\n"
@@ -423,7 +424,8 @@ class Ui_MainWindow(object):
         self.clientsTable.setFrameShadow(QtGui.QFrame.Plain)
         self.clientsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.clientsTable.setDragDropOverwriteMode(False)
-        self.clientsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.clientsTable.setAlternatingRowColors(True)
+        self.clientsTable.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.clientsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.clientsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
         self.clientsTable.setShowGrid(False)
@@ -432,7 +434,19 @@ class Ui_MainWindow(object):
         self.clientsTable.setCornerButtonEnabled(False)
         self.clientsTable.setObjectName(_fromUtf8("clientsTable"))
         self.clientsTable.setColumnCount(10)
-        self.clientsTable.setRowCount(0)
+        self.clientsTable.setRowCount(6)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(2, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(3, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setVerticalHeaderItem(5, item)
         item = QtGui.QTableWidgetItem()
         self.clientsTable.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -453,6 +467,16 @@ class Ui_MainWindow(object):
         self.clientsTable.setHorizontalHeaderItem(8, item)
         item = QtGui.QTableWidgetItem()
         self.clientsTable.setHorizontalHeaderItem(9, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setItem(0, 0, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setItem(1, 0, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setItem(2, 0, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setItem(2, 1, item)
+        item = QtGui.QTableWidgetItem()
+        self.clientsTable.setItem(3, 0, item)
         self.clientsTable.horizontalHeader().setCascadingSectionResizes(True)
         self.clientsTable.horizontalHeader().setDefaultSectionSize(100)
         self.clientsTable.horizontalHeader().setSortIndicatorShown(False)
@@ -563,6 +587,7 @@ class Ui_MainWindow(object):
 "color: #cff7f8;\n"
 "font: 8pt \"MS Shell Dlg 2\";\n"
 "background-color: #34495e;\n"
+"alternate-background-color: #384E63;\n"
 "\n"
 "background-image: url(assets/bg.png);\n"
 "background-repeat: no-repeat;\n"
@@ -575,7 +600,8 @@ class Ui_MainWindow(object):
         self.offlineClientsTable.setFrameShadow(QtGui.QFrame.Plain)
         self.offlineClientsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.offlineClientsTable.setDragDropOverwriteMode(False)
-        self.offlineClientsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.offlineClientsTable.setAlternatingRowColors(True)
+        self.offlineClientsTable.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.offlineClientsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.offlineClientsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
         self.offlineClientsTable.setShowGrid(False)
@@ -722,6 +748,7 @@ class Ui_MainWindow(object):
 "color: #cff7f8;\n"
 "font: 8pt \"MS Shell Dlg 2\";\n"
 "background-color: #34495e;\n"
+"alternate-background-color: #384E63;\n"
 "\n"
 "background-image: url(assets/bg.png);\n"
 "background-repeat: no-repeat;\n"
@@ -734,6 +761,7 @@ class Ui_MainWindow(object):
         self.moderatorsTable.setFrameShadow(QtGui.QFrame.Plain)
         self.moderatorsTable.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.moderatorsTable.setDragDropOverwriteMode(False)
+        self.moderatorsTable.setAlternatingRowColors(True)
         self.moderatorsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.moderatorsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.moderatorsTable.setTextElideMode(QtCore.Qt.ElideMiddle)
@@ -999,6 +1027,18 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Moderat Viewer", None))
         self.clientsTable.setSortingEnabled(False)
+        item = self.clientsTable.verticalHeaderItem(0)
+        item.setText(_translate("MainWindow", "New Row", None))
+        item = self.clientsTable.verticalHeaderItem(1)
+        item.setText(_translate("MainWindow", "New Row", None))
+        item = self.clientsTable.verticalHeaderItem(2)
+        item.setText(_translate("MainWindow", "New Row", None))
+        item = self.clientsTable.verticalHeaderItem(3)
+        item.setText(_translate("MainWindow", "New Row", None))
+        item = self.clientsTable.verticalHeaderItem(4)
+        item.setText(_translate("MainWindow", "New Row", None))
+        item = self.clientsTable.verticalHeaderItem(5)
+        item.setText(_translate("MainWindow", "New Row", None))
         item = self.clientsTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Moderator", None))
         item = self.clientsTable.horizontalHeaderItem(1)
@@ -1019,6 +1059,19 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Cam", None))
         item = self.clientsTable.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Active Window Title", None))
+        __sortingEnabled = self.clientsTable.isSortingEnabled()
+        self.clientsTable.setSortingEnabled(False)
+        item = self.clientsTable.item(0, 0)
+        item.setText(_translate("MainWindow", "fasf", None))
+        item = self.clientsTable.item(1, 0)
+        item.setText(_translate("MainWindow", "asda", None))
+        item = self.clientsTable.item(2, 0)
+        item.setText(_translate("MainWindow", "sfa", None))
+        item = self.clientsTable.item(2, 1)
+        item.setText(_translate("MainWindow", "sasf", None))
+        item = self.clientsTable.item(3, 0)
+        item.setText(_translate("MainWindow", "sfas", None))
+        self.clientsTable.setSortingEnabled(__sortingEnabled)
         self.clientsTabs.setTabText(self.clientsTabs.indexOf(self.onlineClientsTab), _translate("MainWindow", "Online", None))
         self.offlineClientsTable.setSortingEnabled(False)
         item = self.offlineClientsTable.horizontalHeaderItem(0)

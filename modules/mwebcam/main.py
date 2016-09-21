@@ -24,8 +24,12 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.client = args['client']
         self.session_id = args['session_id']
         self.module_id = args['module_id']
+        self.alias = args['alias']
+        self.ip_address = args['ip_address']
 
-        self.setWindowTitle(_('MWEBCAM_TITLE'))
+        title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
+
+        self.setWindowTitle('[{}] {}'.format(title_prefix, _('MWEBCAM_TITLE')))
 
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)

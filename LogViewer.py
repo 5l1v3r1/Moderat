@@ -28,6 +28,9 @@ class LogViewer(QWidget, logViewerUi):
         self.session_id = args['session_id']
         self.module_id = args['module_id']
 
+        title_prefix = self.client_alias if len(self.client_alias) > 0 else self.client_ip_address
+        self.setWindowTitle('[{}] {}'.format(title_prefix, _('VIEWER_WINDOW_TITLE')))
+
         self.plots = {}
 
         # resize audio.spectrum column
@@ -73,7 +76,6 @@ class LogViewer(QWidget, logViewerUi):
         self.audioTable.setColumnHidden(3, True)
 
     def set_language(self):
-        self.setWindowTitle(_('VIEWER_WINDOW_TITLE'))
         self.logsTab.setTabText(0, _('VIEWER_SCREENSHOTS_TAB'))
         self.logsTab.setTabText(1, _('VIEWER_KEYLOGS_TAB'))
         self.logsTab.setTabText(2, _('VIEWER_AUDIO_TAB'))

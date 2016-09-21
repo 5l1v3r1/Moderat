@@ -126,16 +126,20 @@ class Actions:
 
     @client_is_selected
     def set_log_settings(self):
+        self.settings_windows = {}
         for client_args in self.current_client():
             client, alias, ip_address = client_args
             if client:
+                module_id = id_generator()
                 client_config = self.clients.get_client(client)
                 client_config['moderator'] = self.moderat.moderator
                 client_config['client'] = client
+                client_config['alias'] = alias
+                client_config['ip_address'] = ip_address
                 client_config['session_id'] = self.moderat.assets
                 client_config['assets'] = self.moderat.assets
-                self.log_settings = LogSettings(client_config)
-                self.log_settings.show()
+                self.settings_windows[module_id] = LogSettings(client_config)
+                self.settings_windows[module_id].show()
 
     @client_is_selected
     def update_source(self):
@@ -161,6 +165,8 @@ class Actions:
                 args = {
                     'moderator': self.moderat.moderator,
                     'client': client,
+                    'alias': alias,
+                    'ip_address': ip_address,
                     'session_id': self.moderat.session_id,
                     'assets': self.moderat.assets,
                     'plugins': self.moderat.plugins,

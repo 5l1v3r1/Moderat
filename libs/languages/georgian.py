@@ -165,6 +165,7 @@ tr = {
     'VIEWER_DOWNLOAD_GROUP_TITLE':  u'ჩანაწერების გადმოწერა',
     'VIEWER_IGNOR_VIEWED':          u'არ გადმოწერო ნანახი',
     'VIEWER_DOWNLOAD':              u'გადმოწერა',
+    'LOG_SETTINGS_TITLE':           u'მონიტორინგის პარამეტრები',
     # END LOG VIEWER
 
     # LOG IN

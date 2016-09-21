@@ -165,6 +165,7 @@ tr = {
     'VIEWER_DOWNLOAD_GROUP_TITLE':  u'Logs Download',
     'VIEWER_IGNOR_VIEWED':          u'Ignore Viewed',
     'VIEWER_DOWNLOAD':              u'Download',
+    'LOG_SETTINGS_TITLE':           u'Log Settings',
     # END LOG VIEWER
 
     # LOG IN

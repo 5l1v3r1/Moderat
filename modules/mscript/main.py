@@ -25,8 +25,12 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.plugins = args['plugins']
         self.plugins_dir = args['plugins_dir']
         self.assets = args['assets']
+        self.alias = args['alias']
+        self.ip_address = args['ip_address']
 
-        self.setWindowTitle(_('MSCRIPTING_TITLE'))
+        title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
+
+        self.setWindowTitle('[{}] {}'.format(title_prefix, _('MSCRIPTING_TITLE')))
 
         # init idle with lines
         self.idle = idle.LineTextWidget(title=_('MSCRIPTING_REMOTE'))

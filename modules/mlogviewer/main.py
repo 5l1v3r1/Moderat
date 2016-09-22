@@ -1,8 +1,6 @@
-from ui.log_viewer import Ui_Form as logViewerUi
+import main_ui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-
-
 
 import os
 
@@ -14,7 +12,7 @@ translate = Translate()
 _ = lambda _word: translate.word(_word)
 
 
-class LogViewer(QWidget, logViewerUi):
+class mainPopup(QWidget, main_ui.Ui_Form):
 
     def __init__(self, args):
         QWidget.__init__(self)

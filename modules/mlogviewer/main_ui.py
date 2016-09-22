@@ -721,5 +721,3 @@ class Ui_Form(object):
         self.screenshotsCountSplitterLabel.setText(_translate("Form", "/", None))
         self.screenshotsCountOldLabel.setText(_translate("Form", "0", None))
         self.ignoreViewedCheck.setText(_translate("Form", "Ignore Viewed", None))
-
-import res_rc

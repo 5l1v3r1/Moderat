@@ -30,7 +30,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     DATA = os.path.join(os.path.dirname(sys.argv[0]), 'DATA')
     modulesBank = {}
-    logViewers = {}
     clients = {}
 
     def __init__(self, reactor, plugins, plugins_dir, parent=None):
@@ -168,13 +167,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         '''
         self.action.remove_client()
 
-    def view_logs(self):
-        '''
-        Client Log Viewer
-        :return:
-        '''
-        self.action.log_viewer()
-
     def set_logs_settings(self):
         '''
         Set Client Log Settings
@@ -262,8 +254,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     def send_signal(self, data):
         if self.modulesBank.has_key(data['module_id']):
             self.modulesBank[data['module_id']].signal(data)
-        elif self.logViewers.has_key(data['module_id']):
-            self.logViewers[data['module_id']].signal(data)
 
     def closeEvent(self, *args, **kwargs):
         '''

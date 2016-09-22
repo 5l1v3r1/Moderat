@@ -8,8 +8,8 @@ from libs.gui import main
 from libs.moderat import Clients
 from libs.moderat.Decorators import *
 from libs.log_settings import LogSettings
-from LogViewer import LogViewer
 
+from modules.mlogviewer import main as mlogviewer
 from modules.mexplorer import main as mexplorer
 from modules.mshell import main as mshell
 from modules.mscript import main as mscript
@@ -105,26 +105,6 @@ class Actions:
                     self.moderat.moderator.send_msg('%s' % client, 'removeClient', session_id=self.moderat.session_id)
 
     @client_is_selected
-    def log_viewer(self):
-        for client_args in self.current_client():
-            client, alias, ip_address = client_args
-            if client:
-                module_id = id_generator()
-                client_config = {
-                        'moderator':    self.moderat.moderator,
-                        'moderat':      self.moderat,
-                        'client':       client,
-                        'alias':        alias,
-                        'ip_address':   ip_address,
-                        'os':           os,
-                        'session_id':   self.moderat.session_id,
-                        'assets':       self.moderat.assets,
-                        'module_id':    module_id,
-                }
-                self.moderat.logViewers[module_id] = LogViewer(client_config)
-                self.moderat.logViewers[module_id].show()
-
-    @client_is_selected
     def set_log_settings(self):
         self.settings_windows = {}
         for client_args in self.current_client():
@@ -151,6 +131,7 @@ class Actions:
     @client_is_selected
     def execute_module(self, module):
         modules = {
+            'logviewer': mlogviewer,
             'shell': mshell,
             'explorer': mexplorer,
             'scripting': mscript,
@@ -164,6 +145,7 @@ class Actions:
                 module_id = id_generator()
                 args = {
                     'moderator': self.moderat.moderator,
+                    'moderat':  self.moderat,
                     'client': client,
                     'alias': alias,
                     'ip_address': ip_address,

@@ -27,7 +27,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.module_id = args['module_id']
 
         title_prefix = self.client_alias if len(self.client_alias) > 0 else self.client_ip_address
-        self.setWindowTitle('[{}] {}'.format(title_prefix, _('VIEWER_WINDOW_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('VIEWER_WINDOW_TITLE')))
 
         self.plots = {}
 

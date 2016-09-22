@@ -25,7 +25,7 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.ip_address =args['ip_address']
 
         title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
-        self.setWindowTitle('[{}] {}'.format(title_prefix, _('MSHELL_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('MSHELL_TITLE')))
 
         self.console = console.Console()
         self.gridLayout.addWidget(self.console)

@@ -46,7 +46,7 @@ class mainPopup(QWidget, Ui_Form):
 
         title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
 
-        self.setWindowTitle('[{}] {}'.format(title_prefix, _('MEXPLORER_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('MEXPLORER_TITLE')))
 
         self.gui = QApplication.processEvents
 

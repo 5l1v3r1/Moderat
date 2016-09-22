@@ -18,7 +18,7 @@ class LogSettings(QWidget, LogSettingsUi):
         self.alias = args['alias']
         self.ip_address = args['ip_address']
         title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
-        self.setWindowTitle('[{}] {}'.format(title_prefix, _('LOG_SETTINGS_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('LOG_SETTINGS_TITLE')))
 
         self.moderator = args['moderator']
         self.client = args['client']

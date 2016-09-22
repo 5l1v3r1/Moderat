@@ -82,18 +82,13 @@ class Actions:
 
     @client_is_selected
     def set_alias(self):
-        '''
-        Set Alias For Client
-        :return:
-        '''
+        text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
         for client_args in self.current_client():
             client, alias, ip_address = client_args
-            if client:
-                text, ok = QInputDialog.getText(self.moderat, _('ALIAS_SET'), _('ALIAS_NAME'))
-                if ok:
-                    unicode_text = unicode(text)
-                    self.moderat.moderator.send_msg('%s %s' % (client, unicode_text), 'setAlias',
-                                                    session_id=self.moderat.session_id)
+            if client and ok:
+                unicode_text = unicode(text)
+                self.moderat.moderator.send_msg('%s %s' % (client, unicode_text), 'setAlias',
+                                                session_id=self.moderat.session_id)
 
     @client_is_selected
     def remove_client(self):
@@ -210,12 +205,12 @@ class Actions:
     # Administrators
     @client_is_selected
     def administrator_set_moderator(self):
+        text, ok = QInputDialog.getText(self.moderat, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'),
+                                        QLineEdit.Normal)
         for client_args in self.current_client():
             client, alias, ip_address = client_args
-            if client:
-                text, ok = QInputDialog.getText(self.moderat, _('SET_MODERATOR_TITLE'), _('SET_MODERATOR_USERNAME'), QLineEdit.Normal)
-                if ok:
-                    self.moderat.moderator.send_msg('%s %s' % (client, text), 'setModerator', session_id=self.moderat.session_id, _to=client)
+            if client and ok:
+                self.moderat.moderator.send_msg('%s %s' % (client, text), 'setModerator', session_id=self.moderat.session_id, _to=client)
 
     def administrator_get_moderators(self):
         self.moderat.moderator.send_msg(message='getModerators', mode='getModerators', session_id=self.moderat.session_id)

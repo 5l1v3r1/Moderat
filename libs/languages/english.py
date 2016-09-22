@@ -47,14 +47,8 @@ tr = {
     # END MESSAGE BOX
 
     # RIGHT CLICK MENU
-    'RM_SET_ALIAS':                 u'Set Alias',
-    'RM_VIEW_LOGS':                 u'Log Viewer',
-    'RM_SHELL':                     u'Shell',
-    'RM_EXPLORER':                  u'File Manager',
-    'RM_SCRIPTING':                 u'Scripting',
-    'RM_TERMINATE':                 u'Terminate',
-    'RM_DESKTOP':                   u'Desktop Preview',
-    'RM_CAMERA':                    u'Webcam Preview',
+    'SET_ALIAS':                 u'Set Alias',
+    'RELOAD_CLIENT':             u'Reload',
     # END RIGHT CLICK MENU
 
     # CLIENT INFO
@@ -146,7 +140,7 @@ tr = {
     # END MWEBCAM
 
     # LOG VIEWER
-    'VIEWER_WINDOW_TITLE':          u'Moderat - Log Viewer',
+    'VIEWER_WINDOW_TITLE':          u'Log Viewer',
     'VIEWER_SCREENSHOTS_TAB':       u'Screenshots',
     'VIEWER_KEYLOGS_TAB':           u'Keylogs',
     'VIEWER_AUDIO_TAB':             u'Audio',

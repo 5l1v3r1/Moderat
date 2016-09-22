@@ -651,36 +651,6 @@ color: #cff7f8;
             <attribute name="verticalHeaderVisible">
              <bool>false</bool>
             </attribute>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>New Row</string>
-             </property>
-            </row>
             <column>
              <property name="text">
               <string>Moderator</string>
@@ -731,31 +701,6 @@ color: #cff7f8;
               <string>Active Window Title</string>
              </property>
             </column>
-            <item row="0" column="0">
-             <property name="text">
-              <string>fasf</string>
-             </property>
-            </item>
-            <item row="1" column="0">
-             <property name="text">
-              <string>asda</string>
-             </property>
-            </item>
-            <item row="2" column="0">
-             <property name="text">
-              <string>sfa</string>
-             </property>
-            </item>
-            <item row="2" column="1">
-             <property name="text">
-              <string>sasf</string>
-             </property>
-            </item>
-            <item row="3" column="0">
-             <property name="text">
-              <string>sfas</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>

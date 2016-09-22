@@ -47,14 +47,8 @@ tr = {
     # END MESSAGE BOX
 
     # RIGHT CLICK MENU
-    'RM_SET_ALIAS':                 u'სახელის შექმნა',
-    'RM_VIEW_LOGS':                 u'ლოგები',
-    'RM_SHELL':                     u'ბრძანებები',
-    'RM_EXPLORER':                  u'ფაილების მენეჯერი',
-    'RM_SCRIPTING':                 u'პროგრამირება',
-    'RM_TERMINATE':                 u'გათიშვა',
-    'RM_DESKTOP':                   u'ეკრანი',
-    'RM_CAMERA':                    u'ვებ კამერა',
+    'SET_ALIAS':                 u'სახელის შექმნა',
+    'RELOAD_CLIENT':             u'გადატვირთვა',
     # END RIGHT CLICK MENU
 
     # CLIENT INFO
@@ -146,7 +140,7 @@ tr = {
     # END MWEBCAM
 
     # LOG VIEWER
-    'VIEWER_WINDOW_TITLE':          u'Moderat - ჩანაწერები',
+    'VIEWER_WINDOW_TITLE':          u'ჩანაწერები',
     'VIEWER_SCREENSHOTS_TAB':       u'სქრინები',
     'VIEWER_KEYLOGS_TAB':           u'კლავიატურა',
     'VIEWER_AUDIO_TAB':             u'მიკროფონი',
@@ -175,11 +169,7 @@ tr = {
     'INCORRECT_CREDENTIALS':    u'არასწორი მომხმარებელი ან პაროლი',
     # END LOG IN
 
-    # ADMINISTRATOR
-    'ADMINISTRATOR_RM_ADMINISTRATOR':   u'ადმინისტრირება',
-    'ADMINISTRATOR_RM_SET_MODERATOR':   u'მოდერატორზე მიბმა',
-
-    'SET_MODERATOR_TITLE':              u'ადმინისტრატორზე მიბმა',
+    'SET_MODERATOR_TITLE':              u'მოდერატორზე მიბმა',
     'SET_MODERATOR_USERNAME':           u'მოდერატორი: ',
 
     'MODERATORS_PRIVILEGES_ADMINISTRATOR':  u'ადმინისტრატორი',

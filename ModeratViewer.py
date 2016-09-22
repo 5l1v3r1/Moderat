@@ -15,7 +15,7 @@ from libs.moderat.Modes import Modes
 from libs.moderat.Config import Config
 from libs.moderat.Settings import Settings
 from libs.moderat.Decorators import *
-from libs.gui import triggers, shortcuts
+from libs.gui import triggers, shortcuts, rmenu
 from ui import gui
 
 # Multi Lang
@@ -49,6 +49,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         # Init Settings
         self.config = Config()
         self.settings = Settings(self)
+        self.rmenu = rmenu.moderatRightClickMenu(self)
         self.SERVER_HOST = self.config.ip_address
         self.SERVER_PORT = self.config.port
         # Session ID

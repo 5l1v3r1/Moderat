@@ -1,7 +1,6 @@
 
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
-
 import socket
 import time
 import ast

@@ -12,7 +12,16 @@ class moderatRightClickMenu:
         self.moderat = moderat
 
         self.moderat.clientsTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.moderat.connect(self.moderat.clientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'), self.online_clients_menu)
+        self.moderat.connect(self.moderat.clientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
+                             self.online_clients_menu)
+
+        self.moderat.offlineClientsTable.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.moderat.connect(self.moderat.offlineClientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
+                             self.offline_clients_menu)
+
+        self.moderat.moderatorsTable.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.moderat.connect(self.moderat.moderatorsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
+                             self.moderators_menu)
 
     def online_clients_menu(self, point):
         self.moderat.emenu = QMenu(self.moderat)
@@ -45,3 +54,27 @@ class moderatRightClickMenu:
                                              self.moderat.set_moderator)
 
         self.moderat.emenu.exec_(self.moderat.clientsTable.mapToGlobal(point))
+
+    def offline_clients_menu(self, point):
+        self.moderat.emenu = QMenu(self.moderat)
+        if self.moderat.offlineClientsTable.currentRow() >= 0:
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/log_viewer.png'), _('VIEWER_WINDOW_TITLE'),
+                                         lambda: self.moderat.execute_module(module='logviewer'))
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/set_alias.png'), _('SET_ALIAS'),
+                                         self.moderat.set_alias)
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/trash.png'), _('REMOVE_CLIENT'),
+                                         self.moderat.remove_client)
+        self.moderat.emenu.exec_(self.moderat.offlineClientsTable.mapToGlobal(point))
+
+    def moderators_menu(self, point):
+        self.moderat.emenu = QMenu(self.moderat)
+        if self.moderat.moderatorsTable.currentRow() >= 0:
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/add_moderator.png'), _('MODERATOR_ADD_MDOERATOR'),
+                                         self.moderat.create_moderator)
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/password.png'), _('MODERATOR_CHANGE_PASSWORD'),
+                                         self.moderat.change_moderator_password)
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/privileges.png'), _('MODERATOR_CHANGE_GROUP'),
+                                         self.moderat.change_moderator_privilege)
+            self.moderat.emenu.addAction(QIcon(':/icons/assets/trash.png'), _('MODERATOR_REMOVE'),
+                                         self.moderat.remove_moderator)
+        self.moderat.emenu.exec_(self.moderat.moderatorsTable.mapToGlobal(point))

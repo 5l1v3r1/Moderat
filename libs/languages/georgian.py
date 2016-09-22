@@ -49,6 +49,7 @@ tr = {
     # RIGHT CLICK MENU
     'SET_ALIAS':                 u'სახელის შექმნა',
     'RELOAD_CLIENT':             u'გადატვირთვა',
+    'REMOVE_CLIENT':             u'წაშლა',
     # END RIGHT CLICK MENU
 
     # CLIENT INFO
@@ -177,8 +178,10 @@ tr = {
     'MODERATOR_ONLINE':                     u'ჩართული',
     'MODERATOR_OFFLINE':                    u'გამორთული',
 
-    'MODERATOR_GET_MODERATORS':             u'განახლება',
     'MODERATOR_ADD_MDOERATOR':              u'დამატება',
+    'MODERATOR_CHANGE_PASSWORD':            u'პაროლის შეცვლა',
+    'MODERATOR_CHANGE_GROUP':               u'უფლებების შეცვლა',
+    'MODERATOR_REMOVE':                     u'წაშლა',
 
     'MODERATORS_HEADER_ID':                 u'იდენტიფიკატორი',
     'MODERATORS_HEADER_ONLINE':             u'ჩართული',

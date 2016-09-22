@@ -16,7 +16,6 @@ class moderatTriggers:
         self.moderat.viewLogsButton.clicked.connect(lambda: self.moderat.execute_module(module='logviewer'))
         self.moderat.logSettingsButton.clicked.connect(self.moderat.set_logs_settings)
         self.moderat.setAliasButton.clicked.connect(self.moderat.set_alias)
-        self.moderat.removeClientButton.clicked.connect(self.moderat.remove_client)
         self.moderat.updateSourceButton.clicked.connect(self.moderat.update_source)
         self.moderat.shellButton.clicked.connect(lambda: self.moderat.execute_module(module='shell'))
         self.moderat.explorerButton.clicked.connect(lambda: self.moderat.execute_module(module='explorer'))
@@ -28,6 +27,7 @@ class moderatTriggers:
         # Offline Menu Triggers
         self.moderat.viewOfflineLogsButton.clicked.connect(lambda: self.moderat.execute_module(module='logviewer'))
         self.moderat.setOfflineAliasButton.clicked.connect(self.moderat.set_alias)
+        self.moderat.removeClientButton.clicked.connect(self.moderat.remove_client)
 
         # Moderators Menu Triggers
         self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)

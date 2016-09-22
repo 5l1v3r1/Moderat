@@ -49,6 +49,7 @@ tr = {
     # RIGHT CLICK MENU
     'SET_ALIAS':                 u'Set Alias',
     'RELOAD_CLIENT':             u'Reload',
+    'REMOVE_CLIENT':             u'Remove',
     # END RIGHT CLICK MENU
 
     # CLIENT INFO
@@ -181,8 +182,10 @@ tr = {
     'MODERATOR_ONLINE':                     u'Online',
     'MODERATOR_OFFLINE':                    u'Offline',
 
-    'MODERATOR_GET_MODERATORS':             u'Refresh',
     'MODERATOR_ADD_MDOERATOR':              u'Add',
+    'MODERATOR_CHANGE_PASSWORD':            u'Change Password',
+    'MODERATOR_CHANGE_GROUP':               u'Change Privileges',
+    'MODERATOR_REMOVE':                     u'Remove',
 
     'MODERATORS_HEADER_ID':                 u'ID',
     'MODERATORS_HEADER_ONLINE':             u'Online',

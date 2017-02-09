@@ -1,6 +1,9 @@
 plugin_name = r"""runClientAsAdmin"""
 plugin_description = r"""Administrator Privilege Escalation Plugin"""
-r_source = r"""def uac_escalation(argv=None, debug=False):
+plugin_type = r"""remote"""
+plugin_source = r"""
+
+def uac_escalation(argv=None, debug=False):
     if argv is None and Shell32.IsUserAnAdmin():
         return True
     if argv is None:
@@ -18,4 +21,3 @@ r_source = r"""def uac_escalation(argv=None, debug=False):
 
 uac_escalation()
 os._exit(1)"""
-l_source = r"""# Administrator Privilege Escalation Plugin"""

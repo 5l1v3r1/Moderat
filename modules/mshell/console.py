@@ -6,16 +6,6 @@ startup_message = r''' '''
 class Console(QTextEdit):
     def __init__(self, prompt='Moderat@shell$>', parent=None):
         QTextEdit.__init__(self, parent)
-        self.setStyleSheet('''
-        color: #2ecc71;
-        border: 1px ridge;
-        border-color: #34495e;
-        background-color: #34495e;
-        background-image: url(assets/bg.png);
-        background-repeat: no-repeat;
-        background-position: center;
-        padding: 5px;
-        ''')
         self.prompt = prompt
         self.history = []
         self.namespace = {}
@@ -35,7 +25,7 @@ class Console(QTextEdit):
         self.newPrompt()
 
     def newPrompt(self):
-        prompt = '<font color="#f1c40f">'+self.prompt+'</font> '
+        prompt = '<font color="#227a5d">'+self.prompt+'</font> '
         self.append(prompt)
         self.moveCursor(QTextCursor.End)
 

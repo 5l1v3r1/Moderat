@@ -3,15 +3,11 @@ from PyQt4.QtCore import *
 
 import main_ui
 
-from libs.language import Translate
+from libs.dialogs import message
 
 import ast
 import zlib
 from PIL import Image, ImageQt
-
-# Multi Lang
-translate = Translate()
-_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -19,17 +15,22 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def __init__(self, args):
         QWidget.__init__(self)
         self.setupUi(self)
+        self.anim = QPropertyAnimation(self, 'windowOpacity')
+        self.anim.setDuration(500)
+        self.anim.setStartValue(0)
+        self.anim.setEndValue(1)
+        self.anim.start()
 
-        self.moderator = args['moderator']
+        self.moderat = args['moderat']
         self.client = args['client']
-        self.session_id = args['session_id']
         self.module_id = args['module_id']
         self.alias = args['alias']
         self.ip_address = args['ip_address']
+        self.p2p = args['p2p']
 
         title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
 
-        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('MWEBCAM_TITLE')))
+        self.setWindowTitle(u'{}[{}] {}'.format('(P2P)' if self.p2p else '', title_prefix, self.moderat.MString('MWEBCAM_TITLE')))
 
         self.saveButton.setDisabled(True)
         self.clearButton.setDisabled(True)
@@ -43,11 +44,19 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.callback(data)
 
     def get_screenshot(self):
-        self.moderator.send_msg('getWebcam', 'getWebcam', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.moderat.send_message('getWebcam',
+                                  'getWebcam',
+                                  session_id=self.moderat.session_id,
+                                  _to=self.client,
+                                  module_id=self.module_id,
+                                  p2p=self.p2p)
         self.callback = self.recv_screenshot
 
     def recv_screenshot(self, data):
         webcam_dict = data['payload']
+        if webcam_dict == 'noWebcamError':
+            message.error(self.moderat.MString('MSGBOX_ERROR'), self.moderat.MString('NOWEBCAM_ERROR'))
+            return
         try:
             camera_info = ast.literal_eval(webcam_dict)
             im = Image.frombytes('RGB', (int(camera_info['width']), int(camera_info['height'])),
@@ -78,9 +87,12 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.clearButton.setDisabled(True)
 
     def resizeEvent(self, event):
+        self.loading.resize(event.size())
         if self.cameraLabel.pixmap():
             self.cameraLabel.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(self.current_bits)).scaled(
                 self.cameraLabel.width(), self.cameraLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+
+        event.accept()
 
     def always_top(self):
         if self.alwaysTopButton.isChecked():

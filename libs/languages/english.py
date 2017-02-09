@@ -9,18 +9,107 @@ tr = {
     'INITIALIZING':                 u'Initializing',
     'MODERAT_SETTINGS':             u'Settings',
     'RESTART_PROMPT':               u'Restart Moderat?',
+    'MENU_CONNECT':                 u'Connect',
+    'MENU_DISCONNECT':              u'Disconnect',
+    'MENU_SETTINGS':                u'Settings',
     # END MAIN
 
+    'PAGINATION_PREV':          u'Prev',
+    'PAGINATION_NEXT':          u'Next',
+
+    'UNKNOWN_MODE':         u'Unknown Mode',
+    'NOWEBCAM_ERROR':       u'Client Has No Web Camera Device',
+
+    'REMOTE_SERVER':        u'Remote Server',
+    'CONNECT':              u'Connect',
+    'DISCONNECT':           u'Disconnect',
+    'EXIT':                 u'Exit',
+    'LOCAL_SERVER':         u'Local Server',
+    'START_SERVER':         u'Start Server',
+    'STOP_SERVER':          u'Stop Server',
+    'FILTERS':              u'Filters',
+    'SETUP_FILTERS':        u'Setup Filters',
+    'RUN_SETTINGS':         u'Run Settings',
+
+    # SETTINGS
+    'SETTINGS_TITLE':               u'Moderat - Settings',
+    'SETTINGS_TAB_APPEARANCE':      u'Appearance',
+    'SETTINGS_TAB_RSERVER':         u'Remote Server',
+    'SETTINGS_TAB_DSERVER':         u'Direct Server',
+    'SETTINGS_TAB_GENERAL':         u'General',
+    'SETTINGS_TAB_ONLINE':          u'Online',
+    'SETTINGS_TAB_OFFLINE':         u'Offline',
+    'SETTINGS_TAB_DIRECT':          u'Direct',
+    'SETTINGS_INTERFACE':           u'Interface',
+    'SETTINGS_LANGUAGE':            u'Language',
+    'SETTINGS_OPACITY':             u'Window Opacity',
+    'SETTINGS_THEME':               u'Theme',
+    'SETTINGS_APPEARANCE':          u'Appearance',
+    'SETTINGS_ONLINE_PER_PAGE':     u'Online Clients Per Page',
+    'SETTINGS_HEADERS':             u'Headers',
+    'SETTINGS_MENU':                u'Menu',
+    # END SETTINGS
+
     # CLIENTS TAB
-    'CLIENTS_TAB_ONLINE':           u'Online',
+    'CLIENTS_TAB_ONLINE':           u'Server',
+    'CLIENTS_TAB_DIRECT':           u'Direct',
     'CLIENTS_TAB_OFFLINE':          u'Offline',
     'CLIENTS_TAB_MODERATORS':       u'Moderators',
     # END CLIENTS TAB
 
+    # MONTH
+    'JANUARY':          u'Jan',
+    'FEBRUARY':         u'Feb',
+    'MARCH':            u'Mar',
+    'APRIL':            u'Apr',
+    'MAY':              u'May',
+    'JUNE':             u'Jun',
+    'JULY':             u'Jul',
+    'AUGUST':           u'Aug',
+    'SEPTEMBER':        u'Sep',
+    'OCTOBER':          u'Oct',
+    'NOVEMBER':         u'Nov',
+    'DECEMBER':         u'Dec',
+
     # FILTERS
-    'FILTER_FILTER':                u'Filter',
-    'FILTER_ALL':                   u'All',
+    'SIDEBAR_FILTER':               u'Filters',
+    'FILTER_YES':                   u'Yes',
+    'FILTER_NO':                    u'No',
+    'FILTER_MAIN_GROUP':            u'Values',
+    'FILTER_MODERATOR':             u'Moderator',
+    'FILTER_IP_ADDRESS':            u'IP Address',
+    'FILTER_ALIAS':                 u'Alias',
+    'FILTER_USER':                  u'User',
+    'FILTER_TITLE':                 u'Active Window Title',
+    'FILTER_ADMINISTRATOR_LABEL':   u'Administrator',
+    'FILTER_DEVICES_GROUP':         u'Devices',
+    'FILTER_MICROPHONE_LABEL':      u'Microphone',
+    'FILTER_WEBCAMERA_LABEL':       u'Webcamera',
+    'FILTER_INFECTION_GROUP':       u'Infections',
+    'FILTER_USP_LABEL':             u'USB Spreading',
+    'FILTER_CONTROL_GROUP':         u'Controls',
+    'FILTER_SCREENSHOT_LABEL':      u'Screenshot Logs',
+    'FILTER_KEYLOGGER_LABEL':       u'Keylogger Logs',
+    'FILTER_AUDIO_LABEL':           u'Audio Logs',
     # END FILTERS
+
+    # FILTER BY
+    'FILTER_BY':           u'Filter By',
+
+    # NOTE
+    'MNOTE_TITLE':          u'Client Note',
+    'NOTE_GET':             u'Get Note',
+    'NOTE_ZOOM':            u'Zoom',
+    'NOTE_CREATE_LINK':     u'Create Link',
+    'NOTE_ENTER_URL':       u'Enter URL',
+    'NOTE_WARNING_MSG':     u'The document has been modified.\nDo you want to save your changes?',
+
+    # P2P
+    'P2P_TITLE':            u'Direct Connection',
+    'P2P_IPADDRESS':        u'IP Adress',
+    'P2P_PORT':             u'Port',
+    'P2P_CONNECT':          u'Connect',
+    'P2P_START':            u'Start Direct Connection',
 
     # CLIENTS TABLE HEADER
     'HEADER_IP_ADDRESS':            u'IP Address',
@@ -28,18 +117,23 @@ tr = {
     'HEADER_ID':                    u'ID',
     'HEADER_OS':                    u'OS',
     'HEADER_USER':                  u'User',
-    'HEADER_PRIVS':                 u'Privs',
-    'HEADER_MIC':                   u'Mic',
-    'HEADER_CAM':                   u'Cam',
+    'HEADER_DEVICES':               u'Devices',
+    'HEADER_INFECTION':             u'Infection',
+    'HEADER_LOGS':                  u'Control',
     'HEADER_ACTIVE_WINDOW_TITLE':   u'Active Window Title',
     'HEADER_MODERATOR':             u'Moderator',
     'HEADER_LAST_ONLINE':           u'Last Online',
+    'HEADER_MARK':                  u'Comment',
     # END CLIENTS TABLE HEADER
 
     # STATUS
     'STATUS_ONLINE':                u'Online',
     'STATUS_OFFLINE':               u'Offline',
     # END STATUS
+
+    # CHAT
+    'NO_MODERATOR_ONLINE':      u'Moderator Is Not Online',
+    # END CHAT
 
     # MESSAGE BOX
     'MSGBOX_ERROR':                 u'Error',
@@ -127,6 +221,7 @@ tr = {
 
     # MSCRIPTING
     'MSCRIPTING_TITLE':             u'Remote Scripting',
+    'MSCRIPTING_SEARCH_SCRIPT':     u'Search Script',
     'MSCRIPTING_NO_PLUGIN':         u'Plugin Not Found',
     'MSCRIPTING_PLUGIN_NAME':       u'Plugin Name',
     'MSCRIPTING_PLUGIN_DESC':       u'Plugin Description',
@@ -134,6 +229,16 @@ tr = {
     'MSCRIPTING_PLUGIN_SAVED':      u'Plugin Saved',
     'MSCRIPTING_REMOTE':            u'Remote',
     'MSCRIPTING_LOCAL':             u'Local',
+    'MSCRIPTING_MPRINT_OUTPUT':     u'Normal Output',
+    'MSCRIPTING_MDUMP_OUTPUT':      u'Dumped Output',
+    'MSCIPRINT_TIME':               u'Time',
+    'MSCIPRINT_LENGTH':             u'Content Length',
+    'MSCIPRINT_PATH':               u'Saved Path',
+    'MSCRIPTING_OPEN_FILE':         u'Insert From File',
+    'MSCRIPTING_PYTHON_FILES':      u'Python Files',
+    'MSCRIPTING_ALL_FILES':         u'All Files',
+    'MSCIPTING_PYTHON_CONSOLE':     u'Python Console',
+    'MSCRIPTING_SCRIPT_RUNNING':    u'(Waiting For Result) Python Script Started At - ',
     # END MSCIRPTING
 
     # MWEBCAM
@@ -141,7 +246,7 @@ tr = {
     # END MWEBCAM
 
     # LOG VIEWER
-    'VIEWER_WINDOW_TITLE':          u'Log Viewer',
+    'MVIEWER_TITLE':                u'Log Viewer',
     'VIEWER_SCREENSHOTS_TAB':       u'Screenshots',
     'VIEWER_KEYLOGS_TAB':           u'Keylogs',
     'VIEWER_AUDIO_TAB':             u'Audio',
@@ -164,11 +269,15 @@ tr = {
     # END LOG VIEWER
 
     # LOG IN
-    'LOG_IN_TITLE':             u'Loggin',
+    'LOG_IN_TITLE':             u'LogIn',
     'LOG_IN_USERNAME':          u'Username',
     'LOG_IN_PASSWORD':          u'Password',
     'INCORRECT_CREDENTIALS':    u'Incorrect Credentials',
-    # END LOG IN
+    'LOG_IN':                   u'Log In',
+    # DIALOG ERROR
+    'DIALOG_OK':                u'Ok',
+    'DIALOG_CANCEL':            u'Cancel',
+    'DIALOG_CLOSE':             u'Close',
 
     # ADMINISTRATOR
     'ADMINISTRATOR_RM_ADMINISTRATOR':   u'Administration',
@@ -182,6 +291,7 @@ tr = {
     'MODERATOR_ONLINE':                     u'Online',
     'MODERATOR_OFFLINE':                    u'Offline',
 
+    'MODERATOR_CREATE_CHAT':                u'Create Chat',
     'MODERATOR_ADD_MDOERATOR':              u'Add',
     'MODERATOR_CHANGE_PASSWORD':            u'Change Password',
     'MODERATOR_CHANGE_GROUP':               u'Change Privileges',
@@ -206,4 +316,15 @@ tr = {
     'ADMINISTRATION_QUESTION_REMOVE':       u'Are You Sure To Remove?',
     'ADMINISTRATION_PASSWORD_NOT_MATCH':    u"Passwords Doesn't Match",
     # END ADMINISTRATOR
+
+    # TRAY
+    'TRAY_CLOSE':           u'Exit',
+    'TRAY_SERVER_STARTED':  u'Server Started',
+    'TRAY_LISTEN_PORT':     u'Listen On Port',
+    'TRAY_SERVER_STOPPED':  u'Server Stopped',
+    'TRAY_CONNECTED':       u'Connected To Server',
+    'TRAY_NOT_CONNECTED':   u'Disconnect From Server',
+    'TRAY_CONNECTED_TO':    u'Server',
+    'TRAY_NEW_CLIENT':      u'New Client',
+    # END TRAY
 }

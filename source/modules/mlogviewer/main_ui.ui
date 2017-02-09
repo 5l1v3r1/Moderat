@@ -14,7 +14,7 @@
    <string>Moderat Log Viewer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="res.qrc">
+   <iconset>
     <normaloff>:/icons/assets/unhide.png</normaloff>:/icons/assets/unhide.png</iconset>
   </property>
   <property name="styleSheet">
@@ -77,7 +77,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        </property>
        <widget class="QWidget" name="screenshotsTab">
         <attribute name="icon">
-         <iconset resource="res.qrc">
+         <iconset resource="../../res.qrc">
           <normaloff>:/icons/assets/desktop.png</normaloff>:/icons/assets/desktop.png</iconset>
         </attribute>
         <attribute name="title">
@@ -191,7 +191,7 @@ color: #cff7f8;
        </widget>
        <widget class="QWidget" name="keylogsTab">
         <attribute name="icon">
-         <iconset resource="res.qrc">
+         <iconset resource="../../res.qrc">
           <normaloff>:/icons/assets/keyboard.png</normaloff>:/icons/assets/keyboard.png</iconset>
         </attribute>
         <attribute name="title">
@@ -287,7 +287,7 @@ color: #cff7f8;
        </widget>
        <widget class="QWidget" name="audioTab">
         <attribute name="icon">
-         <iconset resource="res.qrc">
+         <iconset resource="../../res.qrc">
           <normaloff>:/icons/assets/microphone.png</normaloff>:/icons/assets/microphone.png</iconset>
         </attribute>
         <attribute name="title">
@@ -678,22 +678,23 @@ padding-bottom: 10px;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton#downloadButton {
-position: relative;
-    padding: 10px 40px;
-    float: left;
-    border-radius: 4px;
-    font-size: 18px;
-    background-color: #2c3e50;
-    border-bottom: 5px solid #232a39; }
-QPushButton#downloadButton::pressed {
-  border-bottom: 1px solid;
-}</string>
+			background-color: #27ae60;
+			font: 14pt &quot;MS Shell Dlg 2&quot;;
+			border: none;
+			border-radius: none;
+			padding: 15px;
+			margin: 0px;
+            }
+
+QPushButton#downloadButton:pressed {
+            background-color: #2ecc71;
+            }</string>
             </property>
             <property name="text">
              <string>Download</string>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../../res.qrc">
               <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
             </property>
             <property name="iconSize">
@@ -826,7 +827,7 @@ background-color: #2c3e50;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="res.qrc">
+                  <iconset resource="../../res.qrc">
                    <normaloff>:/icons/assets/keyboard.png</normaloff>
                    <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/keyboard.png</iconset>
                  </property>
@@ -955,7 +956,7 @@ background-color: #2c3e50;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="res.qrc">
+                  <iconset resource="../../res.qrc">
                    <normaloff>:/icons/assets/microphone.png</normaloff>
                    <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/microphone.png</iconset>
                  </property>
@@ -1084,7 +1085,7 @@ background-color: #2c3e50;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="res.qrc">
+                  <iconset resource="../../res.qrc">
                    <normaloff>:/icons/assets/desktop.png</normaloff>
                    <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/desktop.png</iconset>
                  </property>
@@ -1225,7 +1226,7 @@ background-color: #2c3e50;
                 <string>Ignore Viewed</string>
                </property>
                <property name="icon">
-                <iconset resource="res.qrc">
+                <iconset resource="../../res.qrc">
                  <normaloff>:/icons/assets/eye.png</normaloff>
                  <activeon>:/icons/assets/mark.png</activeon>:/icons/assets/eye.png</iconset>
                </property>
@@ -1256,7 +1257,7 @@ background-color: #2c3e50;
   </layout>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../res.qrc"/>
  </resources>
  <connections/>
 </ui>

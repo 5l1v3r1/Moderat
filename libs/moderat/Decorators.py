@@ -1,5 +1,3 @@
-
-
 def connected_to_server(function):
     '''
     Check If Moderator Connected To Server
@@ -33,6 +31,19 @@ def client_is_selected(function):
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except TypeError:
-            pass
+        except Exception as e:
+            print e
+    return wrapper
+
+
+def update_clients(function):
+    '''
+    Update Online & Offline Tables
+    :param function:
+    :return:
+    '''
+    def wrapper(*args, **kwargs):
+        if hasattr(args[0], 'moderat'):
+            function(*args, **kwargs)
+            args[0].moderat.tables.update_clients()
     return wrapper

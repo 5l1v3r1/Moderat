@@ -5,11 +5,6 @@ from PyQt4.QtCore import *
 import os
 
 from libs.wav_factory import spectrum_analyzer_image, audio_duration
-from libs.language import Translate
-
-# Multi Lang
-translate = Translate()
-_ = lambda _word: translate.word(_word)
 
 
 class mainPopup(QWidget, main_ui.Ui_Form):
@@ -17,17 +12,21 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def __init__(self, args):
         QWidget.__init__(self)
         self.setupUi(self)
+        self.anim = QPropertyAnimation(self, 'windowOpacity')
+        self.anim.setDuration(500)
+        self.anim.setStartValue(0)
+        self.anim.setEndValue(1)
+        self.anim.start()
 
-        self.moderator = args['moderator']
         self.moderat = args['moderat']
         self.client_id = args['client']
         self.client_alias = args['alias']
         self.client_ip_address = args['ip_address']
-        self.session_id = args['session_id']
         self.module_id = args['module_id']
+        self.p2p = args['p2p']
 
         title_prefix = self.client_alias if len(self.client_alias) > 0 else self.client_ip_address
-        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('VIEWER_WINDOW_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, self.moderat.MString('VIEWER_WINDOW_TITLE')))
 
         self.plots = {}
 
@@ -74,22 +73,22 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.audioTable.setColumnHidden(3, True)
 
     def set_language(self):
-        self.logsTab.setTabText(0, _('VIEWER_SCREENSHOTS_TAB'))
-        self.logsTab.setTabText(1, _('VIEWER_KEYLOGS_TAB'))
-        self.logsTab.setTabText(2, _('VIEWER_AUDIO_TAB'))
-        self.screenshotsTable.horizontalHeaderItem(0).setText(_('VIEWER_SCREENSHOT_PREVIEW'))
-        self.screenshotsTable.horizontalHeaderItem(1).setText(_('VIEWER_SCREENSHOT_INFO'))
-        self.keylogsTable.horizontalHeaderItem(0).setText(_('VIEWER_KEYLOGS_DATETIME'))
-        self.keylogsTable.horizontalHeaderItem(1).setText(_('VIEWER_KEYLOGS_INFO'))
-        self.audioTable.horizontalHeaderItem(0).setText(_('VIEWER_AUDIO_DURATION'))
-        self.audioTable.horizontalHeaderItem(1).setText(_('VIEWER_AUDIO_SPECTRUM'))
-        self.audioTable.horizontalHeaderItem(2).setText(_('VIEWER_AUDIO_DATETIME'))
-        self.clientIdLabel.setText(_('VIEWER_CLIENT_ID'))
-        self.clientAliasLabel.setText(_('VIEWER_CLIENT_ALIAS'))
-        self.clientIpLabel.setText(_('VIEWER_CLIENT_IP'))
-        self.downloadGroup.setTitle(_('VIEWER_DOWNLOAD_GROUP_TITLE'))
-        self.ignoreViewedCheck.setText(_('VIEWER_IGNOR_VIEWED'))
-        self.downloadButton.setText(_('VIEWER_DOWNLOAD'))
+        self.logsTab.setTabText(0, self.moderat.MString('VIEWER_SCREENSHOTS_TAB'))
+        self.logsTab.setTabText(1, self.moderat.MString('VIEWER_KEYLOGS_TAB'))
+        self.logsTab.setTabText(2, self.moderat.MString('VIEWER_AUDIO_TAB'))
+        self.screenshotsTable.horizontalHeaderItem(0).setText(self.moderat.MString('VIEWER_SCREENSHOT_PREVIEW'))
+        self.screenshotsTable.horizontalHeaderItem(1).setText(self.moderat.MString('VIEWER_SCREENSHOT_INFO'))
+        self.keylogsTable.horizontalHeaderItem(0).setText(self.moderat.MString('VIEWER_KEYLOGS_DATETIME'))
+        self.keylogsTable.horizontalHeaderItem(1).setText(self.moderat.MString('VIEWER_KEYLOGS_INFO'))
+        self.audioTable.horizontalHeaderItem(0).setText(self.moderat.MString('VIEWER_AUDIO_DURATION'))
+        self.audioTable.horizontalHeaderItem(1).setText(self.moderat.MString('VIEWER_AUDIO_SPECTRUM'))
+        self.audioTable.horizontalHeaderItem(2).setText(self.moderat.MString('VIEWER_AUDIO_DATETIME'))
+        self.clientIdLabel.setText(self.moderat.MString('VIEWER_CLIENT_ID'))
+        self.clientAliasLabel.setText(self.moderat.MString('VIEWER_CLIENT_ALIAS'))
+        self.clientIpLabel.setText(self.moderat.MString('VIEWER_CLIENT_IP'))
+        self.downloadGroup.setTitle(self.moderat.MString('VIEWER_DOWNLOAD_GROUP_TITLE'))
+        self.ignoreViewedCheck.setText(self.moderat.MString('VIEWER_IGNOR_VIEWED'))
+        self.downloadButton.setText(self.moderat.MString('VIEWER_DOWNLOAD'))
 
     def check_data_counts(self):
         '''
@@ -97,7 +96,11 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         :return:
         '''
         self.update_date()
-        self.moderator.send_msg('%s %s' % (self.client_id, self.date), 'countData', session_id=self.session_id, module_id=self.module_id)
+        self.moderat.send_message('%s %s' % (self.client_id, self.date),
+                                  'countData',
+                                  session_id=self.moderat.session_id,
+                                  module_id=self.module_id,
+                                  p2p=self.p2p)
         self.callback = self.recv_data_counts
 
     def recv_data_counts(self, data):
@@ -165,7 +168,11 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         if not os.path.exists(self.audios_dir):
             os.makedirs(self.audios_dir)
 
-        self.moderator.send_msg(download_info, 'downloadLogs', module_id=self.module_id)
+        self.moderat.send_message(download_info,
+                                  'downloadLogs',
+                                  module_id=self.module_id,
+                                  session_id=self.moderat.session_id,
+                                  p2p=self.p2p)
         self.callback = self.recv_download_logs
 
     def recv_download_logs(self, data):

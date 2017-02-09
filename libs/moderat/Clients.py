@@ -6,8 +6,6 @@ class Clients:
     def __init__(self, moderat):
         self.moderat = moderat
 
-
-
     def store_clients(self, clients):
         for client in clients.keys():
             if clients[client]['status']:

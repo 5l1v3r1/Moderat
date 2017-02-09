@@ -2,7 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 
-class moderatShortcuts:
+class ModeratShortcuts:
     def __init__(self, moderat):
         self.moderat = moderat
 
@@ -12,7 +12,6 @@ class moderatShortcuts:
         # Disconnect From Server
         self.moderat.connect(QShortcut(QKeySequence('Ctrl+D'), self.moderat), SIGNAL('activated()'),
                              lambda: self.moderat.on_moderator_connect_fail(reason='Manually Disconnected'))
-
         # View Logs
         self.moderat.connect(QShortcut(QKeySequence('Ctrl+L'), self.moderat), SIGNAL('activated()'),
                              lambda: self.moderat.execute_module(module='logviewer'))

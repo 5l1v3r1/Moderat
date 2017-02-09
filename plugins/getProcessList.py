@@ -1,8 +1,7 @@
-plugin_name = 'getProcessList'
-
-plugin_description = 'Get Process List'
-
-r_source = '''
+plugin_name = r"""getProcessList"""
+plugin_description = r"""Get Process List"""
+plugin_type = r"""remote"""
+plugin_source = r"""
 
 EnumProcesses = Psapi.EnumProcesses
 EnumProcesses.restype = ctypes.wintypes.BOOL
@@ -35,16 +34,4 @@ def get_processes_list():
                 PROCESSES[ProcessId] = filename
             CloseHandle(hProcess)
     return PROCESSES
-
-l_source = ''
-
-def terminateProcess(PID):
-    hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, False, PID)
-    TerminateProcess(hProcess, 1)
-    return 'processTerminated'
-
-processes = get_processes_list()
-for i in processes.keys():
-    mprint += 'PID: %s, NAME: %s<br>' % (i, processes[i])
-
-'''
+"""

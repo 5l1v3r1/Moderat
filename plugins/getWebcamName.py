@@ -1,9 +1,8 @@
-plugin_name = 'getWebcamName'
+plugin_name = r"""getWebcamName"""
+plugin_description = r"""Get Name of Webcamera"""
+plugin_type = r"""remote"""
 
-plugin_description = 'Get Name of Webcamera'
-
-r_source = '''
-
+plugin_source = """
 try:
     import vidcap
     cam = vidcap.new_Dev(0, 0)
@@ -11,7 +10,4 @@ try:
     del cam
 except:
     mprint = 'NoDevice'
-
-'''
-
-l_source = ''
+"""

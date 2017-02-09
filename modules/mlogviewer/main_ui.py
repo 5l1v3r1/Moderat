@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'logViewer.ui'
+# Form implementation generated from reading ui file 'main_ui.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -384,16 +384,17 @@ class Ui_Form(object):
         self.downloadButton.setMinimumSize(QtCore.QSize(0, 0))
         self.downloadButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.downloadButton.setStyleSheet(_fromUtf8("QPushButton#downloadButton {\n"
-"position: relative;\n"
-"    padding: 10px 40px;\n"
-"    float: left;\n"
-"    border-radius: 4px;\n"
-"    font-size: 18px;\n"
-"    background-color: #2c3e50;\n"
-"    border-bottom: 5px solid #232a39; }\n"
-"QPushButton#downloadButton::pressed {\n"
-"  border-bottom: 1px solid;\n"
-"}"))
+"            background-color: #27ae60;\n"
+"            font: 14pt \"MS Shell Dlg 2\";\n"
+"            border: none;\n"
+"            border-radius: none;\n"
+"            padding: 15px;\n"
+"            margin: 0px;\n"
+"            }\n"
+"\n"
+"QPushButton#downloadButton:pressed {\n"
+"            background-color: #2ecc71;\n"
+"            }"))
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/download.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.downloadButton.setIcon(icon4)
@@ -483,8 +484,8 @@ class Ui_Form(object):
 "}"))
         self.keylogsEnableButton.setText(_fromUtf8(""))
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/keyboard.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mark.png")), QtGui.QIcon.Active, QtGui.QIcon.On)
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/keyboard.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.keylogsEnableButton.setIcon(icon5)
         self.keylogsEnableButton.setIconSize(QtCore.QSize(24, 24))
         self.keylogsEnableButton.setCheckable(True)
@@ -544,8 +545,8 @@ class Ui_Form(object):
 "}"))
         self.audioEnableButton.setText(_fromUtf8(""))
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/microphone.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mark.png")), QtGui.QIcon.Active, QtGui.QIcon.On)
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/microphone.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.audioEnableButton.setIcon(icon6)
         self.audioEnableButton.setIconSize(QtCore.QSize(24, 24))
         self.audioEnableButton.setCheckable(True)
@@ -605,8 +606,8 @@ class Ui_Form(object):
 "}"))
         self.screenshotsEnableButton.setText(_fromUtf8(""))
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/desktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mark.png")), QtGui.QIcon.Active, QtGui.QIcon.On)
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/desktop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.screenshotsEnableButton.setIcon(icon7)
         self.screenshotsEnableButton.setIconSize(QtCore.QSize(24, 24))
         self.screenshotsEnableButton.setCheckable(True)
@@ -664,8 +665,8 @@ class Ui_Form(object):
 "background-color: #2c3e50;\n"
 "}"))
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/eye.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/mark.png")), QtGui.QIcon.Active, QtGui.QIcon.On)
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/assets/eye.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ignoreViewedCheck.setIcon(icon8)
         self.ignoreViewedCheck.setIconSize(QtCore.QSize(18, 18))
         self.ignoreViewedCheck.setCheckable(True)
@@ -721,3 +722,4 @@ class Ui_Form(object):
         self.screenshotsCountSplitterLabel.setText(_translate("Form", "/", None))
         self.screenshotsCountOldLabel.setText(_translate("Form", "0", None))
         self.ignoreViewedCheck.setText(_translate("Form", "Ignore Viewed", None))
+

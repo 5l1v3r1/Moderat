@@ -1,8 +1,7 @@
-plugin_name = 'getDrivesInfo'
-
-plugin_description = 'Get Info About Logical Drives'
-
-r_source = r"""
+plugin_name = r"""getDrivesInfo"""
+plugin_description = r"""Get Info About Logical Drives"""
+plugin_type = r"""remote"""
+plugin_source = r"""
 uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 type_values = {
 0: 'The drive type cannot be determined',
@@ -37,5 +36,3 @@ for letter in uppercase:
     bitmask >>= 1
 
 """
-
-l_source = r""

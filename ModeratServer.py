@@ -3,7 +3,7 @@ from twisted.internet.error import CannotListenError
 from Server.ModeratServer import *
 import os
 
-CLIENTS_PORT = 5545
+CLIENTS_PORT = 443
 MODERATORS_PORT = 1717
 
 try:

@@ -32,7 +32,7 @@ tr = {
     'RUN_SETTINGS':         u'Run Settings',
 
     # SETTINGS
-    'SETTINGS_TITLE':               u'Moderat - Settings',
+    'SETTINGS_TITLE':               u'Settings',
     'SETTINGS_TAB_APPEARANCE':      u'Appearance',
     'SETTINGS_TAB_RSERVER':         u'Remote Server',
     'SETTINGS_TAB_DSERVER':         u'Direct Server',

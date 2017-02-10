@@ -4,7 +4,6 @@ from Server.ModeratServer import *
 import os
 
 CLIENTS_PORT = 443
-MODERATORS_PORT = 1717
 
 try:
     from twisted.python import log

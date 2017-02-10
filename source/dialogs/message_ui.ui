@@ -17,10 +17,6 @@
    <iconset resource="../res.qrc">
     <normaloff>:/icons/assets/logo.png</normaloff>:/icons/assets/logo.png</iconset>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #2c3e50;
-color: #c9f5f7;</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="1">
     <widget class="QPushButton" name="okButton">
@@ -29,19 +25,6 @@ color: #c9f5f7;</string>
        <width>80</width>
        <height>0</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton#okButton {
-			background-color: #27ae60;
-			border: none;
-			border-radius: none;
-			padding: 10px;
-			margin: 0px;
-            }
-
-QPushButton#okButton:pressed {
-            background-color: #2ecc71;
-            }</string>
      </property>
      <property name="text">
       <string>OK</string>
@@ -69,22 +52,14 @@ QPushButton#okButton:pressed {
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="usernameGroup">
-     <property name="styleSheet">
-      <string notr="true">background-color: #34495e;
-border: 1px solid #2c3e50;
-padding: -3px;</string>
-     </property>
      <property name="title">
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="errorLabel">
-        <property name="styleSheet">
-         <string notr="true">color: #e74c3c; border: none;</string>
-        </property>
         <property name="text">
-         <string>Error Message</string>
+         <string>Message</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

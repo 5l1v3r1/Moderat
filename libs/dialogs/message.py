@@ -15,6 +15,7 @@ class show(QDialog, Ui_Dialog):
         self.anim.setEndValue(1)
         self.anim.start()
 
+        self.setStyleSheet(self.moderat.theme.stylesheet)
         self.errorLabel.setStyleSheet('color: {};border: none;'.format(color))
         self.okButton.clicked.connect(self.accept)
 

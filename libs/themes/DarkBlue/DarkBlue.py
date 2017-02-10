@@ -64,6 +64,7 @@ QPushButton {{
     background: #34495e;
     border: 2px outset #202d3a;
     border-radius: 3px;
+    min-width: 80px;
     padding: 5px;
     margin: 0px;
 }}
@@ -72,6 +73,7 @@ QPushButton[mainMenu="1"] {{
     border: none;
     border-radius: none;
     padding: 3px;
+    min-width: 10px;
     background-color: #2c3e50;
 }}
 
@@ -79,6 +81,7 @@ QPushButton[mainMenu="1"]:hover {{
     border: none;
     border-radius: none;
     padding: 3px;
+    min-width: 10px;
     background-color: #2c3e50;
 }}
 
@@ -86,6 +89,7 @@ QPushButton[mainMenu="1"]:pressed {{
     border: none;
     border-radius: none;
     padding: 3px;
+    min-width: 10px;
     background-color: #2c3e50;
 }}
 
@@ -93,18 +97,21 @@ QPushButton[counter="1"] {{
     border: none;
     padding: 3px;
     color: #33b288;
+    min-width: 10px;
     background: transparent;
 }}
 
 QPushButton[counter="1"]:hover {{
     border: none;
     padding: 3px;
+    min-width: 10px;
     background: transparent;
 }}
 
 QPushButton[counter="1"]:pressed {{
     border: none;
     padding: 3px;
+    min-width: 10px;
     background: transparent;
 }}
 
@@ -580,42 +587,49 @@ ICONS
 
 QPushButton[onlineClientsTab="1"] {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/online-clients.png);
 }}
 
 QPushButton[directClientsTab="1"] {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/direct.png);
 }}
 
 QPushButton[offlineClientsTab="1"] {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/offline-clients.png);
 }}
 
 QPushButton[moderatorsTab="1"] {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/moderators.png);
 }}
 
 QPushButton#appearanceButton {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/paint.png);
 }}
 
 QPushButton#rserverButton {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/connect.png);
 }}
 
 QPushButton#dserverButton {{
     border: none;
+    min-width: 10px;
     background: transparent;
     image: url({0}/direct.png);
 }}

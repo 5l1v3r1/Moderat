@@ -55,7 +55,9 @@ class mainPopup(QWidget, main_ui.Ui_Form):
     def recv_screenshot(self, data):
         webcam_dict = data['payload']
         if webcam_dict == 'noWebcamError':
-            message.error(self.moderat.MString('MSGBOX_ERROR'), self.moderat.MString('NOWEBCAM_ERROR'))
+            message.error(self.moderat,
+                          self.moderat.MString('MSGBOX_ERROR'),
+                          self.moderat.MString('NOWEBCAM_ERROR'))
             return
         try:
             camera_info = ast.literal_eval(webcam_dict)
@@ -93,12 +95,4 @@ class mainPopup(QWidget, main_ui.Ui_Form):
                 self.cameraLabel.width(), self.cameraLabel.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
         event.accept()
-
-    def always_top(self):
-        if self.alwaysTopButton.isChecked():
-            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
-            self.show()
-        else:
-            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
-            self.show()
 

@@ -21,8 +21,6 @@ class Login(QDialog, Ui_Dialog):
         self.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
 
         self.loginButton.clicked.connect(self.getCredentials)
-        self.addUsernameButton.clicked.connect(lambda: self.usernameLine.setFocus())
-        self.addPasswordButton.clicked.connect(lambda: self.passwordLine.setFocus())
 
         self.setWindowTitle(self.moderat.MString('LOG_IN_TITLE'))
         self.usernameLine.setPlaceholderText(self.moderat.MString('LOG_IN_USERNAME'))

@@ -207,7 +207,9 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
             self.editor.clear()
             self.editor.insertPlainText(self.moderat.plugins[plugin_name]['source'])
         else:
-            message.error(self.moderat.MString('MSCRIPTING_NO_PLUGIN'), self.moderat.MString('MSCRIPTING_NO_PLUGIN'))
+            message.error(self.moderat,
+                          self.moderat.MString('MSCRIPTING_NO_PLUGIN'),
+                          self.moderat.MString('MSCRIPTING_NO_PLUGIN'))
 
     def save_script(self):
         script_name, ok = QInputDialog.getText(self, self.moderat.MString('MSCRIPTING_PLUGIN_NAME'), self.moderat.MString('MSCRIPTING_PLUGIN_NAME'),
@@ -218,7 +220,9 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
             if ok:
                 # Check if script_name exists
                 if script_name in self.moderat.plugins.keys():
-                    message.error(self.moderat.MString('MSCRIPTING_PLUGIN_EXISTS'), self.moderat.MString('MSCRIPTING_PLUGIN_EXISTS'))
+                    message.error(self.moderat,
+                                  self.moderat.MString('MSCRIPTING_PLUGIN_EXISTS'),
+                                  self.moderat.MString('MSCRIPTING_PLUGIN_EXISTS'))
                     return
                 with open(os.path.join(self.moderat.plugins_dir, str(script_name) + '.py'), 'w') as plugin_file:
                     payload = 'plugin_name = r"""%s"""\n' % script_name
@@ -226,7 +230,9 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
                     payload += 'plugin_type = r"""remote"""\n'
                     payload += 'plugin_source = r"""%s"""\n' % self.editor.toPlainText()
                     plugin_file.write(payload)
-                    message.info(self.moderat.MString('MSCRIPTING_PLUGIN_SAVED'), self.moderat.MString('MSCRIPTING_PLUGIN_SAVED'))
+                    message.info(self.moderat,
+                                 self.moderat.MString('MSCRIPTING_PLUGIN_SAVED'),
+                                 self.moderat.MString('MSCRIPTING_PLUGIN_SAVED'))
 
     def open_list(self):
         self.listPopup = listPopup(self, self.moderat.plugins)

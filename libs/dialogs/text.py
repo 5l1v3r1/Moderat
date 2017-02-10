@@ -4,22 +4,22 @@ from text_ui import Ui_Dialog
 
 
 class Text(QDialog, Ui_Dialog):
-    def __init__(self, title, groupText, placeHolderText, okButton, cancelButton, value=''):
+    def __init__(self, moderat, title, groupText, placeHolderText, okButton, cancelButton, value=''):
         QWidget.__init__(self)
         self.setupUi(self)
+        self.moderat = moderat
         self.anim = QPropertyAnimation(self, 'windowOpacity')
         self.anim.setDuration(500)
         self.anim.setStartValue(0)
         self.anim.setEndValue(1)
         self.anim.start()
-
+        self.setStyleSheet(self.moderat.theme.stylesheet)
         self.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
 
         self.okButton.clicked.connect(self.getText)
         self.cancelButton.clicked.connect(self.reject)
 
         self.setWindowTitle(title)
-        self.textGroup.setTitle(groupText)
         self.textLine.setPlaceholderText(placeHolderText)
         self.textLine.setText(value)
         self.okButton.setText(okButton)
@@ -33,14 +33,14 @@ class Text(QDialog, Ui_Dialog):
         pass
 
 
-def get(title, groupText, placeHolderText='', okButton='Ok', cancelButton='Cancel', value=''):
-    dialog = Text(title, groupText, placeHolderText, okButton, cancelButton, value)
+def get(parent, title, groupText, placeHolderText='', okButton='Ok', cancelButton='Cancel', value=''):
+    dialog = Text(parent, title, groupText, placeHolderText, okButton, cancelButton, value)
     result = dialog.exec_()
     return result == QDialog.Accepted, dialog.getText()
 
 
-def get_password(title, groupText, placeHolderText='', okButton='Ok', cancelButton='Cancel'):
-    dialog = Text(title, groupText, placeHolderText, okButton, cancelButton)
+def get_password(parent, title, groupText, placeHolderText='', okButton='Ok', cancelButton='Cancel'):
+    dialog = Text(parent, title, groupText, placeHolderText, okButton, cancelButton)
     dialog.textLine.setEchoMode(QLineEdit.Password)
     result = dialog.exec_()
     return result == QDialog.Accepted, dialog.getText()

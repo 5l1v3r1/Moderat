@@ -67,7 +67,8 @@ class Actions:
     def set_alias(self):
         current_clients = self.current_client()
         client, alias, ip_address, p2p_mode = current_clients[0]
-        ok, value = text.get(self.moderat.MString('ALIAS_SET'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'),
+        ok, value = text.get(self.moderat,
+                             self.moderat.MString('ALIAS_SET'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'),
                              value=alias)
         for index, client_args in enumerate(current_clients):
             client, alias, ip_address, p2p_mode = client_args
@@ -90,7 +91,7 @@ class Actions:
     def send_p2p_start(self):
         current_clients = self.current_client()
         client, alias, ip_address, p2p_mode = current_clients[0]
-        ok, credentials = p2p.get(alias)
+        ok, credentials = p2p.get(self.moderat, alias)
         if ok:
             for client_args in current_clients:
                 client, alias, ip_address, p2p_mode = client_args
@@ -233,7 +234,8 @@ class Actions:
     # Administrators
     @client_is_selected
     def administrator_set_moderator(self):
-        ok, value = text.get(self.moderat.MString('SET_MODERATOR_TITLE'), self.moderat.MString('SET_MODERATOR_USERNAME'),
+        ok, value = text.get(self.moderat,
+                             self.moderat.MString('SET_MODERATOR_TITLE'), self.moderat.MString('SET_MODERATOR_USERNAME'),
                              self.moderat.MString('SET_MODERATOR_USERNAME'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
         for client_args in self.current_client():
             client, alias, ip_address, p2p_mode = client_args
@@ -247,13 +249,17 @@ class Actions:
 
     def administrator_create_moderator(self):
         # Get Username
-        username, ok = QInputDialog.getText(self.moderat, self.moderat.MString('ADMINISTRATION_INPUT_USERNAME'),
-                                            self.moderat.MString('ADMINISTRATION_USERNAME'), QLineEdit.Normal)
+        username, ok = QInputDialog.getText(self.moderat,
+                                            self.moderat.MString('ADMINISTRATION_INPUT_USERNAME'),
+                                            self.moderat.MString('ADMINISTRATION_USERNAME'),
+                                            QLineEdit.Normal)
         if ok and len(str(username)) > 0:
             username = str(username)
             # Get Password
-            password, ok = QInputDialog.getText(self.moderat, self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'),
-                                                self.moderat.MString('ADMINISTRATION_PASSWORD'), QLineEdit.Password)
+            password, ok = QInputDialog.getText(self.moderat,
+                                                self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'),
+                                                self.moderat.MString('ADMINISTRATION_PASSWORD'),
+                                                QLineEdit.Password)
             if ok and len(str(password)) > 3:
                 password = str(password)
                 # Get Privileges
@@ -264,20 +270,29 @@ class Actions:
                     self.moderat.moderator.send_msg('%s %s %s' % (username, password, admin), 'addModerator',
                                                     session_id=self.moderat.session_id)
                 else:
-                    message.error(self.moderat.MString('ADMINISTRATION_INCORRECT_PRIVILEGES'), self.moderat.MString('ADMINISTRATION_INCORRECT_PRIVILEGES'))
+                    message.error(self.moderat,
+                                  self.moderat.MString('ADMINISTRATION_INCORRECT_PRIVILEGES'),
+                                  self.moderat.MString('ADMINISTRATION_INCORRECT_PRIVILEGES'))
                     return
             else:
-                message.error(self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'), self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
+                message.error(self.moderat,
+                              self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'),
+                              self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
                 return
         else:
-            message.error(self.moderat.MString('ADMINISTRATION_INCORRECT_USERNAME'), self.moderat.MString('ADMINISTRATION_INCORRECT_USERNAME'))
+            message.error(self.moderat,
+                          self.moderat.MString('ADMINISTRATION_INCORRECT_USERNAME'),
+                          self.moderat.MString('ADMINISTRATION_INCORRECT_USERNAME'))
             return
 
     def administrator_change_moderator_password(self):
         for moderator_args in self.current_client():
             moderator = moderator_args
-            ok, password = text.get_password(self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'), self.moderat.MString('ADMINISTRATION_PASSWORD'),
-                                             self.moderat.MString('ADMINISTRATION_PASSWORD'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
+            ok, password = text.get_password(self.moderat,
+                                             self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'), self.moderat.MString('ADMINISTRATION_PASSWORD'),
+                                             self.moderat.MString('ADMINISTRATION_PASSWORD'),
+                                             self.moderat.MString('DIALOG_OK'),
+                                             self.moderat.MString('DIALOG_CANCEL'))
             if ok and len(str(password)) > 3:
                 password1 = str(password)
                 ok, password = text.get_password(self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'), self.moderat.MString('ADMINISTRATION_PASSWORD'),
@@ -289,14 +304,20 @@ class Actions:
                         self.moderat.moderator.send_msg('%s %s' % (moderator, password1), 'changePassword',
                                                         session_id=self.moderat.session_id)
                     else:
-                        message.error(self.moderat.MString('ADMINISTRATION_PASSWORD_NOT_MATCH'), self.moderat.MString('ADMINISTRATION_PASSWORD_NOT_MATCH'))
+                        message.error(self.moderat,
+                                      self.moderat.MString('ADMINISTRATION_PASSWORD_NOT_MATCH'),
+                                      self.moderat.MString('ADMINISTRATION_PASSWORD_NOT_MATCH'))
                         return
                 # if not password
                 else:
-                    message.error(self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'), self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
+                    message.error(self.moderat,
+                                  self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'),
+                                  self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
                     return
             else:
-                message.error(self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'), self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
+                message.error(self.moderat,
+                              self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'),
+                              self.moderat.MString('ADMINISTRATION_INCORRECT_PASSWORD'))
                 return
 
     def administrator_change_moderator_privilege(self):

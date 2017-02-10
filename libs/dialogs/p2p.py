@@ -13,19 +13,20 @@ class P2p(QDialog, Ui_Dialog):
         self.anim.setStartValue(0)
         self.anim.setEndValue(1)
         self.anim.start()
-
+        self.setStyleSheet(self.moderat.theme.stylesheet)
         self.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
 
         self.connectP2pButton.clicked.connect(self.getCredentials)
-        self.internalIpButton.clicked.connect(self.getInternalIpAddress)
-        self.externalIpButton.clicked.connect(self.getExternalIpAddress)
 
         self.setWindowTitle(self.moderat.MString('P2P_TITLE'))
         self.ipaddressLine.setPlaceholderText(self.moderat.MString('P2P_IPADDRESS'))
         self.portLine.setPlaceholderText(self.moderat.MString('P2P_PORT'))
         self.connectP2pButton.setText(self.moderat.MString('P2P_CONNECT'))
 
-        self.messageText.setText(message)
+        self.ipaddressLine.setText(self.moderat.settings.directServerDefaultIpAddress)
+        self.portLine.setText(str(self.moderat.settings.directServerDefaultPort))
+        self.messageText.setText('{} - {}'.format(message,
+                                           self.moderat.settings.directServerDefaultComment))
 
     def getCredentials(self):
         self.accept()
@@ -34,16 +35,6 @@ class P2p(QDialog, Ui_Dialog):
             'port': str(self.portLine.text()),
             'message': str(self.messageText.toPlainText())
         }
-
-    def getInternalIpAddress(self):
-        import socket
-        ip = socket.gethostbyname(socket.gethostname())
-        self.ipaddressLine.setText(ip)
-
-    def getExternalIpAddress(self):
-        from requests import get
-        ip = get('https://api.ipify.org').text
-        self.ipaddressLine.setText(ip)
 
     def closeEvent(self, QCloseEvent):
         pass

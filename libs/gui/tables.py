@@ -96,7 +96,6 @@ class updateClientsTable:
         # Online Clients Count
         self.moderat.online_clients_count = QPushButton('0')
         self.moderat.online_clients_count.setProperty('counter', '1')
-        self.moderat.online_clients_count.setMinimumWidth(30)
         self.moderat.online_clients_count.setFocusPolicy(Qt.NoFocus)
         self.moderat.online_clients_count.clicked.connect(lambda: self.moderat.clientsTabs.setCurrentIndex(0))
         self.moderat.clientsTabs.tabBar().setTabButton(0, QTabBar.RightSide, self.moderat.online_clients_count)
@@ -104,7 +103,6 @@ class updateClientsTable:
         # Offline Clients Count
         self.moderat.offline_clients_count = QPushButton('0')
         self.moderat.offline_clients_count.setProperty('counter', '1')
-        self.moderat.offline_clients_count.setMinimumWidth(30)
         self.moderat.offline_clients_count.setFocusPolicy(Qt.NoFocus)
         self.moderat.offline_clients_count.clicked.connect(lambda: self.moderat.clientsTabs.setCurrentIndex(2))
         self.moderat.clientsTabs.tabBar().setTabButton(2, QTabBar.RightSide, self.moderat.offline_clients_count)
@@ -112,7 +110,6 @@ class updateClientsTable:
         # Direct Clients Count
         self.moderat.direct_clients_count = QPushButton('0')
         self.moderat.direct_clients_count.setProperty('counter', '1')
-        self.moderat.direct_clients_count.setMinimumWidth(30)
         self.moderat.direct_clients_count.setFocusPolicy(Qt.NoFocus)
         self.moderat.direct_clients_count.clicked.connect(lambda: self.moderat.clientsTabs.setCurrentIndex(1))
         self.moderat.clientsTabs.tabBar().setTabButton(1, QTabBar.RightSide, self.moderat.direct_clients_count)
@@ -167,6 +164,7 @@ class updateClientsTable:
         # Arange Clients Table
         count = len(online_clients)
         self.moderat.clientsTable.setRowCount(len(current_clients))
+        print count
         self.moderat.online_clients_count.setText(str(count))
 
         for index, obj in enumerate(current_clients):

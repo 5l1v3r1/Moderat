@@ -95,23 +95,21 @@ QPushButton[mainMenu="1"]:pressed {{
 
 QPushButton[counter="1"] {{
     border: none;
-    padding: 3px;
     color: #33b288;
-    min-width: 10px;
+    min-width: 30px;
     background: transparent;
 }}
 
 QPushButton[counter="1"]:hover {{
     border: none;
-    padding: 3px;
-    min-width: 10px;
+    padding: 20px;
+    min-width: 30px;
     background: transparent;
 }}
 
 QPushButton[counter="1"]:pressed {{
     border: none;
-    padding: 3px;
-    min-width: 10px;
+    min-width: 30px;
     background: transparent;
 }}
 

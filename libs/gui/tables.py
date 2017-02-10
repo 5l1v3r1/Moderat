@@ -164,7 +164,6 @@ class updateClientsTable:
         # Arange Clients Table
         count = len(online_clients)
         self.moderat.clientsTable.setRowCount(len(current_clients))
-        print count
         self.moderat.online_clients_count.setText(str(count))
 
         for index, obj in enumerate(current_clients):

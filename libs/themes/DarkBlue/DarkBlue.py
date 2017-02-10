@@ -206,9 +206,9 @@ QLineEdit[filter="1"]:hover {{
 
 QComboBox {{
     background: #34495e;
-    border: none;
     selection-background-color: #395168;
-    padding: 0px;
+    padding: 5px;
+    border: 1px solid #243342;
 }}
 
 QComboBox QListView {{
@@ -657,6 +657,19 @@ QToolButton#runScript {{
 }}
 QToolButton#runTest {{
     border-image: url({0}/run-test.png);
+}}
+
+/*
+MEXPLORER
+*/
+QToolButton#upFolder {{
+    border-image: url({0}/add-file.png);
+}}
+QToolButton#newFile {{
+    border-image: url({0}/add-file.png);
+}}
+QToolButton#newFolder {{
+    border-image: url({0}/add-folder.png);
 }}
 
 '''.format(icons_path)

@@ -1,6 +1,6 @@
 from twisted.internet import reactor
 from twisted.internet.error import CannotListenError
-from Server.ModeratServer import *
+from MServer.ModeratServer import *
 import os
 
 CLIENTS_PORT = 443

@@ -68,7 +68,9 @@ class Actions:
         current_clients = self.current_client()
         client, alias, ip_address, p2p_mode = current_clients[0]
         ok, value = text.get(self.moderat,
-                             self.moderat.MString('ALIAS_SET'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('ALIAS_NAME'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'),
+                             self.moderat.MString('ALIAS_SET'), self.moderat.MString('ALIAS_NAME'),
+                             self.moderat.MString('ALIAS_NAME'), self.moderat.MString('DIALOG_OK'),
+                             self.moderat.MString('DIALOG_CANCEL'),
                              value=alias)
         for index, client_args in enumerate(current_clients):
             client, alias, ip_address, p2p_mode = client_args

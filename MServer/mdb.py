@@ -21,11 +21,39 @@ class MDB:
     def createAdministrator(self, username, password, privileges):
         password_hash = hashlib.md5()
         password_hash.update(password)
-        query = Moderators(moderator_id=username,
-                           moderator_password=password_hash.hexdigest(),
-                           moderator_privs=privileges)
+        query = Moderators(username=username,
+                           password=password_hash.hexdigest(),
+                           privileges=privileges)
         query.save()
 
+    def loginModerator(self, username, password):
+        moderator = Moderators.objects.get(username=username)
+        if moderator.username:
+            password_hash = hashlib.md5()
+            password_hash.update(password)
+            if moderator.password == password_hash.hexdigest():
+                return True
+        return False
+
+    def changePassword(self, username, new_password):
+        moderator = Moderators.objects.get(moderator_id=username)
+        if moderator.username:
+            password = hashlib.md5()
+            password.update(new_password)
+            moderator.password = password.hexdigest()
+            moderator.save()
+        return False
+
+    def changePrivileges(self, username, privilege):
+        moderator = Moderators.objects.get(moderator_id=username)
+        if moderator.privileges:
+            moderator.privileges = privilege
+            moderator.save()
+
+    def deleteModerator(self, username):
+        moderator = Moderators.objects.get(moderator_id=username)
+        if moderator.username:
+            moderator.delete()
 
 # TESTS
 db = MDB()

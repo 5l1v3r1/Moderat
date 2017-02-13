@@ -1,9 +1,9 @@
 import ast
 
-from Server.commands.libs import id
-from Server.commands.libs.AudioFactory import wav_generator
-from Server.commands.libs.KeyFactory import html_generator
-from Server.commands.libs.PhotoFactory import save_image
+from libs import id
+from libs.AudioFactory import wav_generator
+from libs.KeyFactory import html_generator
+from libs.PhotoFactory import save_image
 
 
 class CheckCommand:

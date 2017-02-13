@@ -3,13 +3,12 @@ import logging
 import coloredlogs
 import os
 import datetime
-import time
 
 from twisted.internet.protocol import ServerFactory
 from twisted.internet import task
 from twisted.protocols.basic import LineReceiver
 
-from db.DatabaseManagment import MDB
+from mdb import MDB
 from commands import client
 
 
@@ -47,7 +46,7 @@ class ModeratServerProtocol(LineReceiver):
             for key, value in self.factory.moderators.items():
                 if value['socket'] == self:
                     # Set Moderator Offline
-                    self.factory.database.set_status(value['username'], 0)
+                    self.factory.database.setModeratorLastOnline(value['username'])
                     self.factory.log.warning('[MODERATOR] Moderator (%s) Disconnected' % value['username'])
                     del self.factory.moderators[key]
         except KeyError:
@@ -90,12 +89,12 @@ class ModeratServerProtocol(LineReceiver):
                     command, username, password = payload.split()
 
                     # If Login Success
-                    if self.factory.database.login_user(username, password):
-                        privileges = self.factory.database.get_privs(username)
+                    if self.factory.database.loginModerator(username, password):
+                        privileges = self.factory.database.getPrivileges(username)
                         self.send_message(self, 'loginSuccess %s' % privileges, 'moderatorInitializing')
                         self.factory.moderators[session_id] = {'username': username, 'socket': self}
-                        self.factory.database.set_last_online(username, datetime.datetime.now())
-                        self.factory.database.set_status(username, 1)
+                        self.factory.database.setModeratorLastOnline(username)
+                        self.factory.database.setModeratorStatus(username, True)
 
                         self.factory.log.debug('[MODERATOR] Moderator (%s) Login Success' % username)
 
@@ -114,7 +113,7 @@ class ModeratServerProtocol(LineReceiver):
 
             if mode == 'getClients' and session_id in self.factory.moderators:
 
-                if self.factory.database.get_privs(moderator_username) == 1:
+                if self.factory.database.getPrivileges(moderator_username) == 1:
                     clients_ids = []
                     temp_clients_ids = self.factory.database.get_all_clients()
                     for client_id in temp_clients_ids:
@@ -396,8 +395,7 @@ class ModeratServerFactory(ServerFactory):
     database = MDB()
 
     # Clear Clients and Moderators Status
-    database.set_client_status_zero()
-    database.set_moderator_status_zero()
+    database.setAllOffline()
 
     moderators = {}
     clients = {}

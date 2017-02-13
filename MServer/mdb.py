@@ -2,12 +2,6 @@ import os
 import sys
 import hashlib
 from django.db.models import Q
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Server.settings")
-from django.core.wsgi import get_wsgi_application
-
-application = get_wsgi_application()
-
 from ModeratServer.models import *
 
 
@@ -17,6 +11,16 @@ class MDB:
         if moderatorsCount is 0:
             self.createAdministrator('admin', '1234', 1)
             print 'Administrator Created (admin, 1234)'
+
+    def setAllOffline(self):
+        all_moderators = Moderators.objects.all()
+        all_moderators.update(status=False)
+        all_clients = Clients.objects.all()
+        all_clients.update(status=False)
+
+    def createClient(self, moderat_id, client_id, client_ip_address):
+        query = Clients(pk=moderat_id, identifier=client_id, ip_address=client_ip_address,)
+        query.save()
 
     def createAdministrator(self, username, password, privileges):
         password_hash = hashlib.md5()
@@ -55,5 +59,21 @@ class MDB:
         if moderator.username:
             moderator.delete()
 
-# TESTS
-db = MDB()
+    def getPrivileges(self, username):
+        moderator = Moderators.objects.get(username=username)
+        if moderator.privileges:
+            return moderator.privileges
+
+    def setModeratorLastOnline(self, username):
+        moderator = Moderators.objects.get(username=username)
+        if moderator.privileges:
+            moderator.last_online = datetime.now()
+
+    def setModeratorStatus(self, username, state):
+        moderator = Moderators.objects.get(username=username)
+        if moderator.status:
+            moderator.status = state
+            moderator.save()
+
+# # TESTS
+# db = MDB()

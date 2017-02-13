@@ -57,6 +57,7 @@ class SocketModeratorFactory(ClientFactory):
         self.connect_success_callback()
 
     def got_msg(self, data):
+        print data
         self.recv_callback(ast.literal_eval(data))
 
     def send_msg(self, message, mode, _to='', session_id='', module_id='', end='[ENDOFMESSAGE]'):

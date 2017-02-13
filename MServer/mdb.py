@@ -9,7 +9,7 @@ class MDB:
     def __init__(self):
         moderatorsCount = Moderators.objects.all().count()
         if moderatorsCount is 0:
-            self.createAdministrator('admin', '1234', 1)
+            self.createModerator('admin', '1234', 1)
             print 'Administrator Created (admin, 1234)'
 
     def setAllOffline(self):
@@ -26,12 +26,18 @@ class MDB:
         return Clients.objects.all()
 
     def getClients(self, username):
-        return Clients.objects.filter(moderator_id=username)
+        all_clients = Clients.objects.filter(pk=self.getModeratorPk(username))
+        return all_clients
 
     def getClientAlias(self, identifier):
         client = Clients.objects.get(identifier=identifier)
         if client.alias:
             return client.alias
+
+    def getClientNote(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.note:
+            return client.note
 
     def getClientIPAddress(self, identifier):
         client = Clients.objects.get(identifier=identifier)
@@ -49,7 +55,7 @@ class MDB:
             return client.moderator_id
 
     def getOfflineClients(self, username):
-        clients = Clients.objects.filter(moderator_id=username,
+        clients = Clients.objects.filter(moderator_id=self.getModeratorPk(username),
                                          status=False)
         return clients
 
@@ -60,6 +66,12 @@ class MDB:
         client = Clients.objects.get(identifier=identifier)
         if client.alias:
             client.alias = alias
+            client.save()
+
+    def setClientNote(self, identifier, note):
+        client = Clients.objects.get(identifier=identifier)
+        if client.note:
+            client.note = note
             client.save()
 
     def setClientModerator(self, identifier, username):
@@ -87,7 +99,7 @@ class MDB:
         client = Clients.objects.get(identifier=identifier)
         return client.status
 
-    def createAdministrator(self, username, password, privileges):
+    def createModerator(self, username, password, privileges):
         password_hash = hashlib.md5()
         password_hash.update(password)
         query = Moderators(username=username,
@@ -126,19 +138,22 @@ class MDB:
 
     def getPrivileges(self, username):
         moderator = Moderators.objects.get(username=username)
-        if moderator.privileges:
+        if moderator:
             return moderator.privileges
 
     def setModeratorLastOnline(self, username):
         moderator = Moderators.objects.get(username=username)
-        if moderator.privileges:
+        if moderator:
             moderator.last_online = datetime.now()
 
     def setModeratorStatus(self, username, state):
         moderator = Moderators.objects.get(username=username)
-        if moderator.status:
+        if moderator:
             moderator.status = state
             moderator.save()
+
+    def getModeratorPk(self, username):
+        return Moderators.objects.get(username=username).pk
 
     def getModerators(self):
         return Moderators.objects.all()

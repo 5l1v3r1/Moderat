@@ -236,7 +236,7 @@ class updateClientsTable:
                 item.setIcon(QIcon(self.get_ip_location(client['ip_address'])))
                 self.moderat.offlineClientsTable.setItem(index, 3, item)
 
-                item = QTableWidgetItem(self.mdate(client['last_online']))
+                item = QTableWidgetItem(client['last_online'])
                 item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 self.moderat.offlineClientsTable.setItem(index, 4, item)
 
@@ -296,7 +296,7 @@ class updateClientsTable:
             self.moderat.moderatorsTable.setItem(index, 4, item)
 
             # add moderator last online
-            item = QTableWidgetItem(self.mdate(moderators[key]['last_online']))
+            item = QTableWidgetItem(moderators[key]['last_online'])
             item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             self.moderat.moderatorsTable.setItem(index, 5, item)
 
@@ -340,25 +340,3 @@ class updateClientsTable:
                 return os.path.join(self.flags, 'blank.png')
         except:
             return os.path.join(self.flags, 'blank.png')
-
-    def mdate(self, _datetime):
-
-        month = {
-            1: self.moderat.MString('JANUARY'),
-            2: self.moderat.MString('FEBRUARY'),
-            3: self.moderat.MString('MARCH'),
-            4: self.moderat.MString('APRIL'),
-            5: self.moderat.MString('MAY'),
-            6: self.moderat.MString('JUNE'),
-            7: self.moderat.MString('JULY'),
-            8: self.moderat.MString('AUGUST'),
-            9: self.moderat.MString('SEPTEMBER'),
-            10: self.moderat.MString('OCTOBER'),
-            11: self.moderat.MString('NOVEMBER'),
-            12: self.moderat.MString('DECEMBER'),
-        }
-
-        normalized_datetime = datetime.datetime.strptime(_datetime, '%Y-%m-%d %H:%M:%S.%f')
-        return u'{date.day} {month} {date.year} ({date.hour}:{date.minute}:{date.second})'.format(
-            date=normalized_datetime, month=month[normalized_datetime.month]
-        )

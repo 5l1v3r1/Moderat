@@ -46,6 +46,7 @@ class ModeratServerProtocol(LineReceiver):
                 if value['socket'] == self:
                     # Set Moderator Offline
                     self.factory.database.setModeratorLastOnline(value['username'])
+                    self.factory.database.setModeratorStatus(value['username'], False)
                     self.factory.log.warning('[MODERATOR] Moderator (%s) Disconnected' % value['username'])
                     del self.factory.moderators[key]
         except KeyError:
@@ -168,11 +169,11 @@ class ModeratServerProtocol(LineReceiver):
                 splitted = payload.split('%SPLITTER%')
                 if len(splitted) == 2:
                     client_id, note_body = splitted
-                    self.factory.database.save_note(client_id, note_body)
+                    self.factory.database.setClientNote(client_id, note_body)
 
             # Get Note
             elif mode == 'getNote':
-                self.send_message(self, '{}'.format(self.factory.database.get_note(payload)), mode, module_id=module_id)
+                self.send_message(self, '{}'.format(self.factory.database.getClientNote(payload)), mode, module_id=module_id)
 
             # Set Alias For Client
             elif mode == 'setAlias':
@@ -297,28 +298,28 @@ class ModeratServerProtocol(LineReceiver):
                     self.factory.log.critical('[MALFORMED][TYPE] [MODE: {0}] [TYPE: {1}]'.format(mode, type(payload)))
 
             # Get Moderators List
-            elif mode == 'getModerators' and self.factory.database.get_privs(moderator_username) == 1:
-                all_moderators = self.factory.database.getClientModerator()
+            elif mode == 'getModerators' and self.factory.database.getPrivileges(moderator_username) == 1:
+                all_moderators = self.factory.database.getModerators()
                 result = {}
                 for moderator in all_moderators:
-                    all_clients_count = len(self.factory.database.get_clients(moderator[0]))
-                    offline_clients_count = len(self.factory.database.get_offline_clients(moderator[0]))
-                    result[moderator[0]] = {
-                        'privileges': moderator[2],
+                    all_clients_count = self.factory.database.getClients(moderator.username).count()
+                    offline_clients_count = self.factory.database.getOfflineClients(moderator.username).count()
+                    result[moderator.username] = {
+                        'privileges': moderator.privileges,
                         'offline_clients': offline_clients_count,
                         'online_clients': all_clients_count - offline_clients_count,
-                        'status': moderator[3],
-                        'last_online': moderator[4],
+                        'status': moderator.status,
+                        'last_online': moderator.last_online.strftime("%Y-%m-%d %H:%M:%S"),
                     }
                 self.send_message(self, result, 'getModerators')
 
             # ADMIN PRIVILEGES
             # Add Moderator
-            elif mode == 'addModerator' and self.factory.database.get_privs(moderator_username) == 1:
+            elif mode == 'addModerator' and self.factory.database.getPrivileges(moderator_username) == 1:
                 credentials = payload.split()
                 if len(credentials) == 3:
                     username, password, privileges = credentials
-                    self.factory.database.create_user(username, password, int(privileges))
+                    self.factory.database.createModerator(username, password, int(privileges))
                     self.factory.log.debug('[MODERATOR][{0}] ({1}) Created With Password: ({2}), Privileges: ({3})'.format(
                         moderator_username, username, password.replace(password[3:], '***'), privileges))
 
@@ -326,7 +327,7 @@ class ModeratServerProtocol(LineReceiver):
                 credentials = payload.split()
                 if len(credentials) == 2:
                     client_id, moderator_id = credentials
-                    self.factory.database.set_moderator(client_id, moderator_id)
+                    self.factory.database.setClientModerator(client_id, moderator_id)
                     self.factory.log.debug('[MODERATOR][{0}] Moderator Changed For Client ({1}) to ({2})'.format(
                         moderator_username, client_id, moderator_id))
 

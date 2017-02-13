@@ -16,7 +16,8 @@ class Moderators(models.Model):
 class Clients(models.Model):
     moderator_id = models.ForeignKey(Moderators)
     identifier = models.CharField(max_length=100)
-    alias = models.CharField(max_length=100)
+    alias = models.CharField(max_length=100, default='')
+    note = models.CharField(max_length=10000, dafault='')
     ip_address = models.CharField(max_length=100)
     last_connected = models.DateTimeField(default=datetime.now())
     status = models.BooleanField(default=False)

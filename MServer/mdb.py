@@ -22,6 +22,71 @@ class MDB:
         query = Clients(pk=moderat_id, identifier=client_id, ip_address=client_ip_address,)
         query.save()
 
+    def getAllClients(self):
+        return Clients.objects.all()
+
+    def getClients(self, username):
+        return Clients.objects.filter(moderator_id=username)
+
+    def getClientAlias(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.alias:
+            return client.alias
+
+    def getClientIPAddress(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.ip_address:
+            return client.ip_address
+
+    def getClientLastOnline(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.last_online:
+            return client.last_online
+
+    def getClientModerator(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.moderator_id:
+            return client.moderator_id
+
+    def getOfflineClients(self, username):
+        clients = Clients.objects.filter(moderator_id=username,
+                                         status=False)
+        return clients
+
+    def getAllOfflineClients(self):
+        return Clients.objects.filter(status=False)
+
+    def setClientAlias(self, identifier, alias):
+        client = Clients.objects.get(identifier=identifier)
+        if client.alias:
+            client.alias = alias
+            client.save()
+
+    def setClientModerator(self, identifier, username):
+        moderator = Moderators.objects.get(username=username)
+        if moderator:
+            client = Clients.objects.get(identifier=identifier)
+            if client.identifier:
+                client.moderator_id = moderator.pk
+                client.save()
+                return
+        return False
+
+    def setClientStatus(self, identifier, status):
+        client = Clients.objects.get(identifier=identifier)
+        if client.status:
+            client.status = status
+            client.save()
+
+    def deleteClient(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client.identifier:
+            client.delete()
+
+    def clientIsOnline(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        return client.status
+
     def createAdministrator(self, username, password, privileges):
         password_hash = hashlib.md5()
         password_hash.update(password)
@@ -75,5 +140,5 @@ class MDB:
             moderator.status = state
             moderator.save()
 
-# # TESTS
-# db = MDB()
+    def getModerators(self):
+        return Moderators.objects.all()

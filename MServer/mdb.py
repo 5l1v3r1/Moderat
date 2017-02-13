@@ -18,9 +18,13 @@ class MDB:
         all_clients = Clients.objects.all()
         all_clients.update(status=False)
 
-    def createClient(self, moderat_id, client_id, client_ip_address):
-        query = Clients(pk=moderat_id, identifier=client_id, ip_address=client_ip_address,)
-        query.save()
+    def createClient(self, username, identifier, client_ip_address):
+        moderator = Moderators.objects.get(username=username)
+        if moderator:
+            client_exists = Clients.objects.filter(identifier=identifier)
+            if not client_exists:
+                query = Clients(moderator_id=moderator, identifier=identifier, ip_address=client_ip_address,)
+                query.save()
 
     def getAllClients(self):
         return Clients.objects.all()
@@ -86,7 +90,7 @@ class MDB:
 
     def setClientStatus(self, identifier, status):
         client = Clients.objects.get(identifier=identifier)
-        if client.status:
+        if client:
             client.status = status
             client.save()
 

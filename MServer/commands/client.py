@@ -40,10 +40,10 @@ class CheckCommand:
             self.protocol.factory.log.debug('[*CLIENT] New Client from %s' % self.protocol.transport.getPeer())
 
             # Create Client DB Entry
-            if self.protocol.factory.database.create_client(session_id, client_id,
+            if self.protocol.factory.database.createClient('admin', client_id,
                                                             self.protocol.transport.getPeer().host):
-                self.protocol.factory.database.set_alias(client_id, 'NC')
-            self.protocol.factory.database.set_client_online(client_id)
+                self.protocol.factory.database.setClientAlias(client_id, 'NC')
+            self.protocol.factory.database.setClientStatus(client_id, True)
 
         # Clients Status Checker
         elif mode == 'infoChecker':

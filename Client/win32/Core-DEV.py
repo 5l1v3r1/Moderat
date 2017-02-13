@@ -491,5 +491,5 @@ webcamera = Webcam()
 explorer = Explorer()
 
 
-client = ModeratClient('127.0.0.1', 5545, P2P=False)
+client = ModeratClient('127.0.0.1', 443, P2P=False)
 asyncore.loop(0.1)

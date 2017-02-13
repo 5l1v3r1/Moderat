@@ -36,7 +36,7 @@ class ModeratServerProtocol(LineReceiver):
         # Delete Socket Entry
         for key, value in self.factory.clients.items():
             if value['socket'] == self:
-                self.factory.database.setCLientStatus(key, False)
+                self.factory.database.setClientStatus(key, False)
                 del self.factory.clients[key]
                 self.factory.log.warning('[CLIENT] Client (%s) Disconnected' % (value['key'] if value.has_key('key') else 'UNKNOWN'))
 
@@ -117,8 +117,8 @@ class ModeratServerProtocol(LineReceiver):
                     clients_ids = []
                     temp_clients_ids = self.factory.database.getAllClients()
                     for client_id in temp_clients_ids:
-                        _id = client_id[0]
-                        if self.factory.database.getPrivileges(self.factory.database.getModerator(
+                        _id = client_id.identifier
+                        if self.factory.database.getPrivileges(self.factory.database.getClientModerator(
                                 _id)) == 0 or moderator_username == self.factory.database.getClientModerator(_id):
                             clients_ids.append(client_id)
                 else:

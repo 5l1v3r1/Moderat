@@ -64,15 +64,6 @@ class Modes:
             self.moderat.privs = int(data['payload'].split()[-1])
             self.moderat.ui.enable_administrator() if self.moderat.privs == 1 else self.moderat.ui.disable_administrator()
 
-            # Start Client Checker
-            self.moderat.clients_checker = QTimer()
-            self.moderat.clients_checker.timeout.connect(self.moderat.check_clients)
-            self.moderat.clients_checker.start(5000)
-            if self.moderat.privs:
-                self.moderat.moderators_checker = QTimer()
-                self.moderat.moderators_checker.timeout.connect(self.moderat.get_moderators)
-                self.moderat.moderators_checker.start(5000)
-
             # Update UI
             self.moderat.ui.on_moderator_connected()
             self.moderat.tray.info(self.moderat.MString('TRAY_CONNECTED'),

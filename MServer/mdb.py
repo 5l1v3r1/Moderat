@@ -1,7 +1,5 @@
-import os
-import sys
 import hashlib
-from django.db.models import Q
+import datetime
 from ModeratServer.models import *
 
 
@@ -27,11 +25,13 @@ class MDB:
                 query.save()
 
     def getAllClients(self):
-        return Clients.objects.all()
+        moderators = Moderators.objects.filter(privileges=1)
+        all_moderators_id = moderators.values_list('pk', flat=True).distinct()
+        return Clients.objects.all().exclude(pk__in=all_moderators_id)
 
-    def getClients(self, username):
-        all_clients = Clients.objects.filter(pk=self.getModeratorPk(username))
-        return all_clients
+    def getClients(self, moderator):
+        clients = Clients.objects.filter(pk=moderator.pk)
+        return clients
 
     def getClientAlias(self, identifier):
         client = Clients.objects.get(identifier=identifier)
@@ -58,9 +58,8 @@ class MDB:
         if client.moderator_id:
             return client.moderator_id
 
-    def getOfflineClients(self, username):
-        clients = Clients.objects.filter(moderator_id=self.getModeratorPk(username),
-                                         status=False)
+    def getOfflineClients(self, moderator):
+        clients = Clients.objects.filter(moderator_id=moderator.pk, status=False)
         return clients
 
     def getAllOfflineClients(self):
@@ -94,6 +93,12 @@ class MDB:
             client.status = status
             client.save()
 
+    def setClientLastOnline(self, identifier):
+        client = Clients.objects.get(identifier=identifier)
+        if client:
+            client.last_connected = datetime.now()
+
+
     def deleteClient(self, identifier):
         client = Clients.objects.get(identifier=identifier)
         if client.identifier:
@@ -113,7 +118,7 @@ class MDB:
 
     def loginModerator(self, username, password):
         moderator = Moderators.objects.get(username=username)
-        if moderator.username:
+        if moderator:
             password_hash = hashlib.md5()
             password_hash.update(password)
             if moderator.password == password_hash.hexdigest():
@@ -121,8 +126,8 @@ class MDB:
         return False
 
     def changePassword(self, username, new_password):
-        moderator = Moderators.objects.get(moderator_id=username)
-        if moderator.username:
+        moderator = Moderators.objects.get(username=username)
+        if moderator:
             password = hashlib.md5()
             password.update(new_password)
             moderator.password = password.hexdigest()
@@ -130,17 +135,17 @@ class MDB:
         return False
 
     def changePrivileges(self, username, privilege):
-        moderator = Moderators.objects.get(moderator_id=username)
-        if moderator.privileges:
+        moderator = Moderators.objects.get(username=username)
+        if moderator:
             moderator.privileges = privilege
             moderator.save()
 
     def deleteModerator(self, username):
-        moderator = Moderators.objects.get(moderator_id=username)
-        if moderator.username:
+        moderator = Moderators.objects.get(username=username)
+        if moderator:
             moderator.delete()
 
-    def getPrivileges(self, username):
+    def isAdministrator(self, username):
         moderator = Moderators.objects.get(username=username)
         if moderator:
             return moderator.privileges
@@ -149,6 +154,7 @@ class MDB:
         moderator = Moderators.objects.get(username=username)
         if moderator:
             moderator.last_online = datetime.now()
+            moderator.save()
 
     def setModeratorStatus(self, username, state):
         moderator = Moderators.objects.get(username=username)
@@ -156,8 +162,8 @@ class MDB:
             moderator.status = state
             moderator.save()
 
-    def getModeratorPk(self, username):
-        return Moderators.objects.get(username=username).pk
+    def getModerator(self, username):
+        return Moderators.objects.get(username=username)
 
     def getModerators(self):
         return Moderators.objects.all()

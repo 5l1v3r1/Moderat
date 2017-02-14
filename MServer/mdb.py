@@ -55,8 +55,8 @@ class MDB:
 
     def getClientModerator(self, identifier):
         client = Clients.objects.get(identifier=identifier)
-        if client.moderator_id:
-            return client.moderator_id
+        if client:
+            return client.moderator_id.username
 
     def getOfflineClients(self, moderator):
         clients = Clients.objects.filter(moderator_id=moderator.pk, status=False)

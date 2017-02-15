@@ -67,13 +67,13 @@ class MDB:
 
     def setClientAlias(self, identifier, alias):
         client = Clients.objects.get(identifier=identifier)
-        if client.alias:
+        if client:
             client.alias = alias
             client.save()
 
     def setClientNote(self, identifier, note):
         client = Clients.objects.get(identifier=identifier)
-        if client.note:
+        if client:
             client.note = note
             client.save()
 

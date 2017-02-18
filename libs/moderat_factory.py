@@ -9,10 +9,6 @@ class SocketModeratorProtocol(LineReceiver):
     delimiter = '[ENDOFMESSAGE]'
     MAX_LENGTH = 1024*1024*10 # 10MB
 
-    def __init__(self):
-
-        pass
-
     # New Connection Made
     def connectionMade(self):
         self.factory.clientReady(self)

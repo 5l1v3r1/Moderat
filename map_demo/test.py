@@ -39,7 +39,7 @@ function initialize() {
  function addMarker(id, lat, lng, ip_address, alias) {
   var myLatLng = new google.maps.LatLng(lat, lng);
   clients[id] = new google.maps.Marker({position: myLatLng,
-                                            icon: "C:/Users/uripa/Desktop/moderat/assets/hacked.png",
+                                            icon: "/root/Projects/Moderat/map_demo/client.png",
                                             ip_address: ip_address,
                                             alias: alias,
                                             id: id,
@@ -87,7 +87,7 @@ class Browser(QApplication):
         self.window.setWindowTitle("Google Google Maps Maps")
 
         self.web = QWebView(self.window)
-        self.web.setMinimumSize(800,800)
+        self.web.setMinimumSize(800,600)
         self.web.page().mainFrame().addToJavaScriptWindowObject('self', self)
         self.web.setHtml(maphtml)
         self.button = QPushButton('AddMarker')

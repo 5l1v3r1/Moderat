@@ -8,7 +8,7 @@ from twisted.internet import task
 from twisted.protocols.basic import LineReceiver
 
 from mdb import MDB
-from libs import id
+from libs import Mid
 
 
 class ModeratServerProtocol(LineReceiver):
@@ -72,7 +72,7 @@ class ModeratServerProtocol(LineReceiver):
 
         elif self.mode == 'clientInitializing':
             if self.payload == 'noKey':
-                client_id = id.generator()
+                client_id = Mid.generateMid()
                 self.factory.log.debug('[CLIENT] Generate New Key (%s)' % client_id)
                 self.sendMessage(self, client_id)
             else:
@@ -120,31 +120,34 @@ class ModeratServerProtocol(LineReceiver):
                         self.sendMessage(self, 'loginError')
                         self.factory.log.error('[MODERATOR] Moderator (%s) Login Error' % username)
                 else:
-                    self.factory.log.critical('[MODERATOR] Moderator Login Data')
+                    self.factory.log.critical('[MODERATOR] Bad Login Data')
 
         elif self.factory.moderators.has_key(self.sessionID):
             moderator = self.factory.database.getModerator(self.factory.moderators[self.sessionID]['username'])
 
             if self.mode == 'saveNote':
-                splitted = self.payload.split('%SPLITTER%')
-                if len(splitted) == 2:
-                    client_id, note_body = splitted
+                note_data = self.payload.split('%SPLITTER%')
+                if len(note_data) == 2:
+                    client_id, note_body = note_data
                     self.factory.database.setClientNote(client_id, note_body)
+                    self.factory.log.debug('[MODERATOR] Moderator ({}) Login Success'.format(moderator))
+                else:
+                    self.factory.log.critical('[MODERATOR][{}] Bad Note Data'.format(moderator))
 
             elif self.mode == 'getNote':
                 self.sendMessage(self, '{}'.format(self.factory.database.getClientNote(self.payload)))
+                self.factory.log.debug('[MODERATOR] Moderator ({}) Received Note'.format(moderator))
 
-            # Set Alias For Client
             elif self.mode == 'setAlias':
                 alias_data = self.payload.split()
                 try:
                     alias_client = alias_data[0]
                     alias_value = u' '.join(alias_data[1:])
+                    self.factory.database.setClientAlias(alias_client, alias_value)
                     self.factory.log.debug('[MODERATOR][{0}] Add Alias ({1}) for ({2})'.format(
                         moderator.username, alias_value, ipAddress))
-                    self.factory.database.setClientAlias(alias_client, alias_value)
                 except:
-                    self.factory.log.critical('[MODERATOR][{0}] Malformed Credentials [MODE: {1}]'.format(moderator.username, self.mode))
+                    self.factory.log.critical('[MODERATOR][{0}] Bad Alias Data'.format(moderator.username))
 
             elif self.mode == 'removeClient':
                 client = self.payload

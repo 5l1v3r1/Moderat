@@ -19,7 +19,7 @@ class ModeratorAdmin(admin.ModelAdmin):
             'fields': ('username', 'privileges')
         }),
         ('Change Password (MD5 Hash)', {
-            'classes': ('collapse',),
+            'classes': ('grp-collapse grp-open',),
             'fields': ('password',),
         }),
     )
@@ -51,7 +51,7 @@ class ClientsAdmin(admin.ModelAdmin):
             'fields': ('identifier', 'ip_address', 'alias', 'note', 'status', 'last_online')
         }),
         ('Logs Count', {
-            'classes': ('collapse',),
+            'classes': ('grp-collapse grp-closed',),
             'fields': ('screenshots', 'keylogs', 'audios'),
         }),
     )

@@ -59,9 +59,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.callback(data)
 
     def init_ui(self):
-        self.clientIdLine.setText(self.client_id)
-        self.clientAliasLine.setText(self.client_alias)
-        self.clientIpLine.setText(self.client_ip_address)
 
         # Hide Progress Bar
         self.downloadProgress.setHidden(True)
@@ -83,9 +80,6 @@ class mainPopup(QWidget, main_ui.Ui_Form):
         self.audioTable.horizontalHeaderItem(0).setText(self.moderat.MString('VIEWER_AUDIO_DURATION'))
         self.audioTable.horizontalHeaderItem(1).setText(self.moderat.MString('VIEWER_AUDIO_SPECTRUM'))
         self.audioTable.horizontalHeaderItem(2).setText(self.moderat.MString('VIEWER_AUDIO_DATETIME'))
-        self.clientIdLabel.setText(self.moderat.MString('VIEWER_CLIENT_ID'))
-        self.clientAliasLabel.setText(self.moderat.MString('VIEWER_CLIENT_ALIAS'))
-        self.clientIpLabel.setText(self.moderat.MString('VIEWER_CLIENT_IP'))
         self.downloadGroup.setTitle(self.moderat.MString('VIEWER_DOWNLOAD_GROUP_TITLE'))
         self.ignoreViewedCheck.setText(self.moderat.MString('VIEWER_IGNOR_VIEWED'))
         self.downloadButton.setText(self.moderat.MString('VIEWER_DOWNLOAD'))

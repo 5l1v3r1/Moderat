@@ -17,10 +17,6 @@
    <iconset>
     <normaloff>:/icons/assets/unhide.png</normaloff>:/icons/assets/unhide.png</iconset>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #2c3e50;
-color: #c9f5f7;</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -28,40 +24,6 @@ color: #c9f5f7;</string>
       <widget class="QTabWidget" name="logsTab">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QTabWidget::pane { /* The tab widget frame */
-border: none;
-padding-top: -9px;
-}
-
-QTabWidget::tab-bar {
-left: 9px; /* move to the right by 5px */
-}
-
-/* Style the tab using the tab sub-control. Note that
-    it reads QTabBar _not_ QTabWidget */
-QTabBar::tab {   
-border: none;
-min-width: 30ex;
-padding: 10px;
-color: #c9f5f7;
-}
-QTabBar::tab::disabled {   
-  border: none;
-  color: #2c3e50;
-}
-QTabBar::tab:selected, QTabBar::tab:hover {
-background: #34495e;
-}
-
-QTabBar::tab:selected {
-border: none;
-}
-
-QTabBar::tab:!selected {
-margin-top: 2px; /* make non-selected tabs look smaller */
-}</string>
        </property>
        <property name="currentIndex">
         <number>0</number>
@@ -73,13 +35,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         </size>
        </property>
        <property name="movable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <widget class="QWidget" name="screenshotsTab">
-        <attribute name="icon">
-         <iconset resource="../../res.qrc">
-          <normaloff>:/icons/assets/desktop.png</normaloff>:/icons/assets/desktop.png</iconset>
-        </attribute>
         <attribute name="title">
          <string>Screenshots</string>
         </attribute>
@@ -88,36 +46,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
           <widget class="QTableWidget" name="screenshotsTable">
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QHeaderView::section {
-background-color: #2c3e50;
-padding: 2px;
-color: #cff7f8;
-font: 75 10px &quot;MS Shell Dlg 2&quot;;
-border: 3px solid;
-border-right: none;
-border-top: none;
-border-bottom: none;
-border-color: #34495e;
-}
-
-QTableWidget#screenshotsTable {
-background-position: center;
-border:  none;
-padding: 5px;
-color: #cff7f8;
-font: 8pt &quot;MS Shell Dlg 2&quot;;
-background-color: #34495e;
-
-background-image: url(assets/bg.png);
-background-repeat: no-repeat;
-}
-
-QTableWidget#screenshotsTable:item:selected {
-background-color: #2c3e50;
-color: #cff7f8;
-}</string>
            </property>
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
@@ -190,10 +118,6 @@ color: #cff7f8;
         </layout>
        </widget>
        <widget class="QWidget" name="keylogsTab">
-        <attribute name="icon">
-         <iconset resource="../../res.qrc">
-          <normaloff>:/icons/assets/keyboard.png</normaloff>:/icons/assets/keyboard.png</iconset>
-        </attribute>
         <attribute name="title">
          <string>Keylogs</string>
         </attribute>
@@ -202,36 +126,6 @@ color: #cff7f8;
           <widget class="QTableWidget" name="keylogsTable">
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QHeaderView::section {
-background-color: #2c3e50;
-padding: 2px;
-color: #cff7f8;
-font: 75 10px &quot;MS Shell Dlg 2&quot;;
-border: 3px solid;
-border-right: none;
-border-top: none;
-border-bottom: none;
-border-color: #34495e;
-}
-
-QTableWidget#keylogsTable {
-background-position: center;
-border:  none;
-padding: 5px;
-color: #cff7f8;
-font: 8pt &quot;MS Shell Dlg 2&quot;;
-background-color: #34495e;
-
-background-image: url(assets/bg.png);
-background-repeat: no-repeat;
-}
-
-QTableWidget#keylogsTable:item:selected {
-background-color: #2c3e50;
-color: #cff7f8;
-}</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -286,10 +180,6 @@ color: #cff7f8;
         </layout>
        </widget>
        <widget class="QWidget" name="audioTab">
-        <attribute name="icon">
-         <iconset resource="../../res.qrc">
-          <normaloff>:/icons/assets/microphone.png</normaloff>:/icons/assets/microphone.png</iconset>
-        </attribute>
         <attribute name="title">
          <string>Audio</string>
         </attribute>
@@ -298,36 +188,6 @@ color: #cff7f8;
           <widget class="QTableWidget" name="audioTable">
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QHeaderView::section {
-background-color: #2c3e50;
-padding: 2px;
-color: #cff7f8;
-font: 75 10px &quot;MS Shell Dlg 2&quot;;
-border: 3px solid;
-border-right: none;
-border-top: none;
-border-bottom: none;
-border-color: #34495e;
-}
-
-QTableWidget#audioTable {
-background-position: center;
-border:  none;
-padding: 5px;
-color: #cff7f8;
-font: 8pt &quot;MS Shell Dlg 2&quot;;
-background-color: #34495e;
-
-background-image: url(assets/bg.png);
-background-repeat: no-repeat;
-}
-
-QTableWidget#audioTable:item:selected {
-background-color: #2c3e50;
-color: #cff7f8;
-}</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -398,23 +258,6 @@ color: #cff7f8;
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QProgressBar:horizontal {
-border:  none;
-border-color: #2c3e50;
-background: #2c3e50;
-padding: 1px;
-text-align: top;
-text-color: #d35400;
-}
-QProgressBar::chunk:horizontal {
-background: #2c3e50;
-margin-right: 1px;
-width: 5px;
-border-bottom: 8px ridge #c9f5f7;
-border-top: none;
-}</string>
-         </property>
          <property name="value">
           <number>0</number>
          </property>
@@ -452,172 +295,31 @@ border-top: none;
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: #34495e; 
-border: none;</string>
-         </property>
          <property name="title">
-          <string/>
+          <string>Filters</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="2" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLabel" name="clientIpLabel">
-              <property name="minimumSize">
-               <size>
-                <width>120</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>120</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">padding: 2px;
-border: none;</string>
-              </property>
-              <property name="text">
-               <string>IP: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="clientIpLine">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background: #2c3e50;
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding: 3px;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="1" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="clientAliasLabel">
-              <property name="minimumSize">
-               <size>
-                <width>120</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>120</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">padding: 2px;
-border: none;</string>
-              </property>
-              <property name="text">
-               <string>Alias: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="clientAliasLine">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background: #2c3e50;
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding: 3px;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
           <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="clientIdLabel">
-              <property name="minimumSize">
-               <size>
-                <width>120</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>120</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">padding: 2px;
-border: none;</string>
-              </property>
-              <property name="text">
-               <string>ID: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="clientIdLine">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background: #2c3e50;
-border: none;
-border: 1px ridge;
-border-color: #2c3e50;
-padding: 3px;</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QTabWidget" name="filtersTab">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="screenshotsFIltersTab">
+             <attribute name="title">
+              <string>Screenshots</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="keylogsFIltersTab">
+             <attribute name="title">
+              <string>Keylogs</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="audiosFIltersTab">
+             <attribute name="title">
+              <string>Audio</string>
+             </attribute>
+            </widget>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -649,12 +351,6 @@ padding: 3px;</string>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: #34495e; 
-border: none;
-padding-top: 10px;
-padding-bottom: 10px;</string>
-         </property>
          <property name="title">
           <string/>
          </property>
@@ -665,138 +361,10 @@ padding-bottom: 10px;</string>
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="3" column="0">
-           <widget class="QPushButton" name="downloadButton">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton#downloadButton {
-			background-color: #27ae60;
-			font: 14pt &quot;MS Shell Dlg 2&quot;;
-			border: none;
-			border-radius: none;
-			padding: 15px;
-			margin: 0px;
-            }
-
-QPushButton#downloadButton:pressed {
-            background-color: #2ecc71;
-            }</string>
-            </property>
-            <property name="text">
-             <string>Download</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../../res.qrc">
-              <normaloff>:/icons/assets/download.png</normaloff>:/icons/assets/download.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QCalendarWidget" name="timeCalendar">
-            <property name="minimumSize">
-             <size>
-              <width>280</width>
-              <height>200</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>280</width>
-              <height>200</height>
-             </size>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">/* navigation bar */
-QCalendarWidget QWidget#qt_calendar_navigationbar { background-color: #2c3e50; }
-QCalendarWidget QToolButton {
-  height: 16px;
-  padding: 1px;
-  width: 150px;
-  color: #c9f5f7;
-  font-size: 12px;
-  icon-size: 16px, 16px;
-  background-color: #2c3e50;
-  border: none;
-}
-QCalendarWidget QMenu {
-  width: 150px;
-  left: 20px;
-  color: #c9f5f7;
-  font-size: 12px;
-  background-color: #2c3e50;
-}
-QCalendarWidget QSpinBox { 
-  width: 150px; 
-  font-size:12px; 
-  color: white; 
-  background-color: #2c3e50;
-  selection-color: #2c3e50;
-}
-QCalendarWidget QSpinBox::up-button { subcontrol-origin: border;  subcontrol-position: top right;  width:12px; }
-QCalendarWidget QSpinBox::down-button {subcontrol-origin: border; subcontrol-position: bottom right;  width:12px;}
-QCalendarWidget QSpinBox::up-arrow { width:12px;  height:12px; }
-QCalendarWidget QSpinBox::down-arrow { width:12px;  height:12px; }
- 
-/* header row */
-QCalendarWidget QWidget { alternate-background-color: #34495e; }
- 
-/* normal days */
-QCalendarWidget QAbstractItemView:enabled 
-{
-  font-size:12px;  
-  color: #c9f5f7; 
-  background-color: #2c3e50;
-  selection-background-color: #34495e; 
-  selection-color: lime; 
-}
- 
-/* days in other months */
-QCalendarWidget QAbstractItemView:disabled { color: grey; }</string>
-            </property>
-            <property name="firstDayOfWeek">
-             <enum>Qt::Monday</enum>
-            </property>
-            <property name="gridVisible">
-             <bool>true</bool>
-            </property>
-            <property name="horizontalHeaderFormat">
-             <enum>QCalendarWidget::ShortDayNames</enum>
-            </property>
-            <property name="verticalHeaderFormat">
-             <enum>QCalendarWidget::NoVerticalHeader</enum>
-            </property>
-            <property name="navigationBarVisible">
-             <bool>true</bool>
-            </property>
-            <property name="dateEditEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QGroupBox" name="checkersGroup">
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
             </property>
             <layout class="QGridLayout" name="gridLayout_7">
              <item row="0" column="2">
@@ -808,20 +376,6 @@ QCalendarWidget QAbstractItemView:disabled { color: grey; }</string>
                 <widget class="QPushButton" name="keylogsEnableButton">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton#keylogsEnableButton {
-border: none;
-background: #2c3e50;
-}
-
-QPushButton#keylogsEnableButton:pressed {
-background-color: #2c3e50;
-}
-
-QPushButton#keylogsEnableButton:checked {
-background-color: #2c3e50;
-}</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -861,12 +415,6 @@ background-color: #2c3e50;
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>0</string>
                    </property>
@@ -886,11 +434,6 @@ padding: none;</string>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>/</string>
                    </property>
@@ -909,12 +452,6 @@ padding: none;</string>
                    </property>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;
-padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -937,20 +474,6 @@ padding: none;</string>
                 <widget class="QPushButton" name="audioEnableButton">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton#audioEnableButton {
-border: none;
-background: #2c3e50;
-}
-
-QPushButton#audioEnableButton:pressed {
-background-color: #2c3e50;
-}
-
-QPushButton#audioEnableButton:checked {
-background-color: #2c3e50;
-}</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -990,12 +513,6 @@ background-color: #2c3e50;
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>0</string>
                    </property>
@@ -1015,11 +532,6 @@ padding: none;</string>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>/</string>
                    </property>
@@ -1038,12 +550,6 @@ padding: none;</string>
                    </property>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;
-padding: none;</string>
                    </property>
                    <property name="text">
                     <string>0</string>
@@ -1066,20 +572,6 @@ padding: none;</string>
                 <widget class="QPushButton" name="screenshotsEnableButton">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton#screenshotsEnableButton {
-border: none;
-background: #2c3e50;
-}
-
-QPushButton#screenshotsEnableButton:pressed {
-background-color: #2c3e50;
-}
-
-QPushButton#screenshotsEnableButton:checked {
-background-color: #2c3e50;
-}</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -1125,12 +617,6 @@ background-color: #2c3e50;
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #2ecc71;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>0</string>
                    </property>
@@ -1155,11 +641,6 @@ padding: none;</string>
                    </property>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-padding: none;</string>
                    </property>
                    <property name="text">
                     <string>/</string>
@@ -1186,12 +667,6 @@ padding: none;</string>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: none;
-background: #2c3e50;
-color: #e74c3c;
-padding: none;</string>
-                   </property>
                    <property name="text">
                     <string>0</string>
                    </property>
@@ -1208,19 +683,6 @@ padding: none;</string>
               <widget class="QPushButton" name="ignoreViewedCheck">
                <property name="focusPolicy">
                 <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#ignoreViewedCheck {
-background-color: #2c3e50;
-}
-
-QPushButton#ignoreViewedCheck:pressed {
-background-color: #2c3e50;
-}
-
-QPushButton#ignoreViewedCheck:checked {
-background-color: #2c3e50;
-}</string>
                </property>
                <property name="text">
                 <string>Ignore Viewed</string>
@@ -1247,6 +709,65 @@ background-color: #2c3e50;
             </layout>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="downloadButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="text">
+             <string>Download</string>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCalendarWidget" name="timeCalendar">
+            <property name="minimumSize">
+             <size>
+              <width>280</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>280</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="firstDayOfWeek">
+             <enum>Qt::Monday</enum>
+            </property>
+            <property name="gridVisible">
+             <bool>true</bool>
+            </property>
+            <property name="horizontalHeaderFormat">
+             <enum>QCalendarWidget::ShortDayNames</enum>
+            </property>
+            <property name="verticalHeaderFormat">
+             <enum>QCalendarWidget::NoVerticalHeader</enum>
+            </property>
+            <property name="navigationBarVisible">
+             <bool>true</bool>
+            </property>
+            <property name="dateEditEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -1259,5 +780,38 @@ background-color: #2c3e50;
  <resources>
   <include location="../../res.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>logsTab</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>filtersTab</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>35</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>58</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filtersTab</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>logsTab</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>603</x>
+     <y>38</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

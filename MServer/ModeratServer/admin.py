@@ -1,5 +1,4 @@
-from django.contrib import admin
-
+from django.contrib.admin import DateFieldListFilter
 from django.contrib import admin
 from .models import *
 
@@ -13,7 +12,7 @@ class ModeratorAdmin(admin.ModelAdmin):
         return Clients.objects.filter(moderator_id=instance.pk, status=False).count()
 
     list_display = ['username', 'privileges', 'online_clients', 'offline_clients', 'status', 'last_online']
-    list_filter = ['status', 'last_online', 'privileges']
+    list_filter = ('status', ('last_online', DateFieldListFilter), 'privileges')
     search_fields = ['username', ]
     fieldsets = (
         (None, {

@@ -59,6 +59,10 @@ class ClientsAdmin(admin.ModelAdmin):
 
 
 class ScreenshotsAdmin(admin.ModelAdmin):
+
+    def has_add_permission(self, request):
+        return False
+
     search_fields = ['client_id__alias', 'title_name', 'client_id__moderator_id__username']
     list_filter = ['client_id__moderator_id__username', 'viewed', 'date']
     list_display = ['path', 'title_name', 'date', 'viewed']

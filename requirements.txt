@@ -9,4 +9,5 @@ requests
 pyqode.python
 django
 django-grappelli
+feedparser
 pyaudio

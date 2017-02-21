@@ -41,14 +41,6 @@ class CustomIndexDashboard(Dashboard):
                 )
             ]
         ))
-
-        # append an app list module for "Administration"
-        self.children.append(modules.ModelList(
-            _('ModelList: Administration'),
-            column=1,
-            collapsible=False,
-            models=('django.contrib.*',),
-        ))
         
         # append a feed module
         self.children.append(modules.Feed(

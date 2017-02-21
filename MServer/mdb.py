@@ -33,7 +33,7 @@ class MDB:
         return Clients.objects.get(identifier=identifier)
 
     def getClients(self, moderator):
-        clients = Clients.objects.filter(pk=moderator.pk)
+        clients = Clients.objects.filter(moderator_id=moderator.pk)
         return clients
 
     def getClientAlias(self, identifier):

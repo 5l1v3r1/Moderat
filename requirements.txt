@@ -7,4 +7,6 @@ pycrypto
 selenium
 requests
 pyqode.python
+django
+django-grappelli
 pyaudio

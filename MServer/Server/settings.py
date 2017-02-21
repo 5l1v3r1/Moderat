@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Server.urls'
@@ -127,3 +126,5 @@ STATIC_URL = '/static/'
 
 GRAPPELLI_ADMIN_TITLE = 'ModeRat'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+
+MODERAT_DATA_STORAGE = 'upload/'

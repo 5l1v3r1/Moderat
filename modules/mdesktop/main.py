@@ -55,9 +55,8 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
         self.loading.show()
 
     def on_screenshot_received(self, data):
-        screen_dict = data['payload']
-        try:
-            screen_info = ast.literal_eval(screen_dict)
+        if type(data['payload']) is dict:
+            screen_info = data['payload']
             im = Image.frombuffer('RGB', (int(screen_info['width']), int(screen_info['height'])),
                                   zlib.decompress(screen_info['screenshotbits']), 'raw', 'BGRX', 0, 1)
             screen_bits = im.convert('RGBA')
@@ -67,8 +66,6 @@ class mainPopup(QMainWindow, main_ui.Ui_Form):
             self.setCentralWidget(self.screenshot)
             self.current_bits = screen_bits
             self.loading.hide()
-        except SyntaxError:
-            pass
 
     def save_screenshot(self):
         if self.current_bits:

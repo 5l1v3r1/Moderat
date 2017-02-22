@@ -49,6 +49,11 @@ class Screenshots(models.Model):
     class Meta:
         verbose_name = "Screenshot"
 
+    def thumbnail(self):
+        return '<img src="/{}" width="350">'.format(self.path)
+
+    thumbnail.allow_tags = True
+
 
 class Keylogs(models.Model):
     client_id = models.ForeignKey(Clients)

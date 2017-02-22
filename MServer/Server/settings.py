@@ -122,9 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(os.path.join(os.path.split(os.path.dirname(__file__))[:-1])[0], 'upload')
+MEDIA_URL = '/upload/'
 
 
 GRAPPELLI_ADMIN_TITLE = 'ModeRat'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
-
-MODERAT_DATA_STORAGE = 'upload/'

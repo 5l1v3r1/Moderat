@@ -1,0 +1,16 @@
+{% extends "suit_dashboard/base.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+  ModeRat Server Dashboard
+{% endblock %}
+
+{% block dashboard_css %}
+{% endblock %}
+
+{# Load local Highcharts, default from Highcharts' CDN #}
+{% block dashboard_highcharts_js %}
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts_more.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+{% endblock %}

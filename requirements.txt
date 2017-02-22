@@ -9,4 +9,5 @@ requests
 pyqode.python
 django
 django-suit
+django-suit-dashboard
 pyaudio

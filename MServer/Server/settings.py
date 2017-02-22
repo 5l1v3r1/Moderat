@@ -34,11 +34,13 @@ INSTALLED_APPS = (
     'ModeratServer',
     'django.contrib.contenttypes',
     'suit',
-    'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ModeratDashboard',
+    'suit_dashboard'
 )
 
 MIDDLEWARE = [

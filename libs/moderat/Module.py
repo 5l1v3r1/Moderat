@@ -2,6 +2,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import string, random
+from modules.mclientsettings import main as mclientsettings
 from modules.mlogviewer import main as mlogviewer
 from modules.mnote import main as mnote
 from modules.mexplorer import main as mexplorer
@@ -18,6 +19,7 @@ def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
 class Executer(QMainWindow):
 
     modules = {
+        'MCLIENTSETTINGS': mclientsettings,
         'MVIEWER': mlogviewer,
         'MNOTE': mnote,
         'MSHELL': mshell,
@@ -73,6 +75,13 @@ class Executer(QMainWindow):
         self.modulesBar = QToolBar(self)
         self.modulesBar.setIconSize(QSize(16, 16))
 
+        self.toolsBar.addSeparator()
+        self.clientSettingsAction = QAction(self)
+        self.clientSettingsAction.setIcon(QIcon(':/icons/assets/note.png'))
+        self.clientSettingsAction.triggered.connect(lambda: self.addModule('MCLIENTSETTINGS'))
+        self.toolsBar.addAction(self.noteAction)
+
+        self.toolsBar.addSeparator()
         self.viewerAction = QAction(self)
         self.viewerAction.setIcon(QIcon(':/icons/assets/log_viewer.png'))
         self.viewerAction.triggered.connect(lambda: self.addModule('MVIEWER'))

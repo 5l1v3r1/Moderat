@@ -57,7 +57,7 @@ class Screenshots(models.Model):
 
     def preview(self):
         return '''
-        <img src="/{}" width="800">
+        <img src="/{}" width="680">
         '''.format(self.path)
     preview.allow_tags = True
 

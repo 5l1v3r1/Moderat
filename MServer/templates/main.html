@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block dashboard_css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 {% endblock %}
 
 {# Load local Highcharts, default from Highcharts' CDN #}
@@ -13,4 +14,41 @@
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts_more.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="containter">
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" class="btn btn-primary btn-sm btn-block">System Specification</button>
+        <table class="table col-md-4">
+            <tr>
+              <td>Uptime:</td>
+              <td>{{ machine.uptime }}</td>
+            </tr>
+            <tr>
+              <td>Hostname:</td>
+              <td>{{ machine.hostname }}</td>
+            </tr>
+            <tr>
+              <td>System:</td>
+              <td>{{ machine.system }}</td>
+            </tr>
+            <tr>
+              <td>Architecture:</td>
+              <td>{{ machine.architecture }}</td>
+            </tr>
+            <tr>
+              <td>Python Version:</td>
+              <td>{{ machine.python_version }}</td>
+            </tr>
+        </table>
+      </div>
+        <div class="col-md-4">MEMORY</div>
+        <div class="col-md-1">{{ machine.memory_usage }}</div>
+        <div class="col-md-1">{{ machine.uptime }}</div>
+    </div>
+</div>
+
+
 {% endblock %}

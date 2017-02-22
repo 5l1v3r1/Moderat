@@ -7,7 +7,9 @@ pycrypto
 selenium
 requests
 pyqode.python
+werkzeug
 django
 django-suit
 django-suit-dashboard
+django-extensions
 pyaudio

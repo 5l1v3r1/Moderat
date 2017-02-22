@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ModeratDashboard',
-    'suit_dashboard'
+    'suit_dashboard',
+    'django_extensions',
 )
 
 MIDDLEWARE = [

@@ -12,4 +12,5 @@ django
 django-suit
 django-suit-dashboard
 django-extensions
+psutil
 pyaudio

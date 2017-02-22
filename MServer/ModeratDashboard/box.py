@@ -4,6 +4,9 @@
 from __future__ import unicode_literals
 import platform
 import psutil
+import datetime
+import sys
+import subprocess
 from datetime import timedelta
 from django.utils.translation import ugettext as _
 from suit_dashboard.box import Box, Item
@@ -64,6 +67,7 @@ class ClientsInformation(Box):
 
     clients_count = Clients.objects.all().count()
     online_clients_count = Clients.objects.filter(status=True).count()
+    print online_clients_count
     offline_clients_count = clients_count - online_clients_count
 
     def get_title(self):
@@ -118,11 +122,29 @@ class BoxMachine(Box):
     # The get_items function is the main function here. It will define
     # what are the contents of the box.
     def get_items(self):
-        # Retrieve and format uptime (will not work on Windows)
-        with open('/proc/uptime') as f:
-            s = timedelta(seconds=float(f.readline().split()[0])).total_seconds()
-            uptime = _('%d days, %d hours, %d minutes, %d seconds') % (
-                s // 86400, s // 3600 % 24, s // 60 % 60, s % 60)
+        if sys.platform.startswith('win'):
+            cmd = "net statistics server"
+            p = subprocess.Popen(cmd, shell=True,
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            (child_stdin, child_stdout) = (p.stdin, p.stdout)
+            lines = child_stdout.readlines()
+            child_stdin.close()
+            child_stdout.close()
+            lines = [line.strip() for line in lines if line.strip()]
+            date, time, ampm = lines[1].split()[2:5]
+            m, d, y = [int(v) for v in date.split('/')]
+            H, M, _tmp = [int(v) for v in time.split(':')]
+            if ampm.lower() == 'pm':
+                H += 12
+            now = datetime.datetime.now()
+            then = datetime.datetime(y, m, d, H, M)
+            diff = now - then
+            uptime = diff
+        else:
+            with open('/proc/uptime') as f:
+                s = timedelta(seconds=float(f.readline().split()[0])).total_seconds()
+                uptime = _('%d days, %d hours, %d minutes, %d seconds') % (
+                    s // 86400, s // 3600 % 24, s // 60 % 60, s % 60)
 
         # Create a first item (box's content) with the machine info
         item_info = Item(

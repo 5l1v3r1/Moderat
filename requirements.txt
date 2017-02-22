@@ -8,6 +8,5 @@ selenium
 requests
 pyqode.python
 django
-django-grappelli
-feedparser
+django-suit
 pyaudio

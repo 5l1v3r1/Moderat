@@ -33,8 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'ModeratServer',
     'django.contrib.contenttypes',
-    'grappelli.dashboard',
-    'grappelli',
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -70,6 +69,13 @@ TEMPLATES = [
         },
     },
 ]
+
+# Your setting will look like:
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'apptemplates.Loader',
+)
 
 WSGI_APPLICATION = 'Server.wsgi.application'
 
@@ -125,6 +131,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(os.path.join(os.path.split(os.path.dirname(__file__))[:-1])[0], 'upload')
 MEDIA_URL = '/upload/'
 
-
-GRAPPELLI_ADMIN_TITLE = 'ModeRat'
-GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'ModeRat Server',
+    'SHOW_REQUIRED_ASTERISK': True,
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'MENU_EXCLUDE': ('auth.group',)
+}

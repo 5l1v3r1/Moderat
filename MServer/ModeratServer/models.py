@@ -50,9 +50,16 @@ class Screenshots(models.Model):
         verbose_name = "Screenshot"
 
     def thumbnail(self):
-        return '<img src="/{}" width="350">'.format(self.path)
-
+        return '''
+        <img src="/{}" width="350">
+        '''.format(self.path)
     thumbnail.allow_tags = True
+
+    def preview(self):
+        return '''
+        <img src="/{}" width="800">
+        '''.format(self.path)
+    preview.allow_tags = True
 
 
 class Keylogs(models.Model):

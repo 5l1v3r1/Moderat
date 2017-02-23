@@ -276,7 +276,6 @@
 
         var data = google.visualization.arrayToDataTable([
           ['Country', 'Clients'],
-            ['Russia', 50],
             {% for client in clientsGeo %}
               ['{{ client.country }}', '{{ client.count }}'],
             {% endfor %}

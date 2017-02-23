@@ -48,7 +48,7 @@ class ClientsAdmin(admin.ModelAdmin):
     list_display = ['identifier', 'ip_address', 'alias', 'screenshots', 'keylogs', 'audios', 'status', 'last_online', 'client_moderator']
     fieldsets = (
         (None, {
-            'fields': ('moderator_id', 'identifier', 'ip_address', 'alias', 'note', 'status', 'last_online')
+            'fields': ('moderator_id', 'identifier', 'ip_address', 'country', 'alias', 'note', 'status', 'last_online')
         }),
         ('Logs Count', {
             'classes': ('grp-collapse grp-closed',),

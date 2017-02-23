@@ -135,7 +135,7 @@ MEDIA_ROOT = os.path.join(os.path.join(*os.path.split(os.path.dirname(__file__))
 MEDIA_URL = '/upload/'
 
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'ModeRat Server',
+    'ADMIN_NAME': 'ModeRat Server Dashboard',
     'SHOW_REQUIRED_ASTERISK': True,
     'CONFIRM_UNSAVED_CHANGES': True,
     'MENU_EXCLUDE': ('auth.group',)

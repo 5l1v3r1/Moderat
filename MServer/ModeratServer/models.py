@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
+import pygeoip
+import os
 
+geo_ip_database = pygeoip.GeoIP('GeoIP.dat')
 
 # Create your models here.
 class Moderators(models.Model):
@@ -20,19 +23,33 @@ class Moderators(models.Model):
 
 
 class Clients(models.Model):
+
+    class Meta:
+        verbose_name = "Client"
+
     moderator_id = models.ForeignKey(Moderators)
     identifier = models.CharField(max_length=100)
     alias = models.CharField(max_length=100, default='')
     note = models.TextField(blank=True)
     ip_address = models.CharField(max_length=100)
+    country = models.CharField(default='', max_length=100)
+    country_code = models.CharField(default='', max_length=100)
     last_online = models.DateTimeField(default=timezone.now)
     status = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.moderator_id.username
 
-    class Meta:
-        verbose_name = "Client"
+    def save(self, **kwargs):
+        self.clean()
+        return super(Clients, self).save(**kwargs)
+
+    def clean(self):
+        super(Clients, self).clean()
+        geo_name = geo_ip_database.country_name_by_addr(self.ip_address)
+        geo_code = geo_ip_database.country_code_by_addr(self.ip_address)
+        self.country = geo_name if geo_name else 'UNKNOWN'
+        self.country_code = geo_code if geo_code else 'UNKNOWN'
 
 
 class Screenshots(models.Model):

@@ -5,14 +5,7 @@ from django.db.models import Count
 
 def get_uptime():
     if sys.platform.startswith('win'):
-        import wmi
-        wmiob = wmi.WMI()
-        sdata = wmiob.Win32_PerfFormattedData_PerfOS_System()
-        uptime = sdata[-1].SystemUpTime
-        tnow = datetime.datetime.now()
-        utime = datetime.timedelta(seconds=int(uptime))
-        boot = tnow - utime
-        uptime = "{} days, {} hours, {} minutes, {} seconds".format(boot.day, boot.hour, boot.minute, boot.second)
+        uptime = 'Windows Not Supported Yet!!!'
     else:
         with open('/proc/uptime') as f:
             boot = datetime.timedelta(seconds=float(f.readline().split()[0])).total_seconds()

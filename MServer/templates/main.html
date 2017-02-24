@@ -234,6 +234,9 @@
     title: {
         text: 'Logs Statistic'
     },
+    credits: {
+        enabled: false
+    },
     xAxis: {
         categories: ['Logs',]
     },
@@ -266,31 +269,6 @@
     }
     window.onload = init;
 </script>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('upcoming', {'packages':['geochart']});
-      google.charts.setOnLoadCallback(drawRegionsMap);
-
-      function drawRegionsMap() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Country', 'Clients'],
-            {% for client in clientsGeo %}
-              ['{{ client.country }}', '{{ client.count }}'],
-            {% endfor %}
-        ]);
-
-        var options = {
-            backgroundColor: 'transparent',
-            colorAxis: {colors: ['#f1c40f', '#c0392b']},
-        };
-
-        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-
-        chart.draw(data, options);
-      }
-    </script>
 
 {% endblock %}
 
@@ -342,12 +320,6 @@
       <div class="span4">
         <div id="logStatistic" class="col-lg-12"></div>
       </div>
-    </div>
-    <div class="row-fluid">
-      <div class="span12">
-        <p class="btn btn-active text-center span12">Clients Map</p>
-      </div>
-      <div class="span12" id="regions_div" style="width: 1040px; height: 500px;"></div>
     </div>
   {% endblock %}
 

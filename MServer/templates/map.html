@@ -1,0 +1,101 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+  ModeRat Server Dashboard
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    function init() {
+
+    // Add lower case codes to the data set for inclusion in the tooltip.pointFormat
+    var data = {{ geodata|safe }}
+    $.each(data, function () {
+        this.flag = this.code.replace('UK', 'GB').toLowerCase();
+    });
+
+    // Initiate the chart
+    Highcharts.mapChart('clientsMap', {
+
+        title: {
+            text: null
+        },
+
+        legend: {
+            title: {
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                }
+            }
+        },
+
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+
+        tooltip: {
+            backgroundColor: 'none',
+            borderWidth: 0,
+            shadow: false,
+            useHTML: true,
+            padding: 0,
+            pointFormat: '<span class="f32"><span class="flag {point.flag}"></span></span>' +
+                ' {point.name}: <b>{point.value}</b> Client (s)',
+            positioner: function () {
+                return { x: 0, y: 250 };
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        colorAxis: {
+            min: 1,
+            max: 1000,
+            type: 'logarithmic',
+            minColor: '#2ecc71',
+            maxColor: '#c0392b'
+        },
+
+        series: [{
+            data: data,
+            mapData: Highcharts.maps['custom/world'],
+            joinBy: ['iso-a2', 'code'],
+            name: 'Total Clients',
+            states: {
+                hover: {
+                    color: '#a4edba'
+                }
+            }
+        }]
+    });
+        }
+    window.onload = init;
+</script>
+
+{% endblock %}
+
+{% block content %}
+  {% block dashboard_highcharts_js %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cloud.github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
+
+    <div class="row-fluid">
+        <div class="span12" id="clientsMap" style="min-height: 400px;"></div>
+    </div>
+  {% endblock %}
+
+  {% block main %}
+
+  {% endblock %}
+
+{% endblock %}

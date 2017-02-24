@@ -2,7 +2,25 @@
 
 from __future__ import unicode_literals
 from django.views.generic import TemplateView
-import psutil, helpers, platform
+import psutil, helpers, platform, json
+
+
+class MapView(TemplateView):
+    template_name = 'map.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        clientsGeo = helpers.get_clients_geo_location()
+        geodata = []
+        for client in clientsGeo:
+            geodata.append({
+                "code": client['country_code'],
+                "value": client['count'],
+                "name": client['country']
+            })
+        context['geodata'] = json.dumps(geodata)
+        print context['geodata']
+        return self.render_to_response(context=context)
 
 
 class HomeView(TemplateView):
@@ -44,5 +62,4 @@ class HomeView(TemplateView):
         context['audios'] = {
             'total': totalAudios,
         }
-        context['clientsGeo'] = helpers.get_clients_geo_location()
         return self.render_to_response(context=context)

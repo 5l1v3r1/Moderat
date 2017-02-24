@@ -32,4 +32,4 @@ def get_logs_information():
 
 
 def get_clients_geo_location():
-    return Clients.objects.values('country').order_by('country').annotate(count=Count('country'))
+    return Clients.objects.values('country', 'country_code').order_by('country').annotate(count=Count('country'))

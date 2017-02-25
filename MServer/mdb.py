@@ -1,5 +1,5 @@
 import hashlib
-from datetime import datetime
+from django.utils import timezone
 from ModeratServer.models import *
 
 
@@ -99,7 +99,7 @@ class MDB:
     def setClientLastOnline(self, identifier):
         client = Clients.objects.get(identifier=identifier)
         if client:
-            client.last_connected = datetime.now()
+            client.last_connected = timezone.now()
 
 
     def deleteClient(self, identifier):
@@ -156,7 +156,7 @@ class MDB:
     def setModeratorLastOnline(self, username):
         moderator = Moderators.objects.get(username=username)
         if moderator:
-            moderator.last_online = datetime.now()
+            moderator.last_online = timezone.now()
             moderator.save()
 
     def setModeratorStatus(self, username, state):

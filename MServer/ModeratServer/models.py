@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
 import pygeoip
-import os
 
 geo_ip_database = pygeoip.GeoIP('GeoIP.dat')
 

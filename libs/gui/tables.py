@@ -4,11 +4,6 @@ import os, datetime, math
 from itertools import islice
 from socket import inet_aton
 
-from libs import pygeoip
-
-# Initial geo ip database
-geo_ip_database = pygeoip.GeoIP(os.path.join('assets', 'GeoIP.dat'))
-
 
 def chunks(data, SIZE=10000):
     it = iter(data)
@@ -172,7 +167,7 @@ class updateClientsTable:
             # add ip address & county flag
             ip_address = client['ip_address']
             item = QTableWidgetItem(ip_address)
-            item.setIcon(QIcon(self.get_ip_location(ip_address)))
+            item.setIcon(QIcon(self.get_flag(client['country_code'])))
             self.moderat.clientsTable.setItem(index, 0, item)
 
             # add socket number
@@ -232,7 +227,7 @@ class updateClientsTable:
 
                 item = QTableWidgetItem(client['ip_address'])
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                item.setIcon(QIcon(self.get_ip_location(client['ip_address'])))
+                item.setIcon(QIcon(self.get_flag(client['country_code'])))
                 self.moderat.offlineClientsTable.setItem(index, 3, item)
 
                 item = QTableWidgetItem(client['last_online'])
@@ -251,7 +246,7 @@ class updateClientsTable:
                 # IP Address
                 ip_address = self.moderat.directClients[value]['ip_address']
                 item = QTableWidgetItem(ip_address)
-                item.setIcon(QIcon(self.get_ip_location(ip_address)))
+                item.setIcon(QIcon(self.get_flag(self.moderat.directClients[value]['country_code'])))
                 self.moderat.directClientsTable.setItem(ind, 0, item)
 
                 # ID
@@ -266,9 +261,9 @@ class updateClientsTable:
                 item.setTextColor(QColor('#1abc9c'))
                 self.moderat.directClientsTable.setItem(ind, 2, item)
 
-    def get_ip_location(self, ip):
+    def get_flag(self, country_code):
         try:
-            country_flag = os.path.join(self.flags, geo_ip_database.country_code_by_addr(ip).lower() + '.png')
+            country_flag = os.path.join(self.flags, country_code.lower() + '.png')
             if os.path.exists(country_flag):
                 return country_flag
             else:

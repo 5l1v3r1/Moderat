@@ -322,6 +322,7 @@ class ModeratServerFactory(ServerFactory):
                     _ = current_clients[client.identifier]
                     shared_clients[client.identifier] = {
                             'moderator': self.database.getClientModerator(client.identifier),
+                            'country_code': client.country_code,
                             'alias': client.alias, 'ip_address': client.ip_address, 'os': _['os'],
                             'user': _['user'], 'privileges': _['privileges'], 'audio_device': _['audio_device'],
                             'webcamera_device': _['webcamera_device'], 'window_title': _['window_title'],
@@ -331,6 +332,7 @@ class ModeratServerFactory(ServerFactory):
                 else:
                     shared_clients[client.identifier] = {
                         'moderator': moderator.username, 'key': client.identifier, 'alias': client.alias,
+                        'country_code': client.country_code,
                         'ip_address': client.ip_address, 'status': False,
                         'last_online': client.last_online.strftime("%Y-%m-%d %H:%M:%S"),
                     }

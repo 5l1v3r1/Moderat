@@ -139,6 +139,7 @@ class Actions:
             if client:
                 args = {
                     'moderat': self.moderat,
+                    'tab': self.moderat.clientsTabs.currentIndex(),
                     'client': client,
                     'alias': alias,
                     'ip_address': ip_address,

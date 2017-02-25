@@ -32,6 +32,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
     connected = False
 
     DATA = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'DATA')
+    BASEDIR = os.path.dirname(os.path.realpath(__file__))
     modulesBank = {}
     clients = {}
 

@@ -10,10 +10,7 @@ from modules.mshell import main as mshell
 from modules.mscript import main as mscript
 from modules.mdesktop import main as mdesktop
 from modules.mwebcam import main as mwebcam
-
-
-def id_generator(size=16, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
+from libs.moderat.Funcs import idGenerator
 
 
 class Executer(QMainWindow):
@@ -41,6 +38,7 @@ class Executer(QMainWindow):
         self.ip_address = args['ip_address']
         self.alias = args['alias']
         self.p2p = args['p2p']
+        self.tab = args['tab']
 
         self.setStyleSheet(self.moderat.theme.stylesheet)
         self.setWindowTitle('{} - [{}]'.format(self.alias, self.ip_address))
@@ -75,61 +73,69 @@ class Executer(QMainWindow):
         self.modulesBar = QToolBar(self)
         self.modulesBar.setIconSize(QSize(16, 16))
 
-        self.toolsBar.addSeparator()
-        self.clientSettingsAction = QAction(self)
-        self.clientSettingsAction.setIcon(QIcon(':/icons/assets/note.png'))
-        self.clientSettingsAction.triggered.connect(lambda: self.addModule('MCLIENTSETTINGS'))
-        self.toolsBar.addAction(self.noteAction)
+        if self.tab == 0:
+            self.toolsBar.addSeparator()
+            self.clientSettingsAction = QAction(self)
+            self.clientSettingsAction.setIcon(QIcon(':/icons/assets/settings.png'))
+            self.clientSettingsAction.triggered.connect(lambda: self.addModule('MCLIENTSETTINGS'))
+            self.toolsBar.addAction(self.clientSettingsAction)
 
-        self.toolsBar.addSeparator()
-        self.viewerAction = QAction(self)
-        self.viewerAction.setIcon(QIcon(':/icons/assets/log_viewer.png'))
-        self.viewerAction.triggered.connect(lambda: self.addModule('MVIEWER'))
-        self.toolsBar.addAction(self.viewerAction)
+        if self.tab == 0 or self.tab == 2:
+            self.toolsBar.addSeparator()
+            self.viewerAction = QAction(self)
+            self.viewerAction.setIcon(QIcon(':/icons/assets/log_viewer.png'))
+            self.viewerAction.triggered.connect(lambda: self.addModule('MVIEWER'))
+            self.toolsBar.addAction(self.viewerAction)
 
-        self.toolsBar.addSeparator()
-        self.noteAction = QAction(self)
-        self.noteAction.setIcon(QIcon(':/icons/assets/note.png'))
-        self.noteAction.triggered.connect(lambda: self.addModule('MNOTE'))
-        self.toolsBar.addAction(self.noteAction)
+        if self.tab == 0 or self.tab == 2:
+            self.toolsBar.addSeparator()
+            self.noteAction = QAction(self)
+            self.noteAction.setIcon(QIcon(':/icons/assets/note.png'))
+            self.noteAction.triggered.connect(lambda: self.addModule('MNOTE'))
+            self.toolsBar.addAction(self.noteAction)
 
         self.addToolBar(Qt.LeftToolBarArea, self.toolsBar)
 
-        self.shellAction = QAction(self)
-        self.shellAction.setIcon(QIcon(':/icons/assets/remote_shell.png'))
-        self.shellAction.triggered.connect(lambda: self.addModule('MSHELL'))
-        self.modulesBar.addAction(self.shellAction)
+        if self.tab == 0 or self.tab == 1:
+            self.shellAction = QAction(self)
+            self.shellAction.setIcon(QIcon(':/icons/assets/remote_shell.png'))
+            self.shellAction.triggered.connect(lambda: self.addModule('MSHELL'))
+            self.modulesBar.addAction(self.shellAction)
 
-        self.modulesBar.addSeparator()
-        self.explorerAction = QAction(self)
-        self.explorerAction.setIcon(QIcon(':/icons/assets/remote_explorer.png'))
-        self.explorerAction.triggered.connect(lambda: self.addModule('MEXPLORER'))
-        self.modulesBar.addAction(self.explorerAction)
+        if self.tab == 0 or self.tab == 1:
+            self.modulesBar.addSeparator()
+            self.explorerAction = QAction(self)
+            self.explorerAction.setIcon(QIcon(':/icons/assets/remote_explorer.png'))
+            self.explorerAction.triggered.connect(lambda: self.addModule('MEXPLORER'))
+            self.modulesBar.addAction(self.explorerAction)
 
-        self.modulesBar.addSeparator()
-        self.scriptingAction = QAction(self)
-        self.scriptingAction.setIcon(QIcon(':/icons/assets/remote_scripting.png'))
-        self.scriptingAction.triggered.connect(lambda: self.addModule('MSCRIPTING'))
-        self.modulesBar.addAction(self.scriptingAction)
+        if self.tab == 0 or self.tab == 1:
+            self.modulesBar.addSeparator()
+            self.scriptingAction = QAction(self)
+            self.scriptingAction.setIcon(QIcon(':/icons/assets/remote_scripting.png'))
+            self.scriptingAction.triggered.connect(lambda: self.addModule('MSCRIPTING'))
+            self.modulesBar.addAction(self.scriptingAction)
 
-        self.modulesBar.addSeparator()
-        self.desktopAction = QAction(self)
-        self.desktopAction.setIcon(QIcon(':/icons/assets/desktop.png'))
-        self.desktopAction.triggered.connect(lambda: self.addModule('MDESKTOP'))
-        self.modulesBar.addAction(self.desktopAction)
+        if self.tab == 0 or self.tab == 1:
+            self.modulesBar.addSeparator()
+            self.desktopAction = QAction(self)
+            self.desktopAction.setIcon(QIcon(':/icons/assets/desktop.png'))
+            self.desktopAction.triggered.connect(lambda: self.addModule('MDESKTOP'))
+            self.modulesBar.addAction(self.desktopAction)
 
-        self.modulesBar.addSeparator()
-        self.webcamAction = QAction(self)
-        self.webcamAction.setIcon(QIcon(':/icons/assets/webcam.png'))
-        self.webcamAction.triggered.connect(lambda: self.addModule('MWEBCAM'))
-        self.modulesBar.addAction(self.webcamAction)
+        if self.tab == 0 or self.tab == 1:
+            self.modulesBar.addSeparator()
+            self.webcamAction = QAction(self)
+            self.webcamAction.setIcon(QIcon(':/icons/assets/webcam.png'))
+            self.webcamAction.triggered.connect(lambda: self.addModule('MWEBCAM'))
+            self.modulesBar.addAction(self.webcamAction)
 
-        self.addToolBar(Qt.LeftToolBarArea, self.modulesBar)
-
-        self.insertToolBarBreak(self.modulesBar)
+        if self.tab == 0 or self.tab == 1:
+            self.addToolBar(Qt.LeftToolBarArea, self.modulesBar)
+            self.insertToolBarBreak(self.modulesBar)
 
     def addModule(self, module):
-        module_id = id_generator()
+        module_id = idGenerator()
         self.addWidget(self.modules[module].mainPopup({
                 'moderat': self.moderat,
                 'client': self.client,

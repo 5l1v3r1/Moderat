@@ -556,6 +556,10 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {{
     background: none;
 }}
 
+QSlider {{
+    background: transparent;
+}}
+
 QSlider::groove:horizontal {{
     border: none;
     background: transparent;

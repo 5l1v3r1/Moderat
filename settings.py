@@ -117,7 +117,7 @@ class SettingsWindow(QWidget, Ui_Form):
     def apply_settings(self):
         self.moderat.settings.moderatLanguage = str(self.languageCombo.currentText()).lower()
         self.moderat.settings.moderatTheme = str(self.themeCombo.currentText())
-        self.moderat.settings.moderatOpacity = float(self.opacitySlider.value())
+        self.moderat.settings.moderatOpacity = float(self.opacitySlider.value())/100
         self.moderat.settings.onlineClientsPerPage = int(self.onlinePerPageLine.text())
         self.moderat.settings.headerIpAddress = self.ipaddressHeaderCheck.isChecked()
         self.moderat.settings.headerClientId = self.clientIdHeaderCheck.isChecked()

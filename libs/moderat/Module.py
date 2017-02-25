@@ -1,7 +1,6 @@
 # coding=utf-8
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import string, random
 from modules.mclientsettings import main as mclientsettings
 from modules.mlogviewer import main as mlogviewer
 from modules.mnote import main as mnote
@@ -43,6 +42,7 @@ class Executer(QMainWindow):
         self.setStyleSheet(self.moderat.theme.stylesheet)
         self.setWindowTitle('{} - [{}]'.format(self.alias, self.ip_address))
         self.setWindowIcon(QIcon(':/icons/assets/logo.png'))
+        self.setWindowOpacity(self.moderat.settings.moderatOpacity)
 
         self.addTools()
 

@@ -98,7 +98,7 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.translate.__init__(self)
         self.theme.__init__(self)
         self.setStyleSheet(self.theme.stylesheet)
-        self.setWindowOpacity(self.settings.moderatOpacity/100)
+        self.setWindowOpacity(self.settings.moderatOpacity)
         self.setWindowTitle(self.MString('TITLE'))
 
         self.menuRemote_Server.setTitle(self.MString('REMOTE_SERVER'))

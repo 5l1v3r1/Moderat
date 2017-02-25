@@ -102,13 +102,14 @@ QPushButton[counter="1"] {{
 
 QPushButton[counter="1"]:hover {{
     border: none;
-    padding: 20px;
+    color: #33b288;
     min-width: 30px;
     background: transparent;
 }}
 
 QPushButton[counter="1"]:pressed {{
     border: none;
+    color: #33b288;
     min-width: 30px;
     background: transparent;
 }}

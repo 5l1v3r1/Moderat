@@ -130,13 +130,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         self.offlineClientsTable.horizontalHeaderItem(3).setText(self.MString('HEADER_IP_ADDRESS'))
         self.offlineClientsTable.horizontalHeaderItem(4).setText(self.MString('HEADER_LAST_ONLINE'))
 
-        self.moderatorsTable.horizontalHeaderItem(0).setText(self.MString('MODERATORS_HEADER_ID'))
-        self.moderatorsTable.horizontalHeaderItem(1).setText(self.MString('MODERATORS_HEADER_ONLINE'))
-        self.moderatorsTable.horizontalHeaderItem(2).setText(self.MString('MODERATORS_HEADER_OFFLINE'))
-        self.moderatorsTable.horizontalHeaderItem(3).setText(self.MString('MODERATORS_HEADER_PRIVILEGES'))
-        self.moderatorsTable.horizontalHeaderItem(4).setText(self.MString('MODERATORS_HEADER_STATUS'))
-        self.moderatorsTable.horizontalHeaderItem(5).setText(self.MString('MODERATORS_HEADER_LASTONLINE'))
-
         self.directClientsTable.horizontalHeaderItem(0).setText(self.MString('HEADER_IP_ADDRESS'))
         self.directClientsTable.horizontalHeaderItem(1).setText(self.MString('HEADER_ID'))
         self.directClientsTable.horizontalHeaderItem(2).setText(self.MString('HEADER_MARK'))
@@ -325,42 +318,6 @@ class MainDialog(QMainWindow, gui.Ui_MainWindow):
         :return:
         '''
         self.action.administrator_set_moderator()
-
-    @connected_to_server
-    @is_administrator
-    def create_moderator(self):
-        '''
-        Create New Moderator
-        :return:
-        '''
-        self.action.administrator_create_moderator()
-
-    @connected_to_server
-    @is_administrator
-    def change_moderator_password(self):
-        '''
-        Change Moderator Password
-        :return:
-        '''
-        self.action.administrator_change_moderator_password()
-
-    @connected_to_server
-    @is_administrator
-    def change_moderator_privilege(self):
-        '''
-        Change Moderator Privileges
-        :return:
-        '''
-        self.action.administrator_change_moderator_privilege()
-
-    @connected_to_server
-    @is_administrator
-    def remove_moderator(self):
-        '''
-        Remove Moderator
-        :return:
-        '''
-        self.action.administrator_remove_moderator()
 
     def send_signal(self, data):
         '''

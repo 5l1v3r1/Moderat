@@ -28,9 +28,3 @@ class ModeratTriggers:
         self.moderat.viewOfflineLogsButton.clicked.connect(lambda: self.moderat.execute_module(module='logviewer'))
         self.moderat.setOfflineAliasButton.clicked.connect(self.moderat.set_alias)
         self.moderat.removeClientButton.clicked.connect(self.moderat.remove_client)
-
-        # Moderators Menu Triggers
-        self.moderat.addModeratorButton.clicked.connect(self.moderat.create_moderator)
-        self.moderat.changePasswordButton.clicked.connect(self.moderat.change_moderator_password)
-        self.moderat.changePrivilegesButton.clicked.connect(self.moderat.change_moderator_privilege)
-        self.moderat.removeModeratorButton.clicked.connect(self.moderat.remove_moderator)

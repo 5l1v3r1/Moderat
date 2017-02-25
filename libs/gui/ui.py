@@ -27,12 +27,6 @@ class updateUi:
         self.offlineIcon.clicked.connect(lambda: self.moderat.clientsTabs.setCurrentIndex(2))
         self.moderat.clientsTabs.tabBar().setTabButton(2, QTabBar.LeftSide, self.offlineIcon)
 
-        self.moderatorsIcon = QPushButton()
-        self.moderatorsIcon.setProperty('moderatorsTab', '1')
-        self.moderatorsIcon.setFocusPolicy(Qt.NoFocus)
-        self.moderatorsIcon.clicked.connect(lambda: self.moderat.clientsTabs.setCurrentIndex(3))
-        self.moderat.clientsTabs.tabBar().setTabButton(3, QTabBar.LeftSide, self.moderatorsIcon)
-
         self.on_server_stopped()
 
     def on_moderator_connected(self):
@@ -89,22 +83,8 @@ class updateUi:
 
     # Enable Administrators Features
     def enable_administrator(self):
-        # Enable Buttons
-        # Online Clients Moderators
-        #self.moderat.clientsTable.showColumn(0)
-        # Offline Clients Moderators
         self.moderat.offlineClientsTable.showColumn(0)
-        # Moderators Tab
-        # self.moderat.clientsTabs.setTabEnabled(3, True)
-        # self.moderat.clientsTabs.setTabText(3, self.moderat.MString('CLIENTS_TAB_MODERATORS'))
-        # self.moderat.clientsTabs.setTabIcon(3, QIcon(QPixmap(":/icons/assets/moderators.png")))
 
     # Disable Administrators Features
     def disable_administrator(self):
-        # Disable Buttons
-        # Offline Clients Moderators
         self.moderat.offlineClientsTable.setColumnHidden(0, True)
-        # Moderators Tab
-        # self.moderat.clientsTabs.setTabText(3, '')
-        # self.moderat.clientsTabs.setTabEnabled(3, False)
-        # self.moderat.clientsTabs.setTabIcon(3, QIcon(QPixmap(":/icons/assets/none.png")))

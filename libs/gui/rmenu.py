@@ -14,10 +14,6 @@ class moderatRightClickMenu:
         self.moderat.connect(self.moderat.offlineClientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
                              self.offline_clients_menu)
 
-        self.moderat.moderatorsTable.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.moderat.connect(self.moderat.moderatorsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
-                             self.moderators_menu)
-
         self.moderat.directClientsTable.setContextMenuPolicy(Qt.CustomContextMenu)
         self.moderat.connect(self.moderat.directClientsTable, SIGNAL('customContextMenuRequested(const QPoint&)'),
                              self.direct_clients_menu)
@@ -95,20 +91,6 @@ class moderatRightClickMenu:
                                              self.moderat.set_moderator)
 
         self.moderat.emenu.exec_(self.moderat.offlineClientsTable.mapToGlobal(point))
-
-    def moderators_menu(self, point):
-        self.moderat.emenu = QMenu(self.moderat)
-        if self.moderat.moderatorsTable.currentRow() >= 0:
-            self.moderat.emenu.addSeparator()
-            self.moderat.emenu.addAction(QIcon(':/icons/assets/add_moderator.png'), self.moderat.MString('MODERATOR_ADD_MDOERATOR'),
-                                         self.moderat.create_moderator)
-            self.moderat.emenu.addAction(QIcon(':/icons/assets/password.png'), self.moderat.MString('MODERATOR_CHANGE_PASSWORD'),
-                                         self.moderat.change_moderator_password)
-            self.moderat.emenu.addAction(QIcon(':/icons/assets/privileges.png'), self.moderat.MString('MODERATOR_CHANGE_GROUP'),
-                                         self.moderat.change_moderator_privilege)
-            self.moderat.emenu.addAction(QIcon(':/icons/assets/trash.png'), self.moderat.MString('MODERATOR_REMOVE'),
-                                         self.moderat.remove_moderator)
-        self.moderat.emenu.exec_(self.moderat.moderatorsTable.mapToGlobal(point))
 
     def direct_clients_menu(self, point):
         self.moderat.emenu = QMenu(self.moderat)

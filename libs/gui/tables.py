@@ -117,7 +117,6 @@ class updateClientsTable:
     def clean_tables(self):
         self.moderat.clientsTable.setRowCount(0)
         self.moderat.offlineClientsTable.setRowCount(0)
-        self.moderat.moderatorsTable.setRowCount(0)
         self.moderat.online_clients_count.setText('0')
         self.moderat.offline_clients_count.setText('0')
 
@@ -242,70 +241,6 @@ class updateClientsTable:
 
         except RuntimeError:
             pass
-
-    def update_moderators(self, data):
-        moderators = data['payload']
-        self.moderat.moderatorsTable.setRowCount(len(moderators))
-
-        online_clients_count = 0
-        offline_clients_count = 0
-
-        for index, key in enumerate(moderators):
-
-            # add moderator id
-            item = QTableWidgetItem(key)
-            item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 0, item)
-
-            # add online clients count
-            item = QTableWidgetItem(str(moderators[key]['online_clients']))
-            online_clients_count += int(moderators[key]['online_clients'])
-            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 1, item)
-
-            # add offline clients count
-            item = QTableWidgetItem(str(moderators[key]['offline_clients']))
-            offline_clients_count += int(moderators[key]['offline_clients'])
-            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 2, item)
-
-            # add privileges
-            privileges = moderators[key]['privileges']
-            if privileges == 1:
-                color = '#9b59b6'
-                privileges = self.moderat.MString('MODERATORS_PRIVILEGES_ADMINISTRATOR')
-            else:
-                color = '#c9f5f7'
-                privileges = self.moderat.MString('MODERATORS_PRIVILEGES_MODERATOR')
-            item = QTableWidgetItem(privileges)
-            item.setTextColor(QColor(color))
-            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 3, item)
-
-            # add moderator status
-            status = moderators[key]['status']
-            if status == 1:
-                style = '#1abc9c'
-                text = self.moderat.MString('MODERATOR_ONLINE')
-            else:
-                style = '#f39c12'
-                text = self.moderat.MString('MODERATOR_OFFLINE')
-            item = QTableWidgetItem(text)
-            item.setTextColor(QColor(style))
-            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 4, item)
-
-            # add moderator last online
-            item = QTableWidgetItem(moderators[key]['last_online'])
-            item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            self.moderat.moderatorsTable.setItem(index, 5, item)
-
-        # Count All Clients
-        self.moderat.onlineClientsCountLabel.setText(str(online_clients_count))
-        self.moderat.offlineClientsCountLabel.setText(str(offline_clients_count))
-        if not online_clients_count == 0:
-            self.moderat.allClientsProgress.setValue(
-                online_clients_count * 100 / (online_clients_count + offline_clients_count) + 1)
 
     def update_direct_clients(self):
         if self.moderat.directServerRunning:

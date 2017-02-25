@@ -331,7 +331,7 @@ class ModeratServerFactory(ServerFactory):
                 else:
                     shared_clients[client.identifier] = {
                         'moderator': moderator.username, 'key': client.identifier, 'alias': client.alias,
-                        'ip_address': client.ip_address, 'status': client.status,
+                        'ip_address': client.ip_address, 'status': False,
                         'last_online': client.last_online.strftime("%Y-%m-%d %H:%M:%S"),
                     }
             self.sendMessage(self.moderators[session]['protocol'], shared_clients, 'getClients', '', '')
